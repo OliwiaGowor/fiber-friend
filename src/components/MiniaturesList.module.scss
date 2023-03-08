@@ -1,0 +1,27 @@
+.container {
+  width: calc(100vw - 12vw);
+  height: max-content;
+
+    .loadedElement {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+      -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
+      -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+      box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+      background-color: white;
+      border-radius: 5px;
+      flex-shrink: 100 !important;
+      width: 250px;
+      padding: 30px;
+      &:hover {
+        transition: 0.2s;
+        background-color: #f0e5ff;
+      }
+    }
+
+    .addIcon {
+      padding: 75px;
+    }
+}

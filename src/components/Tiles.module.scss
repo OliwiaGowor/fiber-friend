@@ -1,0 +1,27 @@
+.container {
+  margin-right: 10vw;
+  .elements {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    .element {
+      background-color: white;
+      width: max-content;
+      padding: 30px;
+      -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
+      -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+      box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+      border-radius: 5px;
+
+      .addIcon {
+        padding: 75px;
+      }
+    }
+  }
+}

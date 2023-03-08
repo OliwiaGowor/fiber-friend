@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content;
+  width: 8vw;
+  height: calc(100vh - 68px);
+  position: static;
+  min-width: max-content;
+  padding: 60px;
+  padding-left: 50px;
+
+  .header:hover .link {
+    transition: 0.2s;
+    color: #f5720e;
+  }
+  .elements {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+
+    .element {
+      padding: 12px;
+
+      &:hover .link {
+        transition: 0.2s;
+        color: #f5720e;
+      }
+    }
+  }
+  .link {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .text {
+      padding-left: 10px;
+    }
+  }
+}
