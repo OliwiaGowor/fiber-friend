@@ -1,3 +1,4 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import { Suspense } from "react";
 import { useLoaderData, Await, json, defer } from "react-router-dom";
 import Tiles from "../components/Tiles";
@@ -10,7 +11,7 @@ function Projects() {
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>PROJECTS</h1>
-            <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={projects}>
                     {(loadedProjects) => <Tiles data={loadedProjects} />}
                 </Await>

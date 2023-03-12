@@ -6,6 +6,7 @@ import Root from './pages/Root';
 import Account, {loader as dataLoader} from './pages/Account';
 import ProjectsRoot from './pages/ProjectsRoot';
 import Projects, {loader as projectsLoader} from './pages/Projects';
+import NewProjectPage from './pages/NewProjectPage';
 
 const router = createBrowserRouter([
   {
@@ -48,8 +49,8 @@ const router = createBrowserRouter([
             ],
           },
           {
-            //path: 'new',
-            //element: <NewEventPage />,
+            path: 'new-project',
+            element: <NewProjectPage />,
             //action: manipulateEventAction,
             //loader: checkAuthLoader,
           },

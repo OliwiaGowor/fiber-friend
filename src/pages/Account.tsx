@@ -5,6 +5,7 @@ import SidebarAccount from "../components/SidebarAccount";
 import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import CircularProgress from "@mui/material/CircularProgress";
 
 function Account() {
   const { projects, patterns, orders }: any = useLoaderData();
@@ -14,7 +15,7 @@ function Account() {
     <div className={classes.container}>
       <SidebarAccount />
       <div>
-        <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+        <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
           <Link to={"/projects"}>
             <h1 className={classes.header}>PROJECTS<ArrowForwardIosIcon className={classes.arrow}/></h1>
           </Link>
@@ -22,7 +23,7 @@ function Account() {
             {(loadedProjects) => <MiniaturesList data={loadedProjects} />}
           </Await>
         </Suspense>
-        <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+        <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
           <Link to={"/patterns"}>
             <h1 className={classes.header}>PATTERNS<ArrowForwardIosIcon className={classes.arrow}/></h1>
           </Link>
@@ -30,7 +31,7 @@ function Account() {
             {(loadedPatterns) => <MiniaturesList data={loadedPatterns} />}
           </Await>
         </Suspense>
-        <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+        <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
           <h1 className={classes.header}>ORDERS<ArrowForwardIosIcon className={classes.arrow}/></h1>
           <Await resolve={orders}>
             {(loadedOrders) => <MiniaturesList data={loadedOrders} />}

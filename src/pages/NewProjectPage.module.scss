@@ -1,0 +1,19 @@
+.container {
+  width: 80vw;
+  .form {
+    .formContent {
+      gap: 100px;
+      .yarnsContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .yarnDetails {
+          width: inherit;
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+  }
+}
