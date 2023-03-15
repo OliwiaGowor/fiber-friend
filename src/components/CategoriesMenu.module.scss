@@ -1,0 +1,34 @@
+@import url('./root.scss');
+.categoriesMenuBtn{
+  
+}
+.categoriesMenu {
+  ul {
+    width: 20vw;
+    padding: 0;
+  }
+  .category {
+    display: flex;
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 1px solid rgb(206, 206, 206);
+
+    .btnCategory {
+      display: flex;
+      width: 100%;
+      font-size: 16px;
+      background-color: white;
+      border: none;
+      justify-content: space-between;
+    }
+
+    .btnBack {
+      flex-basis: 50%;
+      justify-content: flex-start;
+      .btnText {
+        padding-left: calc(50% - 34px);
+      }
+    }
+  }
+}

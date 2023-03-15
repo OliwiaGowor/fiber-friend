@@ -1,0 +1,81 @@
+@import url("../../components/root.scss");
+
+.container {
+  width: 70vw;
+  margin-top: 50px;
+  font-size: 16px;
+  .form {
+    .formContent {
+      gap: 100px;
+
+      .sectionContainer {
+        background-color: var(--background-accents);
+        padding: 32px;
+        margin: 32px 0;
+        label {
+          display: block;
+         
+        }
+        .formInput {
+          margin: 12px 0;
+        }
+        input {
+          background-color: var(--background-color);
+        }
+        .additionalText{ 
+          color: gray;
+          font-size: 14px;
+        }
+      }
+      .photosContainer {
+        .photos {
+          border: 1px dashed grey;
+          .addPhoto {
+            height: inherit;
+            .btnAddPhoto {
+              height: 250px;
+              width: 200px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: flex-start;
+              padding-top: 30px;
+              color: var(--main-color-dark);
+              .btnAddPhotoText {
+                color: var(--text-color-dark);
+              }
+            }
+          }
+          .addedPhoto {
+            position: relative;
+            .photo {
+              border-radius: 5px;
+            }
+            .btnDeletePhoto {
+              position: absolute;
+              top: 10px;
+              left: 130px;
+              border-radius: 50%;
+              padding-top: 5px;
+              height: 40px;
+              width: 40px;
+              border: none;
+            }
+          }
+        }
+      }
+
+        .yarnsInput {
+          width: inherit;
+          box-sizing: border-box;
+          background-color: var(--background-accents);
+        }
+        .yarnDetails {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+        }
+
+    }
+  }
+}

@@ -1,0 +1,41 @@
+.container {
+    .landingPage {
+        width: 100vw;
+        height: calc(90vh - 68px);
+        position: relative;
+        .landingPhoto {
+            width: inherit;
+            height: inherit;
+            object-fit: cover;
+            z-index: 1;
+            position: relative;
+            object-position: top;
+        }
+        .waves {
+            position: absolute;
+            top: 51vh;
+            z-index: 50;
+            width: inherit;
+            height: auto;
+        }
+        .landingTextContainer {
+            position: absolute;
+            z-index: 100;
+            color: white;
+            width: 35vw;
+            left: 8%;
+            top: 20%;
+            .landingHeader {
+                color: #b993ff;
+                font-size: 48px;
+            }
+            .landingText {
+                font-size: 18px;
+            }
+            .landingButton {
+                font-size: 18px;
+                background-color: #f5720e;
+            }
+        }
+    }
+}

@@ -2,21 +2,31 @@
 
 export const categories = [
     {
-        
-        subCateg: [
-            {category: 'Clothes'},
-            { name: 'top' },
-            { name: 'bottom' },
+        category: 'Clothes',
+        children: [
+            { category: 'Top',
+                children: [
+                    {category: 'Blouse'},
+                    {category: 'Sweater'},
+                    {category: 'Bralette'},
+                ] },
+            { category: 'Sottom',
+            children: [
+                {category: 'Shorts'},
+                {category: 'Pants'},
+                {category: 'Skirt'},
+            ] },
         ],
         
     },
 
     {
-        
-        subCateg: [
-            {category: 'Toys'},
-            { name: 'mascot' },
-            { name: 'bottom' },
+        category: 'Toys',
+        children: [
+            { category: 'Mascot' },
         ]
+    },
+    {
+        category: 'Decorations'
     },
 ]

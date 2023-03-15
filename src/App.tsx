@@ -1,12 +1,16 @@
 import './App.css';
-import Navbar from './components/Navbar';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './pages/HomePage'
 import Root from './pages/Root';
 import Account, {loader as dataLoader} from './pages/Account';
-import ProjectsRoot from './pages/ProjectsRoot';
-import Projects, {loader as projectsLoader} from './pages/Projects';
-import NewProjectPage from './pages/NewProjectPage';
+import ProjectsRoot from './pages/Projects/ProjectsRoot';
+import Projects, {loader as projectsLoader} from './pages/Projects/Projects';
+import NewProjectPage from './pages/Projects/NewProjectPage';
+import Patterns, {loader as patternsLoader} from './pages/Patterns/Patterns';
+import PatternsRoot from './pages/Patterns/PatternsRoot';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import ProjectDetails, {loader as projectDetailsLoader} from './pages/Projects/ProjectDetails';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +26,14 @@ const router = createBrowserRouter([
         element: <Account />,
       },
       {
+        path: 'login',
+        element: <LoginPage />
+      },
+      {
+        path: 'signUp',
+        element: <SignUpPage />
+      },
+      {
         path: 'projects',
         element: <ProjectsRoot />,
         children: [
@@ -32,12 +44,12 @@ const router = createBrowserRouter([
           },
           {
             path: ':projectId',
-            id: 'project-detail',
-            //loader: projectDetailLoader,
+            id: 'project-details',
+            loader: projectDetailsLoader,
             children: [
               {
                 index: true,
-                //element: <ProjectDetailPage />,
+                element: <ProjectDetails />,
                 //action: deleteEventAction,
               },
               {
@@ -56,6 +68,15 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {path: 'patterns',
+      element: <PatternsRoot />,
+      children: [
+        {index: true,
+        element: <Patterns />,
+        loader: patternsLoader,
+      }
+      ]
+    }
     ],
   },
 ]);

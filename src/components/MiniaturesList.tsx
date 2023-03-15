@@ -45,7 +45,7 @@ function MiniaturesList({ data }: any) {
         modules={[Navigation]}
         className="mySwiper"
       >
-        <SwiperSlide className={classes.loadedElement}>
+        <SwiperSlide className={classes.loadedElement} style={{marginLeft: '20px'}}>
         <Link to={'/projects/new-project'}>
           <h2>New project</h2>
           <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} />

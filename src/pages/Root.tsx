@@ -4,7 +4,7 @@ function Root () {
     return (
     <>
     <Navbar />
-    <main>
+    <main style={{position: 'relative', top: '68px'}}>
         <Outlet />
       </main>
     </>
