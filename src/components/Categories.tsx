@@ -10,7 +10,7 @@ export const categories = [
                     {category: 'Sweater'},
                     {category: 'Bralette'},
                 ] },
-            { category: 'Sottom',
+            { category: 'Bottom',
             children: [
                 {category: 'Shorts'},
                 {category: 'Pants'},

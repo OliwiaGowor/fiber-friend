@@ -10,17 +10,18 @@ export default function LoginPage() {
     return (
         <div className={classes.container}>
             <div className={classes.sidePanel}>
-                <h1>Welcome back!</h1>
+                <h1 className={classes.panelHeader}>Welcome back!</h1>
 
                 <div>Don't have an account?</div>
-               <Link to='/signUp'><Button>Sign up</Button></Link>
+                <Link to='/signUp'><Button>Sign up</Button></Link>
             </div>
-        <div className={classes.loginForm}>
-            <Form >
-                <h1>Zaloguj się</h1>
-                <div className={classes.loginFormContainer}>
-                    <label htmlFor="userName">Nazwa użytkownika</label>
-                    <OutlinedInput
+            <div className={classes.loginForm}>
+                <Form >
+                    <h1>Log in</h1>
+                    <div className={classes.loginFormContainer}>
+                        <div className={classes.formSection}>
+                            <label htmlFor="userName">Username</label>
+                            <OutlinedInput
                                 id="username"
                                 inputProps={{
                                     'aria-label': 'username',
@@ -29,8 +30,10 @@ export default function LoginPage() {
                                 size="small"
                                 required
                             />
-                    <label htmlFor="password">Hasło</label>
-                    <OutlinedInput
+                        </div>
+                        <div className={classes.formSection}>
+                            <label htmlFor="password">Password</label>
+                            <OutlinedInput
                                 id="password"
                                 inputProps={{
                                     'aria-label': 'password',
@@ -40,14 +43,17 @@ export default function LoginPage() {
                                 required
                                 type="password"
                             />
-                </div>
-                <div className={classes.btnContainer}>
-                    <Button variant="contained" className={classes.btnSubmit} disabled={isSubmitting}>
-                        {isSubmitting ? "Logowanie..." : "Zaloguj się"}
-                    </Button>
-                </div>
-            </Form>
-        </div>
+                        </div>
+                    </div>
+                    <div className={classes.btnContainer}>
+                        <Button variant="contained" className={classes.btnSubmit} disabled={isSubmitting}>
+                            {isSubmitting ? "Logowanie..." : "Zaloguj się"}
+                        </Button>
+                        <div className={classes.forgotPassword}>Forgot password?</div>
+                    </div>
+                    
+                </Form>
+            </div>
         </div>
     );
 }

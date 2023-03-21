@@ -11,6 +11,10 @@
     flex-direction: column;
     justify-content: center;
     padding-bottom: 200px;
+    .panelHeader {
+      font-size: 35px;
+      font-weight: 800;
+    }
   }
   .loginForm {
     width: 65vw;
@@ -18,34 +22,45 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    padding-bottom: 200px;
+    padding-bottom: 250px;
     h1 {
       text-align: center;
+      font-weight: 900;
+      font-size: 48px;
     }
     .loginFormContainer {
       width: 100%;
-      align-items: center;
       display: flex;
-      align-items: center;
       flex-direction: column;
       justify-content: center;
+      .formSection {
+        margin-bottom: 25px;
+        display: flex;
+        flex-direction: column;
       input {
-        width: 18vw;
-        .btnContainer {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          margin-top: 30px;
-          margin-bottom: 10px;
-          .btnSubmit {
-            padding: 10px 30px;
-            border-radius: 10px;
+        width: 25vw;
+      }
+      label {
+        padding: 10px 0px;
+        font-weight: 700;
+      }
+    }
+    }
+    .btnContainer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      flex-direction: column;
+      .btnSubmit {
+        padding: 10px 30px;
+        border-radius: 10px;
 
-            &:hover {
-              background-color: var(--button-idle);
-              color: var(--not-member);
-            }
-          }
+        &:hover {
+          background-color: var(--button-idle);
+          color: var(--not-member);
         }
       }
     }

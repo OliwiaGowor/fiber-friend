@@ -8,7 +8,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { categories } from './Categories';
 import classes from './CategoriesMenu.module.scss'
 
-export default function CategoriesMenu() {
+export default function CategoriesMenu({chooseCategory}: any) {
     const [currentCategory, setCurrentCategory] = React.useState(categories);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [categHistory, setCategHistory] = React.useState<any>([]);
@@ -17,6 +17,7 @@ export default function CategoriesMenu() {
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+    
     const handleClose = () => {
         setAnchorEl(null);
         setCurrentCategory(categories);
@@ -37,9 +38,10 @@ export default function CategoriesMenu() {
 
     };
 
-    const handleCategoryChoice = () => {
-
-    };
+    const handleChooseCategory = (category: any) => {
+        chooseCategory(category.category);
+        handleClose();
+    }
 
     const generateBtnWithChildren = (category: any) => {
         return (
@@ -52,7 +54,7 @@ export default function CategoriesMenu() {
 
     const generateBtnCategoryChoice = (category: any) => {
         return (
-            <button className={classes.btnCategory} onClick={handleCategoryChoice}>
+            <button className={classes.btnCategory} onClick={() => handleChooseCategory(category)}>
                 {category.category}
             </button>
         );
