@@ -3,12 +3,11 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
 import CloseIcon from '@mui/icons-material/Close';
 import classes from './TabsPanelForm.module.scss';
-import { setSyntheticLeadingComments } from 'typescript';
 import Button from '@mui/material/Button';
+import { TextField } from '@mui/material';
 
 const yarnAmounts = [
   'grams', 'skeins', 'meters', 'yarsd'
@@ -36,7 +35,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 0 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -52,7 +51,6 @@ function a11yProps(index: number) {
 }
 
 interface BasicTabsFormProps {
-
   getInfo: any;
 }
 
@@ -89,6 +87,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
       }
     });
     setYarns(tmpYarnsInfo);
+    getInfo(yarns);
   }
 
   const handleAddTab = () => {
@@ -110,113 +109,130 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   }
 
   const handleDeleteTab = (yarn: any) => {
-    console.log(yarn);
-      setYarns(
-        yarns.filter((y: any) =>
-          y.yarn !== yarn.yarn)
-      );
+    setYarns(
+      yarns.filter((y: any) =>
+        y.yarn !== yarn.yarn)
+    );
   }
-  console.log(yarns);
+
   return (
-    <div>
-      <label>Yarns</label>
-      <div>
-        <p className={classes.additionalText}>Add yarns to see more</p>
-        <OutlinedInput
+    <div className={classes.container}>
+      <div className={classes.yarnsAdd}>
+        <TextField
           id="yarn-input"
           inputProps={{
             'aria-label': 'yarn',
           }}
-          placeholder="Add new yarn"
-          size="small"
+          label="Add new yarn"
+          size="medium"
           className={classes.formInput}
           name='name'
           inputRef={yarnNameRef}
           onChange={handleChange}
           value={yarnInput}
         />
-        <Button onClick={handleAddTab} variant="contained">Add</Button>
+        <Button className={classes.addButton} onClick={handleAddTab} variant="contained">Add</Button>
       </div>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} aria-label="basic tabs" onChange={handleChangeTabs} variant='scrollable'>
+          <Tabs
+            value={value}
+            aria-label="basic tabs"
+            onChange={handleChangeTabs}
+            variant='scrollable'
+            sx={{
+              '.MuiTabs-indicator': {
+                backgroundColor: "var(--main-color-dark)"
+              }
+            }}>
             {yarns.map((yarn: any, index: number) => {
               return (
-                <Tab key={index} label={yarn.yarn} {...a11yProps(index)} disableRipple icon={<CloseIcon className={classes.deleteIcon} onClick={() => {handleDeleteTab(yarn)}}/>} />
-                
+                <Tab key={index}
+                  className={classes.tab}
+                  label={yarn.yarn}
+                  {...a11yProps(index)}
+                  disableRipple
+                  iconPosition='end'
+                  icon={<CloseIcon className={classes.deleteIcon} onClick={() => { handleDeleteTab(yarn) }} />}
+                  sx={{
+                    '&.Mui-selected, &.Mui-selected:hover': {
+                      color: "var(--main-color-dark)",
+                    }
+                  }}
+                />
               )
             })}
           </Tabs>
         </Box>
         {yarns.map((yarn: any, index: number) => {
-          return (<TabPanel key={index} value={value} index={index}>
-            <div>{yarn.yarn}</div>
-            
-            <label htmlFor="label">{"Tool size"}</label>
-            <OutlinedInput
-              id={`tool-${index}`}
-              aria-describedby="tool-helper-text"
-              inputProps={{
-                'aria-label': 'tool',
-              }}
-              placeholder="Write tool size"
-              size="small"
-              className={'classes.formInput'}
-              name='tool'
-              inputRef={toolSizeRef}
-              onChange={() => { handleData(yarn.yarn) }}
-              defaultValue={yarn.info.toolSize}
-              required
-            />
-            <label htmlFor="label">Gauge</label>
-            <OutlinedInput
-              id={`gauge-${index}`}
-              aria-describedby="gauge-helper-text"
-              inputProps={{
-                'aria-label': 'gauge',
-              }}
-              placeholder="Write gauge"
-              size="small"
-              className={'classes.formInput'}
-              name='gauge'
-              onChange={() => { handleData(yarn.yarn) }}
-              inputRef={gaugeRef}
-              defaultValue={yarn.info.gauge}
-              required
-            />
-            <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
-            <label htmlFor="stitch">Stitch</label>
-            <OutlinedInput
-              id={`stitch-${index}`}
-              aria-describedby="stitch-helper-text"
-              inputProps={{
-                'aria-label': 'stitch',
-              }}
-              placeholder="Write stitch stitch"
-              size="small"
-              className={'classes.formInput'}
-              name='stitch'
-              onChange={() => { handleData(yarn.yarn) }}
-              inputRef={stitchRef}
-              defaultValue={yarn.info.stitch}
-              required
-            />
-            <label htmlFor="amount">Amount</label>
-            <OutlinedInput
-              id={`amount-${index}`}
-              aria-describedby="amount-helper-text"
-              inputProps={{
-                'aria-label': 'amount',
-              }}
-              placeholder="Write amount of yarn"
-              size="small"
-              className={'classes.formInput'}
-              name='amount'
-              onChange={() => { handleData(yarn.yarn) }}
-              inputRef={amountRef}
-              defaultValue={yarn.info.amount}
-              required
-            />
+          return (<TabPanel key={index} value={value} index={index} >
+            <div className={classes.yarnInputs}>
+              <TextField
+                id={`tool-${index}`}
+                aria-describedby="tool-helper-text"
+                inputProps={{
+                  'aria-label': 'tool',
+                }}
+                label="Tool size"
+
+                className={classes.formInput}
+                name='tool'
+                inputRef={toolSizeRef}
+                onChange={() => { handleData(yarn.yarn) }}
+                defaultValue={yarn.info.toolSize}
+                required
+              />
+
+              <TextField
+                id={`gauge-${index}`}
+                aria-describedby="gauge-helper-text"
+                inputProps={{
+                  'aria-label': 'gauge',
+                }}
+                label="Gauge"
+
+                className={classes.formInput}
+                name='gauge'
+                onChange={() => { handleData(yarn.yarn) }}
+                inputRef={gaugeRef}
+                defaultValue={yarn.info.gauge}
+                required
+              />
+              <br></br>
+              <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
+
+              <TextField
+                id={`stitch-${index}`}
+                aria-describedby="stitch-helper-text"
+                inputProps={{
+                  'aria-label': 'stitch',
+                }}
+                label="Stitch"
+
+                className={classes.formInput}
+                name='stitch'
+                onChange={() => { handleData(yarn.yarn) }}
+                inputRef={stitchRef}
+                defaultValue={yarn.info.stitch}
+                required
+              />
+
+              <TextField
+                id={`amount-${index}`}
+                aria-describedby="amount-helper-text"
+                inputProps={{
+                  'aria-label': 'amount',
+                }}
+                label="Amount of yarn"
+
+                className={classes.formInput}
+                name='amount'
+                onChange={() => { handleData(yarn.yarn) }}
+                inputRef={amountRef}
+                defaultValue={yarn.info.amount}
+                required
+              />
+            </div>
           </TabPanel>)
         })}
 

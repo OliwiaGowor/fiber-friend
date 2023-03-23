@@ -3,32 +3,47 @@
 .container {
   width: 70vw;
   margin-top: 50px;
-  font-size: 16px;
+  font-size: 1em;
 
   .details {
     .sectionContainer {
       background-color: var(--background-accents);
       padding: 32px;
       margin: 32px 0;
+      .attributeName {
+        font-weight: 600;
+      }
+      .projectInfoContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 100px);
+        row-gap: 7px;
+      }
+      .notes {
+        border: 1px dashed grey;
+        padding: 16px;
+      }
     }
     .dividedContainer {
       gap: 100px;
       display: flex;
       flex-direction: row;
+      .leftElements {
+        width: 60%;
 
-      .additionalText {
-        color: gray;
-        font-size: 14px;
+        .header {
+          overflow-wrap: break-word;
+          margin-top: 0px;
+          margin-bottom: 40px;
+          font-size: 2.25rem;
+        }
+        .yarnDetails {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+        }
       }
     }
-    .leftElements {
-      width: 60%;
-      .yarnDetails {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-      }
-    }
+
     .rightElements {
       width: 40%;
 
@@ -48,7 +63,7 @@
 
           .swiper-pagination-bullet-active {
             color: #fff;
-            background: #007aff;
+            background: var(--main-color-dark);
           }
           .addedPhoto {
             position: relative;

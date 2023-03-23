@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import classes from './ProjectsRoot.module.scss';
+import classes from './AccountRoot.module.scss';
 import SidebarAccount from '../components/SidebarAccount';
 
-function ProjectsRoot() {
+export default function AccountRoot() {
   return (
     <div className={classes.container}>
       <SidebarAccount />
@@ -12,5 +12,3 @@ function ProjectsRoot() {
     </div>
   );
 }
-
-export default ProjectsRoot;

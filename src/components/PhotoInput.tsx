@@ -5,16 +5,26 @@ import React from "react";
 import classes from './PhotoInput.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from '@mui/icons-material/Close';
 
 export const FileInput = () => {
   const [selectedFiles, setSelectedFiles] = React.useState<any>([]);
+  const [open, setOpen] = React.useState(false);
 
   const handleAddingFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       for (let i = 0; i < event.target.files.length; i++) {
-        setSelectedFiles((files: any) => [...files, { id: files.length, url: URL.createObjectURL(event.target.files![i]), }]);
-        console.log(event.target.files![i])
+        if (selectedFiles.length < 10 && event.target.files.length < 10) {
+          setSelectedFiles((files: any) => [...files, { id: files.length, url: URL.createObjectURL(event.target.files![i]), }]);
+        } else {
+          setOpen(true);
+        }
       }
+
     }
   };
 
@@ -43,7 +53,7 @@ export const FileInput = () => {
         {selectedFiles && selectedFiles.map((image: any, index: number) => (
           <ImageListItem key={index} className={classes.addedPhoto}>
             <button className={classes.btnDeletePhoto} onClick={(e) => { handleDeleteFile(index, e) }}><DeleteIcon>Remove</DeleteIcon></button>
-            {<img
+            <img
               className={classes.photo}
               src={`${image.url}`}
               srcSet={`${image.url}`}
@@ -51,10 +61,32 @@ export const FileInput = () => {
               loading="lazy"
               width="190px"
               height="250px"
-            />}
+            />
           </ImageListItem>
         ))}
       </ImageList>
+      <Box sx={{ width: '100%' }}>
+        <Collapse in={open}>
+          <Alert
+            severity="warning"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            You can add only up to 10 photos!
+          </Alert>
+        </Collapse>
+      </Box>
     </div>
   );
 };

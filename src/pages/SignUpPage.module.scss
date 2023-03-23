@@ -1,11 +1,11 @@
-@import url("../components/root.scss");
+@use "../components/root";
 .container {
   display: flex;
   flex-direction: row;
   height: calc(100vh - var(--navbar-height));
   .sidePanel {
     width: 35vw;
-    background-color: var(--main-color-light);
+    background-color: var(--accent-color);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -14,6 +14,9 @@
     .panelHeader {
       font-size: 35px;
       font-weight: 800;
+    }
+    .btnSignin {
+      @include root.button($margin-tb: 0px, $margin-lr: 0px);
     }
   }
   .signUpForm {
@@ -40,14 +43,14 @@
         margin-bottom: 25px;
         display: flex;
         flex-direction: column;
-      input {
-        width: 25vw;
+        input {
+          width: 25vw;
+        }
+        label {
+          padding: 10px 0px;
+          font-weight: 700;
+        }
       }
-      label {
-        padding: 10px 0px;
-        font-weight: 700;
-      }
-    }
     }
     .btnContainer {
       width: 100%;
@@ -56,12 +59,7 @@
       margin-top: 30px;
       margin-bottom: 10px;
       .btnSubmit {
-        padding: 10px 30px;
-        border-radius: 10px;
-
-        &:hover {
-          
-        }
+        @include root.button($margin-tb: 0px, $margin-lr: 0px);
       }
     }
   }

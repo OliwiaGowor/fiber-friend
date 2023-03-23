@@ -2,26 +2,20 @@ import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import React from "react";
-import classes from './ProjectForm.module.scss';
+import classes from './PatternForm.module.scss';
 import Button from "@mui/material/Button";
 import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
 import { FileInput } from "./PhotoInput";
 import BasicTabsForm from "./TabsPanelForm";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Alert from "@mui/material/Alert";
-import CloseIcon from '@mui/icons-material/Close';
-import Box from "@mui/material/Box";
 
-export default function ProjectForm() {
+export default function PatternForm() {
     const navigate = useNavigate();
     const [type, setType] = React.useState('crochet');
     const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
     const [category, setCategory] = React.useState<any>();
     const toolRef = React.useRef<HTMLInputElement | null>(null);
-    const [open, setOpen] = React.useState(false);
 
     const handleCategory = (categ: string) => {
         setCategory(categ);
@@ -33,16 +27,10 @@ export default function ProjectForm() {
         }
     };
 
-    console.log(yarnsInfo);
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const method = 'post';
 
-        console.log(yarnsInfo.length);
-        if (yarnsInfo.length <= 0) {
-            setOpen(true);
-            return;
-        }
         const projectData = {
             id: Math.floor(Math.random()) * 10000,
             name: nameRef.current?.value,
@@ -68,7 +56,7 @@ export default function ProjectForm() {
             throw json({ message: 'Could not save project.' }, { status: 500 });
         }
         const data = await response.json();
-        return navigate('/account/projects');
+        return navigate('/projects');
     }
 
     const getYarnsInfo = (yarnsInfo: any) => {
@@ -145,28 +133,6 @@ export default function ProjectForm() {
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
                         <BasicTabsForm getInfo={getYarnsInfo} />
-                        <Box sx={{ width: '100%' }}>
-                            <Collapse in={open}>
-                                <Alert
-                                    severity="warning"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    You must add at least one yarn!
-                                </Alert>
-                            </Collapse>
-                        </Box>
                     </div>
 
                     <div className={classes.sectionContainer}>

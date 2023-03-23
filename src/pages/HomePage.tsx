@@ -16,7 +16,7 @@ function HomePage () {
                     <h1 className={classes.landingHeader}>Organize your knitting projects with ease </h1>
                     <p className={classes.landingText}> Stay on top of your progress and track details. 
                     Perfect for beginners and pros alike. Try it now and take your knitting to the next level!</p>
-                    <Link to='/login'><Button className={classes.landingButton} variant='contained' disableRipple>Try now!</Button></Link>
+                    <Link to='/login'><Button variant="contained" className={classes.landingButton} >TRY NOW!</Button></Link>
                 </div>
             </div>
         </div>

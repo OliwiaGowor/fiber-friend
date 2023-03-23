@@ -12,6 +12,7 @@ export default function CategoriesMenu({chooseCategory}: any) {
     const [currentCategory, setCurrentCategory] = React.useState(categories);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [categHistory, setCategHistory] = React.useState<any>([]);
+    const [choosenCategory, setChoosenCategory] = React.useState<string | null>(null);
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,6 +41,7 @@ export default function CategoriesMenu({chooseCategory}: any) {
 
     const handleChooseCategory = (category: any) => {
         chooseCategory(category.category);
+        setChoosenCategory(category.category);
         handleClose();
     }
 
@@ -92,11 +94,17 @@ export default function CategoriesMenu({chooseCategory}: any) {
                 aria-expanded={open ? 'true' : undefined}
                 variant="contained"
                 disableElevation
+                disableRipple
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
                 className={classes.categoriesMenuBtn}
+                style={{
+                    padding: "12px 16.5px",
+                    backgroundColor: 'var(--background-color)', 
+                    color: 'var(--text-color-dark)',
+                }}
             >
-                Choose category
+                {choosenCategory ? choosenCategory : "Choose category"}
             </Button>
             <Menu
                 id="categories-menu"

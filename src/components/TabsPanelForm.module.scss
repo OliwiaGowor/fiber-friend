@@ -1,0 +1,26 @@
+@use 'root';
+.container {
+  .formInput {
+    margin-top: 10px;
+    width: 60%;
+    background-color: var(--background-color);
+  }
+  .addButton {
+    @include root.button($margin-tb: 12px, $margin-lr: 40px);
+  }
+  .tab {
+    display: flex;
+    flex-direction: row;
+    min-width: max-content;
+  }
+
+  .yarnInputs {
+    display: grid;
+    grid-template-columns: repeat(2, 37%);
+    gap: 0px 5%;
+    margin-top: 16px;
+    .formInput {
+      width: 100%;
+    }
+  }
+}

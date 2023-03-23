@@ -1,7 +1,5 @@
 @import url('./root.scss');
-.categoriesMenuBtn{
-  
-}
+
 .categoriesMenu {
   ul {
     width: 20vw;
@@ -9,18 +7,27 @@
   }
   .category {
     display: flex;
-    padding: 12px;
+    padding: 0;
     flex-direction: column;
     align-items: flex-start;
     border-bottom: 1px solid rgb(206, 206, 206);
+    background-color: var(--background-accents);
+    &:hover {
+      background-color: var(--accent-color-btn);
+    }
 
     .btnCategory {
       display: flex;
       width: 100%;
+      padding: 16px;
       font-size: 16px;
       background-color: white;
       border: none;
       justify-content: space-between;
+      &:hover {
+        background-color: var(--accent-color-btn);
+        cursor: pointer;
+      }
     }
 
     .btnBack {

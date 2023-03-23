@@ -1,11 +1,29 @@
 :root {
-    --background-color: #FFFAF4;
-    --main-color-dark: #6259A6;
-    --main-color-light: #a39cd3;
-    --acent-color: #FFF0A3;
+    --background-color: #F7EDE2;
+    --main-color-dark: #EF6E6B;
+    --main-color-light: #F0B1A8;
+    --accent-color: #91a584;
+    --accent-color-btn: #FCE7C5;
     --text-color-light: white;
     --text-color-dark: black;
     --background-accents: white;
+    --main-color-dark-btn: #ee524f;
 
-    --navbar-height: 68px;
+    --swiper-navigation-color: #EF6E6B;
+
+
+    --navbar-height: 78px;
 }
+
+@mixin button ($margin-tb, $margin-lr) {
+    background-color: var(--main-color-dark);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 32px;
+    margin: $margin-tb $margin-lr;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--main-color-dark-btn);
+      transition: 0.4s;
+    }
+  }

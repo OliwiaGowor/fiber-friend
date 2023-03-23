@@ -13,7 +13,7 @@ export default function SignUpPage() {
             <div className={classes.sidePanel}>
                 <h1 className={classes.panelHeader}>Welcome back!</h1>
                 <div>Already have an account?</div>
-                <Link to='/login'><Button>Sign In</Button></Link>
+                <Link to='/login'><Button className={classes.btnSignin}>Sign In</Button></Link>
             </div>
             <div className={classes.signUpForm}>
                 <Form >

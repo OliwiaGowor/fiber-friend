@@ -3,21 +3,12 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import classes from './TabsPanelDisplay.module.scss';
 import FormHelperText from '@mui/material/FormHelperText';
-import MenuItem from '@mui/material/MenuItem';
-import { Select } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
-import Chip from '@mui/material/Chip';
-import classes from './TabsPanelForm.module.scss';
-import { setSyntheticLeadingComments } from 'typescript';
-
 
 const availableYarns = [
   { name: 'yarn' },
 ];
-
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -53,7 +44,7 @@ function a11yProps(index: number) {
 }
 
 interface BasicTabsDisplayProps {
-    yarns: any;
+  yarns: any;
 }
 
 export default function BasicTabsDisplay(props: BasicTabsDisplayProps) {
@@ -70,24 +61,52 @@ export default function BasicTabsDisplay(props: BasicTabsDisplayProps) {
   };
 
   return (
-    <div>
-      <div>
-        <label>Yarns</label>
-      </div>
+    <div className={classes.container}>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChangeTabs} aria-label="basic tabs" variant='scrollable'>
+          <Tabs
+            value={value}
+            aria-label="basic tabs"
+            onChange={handleChangeTabs}
+            variant='scrollable'
+            sx={{
+              '.MuiTabs-indicator': {
+                backgroundColor: "var(--main-color-dark)"
+              }
+            }}>
             {yarns.map((yarn: any, index: number) => {
-              return (<Tab key={index} label={yarn.yarn} {...a11yProps(index)} disableRipple />)
+              return (
+                <Tab key={index}
+                  className={classes.tab}
+                  label={yarn.yarn}
+                  {...a11yProps(index)}
+                  disableRipple
+                  iconPosition='end'
+                  sx={{
+                    '&.Mui-selected, &.Mui-selected:hover': {
+                      color: "var(--main-color-dark)",
+                    }
+                  }}
+                />
+              )
             })}
           </Tabs>
         </Box>
         {yarns.map((yarn: any, index: number) => {
           return (<TabPanel key={index} value={value} index={index}>
-            <div>Tool size:{yarn.info.toolSize}</div>
-            <div>Stitch: {yarn.info.stitch}</div>
-            <div>Gauge (10cm x 10cm): {yarn.info.gauge}</div>
-            <div>Amount: {yarn.info.amount}</div>
+            <div className={classes.yarnInfoContainer}>
+              <div className={classes.attributeName}>Tool size: </div>
+              {yarn.info.toolSize ? yarn.info.toolSize : <br></br>}
+
+              <div className={classes.attributeName}>Stitch: </div>
+              {yarn.info.stitch ? yarn.info.stitch : <br></br>}
+
+              <div className={classes.attributeName}>Gauge <FormHelperText style={{display: "inline"}}>(10cm x 10cm)</FormHelperText>: </div>
+              {yarn.info.gauge ? yarn.info.gauge : <br></br>}
+
+              <div className={classes.attributeName}>Amount: </div>
+              {yarn.info.amount ? yarn.info.amount : <br></br>}
+            </div>
           </TabPanel>)
         })}
 

@@ -13,7 +13,7 @@ export default function LoginPage() {
                 <h1 className={classes.panelHeader}>Welcome back!</h1>
 
                 <div>Don't have an account?</div>
-                <Link to='/signUp'><Button>Sign up</Button></Link>
+                <Link to='/signUp'><Button className={classes.btnSignup}>Sign up</Button></Link>
             </div>
             <div className={classes.loginForm}>
                 <Form >

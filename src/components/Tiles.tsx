@@ -3,7 +3,7 @@ import { Await, defer, json, Link, useLoaderData } from "react-router-dom";
 import classes from './Tiles.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-function Tiles({ data }: any) {
+function Tiles({ data, link }: any) {
   const loadedProjects = [];
 
   for (const key in data) {
@@ -17,7 +17,7 @@ function Tiles({ data }: any) {
   return (
     <div className={classes.container}>
       <ul className={classes.elements}>
-        <Link to={'new-project'}>
+        <Link to={`${link}`}>
           <li className={classes.element}>
             <h2>New project</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }}/>

@@ -6,9 +6,7 @@ export default function NewProjectPage() {
         <div>
             <ProjectForm />
         </div>
-    );
-
-    
+    ); 
 }
 
 

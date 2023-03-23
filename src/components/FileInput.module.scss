@@ -1,6 +1,7 @@
 .photosContainer {
   .photos {
     border: 1px dashed grey;
+    background-color: var(--background-color);
     .addPhoto {
       height: inherit;
       .btnAddPhoto {
@@ -12,6 +13,7 @@
         justify-content: flex-start;
         padding-top: 30px;
         color: var(--main-color-dark);
+
         .btnAddPhotoText {
           color: var(--text-color-dark);
         }
@@ -25,7 +27,7 @@
       .btnDeletePhoto {
         position: absolute;
         top: 10px;
-        left: 130px;
+        left: 150px;
         border-radius: 50%;
         padding-top: 5px;
         height: 40px;

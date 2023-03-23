@@ -1,6 +1,8 @@
+@use '../components/root';
+
 .container {
     .landingPage {
-        width: 100vw;
+        width: 100%;
         height: calc(90vh - 68px);
         position: relative;
         .landingPhoto {
@@ -15,7 +17,6 @@
             position: absolute;
             top: 51vh;
             z-index: 50;
-            width: inherit;
             height: auto;
         }
         .landingTextContainer {
@@ -24,17 +25,18 @@
             color: white;
             width: 35vw;
             left: 8%;
-            top: 20%;
+            top: 17%;
             .landingHeader {
-                color: #b993ff;
-                font-size: 48px;
+                color: var(--text-color-light);
+                font-size: 3rem;
             }
             .landingText {
-                font-size: 18px;
+                font-size: 1.25rem;
+                margin: 40px 0px;
             }
             .landingButton {
-                font-size: 18px;
-                background-color: #f5720e;
+                @include root.button($margin-tb: 0px, $margin-lr: 0px);
+                font-weight: 600; 
             }
         }
     }

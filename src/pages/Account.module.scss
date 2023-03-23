@@ -1,21 +1,23 @@
 .container {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: column;
+  width: 86vw;
+  margin-top: 50px;
 
-    .header {
-        font-size: 34px;
-        .arrow {
-            padding-left: 10px;
-            font-size: 26px;
-        }
-        &:hover {
-            transition: 0.2s;
-            font-size: 36px;
-            color: #f5720e;
-
-            .arrow {
-                font-size: 28px;
-            }
-        }
+  .header {
+    font-size: 34px;
+    .arrow {
+      padding-left: 10px;
+      font-size: 26px;
     }
+    &:hover {
+      transition: 0.2s;
+      font-size: 36px;
+      color: var(--main-color-dark);
+
+      .arrow {
+        font-size: 28px;
+      }
+    }
+  }
 }

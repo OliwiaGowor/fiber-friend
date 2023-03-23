@@ -18,31 +18,31 @@ function SidebarAccount() {
             </h2>
             <ul className={classes.elements}>
                 <li className={classes.element}>
-                    <Link to={'/projects'} className={classes.link}>
+                    <Link to={'/account/projects'} className={classes.link}>
                         <GridOnIcon />
                         <div className={classes.text}>Projects</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'/patterns'} className={classes.link}>
+                    <Link to={'/account/patterns'} className={classes.link}>
                         <BrushIcon />
                         <div className={classes.text}>Patterns</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'/orders'} className={classes.link}>
+                    <Link to={'/account/orders'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Orders</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'/supplies'} className={classes.link}>
+                    <Link to={'/account/supplies'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Supplies</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'settings'} className={classes.link}>
+                    <Link to={'/account/settings'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Settings</div>
                     </Link>
