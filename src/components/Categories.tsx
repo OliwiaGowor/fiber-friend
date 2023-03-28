@@ -1,5 +1,3 @@
-
-
 export const categories = [
     {
         category: 'Clothes',

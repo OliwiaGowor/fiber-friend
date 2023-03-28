@@ -4,7 +4,7 @@ export default function Root () {
     return (
     <>
     <Navbar />
-    <main style={{position: 'relative', top: '68px'}}>
+    <main style={{position: 'relative', top: 'var(--navbar-height'}}>
         <Outlet />
       </main>
     </>

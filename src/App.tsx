@@ -12,11 +12,13 @@ import SignUpPage from './pages/SignUpPage';
 import ProjectDetails, { loader as projectDetailsLoader } from './pages/Projects/ProjectDetails';
 import AccountRoot from './pages/AccountRoot';
 import NewPatternPage from './pages/Patterns/NewPatternPage';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/fiber-friend',
     element: <Root />,
     id: 'root',
     children: [
@@ -105,7 +107,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RouterProvider router={router} />
+      </LocalizationProvider>
     </div>
   );
 }

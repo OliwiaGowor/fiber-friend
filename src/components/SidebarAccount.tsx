@@ -5,50 +5,52 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import BrushIcon from '@mui/icons-material/Brush';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ClickAwayListener from '@mui/base/ClickAwayListener';
+import { useState } from "react";
 
-function SidebarAccount() {
+function SidebarAccount({ open }: any) {
 
     return (
-        <div className={classes.container}>
+        <div className={ open ? `${classes.container}` : `${classes.containerHidden}`}>
+
             <h2 className={classes.header}>
-                <Link to={'/account'} className={classes.link}>
+                <Link to={'/fiber-friend/account'} className={classes.link}>
                     <AccountCircleIcon />
                     <div className={classes.text}>Account</div>
                 </Link>
             </h2>
             <ul className={classes.elements}>
                 <li className={classes.element}>
-                    <Link to={'/account/projects'} className={classes.link}>
+                    <Link to={'projects'} className={classes.link}>
                         <GridOnIcon />
                         <div className={classes.text}>Projects</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'/account/patterns'} className={classes.link}>
+                    <Link to={'patterns'} className={classes.link}>
                         <BrushIcon />
                         <div className={classes.text}>Patterns</div>
                     </Link>
                 </li>
-                <li className={classes.element}>
-                    <Link to={'/account/orders'} className={classes.link}>
+                {/*<li className={classes.element}>
+                    <Link to={'orders'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Orders</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'/account/supplies'} className={classes.link}>
+                    <Link to={'supplies'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Supplies</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'/account/settings'} className={classes.link}>
+                    <Link to={'settings'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Settings</div>
                     </Link>
-                </li>
+                </li>*/}
             </ul>
-
         </div>
     );
 

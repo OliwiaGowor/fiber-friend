@@ -52,11 +52,12 @@ function a11yProps(index: number) {
 
 interface BasicTabsFormProps {
   getInfo: any;
+  showError: boolean;
 }
 
 export default function BasicTabsForm(props: BasicTabsFormProps) {
   const [value, setValue] = React.useState(0);
-  const { getInfo, ...other } = props;
+  const { getInfo, showError, ...other } = props;
   const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
@@ -64,10 +65,6 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const [yarns, setYarns] = React.useState<any>([]);
   const [yarnInput, setYarnInput] = React.useState<any>('');
   const yarnNameRef = React.useRef<HTMLInputElement | null>(null);
-
-  const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
 
   const handleData = (yarnName: string) => {
     const tmpYarnsInfo = yarns.map((yarn: any) => {
@@ -104,10 +101,6 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
     setYarnInput('');
   }
 
-  const handleChange = (event: any) => {
-    setYarnInput(event.target.value)
-  }
-
   const handleDeleteTab = (yarn: any) => {
     setYarns(
       yarns.filter((y: any) =>
@@ -128,8 +121,10 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
           className={classes.formInput}
           name='name'
           inputRef={yarnNameRef}
-          onChange={handleChange}
+          onChange={(event: any) => { setYarnInput(event.target.value) }}
           value={yarnInput}
+          error={showError}
+          helperText={showError ? 'You must add at least one yarn!' : ''}
         />
         <Button className={classes.addButton} onClick={handleAddTab} variant="contained">Add</Button>
       </div>
@@ -138,7 +133,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
           <Tabs
             value={value}
             aria-label="basic tabs"
-            onChange={handleChangeTabs}
+            onChange={(event: React.SyntheticEvent, newValue: number) => { setValue(newValue) }}
             variant='scrollable'
             sx={{
               '.MuiTabs-indicator': {
@@ -180,7 +175,6 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                 inputRef={toolSizeRef}
                 onChange={() => { handleData(yarn.yarn) }}
                 defaultValue={yarn.info.toolSize}
-                required
               />
 
               <TextField

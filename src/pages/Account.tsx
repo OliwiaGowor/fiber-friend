@@ -12,7 +12,7 @@ export default function Account() {
   return (
     <div className={classes.container}>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-        <Link to={"/acount/projects"}>
+        <Link to={"projects"}>
           <h1 className={classes.header}>PROJECTS<ArrowForwardIosIcon className={classes.arrow} /></h1>
         </Link>
         <Await resolve={projects}>
@@ -20,7 +20,7 @@ export default function Account() {
         </Await>
       </Suspense>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-        <Link to={"/acount/patterns"}>
+        <Link to={"patterns"}>
           <h1 className={classes.header}>PATTERNS<ArrowForwardIosIcon className={classes.arrow} /></h1>
         </Link>
         <Await resolve={patterns}>

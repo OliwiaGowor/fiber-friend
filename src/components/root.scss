@@ -11,8 +11,10 @@
 
     --swiper-navigation-color: #EF6E6B;
 
-
-    --navbar-height: 78px;
+    --navbar-height: 74px;
+    --sidebar-width: 270px;
+    --margin-right: 11vw;
+    --mobile-breakpoint: 1000px;
 }
 
 @mixin button ($margin-tb, $margin-lr) {
@@ -27,3 +29,4 @@
       transition: 0.4s;
     }
   }
+  

@@ -19,15 +19,15 @@ function Tiles({ data, link }: any) {
       <ul className={classes.elements}>
         <Link to={`${link}`}>
           <li className={classes.element}>
-            <h2>New project</h2>
+            <h2 className={classes.name}>New project</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }}/>
           </li>
         </Link>
         {loadedProjects.map((element: any) => (
           <Link to={`${element.id}`}>
             <li key={element.id} className={classes.element}>
-              <h2>{element.name}</h2>
-              <img src={element.photoURL} alt={element.name} width='250px' height='250px' />
+              <h2 className={classes.name}>{element.name}</h2>
+              <img src={element.photoURL} alt={element.name} width='250px' height='270px' />
             </li>
           </Link>
         ))}

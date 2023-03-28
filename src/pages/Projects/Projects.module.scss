@@ -1,5 +1,6 @@
 .container {
   margin-top: 72px;
+  width: calc(100vw - var(--sidebar-width));
   .header {
     font-size: 42px;
   }

@@ -8,6 +8,7 @@ import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
 import { FileInput } from "./PhotoInput";
 import BasicTabsForm from "./TabsPanelForm";
+import Counter from "./Counter";
 
 export default function PatternForm() {
     const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function PatternForm() {
     const nameRef = React.useRef<HTMLInputElement | null>(null);
     const [category, setCategory] = React.useState<any>();
     const toolRef = React.useRef<HTMLInputElement | null>(null);
+    const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
 
     const handleCategory = (categ: string) => {
         setCategory(categ);
@@ -30,6 +32,11 @@ export default function PatternForm() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const method = 'post';
+
+        if (yarnsInfo.length <= 0) {
+            setShowYarnsError(true);
+            return;
+        }
 
         const projectData = {
             id: Math.floor(Math.random()) * 10000,
@@ -132,11 +139,12 @@ export default function PatternForm() {
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm getInfo={getYarnsInfo} />
+                        <BasicTabsForm showError={showYarnsError} getInfo={getYarnsInfo} />
                     </div>
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
+                        <Counter />
                         <p>Pattern</p>
 
                         <TextField

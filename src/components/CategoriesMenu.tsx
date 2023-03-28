@@ -8,7 +8,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { categories } from './Categories';
 import classes from './CategoriesMenu.module.scss'
 
-export default function CategoriesMenu({chooseCategory}: any) {
+export default function CategoriesMenu({chooseCategory, showError}: any) {
     const [currentCategory, setCurrentCategory] = React.useState(categories);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [categHistory, setCategHistory] = React.useState<any>([]);
@@ -83,7 +83,7 @@ export default function CategoriesMenu({chooseCategory}: any) {
                 </MenuItem>
             );
         }
-    }
+    };
 
     return (
         <div className={classes.menuContainer}>
@@ -103,6 +103,7 @@ export default function CategoriesMenu({chooseCategory}: any) {
                     backgroundColor: 'var(--background-color)', 
                     color: 'var(--text-color-dark)',
                 }}
+                color={showError ? 'error' : 'primary'}
             >
                 {choosenCategory ? choosenCategory : "Choose category"}
             </Button>

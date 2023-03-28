@@ -1,22 +1,46 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 86vw;
-  margin-top: 50px;
+  margin-top: 40px;
 
   .header {
-    font-size: 34px;
+    font-size: 36px;
+    padding: 12px 0px;
     .arrow {
       padding-left: 10px;
       font-size: 26px;
     }
     &:hover {
       transition: 0.2s;
-      font-size: 36px;
       color: var(--main-color-dark);
 
       .arrow {
         font-size: 28px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+  
+    .header {
+      font-size: 36px;
+      padding: 12px 0px;
+      .arrow {
+        padding-left: 10px;
+        font-size: 26px;
+      }
+      &:hover {
+        transition: 0.2s;
+        color: var(--main-color-dark);
+  
+        .arrow {
+          font-size: 28px;
+        }
       }
     }
   }

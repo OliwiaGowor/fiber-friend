@@ -1,14 +1,15 @@
-@import url('./root.scss');
+@import url("./root.scss");
 .container {
   display: flex;
   flex-direction: column;
-  min-width: fit-content;
-  width: 9vw;
+  min-width: var(--sidebar-width);
   height: calc(100vh - var(--navbar-height));
-  position: static;
-  min-width: max-content;
-  padding: 60px;
-  padding-left: 50px;
+  position: fixed;
+  padding: 40px;
+  padding-left: 30px;
+  right: 0;
+  background-color: var(--background-accents);
+  top: var(--navbar-height);
 
   .header:hover .link {
     transition: 0.2s;
@@ -40,6 +41,29 @@
 
     .text {
       padding-left: 10px;
+    }
+  }
+}
+
+.containerHidden {
+  display: none;
+}
+
+@media screen and (min-width: 750px) {
+  .container {
+    min-width: var(--sidebar-width);
+    padding: 60px;
+    padding-left: 50px;
+    background-color: var(--background-color);
+    position: static;
+    .elements {
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 0;
+      padding: 0;
     }
   }
 }
