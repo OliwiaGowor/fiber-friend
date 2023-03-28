@@ -1,4 +1,4 @@
-# Fiber Friend - Web app for organiazing knitting projects 
+# Fiber Friend
 ## Description
 Fiber Friend is a Web application to help all knitting artists organize their projects, patterns, supplies and more.
 
