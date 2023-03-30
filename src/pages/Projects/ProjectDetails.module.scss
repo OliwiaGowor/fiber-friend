@@ -1,74 +1,94 @@
 @import url("../../components/root.scss");
 
 .container {
-  width: 70vw;
   margin-top: 50px;
   font-size: 1em;
-
+  margin-right: var(--margin-right);
   .details {
+    .header {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 1fr 50px;
+      overflow-wrap: break-word;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-size: 2.25rem;
+      .editButton {
+        justify-self: end;
+        padding: 0;
+        min-width: 24px;
+        margin-right: 10px;
+        color: var(--text-color);
+        .editIcon {
+          font-size: 32px;
+        }
+      }
+    }
+
     .sectionContainer {
       background-color: var(--background-accents);
       padding: 32px;
-      margin: 32px 0;
+      margin: 30px 0;
+      border-radius: 10px;
+      .sectionHeader {
+        margin-top: 0;
+      }
+
       .attributeName {
         font-weight: 600;
       }
+
       .projectInfoContainer {
         display: grid;
         grid-template-columns: repeat(2, 100px);
         row-gap: 7px;
       }
+
       .notes {
         border: 1px dashed grey;
         padding: 16px;
       }
     }
     .dividedContainer {
-      gap: 100px;
+      gap: 30px;
       display: flex;
       flex-direction: row;
       .leftElements {
         width: 60%;
-
-        .header {
-          overflow-wrap: break-word;
-          margin-top: 0px;
-          margin-bottom: 40px;
-          font-size: 2.25rem;
-        }
+        
         .yarnDetails {
           width: 100%;
           display: flex;
           flex-direction: row;
         }
       }
-    }
 
-    .rightElements {
-      width: 40%;
+      .rightElements {
+        width: 40%;
+        min-width: 420px;
+        .photosContainer {
+          .photos {
+            border: 1px dashed grey;
+            .swiper-pagination-bullet {
+              width: 20px;
+              height: 20px;
+              text-align: center;
+              line-height: 20px;
+              font-size: 12px;
+              color: #000;
+              opacity: 1;
+              background: rgba(0, 0, 0, 0.2);
+            }
 
-      .photosContainer {
-        .photos {
-          border: 1px dashed grey;
-          .swiper-pagination-bullet {
-            width: 20px;
-            height: 20px;
-            text-align: center;
-            line-height: 20px;
-            font-size: 12px;
-            color: #000;
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.2);
-          }
-
-          .swiper-pagination-bullet-active {
-            color: #fff;
-            background: var(--main-color-dark);
-          }
-          .addedPhoto {
-            position: relative;
-            .photo {
-              border-radius: 5px;
+            .swiper-pagination-bullet-active {
+              color: #fff;
+              background: var(--main-color-dark);
+            }
+            .addedPhoto {
+              position: relative;
+              .photo {
+                border-radius: 5px;
+              }
             }
           }
         }

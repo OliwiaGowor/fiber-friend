@@ -8,9 +8,24 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import TabsPanelDisplay from "../../components/TabsPanelDisplay";
+import EditIcon from '@mui/icons-material/Edit';
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function ProjectDetails() {
     const { project } = useRouteLoaderData('project-details') as { project: any };
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const pagination = {
         clickable: true,
         renderBullet: function (index: number, className: string) {
@@ -23,12 +38,38 @@ export default function ProjectDetails() {
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={project}>
                     <div className={classes.details}>
+                        <h1 className={classes.header}>
+                            {project.name}
+                            <Button
+                                id="basic-button"
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                                className={classes.editButton}
+                            >
+                                <EditIcon className={classes.editIcon} />
+                            </Button>
+                        </h1>
+                        <div className={classes.editMenu}>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            >
+                                <MenuItem onClick={handleClose}>Edit</MenuItem>
+                                <MenuItem onClick={handleClose}>Delete project</MenuItem>
+                            </Menu>
+                        </div>
                         <div className={classes.dividedContainer}>
                             <div className={classes.leftElements}>
                                 <div className={classes.sectionContainer}>
-                                    <h1 className={classes.header}>
-                                        {project.name}
-                                    </h1>
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>

@@ -1,9 +1,11 @@
 @use 'root';
 .container {
   .formInput {
-    margin-top: 10px;
-    width: 60%;
+    margin: 10px 0;
+    width: 80%;
+    div { 
     background-color: var(--background-color);
+    }
   }
   .addButton {
     @include root.button($margin-tb: 12px, $margin-lr: 40px);
@@ -17,7 +19,7 @@
   .yarnInputs {
     display: grid;
     grid-template-columns: repeat(2, 37%);
-    gap: 0px 5%;
+    gap: 0px 5.5%;
     margin-top: 16px;
     .formInput {
       width: 100%;

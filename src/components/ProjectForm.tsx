@@ -8,24 +8,24 @@ import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
 import { FileInput } from "./PhotoInput";
 import BasicTabsForm from "./TabsPanelForm";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Alert from "@mui/material/Alert";
-import CloseIcon from '@mui/icons-material/Close';
-import Box from "@mui/material/Box";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import FormHelperText from "@mui/material/FormHelperText";
+import { DateValidationError } from "@mui/x-date-pickers";
 
 export default function ProjectForm() {
     const navigate = useNavigate();
     const [type, setType] = React.useState('crochet');
     const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    const [category, setCategory] = React.useState<any>();
+    const [category, setCategory] = React.useState<string | null>();
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
     const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
+    const [dateError, setDateError] = React.useState<any>(null);
+    const [startDate, setStartDate] = React.useState<any>();
+    const [endDate, setEndDate] = React.useState<any>();
+    const [requiredError, setRequiredError] = React.useState<any>(false);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -33,28 +33,13 @@ export default function ProjectForm() {
         }
     };
 
+    let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
+
     //Handle form submit - data validation and request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const method = 'post';
 
-        //Validation
-        if (yarnsInfo.length <= 0) {
-            console.log('jest1');
-            setShowYarnsError(true);
-            setProceedSubmit(false);
-        }
-        if (!nameRef.current?.value) {
-            console.log('jest2');
-            setShowNameError(true);
-            setProceedSubmit(false);
-        }
-        if (category === undefined) {
-            console.log('jest3');
-            setShowCategoriesError(true);
-            setProceedSubmit(false);
-        }
-        console.log(proceedSubmit + 'fdf');
         if (proceedSubmit) {
             const projectData = {
                 id: Math.floor(Math.random()) * 10000,
@@ -81,9 +66,29 @@ export default function ProjectForm() {
                 throw json({ message: 'Could not save project.' }, { status: 500 });
             }
             const data = await response.json();
-            return navigate('/account/projects');
+            return navigate('/fiber-friend/account/projects');
         } else {
             return;
+        }
+    };
+
+    const validateForm = () => {
+        //Form validation
+        if (yarnsInfo.length <= 0) {
+            setShowYarnsError(true);
+            setProceedSubmit(false);
+        }
+        if (!nameRef.current?.value) {
+            setShowNameError(true);
+            setProceedSubmit(false);
+        }
+        if (category === undefined) {
+            setShowCategoriesError(true);
+            setProceedSubmit(false);
+        }
+        if (startDate === undefined) {
+            setRequiredError(true);
+            setProceedSubmit(false);
         }
     };
 
@@ -148,8 +153,29 @@ export default function ProjectForm() {
                             <CategoriesMenu showError={showCategoriesError} chooseCategory={(categ: string) => { setCategory(categ) }} />
                         </div>
                         <div className={classes.datePickers}>
-                            <DatePicker label="Start date *" />
-                            <DatePicker label="End date" />
+                            <DatePicker
+                                className={classes.dateInput}
+                                label="Start date *"
+                                onChange={(newValue: any) => { setStartDate(newValue) }}
+                                onError={(newError) => {
+                                    setDateError(newError);
+                                    setRequiredError(false)
+                                }}
+                                slotProps={{
+                                    textField: {
+                                        helperText: dateErrorMessage,
+                                    },
+                                }}
+
+                            />
+                            <DatePicker
+                                className={classes.dateInput}
+                                label="End date"
+                                format="DD-MM-YYYY"
+                                minDate={startDate}
+                                onChange={(newValue: any) => { setEndDate(newValue) }}
+                            />
+
                         </div>
                     </div>
 
@@ -179,7 +205,7 @@ export default function ProjectForm() {
                         />
                     </div>
                 </div>
-                <Button className={classes.submitBtn} variant="contained" type="submit">Add new project</Button>
+                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new project</Button>
             </form>
         </div>
     );
