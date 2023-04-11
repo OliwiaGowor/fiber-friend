@@ -17,88 +17,20 @@
     width: inherit;
     .navbar {
       width: inherit;
-      margin: 0 40px;
+      margin: 0 var(--margin-mobile);
       display: grid;
       align-items: center;
-      grid-template-columns: minmax(70px, 1fr) minmax(300px, 1fr) minmax(
-          70px,
-          1fr
-        );
+      grid-template-columns: minmax(70px, 1fr) minmax(min-content, 1fr) minmax( 70px, 1fr );
       .navMobile {
         justify-self: start;
         align-items: center;
-
-        .hamburgerIcon {
-          display: flex;
-          position: relative;
-          flex-direction: column;
-          width: 40px;
-          height: fit-content;
-          top: 3px;
-          &:hover {
-            cursor: pointer;
-          }
-          span {
-            height: 6px;
-            width: 20px;
-            background-color: var(--main-color-dark);
-            opacity: 1;
-            transform: rotate(0deg);
-            transition: 0.25s ease-in-out;
-            &:nth-child(even) {
-              position: relative;
-              left: 50%;
-              top: -6px;
-              border-radius: 0 15px 15px 0;
-            }
-            &:nth-child(odd) {
-              position: relative;
-              left: 0;
-              border-radius: 15px 0 0 15px;
-            }
-          }
-          &.open {
-            span {
-              &:nth-child(1),
-              &:nth-child(6) {
-                transform: rotate(45deg);
-              }
-              &:nth-child(2),
-              &:nth-child(5) {
-                transform: rotate(-45deg);
-              }
-              &:nth-child(1) {
-                top: 6px;
-                left: 3px;
-              }
-              &:nth-child(2) {
-                left: calc(50% - 4px);
-                top: 0px;
-              }
-              &:nth-child(3) {
-                left: -50%;
-                opacity: 0;
-              }
-              &:nth-child(4) {
-                left: 100%;
-                opacity: 0;
-              }
-              &:nth-child(5) {
-                top: -4.5px;
-                left: 2px;
-              }
-              &:nth-child(6) {
-                left: calc(50% - 4px);
-                top: -10px;
-              }
-            }
-          }
-        }
       }
 
       .logo {
         font-size: 32px;
         font-weight: bolder;
+        width: max-content;
+        justify-self: center;
 
         a {
           color: var(--main-color-dark);
@@ -134,12 +66,16 @@
   }
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 760px) {
   .container {
     .navbarContainer {
       .navbar {
         margin-left: var(--sidebar-width) ;
         margin-right: var(--margin-right) ;
+        .logo {
+          margin-right: calc(var(--sidebar-width) - var(--margin-right));
+          width: max-content;
+        }
       }
     }
   }

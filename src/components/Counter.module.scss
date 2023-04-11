@@ -1,0 +1,31 @@
+@use "./root";
+
+.container {
+  .counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .settings {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+    }
+    .number {
+        
+        font-size: 3em;
+    }
+    .buttons {
+        display: grid;
+    grid-template-columns: repeat(2, minmax(50px, 1fr));
+    justify-items: center;
+    align-items: center;
+    .subBtn,
+    .addBtn {
+      @include root.button($margin-tb: 0, $margin-lr: 0);
+      max-width: 90px;
+    }
+}
+    
+  }
+}

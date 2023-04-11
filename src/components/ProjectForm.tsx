@@ -6,11 +6,10 @@ import classes from './ProjectForm.module.scss';
 import Button from "@mui/material/Button";
 import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
-import { FileInput } from "./PhotoInput";
+
+import { FileInput } from './FileInput';
 import BasicTabsForm from "./TabsPanelForm";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import FormHelperText from "@mui/material/FormHelperText";
-import { DateValidationError } from "@mui/x-date-pickers";
 
 export default function ProjectForm() {
     const navigate = useNavigate();
@@ -35,7 +34,7 @@ export default function ProjectForm() {
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
-    //Handle form submit - data validation and request
+    //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const method = 'post';
@@ -72,8 +71,9 @@ export default function ProjectForm() {
         }
     };
 
+    //Form validation
     const validateForm = () => {
-        //Form validation
+
         if (yarnsInfo.length <= 0) {
             setShowYarnsError(true);
             setProceedSubmit(false);
@@ -182,7 +182,9 @@ export default function ProjectForm() {
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Photos</h2>
                         <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
-                        <FileInput />
+                        <div className={classes.photoInput}>
+                            <FileInput onlyImg={true} addHeader={'Add photo'} maxFiles={10} />
+                        </div>
                     </div>
 
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
@@ -193,8 +195,10 @@ export default function ProjectForm() {
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                        <p>Pattern</p>
-
+                        <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
+                        <div className={classes.photoInput}>
+                            <FileInput onlyImg={false} addHeader={'Add patterns'} maxFiles={5} />
+                        </div>
                         <TextField
                             className={`${classes.notesField} ${classes.formInput}`}
                             id="notes"

@@ -9,15 +9,6 @@ import classes from './TabsPanelForm.module.scss';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 
-const yarnAmounts = [
-  'grams', 'skeins', 'meters', 'yarsd'
-];
-
-const availableYarns = [
-  { name: 'yarn' },
-];
-
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -110,7 +101,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
 
   return (
     <div className={classes.container}>
-      <div className={classes.yarnsAdd}>
+      <div className={classes.addYarns}>
         <TextField
           id="yarn-input"
           inputProps={{

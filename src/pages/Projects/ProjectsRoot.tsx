@@ -4,10 +4,8 @@ import SidebarAccount from '../../components/SidebarAccount';
 
 export default function ProjectsRoot() {
   return (
-    <div className={classes.container}>
-      <main>
-        <Outlet />
-      </main>
-    </div>
+    <main className={classes.container}>
+      <Outlet />
+    </main>
   );
 }

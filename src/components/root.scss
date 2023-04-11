@@ -13,8 +13,9 @@
 
     --navbar-height: 74px;
     --sidebar-width: 270px;
-    --margin-right: 11vw;
-    --mobile-breakpoint: 1000px;
+    --margin-right: 10vw;
+    --mobile-breakpoint: 760px;
+    --margin-mobile: 10vw;
 }
 
 @mixin button ($margin-tb, $margin-lr) {

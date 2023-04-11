@@ -5,18 +5,32 @@ import React from "react";
 import classes from './FileInput.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from '@mui/icons-material/Close';
+import Collapse from "@mui/material/Collapse";
+
+//TO DO: add responsivenss
 
 type Props = {
-  onlyImg?: boolean
+  onlyImg?: boolean;
+  addHeader: string;
+  maxFiles: number;
 }
 
-export const FileInput = <PROPS extends Props,>({ onlyImg, ...rest }: PROPS): JSX.Element => {
+export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, ...rest }: PROPS): JSX.Element => {
   const [selectedFiles, setSelectedFiles] = React.useState<any>([]);
-  let ifImg: boolean = true;
+  const [open, setOpen] = React.useState(false);
+
+  console.log(open);
+
   const handleAddingFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      for (let i = 0; i < event.target.files.length; i++) {
-        setSelectedFiles((files: any) => [...files, { id: files.length, url: URL.createObjectURL(event.target.files![i]), }]);
+      if (event.target.files.length > 10) {
+        setOpen(true);
+      }
+      for (let i = 0; i < maxFiles; i++) {
+        setSelectedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
       }
     }
   };
@@ -33,32 +47,87 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, ...rest }: PROPS): JS
     }
   };
 
+  const displayDifferentFiles = (file: any) => {
+    console.log(file);
+    if (file.name.split('.').pop() == 'doc' || file.name.split('.').pop() == 'docx') {
+      return (
+        <div className={`${classes.photo} ${classes.photoNoPreview}`}>
+          <p>{file.name}</p>
+          <p>Preview unavailable</p>
+        </div>
+      );
+    } else if (file.name.split('.').pop() == 'pdf') {
+      return (
+        <object
+          data={file.url}
+          width="200px"
+          height="250px"
+          className={classes.photo}
+        >
+        </object>
+      );
+    }
+    else {
+      return (
+        <img
+          className={classes.photo}
+          src={`${file.url}`}
+          srcSet={`${file.url}`}
+          alt="not found"
+          loading="lazy"
+          width="200px"
+          height="250px"
+        />
+      );
+    }
+  }
+
   return (
     <div className={classes.photosContainer}>
       <ImageList sx={{ width: 950, height: "auto", overflow: "visible" }} cols={5} rowHeight={250} gap={8} className={classes.photos}>
         <ImageListItem className={classes.addPhoto}>
           <Button variant="outlined" component="label" className={classes.btnAddPhoto}>
-            <h2 className={classes.btnAddPhotoText}>Add photo</h2>
+            <h2 className={classes.btnAddPhotoText}>{addHeader}</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 70 }} />
-            <input hidden accept={onlyImg ? "image/*" : ''} multiple type="file" onChange={handleAddingFile} />
+            <input hidden accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'} multiple type="file" onChange={handleAddingFile} />
           </Button>
         </ImageListItem>
-        {selectedFiles && selectedFiles.map((image: any, index: number) => (
+        {selectedFiles && selectedFiles.map((file: any, index: number) => (
           <ImageListItem key={index} className={classes.addedPhoto}>
             <button className={classes.btnDeletePhoto} onClick={(e) => { handleDeleteFile(index, e) }}><DeleteIcon>Remove</DeleteIcon></button>
-            {ifImg && <img
+            {onlyImg && <img
               className={classes.photo}
-              src={`${image.url}`}
-              srcSet={`${image.url}`}
+              src={`${file.url}`}
+              srcSet={`${file.url}`}
               alt="not found"
               loading="lazy"
-              width="190px"
+              width="200px"
               height="250px"
             />}
-            {!ifImg && <object data={image.url} ></object>}
+            {!onlyImg && displayDifferentFiles(file)}
           </ImageListItem>
         ))}
       </ImageList>
+      <Collapse in={open}>
+        <Alert
+          severity="error"
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+          sx={{ mb: 2 }}
+        >
+          {'You can add only up to ' + maxFiles} {onlyImg ? ' photos!' : ' files'}
+        </Alert>
+      </Collapse>
     </div>
   );
 };

@@ -1,7 +1,7 @@
-@use 'root';
+@use "root";
 
 .container {
-  width: 70vw;
+  width: 100%;
   margin-top: 50px;
   font-size: 16px;
   .form {
@@ -16,7 +16,7 @@
 
         .formInput {
           margin: 10px 0;
-          width: 60%;
+          width: 100%;
           background-color: var(--background-color);
         }
 
@@ -48,6 +48,12 @@
     }
     .submitBtn {
       @include root.button($margin-tb: 0px, $margin-lr: 0px);
-      }
+    }
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .container {
+    width: 70vw;
   }
 }

@@ -9,8 +9,9 @@
     -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
     -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
     box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
-    border-radius: 5px;
+    border-radius: 10px;
     min-height: 390px;
+    max-height: 390px;
     margin: 0px;
     .name {
       word-break: break-word;
@@ -25,10 +26,9 @@
       transition: 0.2s;
       background-color: var(--accent-color-btn);
     }
-};
+}
 
 .container {
-  margin-right: var(--margin-right);
   .elements {
     list-style: none;
     display: grid;
@@ -37,7 +37,7 @@
     margin: 0;
     padding: 0;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    justify-items: stretch;
+    justify-items: center;
     .element {
       @include tile();
       max-width: 400px;
@@ -45,3 +45,10 @@
   }
 }
 
+@media screen and (min-width: 760px) {
+  .container {
+    .elements {
+      justify-items: stretch;
+    }
+  }
+}

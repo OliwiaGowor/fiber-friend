@@ -2,6 +2,7 @@
   .photos {
     border: 1px dashed grey;
     background-color: var(--background-color);
+    width: 100%;
     .addPhoto {
       height: inherit;
       .btnAddPhoto {
@@ -13,7 +14,7 @@
         justify-content: flex-start;
         padding-top: 30px;
         color: var(--main-color-dark);
-
+        background-color: var(--background-accents);
         .btnAddPhotoText {
           color: var(--text-color-dark);
         }
@@ -23,11 +24,18 @@
       position: relative;
       .photo {
         border-radius: 5px;
+        overflow: hidden;
+        width: 200px;
+        height: 250px;
+      }
+      .photoNoPreview {
+        background-color: var(--background-accents);
+        border: 1px solid rgba(25, 118, 210, 0.5);
       }
       .btnDeletePhoto {
         position: absolute;
-        top: 10px;
-        left: 150px;
+        top: 4%;
+        left: 71%;
         border-radius: 50%;
         padding-top: 5px;
         height: 40px;
