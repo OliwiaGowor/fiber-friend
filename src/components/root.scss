@@ -1,33 +1,58 @@
 :root {
-    --background-color: #F7EDE2;
-    --main-color-dark: #EF6E6B;
-    --main-color-light: #F0B1A8;
-    --accent-color: #91a584;
-    --accent-color-btn: #FCE7C5;
-    --text-color-light: white;
-    --text-color-dark: black;
-    --background-accents: white;
-    --main-color-dark-btn: #ee524f;
+  --background-color: #f7ede2;
+  --main-color-dark: #ef6e6b;
+  --main-color-light: #f0b1a8;
+  --accent-color: #91a584;
+  --accent-color-btn: #fce7c5;
+  --text-color-light: white;
+  --text-color-dark: black;
+  --background-accents: white;
+  --main-color-dark-btn: #ee524f;
 
-    --swiper-navigation-color: #EF6E6B;
+  --swiper-navigation-color: #ef6e6b;
 
-    --navbar-height: 74px;
-    --sidebar-width: 270px;
-    --margin-right: 10vw;
-    --mobile-breakpoint: 760px;
-    --margin-mobile: 10vw;
+  --navbar-height: 74px;
+  --sidebar-width: 270px;
+  --margin-right: 10vw;
+  --mobile-breakpoint: 760px;
+  --margin-mobile: 10vw;
 }
 
-@mixin button ($margin-tb, $margin-lr) {
-    background-color: var(--main-color-dark);
-    border: none;
-    border-radius: 10px;
-    padding: 14px 32px;
-    margin: $margin-tb $margin-lr;
-    &:hover {
-      cursor: pointer;
-      background-color: var(--main-color-dark-btn);
-      transition: 0.4s;
-    }
+@mixin button($margin-tb, $margin-lr) {
+  background-color: var(--main-color-dark);
+  border: none;
+  border-radius: 10px;
+  padding: 14px 32px;
+  margin: $margin-tb $margin-lr;
+  &:hover {
+    cursor: pointer;
+    background-color: var(--main-color-dark-btn);
+    transition: 0.4s;
   }
-  
+}
+
+@mixin menuElem() {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 1px solid rgb(206, 206, 206);
+  background-color: var(--background-accents);
+  &:hover {
+    background-color: var(--accent-color-btn);
+  }
+}
+@mixin menuElemButton() {
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  background-color: white;
+  border: none;
+  justify-content: space-between;
+  &:hover {
+    background-color: var(--accent-color-btn);
+    cursor: pointer;
+  }
+}

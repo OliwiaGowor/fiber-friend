@@ -5,7 +5,9 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CounterMiniature from '../../components/CounterMiniature';
 
+//TO DO: style saved as squares similar to counter
 //TO DO: connecting counters to patterns/projects
 export default function NewCounter() {
     const [counters, setCounters] = React.useState<any>([]);
@@ -21,8 +23,23 @@ export default function NewCounter() {
     };
 
     const addCounter = (counter: any) => {
-        setCounters([...counters, counter]);
+        setCounters([...counters, {
+            id: counters.length,
+            name: counter.name,
+            amount: counter.amount,
+        }]);
     };
+
+    const handleDeleteCounter = (counter: any) => {
+        let tmpArray = counters.filter((c: any) =>
+            c.id !== counter.id);
+
+        for (let i = 0; i < tmpArray.length; i++) {
+            tmpArray[i].id = i;
+        }
+        setCounters(tmpArray);
+    };
+
     console.log(counters);
     return (
         <div className={classes.container}>
@@ -30,43 +47,10 @@ export default function NewCounter() {
                 <h1>Counter</h1>
                 <Counter getCounter={addCounter} />
             </div>
+
             <div className={classes.createdCounters}>
-            <div className={classes.tableElements}>
-            <div> <b> Name</b></div>
-            <div><b> Count</b></div>
-                 </div>
-                {counters.map((counter: any) => (        
-                    <div key={counter.name} className={classes.tableElements}>
-                       <div> {counter.name}</div>
-                       <div>{counter.amount}</div>
-                       <div className={classes.settings}>
-                    <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    >
-                            <MenuItem onClick={handleClose}>
-                                <button className={classes.menuElem}>Delete</button>
-                            </MenuItem>
-                    </Menu>
-                </div>
-                    </div>
+                {counters.map((counter: any) => (
+                    <CounterMiniature editable={true} counter={counter} deleteCounter={() => {handleDeleteCounter(counter)}}/>
                 ))}
             </div>
         </div>

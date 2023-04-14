@@ -6,26 +6,70 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: var(--background-accents);
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
+    -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+    box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+    padding-top: 10px;
     .settings {
-        width: 100%;
-        display: flex;
-        justify-content: end;
+      width: 100%;
+      display: flex;
+      justify-content: end;
+      margin-right: 20px;
     }
     .number {
-        
-        font-size: 3em;
+      font-size: 7em;
+      margin: 40px 0px;
+      font-weight: 900;
+      color: var(--main-color-dark);
     }
     .buttons {
-        display: grid;
-    grid-template-columns: repeat(2, minmax(50px, 1fr));
-    justify-items: center;
-    align-items: center;
-    .subBtn,
-    .addBtn {
-      @include root.button($margin-tb: 0, $margin-lr: 0);
-      max-width: 90px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(50px, 1fr));
+      justify-items: center;
+      align-items: center;
+      width: 100%;
+      .subBtn,
+      .addBtn {
+        width: 100%;
+        background-color: var(--background-accents);
+        border-radius: 0px;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        border-top: 2px solid var(--background-color);
+        padding: 10px 0px;
+        &:hover {
+          cursor: pointer;
+          background-color: var(--accent-color-btn);
+          transition: 0.4s;
+        }
+      }
+      .subBtn {
+        border-bottom-left-radius: 10px;
+        border-right: 2px solid var(--background-color);
+      }
+      .addBtn {
+        border-bottom-right-radius: 10px;
+      }
     }
+  }
+  .btnContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  .btnAddCounter {
+    @include root.button($margin-tb: 40px, $margin-lr: 0);
+  }
 }
-    
+}
+.settingsMenu {
+  .menuElem {
+    @include root.menuElem();
+  }
+  .menuElemBtn {
+    @include root.menuElemButton();
   }
 }

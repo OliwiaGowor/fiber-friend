@@ -10,27 +10,39 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 import EditIcon from '@mui/icons-material/Edit';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-const options = [
-    'None',
-    'Atria',
-    'Callisto',
-    'Dione',
-    'Ganymede',
-  ];
 
-export default function Counter({getCounter}: any) {
+export default function Counter({ getCounter }: any) {
     const [count, setCount] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const [counterName, setCounterName] = React.useState<string | null>(null);
+    const openSetting = Boolean(anchorEl);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const manualValue = React.useRef<HTMLInputElement | null>(null);
+
+    const handleClickOpen = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const handleSetCounter = (amount: number) => {
+        setCount(amount);
+        setOpenDialog(false);
+    };
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = () => {
+    const handleCloseSetting = () => {
         setAnchorEl(null);
     };
 
@@ -49,8 +61,8 @@ export default function Counter({getCounter}: any) {
                     <IconButton
                         aria-label="more"
                         id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
+                        aria-controls={openSetting ? 'long-menu' : undefined}
+                        aria-expanded={openSetting ? 'true' : undefined}
                         aria-haspopup="true"
                         onClick={handleClick}
                     >
@@ -62,38 +74,66 @@ export default function Counter({getCounter}: any) {
                             'aria-labelledby': 'long-button',
                         }}
                         anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
+                        open={openSetting}
+                        onClose={handleCloseSetting}
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        className={classes.settingsMenu}
                     >
-                            <MenuItem onClick={handleClose}>
-                                <button className={classes.menuElem}>Reset counter</button>
-                            </MenuItem>
+                        <MenuItem className={classes.menuElem} onClick={handleCloseSetting}>
+                            <button className={classes.menuElemBtn} onClick={() => {setCount(0)}}>Reset counter</button>
+                        </MenuItem>
+                        <MenuItem className={classes.menuElem} onClick={handleCloseSetting}>
+                            <button className={classes.menuElemBtn} onClick={handleClickOpen}>Enter number</button>
+                        </MenuItem>
                     </Menu>
+                    <Dialog open={openDialog} onClose={handleCloseDialog}>
+                        <DialogTitle>Edit</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Enter counter value:
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="amount"
+                                label="Counter value"
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                                inputRef={manualValue}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseDialog}>Cancel</Button>
+                            <Button onClick={() => {handleSetCounter(Number(manualValue.current?.value))}}>Enter</Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
-                <Input 
-                className={classes.counterName} 
-                id="counter-name"  
-                defaultValue={'Untitled counter'}
-                inputRef={nameRef}
-                endAdornment={
-                    <InputAdornment position="end">
-                      <EditIcon></EditIcon>
-                    </InputAdornment>
-                  }
+                <Input
+                    className={classes.counterName}
+                    id="counter-name"
+                    defaultValue={'Untitled counter'}
+                    inputRef={nameRef}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <EditIcon></EditIcon>
+                        </InputAdornment>
+                    }
                 />
                 <div className={classes.number}>{count}</div>
                 <div className={classes.buttons}>
                     <Button variant='contained' className={classes.subBtn} onClick={() => { (count > 0) ? setCount(count - 1) : setCount(count) }}>
-                        <RemoveIcon></RemoveIcon>
+                        <RemoveIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }} ></RemoveIcon>
                     </Button>
                     <Button variant='contained' className={classes.addBtn} onClick={() => { setCount(count + 1) }}>
-                        <AddIcon></AddIcon>
+                        <AddIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }}></AddIcon>
                     </Button>
                 </div>
             </div>
-            <Button variant='contained' onClick={createCounter}>Add counter</Button>
+            <div className={classes.btnContainer} >
+                <Button className={classes.btnAddCounter} variant='contained' onClick={createCounter}>Add counter</Button>
+            </div>
         </div>
     );
 }
