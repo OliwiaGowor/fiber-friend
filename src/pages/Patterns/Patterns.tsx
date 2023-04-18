@@ -13,7 +13,7 @@ export default function Patterns() {
             <h1 className={classes.header}>PATTERNS</h1>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={patterns}>
-                    {(loadedPatterns) => <Tiles data={loadedPatterns} link={'new-pattern'} />}
+                    {(loadedPatterns) => <Tiles data={loadedPatterns} link='new-pattern'  addText='New pattern'/>}
                 </Await>
             </Suspense>
         </div>

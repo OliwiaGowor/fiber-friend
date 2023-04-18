@@ -13,7 +13,7 @@ function Projects() {
             <h1 className={classes.header}>PROJECTS</h1>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={projects}>
-                    {(loadedProjects) => <Tiles data={loadedProjects} link={'new-project'} />}
+                    {(loadedProjects) => <Tiles data={loadedProjects} link='new-project'  addText='New project'/>}
                 </Await>
             </Suspense>
         </div>

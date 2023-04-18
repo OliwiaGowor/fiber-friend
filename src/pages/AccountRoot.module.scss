@@ -1,4 +1,17 @@
 .container {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  overflow-x: hidden;
+  .mainContainer {
+    width: 100vw;
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .container {
+    .mainContainer {
+       width: calc(100vw - var(--sidebar-width));
+    }
+  }
 }

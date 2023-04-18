@@ -32,6 +32,12 @@ function SidebarAccount({ open }: any) {
                         <div className={classes.text}>Patterns</div>
                     </Link>
                 </li>
+                <li className={classes.element}>
+                    <Link to={'counters'} className={classes.link}>
+                        <ShoppingBasketIcon />
+                        <div className={classes.text}>Stitch counters</div>
+                    </Link>
+                </li>
                 {/*<li className={classes.element}>
                     <Link to={'orders'} className={classes.link}>
                         <ShoppingBasketIcon />

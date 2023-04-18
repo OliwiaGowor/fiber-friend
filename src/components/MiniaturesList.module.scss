@@ -1,7 +1,7 @@
 @use './Tiles.module.scss';
 
 .container {
-  width: calc(99vw - var(--sidebar-width));
+  width: 90vw;
   height: max-content;
 
   .loadedElement {
@@ -11,5 +11,11 @@
 
   .addIcon {
     margin: 75px;
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .container {
+    width: calc(99vw - var(--sidebar-width));
   }
 }

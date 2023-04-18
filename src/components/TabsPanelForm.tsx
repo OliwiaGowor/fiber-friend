@@ -9,15 +9,6 @@ import classes from './TabsPanelForm.module.scss';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 
-const yarnAmounts = [
-  'grams', 'skeins', 'meters', 'yarsd'
-];
-
-const availableYarns = [
-  { name: 'yarn' },
-];
-
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -70,6 +61,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
     const tmpYarnsInfo = yarns.map((yarn: any) => {
       if (yarn.yarn === yarnName) {
         return ({
+          id: yarn.id,
           yarn: yarn.yarn,
           info:
           {
@@ -89,6 +81,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
 
   const handleAddTab = () => {
     setYarns([...yarns, {
+      id: yarns.length,
       yarn: yarnNameRef.current?.value,
       info:
       {
@@ -99,18 +92,21 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
       }
     }])
     setYarnInput('');
-  }
+  };
 
   const handleDeleteTab = (yarn: any) => {
-    setYarns(
-      yarns.filter((y: any) =>
-        y.yarn !== yarn.yarn)
-    );
-  }
+    let tmpArray = yarns.filter((y: any) =>
+      y.id !== yarn.id);
+
+    for (let i = 0; i < tmpArray.length; i++) {
+      tmpArray[i].id = i;
+    }
+    setYarns(tmpArray);
+  };
 
   return (
     <div className={classes.container}>
-      <div className={classes.yarnsAdd}>
+      <div className={classes.addYarns}>
         <TextField
           id="yarn-input"
           inputProps={{

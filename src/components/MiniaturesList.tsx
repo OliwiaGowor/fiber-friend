@@ -7,13 +7,13 @@ import 'swiper/css/navigation';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function MiniaturesList({ data , link}: any) {
-  const loadedProjects = [];
+  const loadedElements = [];
 
   for (const key in data) {
-    loadedProjects.push({
+    loadedElements.push({
       id: parseInt(data[key].id),
       name: data[key].name,
-      photoURL: data[key].photoURL,
+      photos: data[key].photos,
     });
   }
 
@@ -46,11 +46,11 @@ export default function MiniaturesList({ data , link}: any) {
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} />
           </Link>
         </SwiperSlide>
-        {loadedProjects.map((element: any, index: number) => (
+        {loadedElements.map((element: any, index: number) => (
           <SwiperSlide key={index} className={classes.loadedElement} style={{ height: '260px', width: '240px' }}>
             <Link to={`projects/${element.id}`}>
               <h2 className={classes.name}>{element.name}</h2>
-              <img src={element.photoURL} alt={element.name} height='250px' width='250px' />
+              <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} height='250px' width='250px' />
             </Link>
           </SwiperSlide>
         ))}

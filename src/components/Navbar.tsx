@@ -10,6 +10,7 @@ import { useMediaQuery } from "@mui/material";
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const isMobile = useMediaQuery('(max-width: 760px)');
+    const smallerLogo = useMediaQuery('(max-width: 560px)');
 
     const handleClick = () => {
         setOpen((prev) => !prev);
@@ -27,7 +28,7 @@ export default function Navbar() {
                     <div className={classes.logo}>
                         <Link to={"/fiber-friend"}>
                             <img className={classes.logoPicture} src={logoPicture} width='45px' height='45px' />
-                            Fiber Friend
+                            {!smallerLogo && 'Fiber Friend'}
                         </Link>
                     </div>
                     <ul className={classes.navElements}>

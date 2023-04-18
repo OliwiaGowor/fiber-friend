@@ -14,6 +14,10 @@ import AccountRoot from './pages/AccountRoot';
 import NewPatternPage from './pages/Patterns/NewPatternPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import ProjectsRoot from './pages/Projects/ProjectsRoot';
+import CountersRoot from './pages/counters/CountersRoot';
+import Counters, { loader as countersLoader } from './pages/counters/Counters';
+import NewCounter from './pages/counters/NewCounter';
 
 
 const router = createBrowserRouter([
@@ -48,6 +52,7 @@ const router = createBrowserRouter([
             path: 'projects',
             id: "projects",
             loader: projectsLoader,
+            element: <ProjectsRoot />,
             children: [
               {
                 index: true,
@@ -80,8 +85,6 @@ const router = createBrowserRouter([
               },
             ]
           },
-
-
           {
             path: 'patterns',
             element: <PatternsRoot />,
@@ -95,6 +98,25 @@ const router = createBrowserRouter([
                 path: 'new-pattern',
                 element: <NewPatternPage />
               }
+            ]
+          },
+          {
+            path: 'counters',
+            element: <CountersRoot />,
+            id: 'counters',
+            loader: countersLoader,
+            children: [
+              {
+                index: true,
+                element: <Counters />,
+                
+              },
+              {
+                path: 'new-counter',
+                element: <NewCounter />,
+                //action: manipulateProjectAction,
+                //loader: checkAuthLoader,
+              },
             ]
           }
         ]
