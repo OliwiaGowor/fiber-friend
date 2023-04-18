@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/fiber-friend/static/css/main.06de7268.css",
-    "main.js": "/fiber-friend/static/js/main.e25e2fef.js",
+    "main.css": "/fiber-friend/static/css/main.ac3e971f.css",
+    "main.js": "/fiber-friend/static/js/main.886762d4.js",
     "static/media/pexels-miriam-alonso-75852911.jpg": "/fiber-friend/static/media/pexels-miriam-alonso-75852911.59717e784b0f55b2d765.jpg",
     "static/media/yarn-ball.png": "/fiber-friend/static/media/yarn-ball.6880a1b1cbd16ac2161f.png",
     "index.html": "/fiber-friend/index.html",
     "static/media/wave(2).svg": "/fiber-friend/static/media/wave(2).60f00eadc3de40b4de07484702ead076.svg",
-    "main.06de7268.css.map": "/fiber-friend/static/css/main.06de7268.css.map",
-    "main.e25e2fef.js.map": "/fiber-friend/static/js/main.e25e2fef.js.map"
+    "main.ac3e971f.css.map": "/fiber-friend/static/css/main.ac3e971f.css.map",
+    "main.886762d4.js.map": "/fiber-friend/static/js/main.886762d4.js.map"
   },
   "entrypoints": [
-    "static/css/main.06de7268.css",
-    "static/js/main.e25e2fef.js"
+    "static/css/main.ac3e971f.css",
+    "static/js/main.886762d4.js"
   ]
 }
