@@ -18,6 +18,7 @@ import ProjectsRoot from './pages/Projects/ProjectsRoot';
 import CountersRoot from './pages/counters/CountersRoot';
 import Counters, { loader as countersLoader } from './pages/counters/Counters';
 import NewCounter from './pages/counters/NewCounter';
+import EditProject from './pages/Projects/EditProject';
 
 
 const router = createBrowserRouter([
@@ -69,8 +70,8 @@ const router = createBrowserRouter([
                     //action: deleteEventAction,
                   },
                   {
-                    //path: 'edit',
-                    //element: <EditEventPage />,
+                    path: 'edit',
+                    element: <EditProject />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
                   },

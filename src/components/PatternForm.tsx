@@ -6,7 +6,7 @@ import classes from './PatternForm.module.scss';
 import Button from "@mui/material/Button";
 import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
-import { FileInput } from "./PhotoInput";
+import { FileInput } from "./FileInput";
 import BasicTabsForm from "./TabsPanelForm";
 import Counter from "./Counter";
 
@@ -133,7 +133,7 @@ export default function PatternForm() {
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Photos</h2>
                         <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
-                        <FileInput />
+                        <FileInput onlyImg={true} addHeader={'Add photo'} maxFiles={10}/>
                     </div>
 
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>

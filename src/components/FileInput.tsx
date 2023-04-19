@@ -11,19 +11,21 @@ import CloseIcon from '@mui/icons-material/Close';
 import Collapse from "@mui/material/Collapse";
 
 //TO DO: add responsivenss
+//TO DO: fix defaultValue
 
 type Props = {
   onlyImg?: boolean;
   addHeader: string;
   maxFiles: number;
+  defaultValue?: any;
 }
 
-export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, ...rest }: PROPS): JSX.Element => {
-  const [selectedFiles, setSelectedFiles] = React.useState<any>([]);
+export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, defaultValue, ...rest }: PROPS): JSX.Element => {
+  const [selectedFiles, setSelectedFiles] = React.useState<any>(defaultValue ? [...defaultValue] : []);
   const [open, setOpen] = React.useState(false);
 
-  console.log(open);
-
+  console.log(defaultValue);
+  console.log(selectedFiles);
   const handleAddingFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       if (event.target.files.length > 10) {
@@ -48,7 +50,6 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
   };
 
   const displayDifferentFiles = (file: any) => {
-    console.log(file);
     if (file.name.split('.').pop() == 'doc' || file.name.split('.').pop() == 'docx') {
       return (
         <div className={`${classes.photo} ${classes.photoNoPreview}`}>

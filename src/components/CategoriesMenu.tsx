@@ -8,17 +8,17 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { categories } from './Categories';
 import classes from './CategoriesMenu.module.scss'
 
-export default function CategoriesMenu({chooseCategory, showError}: any) {
+export default function CategoriesMenu({chooseCategory, showError, defaultValue}: any) {
     const [currentCategory, setCurrentCategory] = React.useState(categories);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [categHistory, setCategHistory] = React.useState<any>([]);
-    const [choosenCategory, setChoosenCategory] = React.useState<string | null>(null);
+    const [choosenCategory, setChoosenCategory] = React.useState<string | null>(defaultValue ? defaultValue : null);
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    
+    console.log(choosenCategory)
     const handleClose = () => {
         setAnchorEl(null);
         setCurrentCategory(categories);

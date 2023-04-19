@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData } from "react-router-dom";
+import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
 import classes from './ProjectDetails.module.scss';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
@@ -15,6 +15,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 export default function ProjectDetails() {
+    const navigate = useNavigate();
     const { project } = useRouteLoaderData('project-details') as { project: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -32,6 +33,30 @@ export default function ProjectDetails() {
             return '<span class="' + className + '">' + "</span>";
         },
     };
+
+    const handleDelete = async () => {
+        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+    if (!response.ok) {
+        // return { isError: true, message: 'Could not fetch project.' };
+        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
+        //   status: 500,
+        // });
+        throw json(
+            { message: 'Could not fetch project.' },
+            {
+                status: 500,
+            }
+        );
+    } else {
+        return navigate ('/fiber-friend/account/projects');
+    }
+    }
 
     return (
         <div className={classes.container}>
@@ -63,8 +88,16 @@ export default function ProjectDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
-                                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                                <MenuItem onClick={handleClose}>Delete project</MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    <Button onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit') }}>
+                                        Edit
+                                    </Button>
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    <Button onClick={handleDelete}>
+                                        Delete project
+                                    </Button>
+                                </MenuItem>
                             </Menu>
                         </div>
                         <div className={classes.dividedContainer}>
@@ -87,7 +120,7 @@ export default function ProjectDetails() {
                                 </div>
                                 <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                                     <h2 className={classes.sectionHeader}>Yarns</h2>
-                                    <TabsPanelDisplay yarns={project.yarns} />
+                                    <TabsPanelDisplay yarns={project.yarns ? project.yarns : null} />
                                 </div>
 
                             </div>

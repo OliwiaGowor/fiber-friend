@@ -44,16 +44,17 @@ function a11yProps(index: number) {
 interface BasicTabsFormProps {
   getInfo: any;
   showError: boolean;
+  defaultValue?: any;
 }
 
 export default function BasicTabsForm(props: BasicTabsFormProps) {
   const [value, setValue] = React.useState(0);
-  const { getInfo, showError, ...other } = props;
+  const { getInfo, showError, defaultValue, ...other } = props;
   const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
   const amountRef = React.useRef<HTMLInputElement | null>(null);
-  const [yarns, setYarns] = React.useState<any>([]);
+  const [yarns, setYarns] = React.useState<any>(defaultValue ? defaultValue : []);
   const [yarnInput, setYarnInput] = React.useState<any>('');
   const yarnNameRef = React.useRef<HTMLInputElement | null>(null);
 
