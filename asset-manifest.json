@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/fiber-friend/static/css/main.f9460543.css",
-    "main.js": "/fiber-friend/static/js/main.c1bde349.js",
+    "main.js": "/fiber-friend/static/js/main.c59503d5.js",
     "static/media/pexels-miriam-alonso-75852911.jpg": "/fiber-friend/static/media/pexels-miriam-alonso-75852911.59717e784b0f55b2d765.jpg",
     "static/media/yarn-ball.png": "/fiber-friend/static/media/yarn-ball.6880a1b1cbd16ac2161f.png",
     "index.html": "/fiber-friend/index.html",
     "static/media/wave(2).svg": "/fiber-friend/static/media/wave(2).60f00eadc3de40b4de07484702ead076.svg",
     "main.f9460543.css.map": "/fiber-friend/static/css/main.f9460543.css.map",
-    "main.c1bde349.js.map": "/fiber-friend/static/js/main.c1bde349.js.map"
+    "main.c59503d5.js.map": "/fiber-friend/static/js/main.c59503d5.js.map"
   },
   "entrypoints": [
     "static/css/main.f9460543.css",
-    "static/js/main.c1bde349.js"
+    "static/js/main.c59503d5.js"
   ]
 }
