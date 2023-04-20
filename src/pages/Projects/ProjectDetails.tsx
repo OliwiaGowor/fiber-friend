@@ -13,6 +13,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
@@ -42,21 +43,50 @@ export default function ProjectDetails() {
             },
         });
 
-    if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch project.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-        //   status: 500,
-        // });
-        throw json(
-            { message: 'Could not fetch project.' },
-            {
-                status: 500,
-            }
-        );
-    } else {
-        return navigate ('/fiber-friend/account/projects');
+        if (!response.ok) {
+            // return { isError: true, message: 'Could not fetch project.' };
+            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
+            //   status: 500,
+            // });
+            throw json(
+                { message: 'Could not fetch project.' },
+                {
+                    status: 500,
+                }
+            );
+        } else {
+            return navigate('/fiber-friend/account/projects');
+        }
     }
+
+    const handlePhotoRender = (project: any) => {
+        if (project.photos) {
+            return (
+                <div>
+                    {project.photos.map((photo: any, index: number) => (
+                        <SwiperSlide key={index} className={classes.addedPhoto}>
+                            <img
+                                className={classes.photo}
+                                src={`${photo}`}
+                                srcSet={`${photo}`}
+                                alt="not found"
+                                loading="lazy"
+                                width="449px"
+                                height="449px"
+                            />
+                        </SwiperSlide>
+                    ))}
+                </div>
+            );
+        } else {
+            return (
+                <SwiperSlide className={classes.addedPhoto}>
+                    <InsertPhotoIcon sx={{ fontSize: 449, color: 'grey', width: '100%', height: '100%' }} />
+                </SwiperSlide>
+            );
+        }
     }
+
 
     return (
         <div className={classes.container}>
@@ -135,19 +165,7 @@ export default function ProjectDetails() {
                                             navigation={true}
                                             rewind={true}
                                         >
-                                            {project.photos && project.photos.map((photo: any, index: number) => (
-                                                <SwiperSlide key={index} className={classes.addedPhoto}>
-                                                    <img
-                                                        className={classes.photo}
-                                                        src={`${photo}`}
-                                                        srcSet={`${photo}`}
-                                                        alt="not found"
-                                                        loading="lazy"
-                                                        width="449px"
-                                                        height="449px"
-                                                    />
-                                                </SwiperSlide>
-                                            ))}
+                                            {handlePhotoRender(project)}
                                         </Swiper>
                                     </div>
                                 </div>

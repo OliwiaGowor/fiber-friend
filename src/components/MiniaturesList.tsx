@@ -5,8 +5,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
-export default function MiniaturesList({ data , link}: any) {
+export default function MiniaturesList({ data, link }: any) {
   const loadedElements = [];
 
   for (const key in data) {
@@ -16,6 +17,18 @@ export default function MiniaturesList({ data , link}: any) {
       photos: data[key].photos,
     });
   }
+
+  const handlePhotoRender = (element: any) => {
+    if (element.photos) {
+      return (
+        <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} height='250px' width='250px' />
+      );
+    } else {
+      return (
+        <InsertPhotoIcon sx={{ fontSize: 250, color: 'grey' }} />
+      );
+    }
+  };
 
   return (
     <div className={classes.container}>
@@ -50,7 +63,7 @@ export default function MiniaturesList({ data , link}: any) {
           <SwiperSlide key={index} className={classes.loadedElement} style={{ height: '260px', width: '240px' }}>
             <Link to={`projects/${element.id}`}>
               <h2 className={classes.name}>{element.name}</h2>
-              <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} height='250px' width='250px' />
+              {handlePhotoRender(element)}
             </Link>
           </SwiperSlide>
         ))}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import classes from './Tiles.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
 interface TilesProps {
   children?: React.ReactNode;
@@ -21,6 +22,18 @@ function Tiles(props: TilesProps) {
     });
   }
 
+  const handlePhotoRender = (element: any) => {
+    if (element.photos) {
+      return (
+        <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} height='270px' width='270px' />
+      );
+    } else {
+      return (
+        <InsertPhotoIcon sx={{ fontSize: 270, color: 'grey' }} />
+      );
+    }
+  };
+
   return (
     <div className={classes.container}>
       <ul className={classes.elements}>
@@ -34,7 +47,7 @@ function Tiles(props: TilesProps) {
           <Link to={`${element.id}`}>
             <li key={element.id} className={classes.element}>
               <h2 className={classes.name}>{element.name}</h2>
-              <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} width='250px' height='270px' />
+              {handlePhotoRender(element)}
             </li>
           </Link>
         ))}
