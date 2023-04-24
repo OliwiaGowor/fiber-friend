@@ -8,23 +8,27 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { categories } from './Categories';
 import classes from './CategoriesMenu.module.scss'
 
-export default function CategoriesMenu({chooseCategory, showError, defaultValue}: any) {
-    const [currentCategory, setCurrentCategory] = React.useState(categories);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [categHistory, setCategHistory] = React.useState<any>([]);
-    const [choosenCategory, setChoosenCategory] = React.useState<string | null>(defaultValue ? defaultValue : null);
-    const open = Boolean(anchorEl);
+export default function CategoriesMenu({choseCategory, showError, defaultValue}: any) {
+    const [currentCategory, setCurrentCategory] = React.useState(categories); //represents the currently displayed category in the menu
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); //represents the anchor element where the menu will be positioned
+    const [categHistory, setCategHistory] = React.useState<any>([]); //represents the category history - the stack of previous categories selected
+    const [choosenCategory, setChoosenCategory] = React.useState<string | null>(defaultValue ? defaultValue : null); //represents the currently selected category
+    const open = Boolean(anchorEl); //a boolean that determines whether the menu is open or closed
 
+    //sets the anchorEl state to the clicked element to show the menu
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    console.log(choosenCategory)
+
+    //sets the anchorEl, currentCategory, and categHistory states to null and categories, respectively, to close the menu and reset its state
     const handleClose = () => {
         setAnchorEl(null);
         setCurrentCategory(categories);
         setCategHistory([]);
     };
 
+    //checks whether the category has children subcategories, and renders a button with the right arrow icon to display its subcategories 
+    //or a button to select the category
     const checkChildren = (category: any) => {
         if (category.children) {
             return generateBtnWithChildren(category);
@@ -33,18 +37,22 @@ export default function CategoriesMenu({chooseCategory, showError, defaultValue}
         }
     };
 
+    //sets the currentCategory state to the selected subcategory and updates the categHistory state
     const handleSubcategory = (category: any) => {
         setCurrentCategory(category.children);
         setCategHistory([...categHistory, category])
 
     };
 
+    // calls the chooseCategory function passed as props with the selected category and sets the choosenCategory state to the selected category. 
+    //It also calls handleClose to close the menu.
     const handleChooseCategory = (category: any) => {
-        chooseCategory(category.category);
+        choseCategory(category.category);
         setChoosenCategory(category.category);
         handleClose();
     }
 
+    //renders a button with the right arrow icon to display the category's subcategories
     const generateBtnWithChildren = (category: any) => {
         return (
             <button className={classes.btnCategory} onClick={() => handleSubcategory(category)}>
@@ -54,6 +62,7 @@ export default function CategoriesMenu({chooseCategory, showError, defaultValue}
         );
     };
 
+    //renders a button to select the category
     const generateBtnCategoryChoice = (category: any) => {
         return (
             <button className={classes.btnCategory} onClick={() => handleChooseCategory(category)}>
@@ -62,6 +71,7 @@ export default function CategoriesMenu({chooseCategory, showError, defaultValue}
         );
     };
 
+    //generates a back button to return to the previous category in the history stack. It is only displayed when there is a history stack.
     const generateBackButton = () => {
         if (currentCategory != categories) {
             return (

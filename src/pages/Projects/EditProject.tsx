@@ -31,6 +31,8 @@ export default function EditProject() {
     const [startDate, setStartDate] = React.useState<any>();
     const [endDate, setEndDate] = React.useState<any>();
     const [requiredError, setRequiredError] = React.useState<any>(false);
+    const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
+    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(null);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -155,10 +157,10 @@ export default function EditProject() {
                             </ToggleButtonGroup>
                         </div>
                         <div className={classes.categoriesContainer}>
-                            <CategoriesMenu 
-                            showError={showCategoriesError} 
-                            chooseCategory={(categ: string) => { setCategory(categ) }} 
-                            defaultValue={project.category} 
+                            <CategoriesMenu
+                                showError={showCategoriesError}
+                                chooseCategory={(categ: string) => { setCategory(categ) }}
+                                defaultValue={project.category}
                             />
                         </div>
                         <div className={classes.datePickers}>
@@ -193,21 +195,33 @@ export default function EditProject() {
                         <h2 className={classes.sectionHeader}>Photos</h2>
                         <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
                         <div className={classes.photoInput}>
-                            <FileInput onlyImg={true} addHeader={'Add photo'} maxFiles={10} defaultValue={photos}/>
+                            <FileInput
+                                onlyImg={true}
+                                addHeader={'Add photo'}
+                                maxFiles={10}
+                                defaultValue={photos}
+                                selectedFiles={(images: any) => { setSelectedImages(images) }}
+                            />
                         </div>
                     </div>
 
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} defaultValue={project.yarns}/>
+                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} defaultValue={project.yarns} />
                     </div>
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
                         <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
                         <div className={classes.photoInput}>
-                            <FileInput onlyImg={false} addHeader={'Add patterns'} maxFiles={5} defaultValue={project.patterns}/>
+                            <FileInput
+                                onlyImg={false}
+                                addHeader={'Add patterns'}
+                                maxFiles={5}
+                                defaultValue={project.patterns}
+                                selectedFiles={(patterns: any) => { setSelectedPatterns(patterns) }}
+                            />
                         </div>
                         <TextField
                             className={`${classes.notesField} ${classes.formInput}`}

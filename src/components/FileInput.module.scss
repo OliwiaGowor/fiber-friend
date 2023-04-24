@@ -1,5 +1,8 @@
 .photosContainer {
   .photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 200px);
+    gap: 20px;
     border: 1px dashed grey;
     background-color: var(--background-color);
     width: 100%;
@@ -34,8 +37,8 @@
       }
       .btnDeletePhoto {
         position: absolute;
-        top: 4%;
-        left: 71%;
+        top: 3%;
+        left: 74%;
         border-radius: 50%;
         padding-top: 5px;
         height: 40px;

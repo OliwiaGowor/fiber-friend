@@ -18,6 +18,7 @@ export default function PatternForm() {
     const [category, setCategory] = React.useState<any>();
     const toolRef = React.useRef<HTMLInputElement | null>(null);
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
+    const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
 
     const handleCategory = (categ: string) => {
         setCategory(categ);
@@ -133,7 +134,12 @@ export default function PatternForm() {
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Photos</h2>
                         <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
-                        <FileInput onlyImg={true} addHeader={'Add photo'} maxFiles={10}/>
+                        <FileInput
+                            onlyImg={true}
+                            addHeader={'Add photo'}
+                            maxFiles={10}
+                            selectedFiles={(images: any) => { setSelectedImages(images) }}
+                        />
                     </div>
 
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>

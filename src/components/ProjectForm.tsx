@@ -24,6 +24,9 @@ export default function ProjectForm() {
     const [startDate, setStartDate] = React.useState<any>();
     const [endDate, setEndDate] = React.useState<any>();
     const [requiredError, setRequiredError] = React.useState<any>(false);
+    const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
+    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(null);
+    const notesRef = React.useRef<HTMLInputElement | null>(null);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -32,7 +35,8 @@ export default function ProjectForm() {
     };
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-
+console.log(selectedImages);
+console.log(selectedPatterns);
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,7 +47,9 @@ export default function ProjectForm() {
                 name: nameRef.current?.value,
                 type: type,
                 category: category,
-                //photos: selectedImages,
+                photos: selectedImages,
+                patterns: selectedPatterns,
+                notes: notesRef.current?.value,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
 
@@ -147,7 +153,7 @@ export default function ProjectForm() {
                             </ToggleButtonGroup>
                         </div>
                         <div className={classes.categoriesContainer}>
-                            <CategoriesMenu showError={showCategoriesError} chooseCategory={(categ: string) => { setCategory(categ) }} />
+                            <CategoriesMenu showError={showCategoriesError} choseCategory={(categ: string) => { setCategory(categ) }} />
                         </div>
                         <div className={classes.datePickers}>
                             <DatePicker
@@ -180,7 +186,12 @@ export default function ProjectForm() {
                         <h2 className={classes.sectionHeader}>Photos</h2>
                         <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
                         <div className={classes.photoInput}>
-                            <FileInput onlyImg={true} addHeader={'Add photo'} maxFiles={10} />
+                            <FileInput
+                                onlyImg={true}
+                                addHeader={'Add photo'}
+                                maxFiles={10}
+                                selectedFiles={(images: any) => { setSelectedImages(images) }}
+                            />
                         </div>
                     </div>
 
@@ -194,7 +205,12 @@ export default function ProjectForm() {
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
                         <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
                         <div className={classes.photoInput}>
-                            <FileInput onlyImg={false} addHeader={'Add patterns'} maxFiles={5} />
+                            <FileInput
+                                onlyImg={false}
+                                addHeader={'Add patterns'}
+                                maxFiles={5}
+                                selectedFiles={(patterns: any) => { setSelectedPatterns(patterns) }}
+                            />
                         </div>
                         <TextField
                             className={`${classes.notesField} ${classes.formInput}`}
@@ -203,6 +219,7 @@ export default function ProjectForm() {
                             rows={15}
                             label='Write your notes here'
                             sx={{ width: '100%' }}
+                            inputRef={notesRef}
                         />
                     </div>
                 </div>

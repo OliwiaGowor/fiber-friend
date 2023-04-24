@@ -10,43 +10,46 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from "@mui/material/Collapse";
 
-//TO DO: add responsivenss
 //TO DO: fix defaultValue
 
 type Props = {
-  onlyImg?: boolean;
+  onlyImg: boolean;
   addHeader: string;
   maxFiles: number;
   defaultValue?: any;
+  selectedFiles: any;
 }
 
-export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, defaultValue, ...rest }: PROPS): JSX.Element => {
-  const [selectedFiles, setSelectedFiles] = React.useState<any>(defaultValue ? [...defaultValue] : []);
+export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, defaultValue, selectedFiles, ...rest }: PROPS): JSX.Element => {
+  const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ? defaultValue : []);
   const [open, setOpen] = React.useState(false);
 
-  console.log(defaultValue);
-  console.log(selectedFiles);
+ // console.log(defaultValue);
+ // console.log(addedFiles);
   const handleAddingFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       if (event.target.files.length > 10) {
         setOpen(true);
       }
-      for (let i = 0; i < maxFiles; i++) {
-        setSelectedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
+      for (let i = 0; i < event.target.files.length && i < maxFiles; i++) {
+        console.log( event.target.files![i]);
+        setAddedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
       }
+      selectedFiles(addedFiles);
     }
   };
 
   const handleDeleteFile = (index: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    if (selectedFiles.length > 0) {
-      const tmp = selectedFiles.filter((file: { id: number; }) =>
+    if (addedFiles.length > 0) {
+      const tmp = addedFiles.filter((file: { id: number; }) =>
         file.id !== index)
       for (let i = 0; i < tmp.length; i++) {
         tmp[i].id = i
       }
-      setSelectedFiles(tmp);
+      setAddedFiles(tmp);
     }
+    selectedFiles(addedFiles);
   };
 
   const displayDifferentFiles = (file: any) => {
@@ -85,16 +88,16 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
 
   return (
     <div className={classes.photosContainer}>
-      <ImageList sx={{ width: 950, height: "auto", overflow: "visible" }} cols={5} rowHeight={250} gap={8} className={classes.photos}>
-        <ImageListItem className={classes.addPhoto}>
+      <div className={classes.photos}>
+        <div className={classes.addPhoto}>
           <Button variant="outlined" component="label" className={classes.btnAddPhoto}>
             <h2 className={classes.btnAddPhotoText}>{addHeader}</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 70 }} />
             <input hidden accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'} multiple type="file" onChange={handleAddingFile} />
           </Button>
-        </ImageListItem>
-        {selectedFiles && selectedFiles.map((file: any, index: number) => (
-          <ImageListItem key={index} className={classes.addedPhoto}>
+        </div>
+        {addedFiles && addedFiles.map((file: any, index: number) => (
+          <div key={index} className={classes.addedPhoto}>
             <button className={classes.btnDeletePhoto} onClick={(e) => { handleDeleteFile(index, e) }}><DeleteIcon>Remove</DeleteIcon></button>
             {onlyImg && <img
               className={classes.photo}
@@ -106,9 +109,9 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
               height="250px"
             />}
             {!onlyImg && displayDifferentFiles(file)}
-          </ImageListItem>
+          </div>
         ))}
-      </ImageList>
+      </div>
       <Collapse in={open}>
         <Alert
           severity="error"

@@ -1,10 +1,16 @@
 import Counter from '../../components/Counter';
 import * as React from 'react';
 import classes from './NewCounter.module.scss';
-import { json, useNavigate } from "react-router-dom";
+import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
 import CounterMiniature from '../../components/CounterMiniature';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
 
 //TO DO: style saved as squares similar to counter
 //TO DO: connecting counters to patterns/projects
@@ -17,6 +23,38 @@ export default function NewCounter() {
     const [showCounterGroupError, setShowCounterGroupError] = React.useState<boolean>(false);
     const counterGroupNameRef = React.useRef<HTMLInputElement | null>(null);
     const [submitActive, setSubmitActive] = React.useState<boolean>(false);
+    const [availableProjects, setAvailableProjects] = React.useState<any | null>(null);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [chosenProject, setChosenProject] = React.useState<any | null>(null);
+
+
+    const fetchAvailableProjects = React.useCallback(async () => {
+        setIsLoading(true);
+        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+        if (!response.ok) {
+            throw json(
+                { message: 'Could not fetch projects.' },
+                {
+                    status: 500,
+                }
+            );
+        } else {
+            const data = await response.json();
+            const loadedProjects = [];
+
+            for (const key in data) {
+                loadedProjects.push({
+                    id: parseInt(data[key].id),
+                    name: data[key].name,
+                    category: data[key].category,
+                    type: data[key].type,
+                })
+            };
+            setAvailableProjects(loadedProjects);
+        }
+        setIsLoading(false);
+    }, []);
+
 
     React.useEffect(() => {
         if (counters.length > 0) {
@@ -25,14 +63,19 @@ export default function NewCounter() {
         else {
             setSubmitActive(false);
         }
-    }, [submitActive, counters]);
-    console.log(submitActive);
+        fetchAvailableProjects();
+    }, [submitActive, counters, fetchAvailableProjects]);
+
     const addCounter = (counter: any) => {
         setCounters([...counters, {
             id: counters.length,
             name: counter.name,
             amount: counter.amount,
         }]);
+    };
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setChosenProject(event.target.value);
     };
 
     const handleDeleteCounter = (counter: any) => {
@@ -79,7 +122,7 @@ export default function NewCounter() {
             return;
         }
     };
-
+    console.log(availableProjects);
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit}>
@@ -100,6 +143,25 @@ export default function NewCounter() {
                             helperText={showCounterGroupError ? 'Enter counter group name!' : ''}
                             onChange={() => { setShowCounterGroupError(false) }}
                         />
+                        {/*<FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-multiple-name-label">Project</InputLabel>
+                            <Select
+                                labelId="demo-multiple-name-label"
+                                id="demo-multiple-name"
+                                value={chosenProject}
+                                onChange={handleChange}
+                            >
+                                {availableProjects && availableProjects.map((project: any) => (
+                                    <MenuItem
+                                        key={project.id}
+                                        value={project.id}
+                                    >
+                                        {project.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            <FormHelperText>With label + helper text</FormHelperText>
+                                </FormControl>*/}
                     </div>
                     <Counter getCounter={addCounter} />
                 </div>
