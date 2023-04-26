@@ -17,22 +17,22 @@ import BasicTabsForm from "../../components/TabsPanelForm";
 export default function EditProject() {
     const { project } = useRouteLoaderData('project-details') as { project: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const photos = project.photos;
     const navigate = useNavigate();
     const [type, setType] = React.useState(project.type);
-    const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
+    const [yarnsInfo, setYarnsInfo] = React.useState<any>(project.yarns ? project.yarns : []);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    const [category, setCategory] = React.useState<string | null>();
+    const [category, setCategory] = React.useState<string | null>(project.category);
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
     const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [dateError, setDateError] = React.useState<any>(null);
-    const [startDate, setStartDate] = React.useState<any>();
-    const [endDate, setEndDate] = React.useState<any>();
+    const [startDate, setStartDate] = React.useState<any>(project.startDate);
+    const [endDate, setEndDate] = React.useState<any>(project.endDate);
     const [requiredError, setRequiredError] = React.useState<any>(false);
-    const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
-    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(null);
+    const [selectedImages, setSelectedImages] = React.useState<any | null>(project.photos);
+    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(project.patterns);
+    const notesRef = React.useRef<HTMLInputElement | null>(null);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -41,20 +41,23 @@ export default function EditProject() {
     };
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-
+console.log(yarnsInfo);
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const method = 'post';
+        const method = 'put';
         if (proceedSubmit) {
             const projectData = {
-                id: Math.floor(Math.random()) * 10000,
+                id: project.id,
                 name: nameRef.current?.value,
                 type: type,
                 category: category,
-                //photos: selectedImages,
+                yarns: yarnsInfo,
+                photos: selectedImages,
+                patterns: selectedPatterns,
+                notes: notesRef.current?.value,
             };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
+            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json';
 
             const response = await fetch(url, {
                 method: method,
@@ -159,7 +162,7 @@ export default function EditProject() {
                         <div className={classes.categoriesContainer}>
                             <CategoriesMenu
                                 showError={showCategoriesError}
-                                chooseCategory={(categ: string) => { setCategory(categ) }}
+                                choseCategory={(categ: string) => { setCategory(categ) }}
                                 defaultValue={project.category}
                             />
                         </div>
@@ -199,7 +202,7 @@ export default function EditProject() {
                                 onlyImg={true}
                                 addHeader={'Add photo'}
                                 maxFiles={10}
-                                defaultValue={photos}
+                                defaultValue={project.photos}
                                 selectedFiles={(images: any) => { setSelectedImages(images) }}
                             />
                         </div>
@@ -231,6 +234,7 @@ export default function EditProject() {
                             label='Write your notes here'
                             sx={{ width: '100%' }}
                             defaultValue={project.notes}
+                            inputRef={notesRef}
                         />
                     </div>
                 </div>
@@ -258,10 +262,11 @@ async function loadProjectDetails(id: string) {
         const resData = await response.json();
         const yarnsObj = resData.yarns;
         const yarnsArray: any = [];
-
+        console.log(resData.yarns)
         Object.keys(yarnsObj).forEach((key) => {
             yarnsArray.push({ yarn: [key], info: yarnsObj[key] });
         });
+        console.log(yarnsArray)
         resData.yarns = yarnsArray;
         return resData;
     }

@@ -35,8 +35,7 @@ export default function ProjectForm() {
     };
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-console.log(selectedImages);
-console.log(selectedPatterns);
+    
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -47,6 +46,7 @@ console.log(selectedPatterns);
                 name: nameRef.current?.value,
                 type: type,
                 category: category,
+                yarns: yarnsInfo,
                 photos: selectedImages,
                 patterns: selectedPatterns,
                 notes: notesRef.current?.value,

@@ -21,11 +21,17 @@ type Props = {
 }
 
 export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, defaultValue, selectedFiles, ...rest }: PROPS): JSX.Element => {
-  const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ? defaultValue : []);
+  let loadedFiles = [];
+  for (const key in defaultValue) {
+    loadedFiles.push({
+      id: parseInt(defaultValue[key].id),
+      name: defaultValue[key].name,
+      url: defaultValue[key].url,
+    });
+  }
+  const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ? loadedFiles : []);
   const [open, setOpen] = React.useState(false);
 
- // console.log(defaultValue);
- // console.log(addedFiles);
   const handleAddingFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       if (event.target.files.length > 10) {
@@ -53,14 +59,14 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
   };
 
   const displayDifferentFiles = (file: any) => {
-    if (file.name.split('.').pop() == 'doc' || file.name.split('.').pop() == 'docx') {
+    if (file.name.slice(-3) == 'doc' || file.name.slice(-4) == 'docx') {
       return (
         <div className={`${classes.photo} ${classes.photoNoPreview}`}>
           <p>{file.name}</p>
           <p>Preview unavailable</p>
         </div>
       );
-    } else if (file.name.split('.').pop() == 'pdf') {
+    } else if (file.name.slice(-3) == 'pdf') {
       return (
         <object
           data={file.url}

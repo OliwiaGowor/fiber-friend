@@ -38,7 +38,6 @@ async function loadProjects() {
         );
     } else {
         const resData = await response.json();
-
         return resData;
     }
 }

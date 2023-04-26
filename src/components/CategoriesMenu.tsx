@@ -12,7 +12,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
     const [currentCategory, setCurrentCategory] = React.useState(categories); //represents the currently displayed category in the menu
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); //represents the anchor element where the menu will be positioned
     const [categHistory, setCategHistory] = React.useState<any>([]); //represents the category history - the stack of previous categories selected
-    const [choosenCategory, setChoosenCategory] = React.useState<string | null>(defaultValue ? defaultValue : null); //represents the currently selected category
+    const [chosenCategory, setChosenCategory] = React.useState<string | null>(defaultValue ? defaultValue : null); //represents the currently selected category
     const open = Boolean(anchorEl); //a boolean that determines whether the menu is open or closed
 
     //sets the anchorEl state to the clicked element to show the menu
@@ -46,9 +46,9 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
 
     // calls the chooseCategory function passed as props with the selected category and sets the choosenCategory state to the selected category. 
     //It also calls handleClose to close the menu.
-    const handleChooseCategory = (category: any) => {
+    const handleChoseCategory = (category: any) => {
         choseCategory(category.category);
-        setChoosenCategory(category.category);
+        setChosenCategory(category.category);
         handleClose();
     }
 
@@ -65,7 +65,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
     //renders a button to select the category
     const generateBtnCategoryChoice = (category: any) => {
         return (
-            <button className={classes.btnCategory} onClick={() => handleChooseCategory(category)}>
+            <button className={classes.btnCategory} onClick={() => handleChoseCategory(category)}>
                 {category.category}
             </button>
         );
@@ -115,7 +115,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
                 }}
                 color={showError ? 'error' : 'primary'}
             >
-                {choosenCategory ? choosenCategory : "Choose category"}
+                {chosenCategory ? chosenCategory : "Choose category"}
             </Button>
             <Menu
                 id="categories-menu"

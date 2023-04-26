@@ -67,8 +67,8 @@ export default function ProjectDetails() {
                         <SwiperSlide key={index} className={classes.addedPhoto}>
                             <img
                                 className={classes.photo}
-                                src={`${photo}`}
-                                srcSet={`${photo}`}
+                                src={`${photo.url}`}
+                                srcSet={`${photo.url}`}
                                 alt="not found"
                                 loading="lazy"
                                 width="449px"

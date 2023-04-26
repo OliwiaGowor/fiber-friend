@@ -25,7 +25,7 @@ function Tiles(props: TilesProps) {
   const handlePhotoRender = (element: any) => {
     if (element.photos) {
       return (
-        <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} height='270px' width='270px' />
+        <img src={element.photos ? element.photos[0].url : element.photos} alt={element.name} height='270px' width='270px' />
       );
     } else {
       return (
