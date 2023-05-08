@@ -6,59 +6,72 @@
   .sidePanel {
     width: 35vw;
     background-color: var(--accent-color);
+    background-image: url("../photos/mel-poole-vJgD2A1CPjE-unsplash.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     padding-bottom: 200px;
     .panelHeader {
-      font-size: 35px;
-      font-weight: 800;
+      font-weight: 900;
+      font-size: 48px;
     }
     .btnSignup {
       @include root.button($margin-tb: 0px, $margin-lr: 0px);
     }
   }
+
   .loginForm {
-    width: 65vw;
+    width: 58vw;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     padding-bottom: 250px;
+    margin-top: 90px;
     h1 {
       text-align: center;
       font-weight: 900;
       font-size: 48px;
+      margin-top: 0;
+      margin-bottom: 40px;
     }
-    .loginFormContainer {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      .formSection {
-        margin-bottom: 25px;
+    .form {
+    background-color: var(--background-accents);
+    padding: 60px;
+    border-radius: 10px;
+
+      .loginFormContainer {
+        width: 100%;
         display: flex;
         flex-direction: column;
-        input {
-          width: 25vw;
-        }
-        label {
-          padding: 10px 0px;
-          font-weight: 700;
+        justify-content: center;
+        .formSection {
+          margin-bottom: 25px;
+          display: flex;
+          flex-direction: column;
+          .formInput {
+            width: 25vw;
+            div {
+              background-color: var(--background-color);
+            }
+          }
         }
       }
-    }
-    .btnContainer {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 30px;
-      margin-bottom: 10px;
-      flex-direction: column;
-      .btnSubmit {
-        @include root.button($margin-tb: 0px, $margin-lr: 0px);
+      .btnContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        flex-direction: column;
+        .btnSubmit {
+          @include root.button($margin-tb: 0px, $margin-lr: 0px);
+        }
       }
     }
   }

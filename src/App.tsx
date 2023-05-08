@@ -19,6 +19,7 @@ import CountersRoot from './pages/counters/CountersRoot';
 import Counters, { loader as countersLoader } from './pages/counters/Counters';
 import NewCounter from './pages/counters/NewCounter';
 import EditProject from './pages/Projects/EditProject';
+import RecoverPassPage from './pages/RecoverPassPage';
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: 'signUp',
         element: <SignUpPage />
+      },
+      {
+        path: 'recover-password',
+        element: <RecoverPassPage />
       },
       {
         path: 'account',
