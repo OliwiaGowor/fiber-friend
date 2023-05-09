@@ -1,9 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
-
-  .header {
+  margin-top: 15px;
+  margin-left: var(--margin-mobile);
+  margin-right: var(--margin-mobile);
+   .header {
     font-size: 36px;
     padding: 12px 0px;
     .arrow {
@@ -23,11 +24,10 @@
 
 @media screen and (min-width: 750px) {
   .container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 40px;
-  
-    .header {
+    margin-top: 22px;
+    margin-left: 0;
+    margin-right: 0;
+      .header {
       font-size: 36px;
       padding: 12px 0px;
       .arrow {

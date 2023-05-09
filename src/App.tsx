@@ -15,9 +15,9 @@ import NewPatternPage from './pages/Patterns/NewPatternPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ProjectsRoot from './pages/Projects/ProjectsRoot';
-import CountersRoot from './pages/counters/CountersRoot';
-import Counters, { loader as countersLoader } from './pages/counters/Counters';
-import NewCounter from './pages/counters/NewCounter';
+import CountersRoot from './pages/Counters/CountersRoot';
+import Counters, { loader as countersLoader } from './pages/Counters/Counters';
+import NewCounter from './pages/Counters/NewCounter';
 import EditProject from './pages/Projects/EditProject';
 import RecoverPassPage from './pages/RecoverPassPage';
 

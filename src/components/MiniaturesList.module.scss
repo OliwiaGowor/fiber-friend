@@ -5,7 +5,7 @@
   height: max-content;
 
   .loadedElement {
-    @include Tiles.tile();
+    @include Tiles.tile($minWidth: 300px, $height: 390px);
     max-width: 310px;
   }
 
