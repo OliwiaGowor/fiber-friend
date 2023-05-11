@@ -9,10 +9,11 @@ interface CounterMiniatureProps {
     editable: boolean;
     counter: any;
     deleteCounter?: any;
+    backgroundColor?: string;
 }
 
 export default function CounterMiniature(props: CounterMiniatureProps) {
-    const { editable, counter, deleteCounter, ...other } = props;
+    const { editable, counter, deleteCounter, backgroundColor, ...other } = props;
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -22,10 +23,10 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-console.log(editable)
+
     return (
         <div className={classes.container}>
-            <div className={classes.counter}>
+            <div className={classes.counter} style={{backgroundColor: (backgroundColor !== undefined) ? backgroundColor : ''}}>
                 {editable && <div className={classes.settings}>
                     <IconButton
                         aria-label="more"

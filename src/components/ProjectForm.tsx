@@ -42,7 +42,6 @@ export default function ProjectForm() {
         const method = 'post';
         if (proceedSubmit) {
             const projectData = {
-                id: Math.floor(Math.random()) * 10000,
                 name: nameRef.current?.value,
                 type: type,
                 category: category,

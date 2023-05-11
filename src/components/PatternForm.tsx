@@ -6,23 +6,27 @@ import classes from './PatternForm.module.scss';
 import Button from "@mui/material/Button";
 import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
-import { FileInput } from "./FileInput";
+import { FileInput } from './FileInput';
 import BasicTabsForm from "./TabsPanelForm";
-import Counter from "./Counter";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function PatternForm() {
     const navigate = useNavigate();
     const [type, setType] = React.useState('crochet');
     const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    const [category, setCategory] = React.useState<any>();
-    const toolRef = React.useRef<HTMLInputElement | null>(null);
+    const [category, setCategory] = React.useState<string | null>();
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
+    const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
+    const [showNameError, setShowNameError] = React.useState<boolean>(false);
+    const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
+    const [dateError, setDateError] = React.useState<any>(null);
+    const [startDate, setStartDate] = React.useState<any>();
+    const [endDate, setEndDate] = React.useState<any>();
+    const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
-
-    const handleCategory = (categ: string) => {
-        setCategory(categ);
-    }
+    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(null);
+    const notesRef = React.useRef<HTMLInputElement | null>(null);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -30,50 +34,68 @@ export default function PatternForm() {
         }
     };
 
+    let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
+    
+    //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const method = 'post';
+        if (proceedSubmit) {
+            const patternData = {
+                name: nameRef.current?.value,
+                type: type,
+                category: category,
+                yarns: yarnsInfo,
+                photos: selectedImages,
+                patterns: selectedPatterns,
+                notes: notesRef.current?.value,
+            };
+            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json';
 
-        if (yarnsInfo.length <= 0) {
-            setShowYarnsError(true);
+            const response = await fetch(url, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(patternData),
+            });
+
+            if (response.status === 422) {
+                return response;
+            }
+
+            if (!response.ok) {
+                throw json({ message: 'Could not save pattern.' }, { status: 500 });
+            }
+            const data = await response.json();
+            return navigate('/fiber-friend/account/patterns');
+        } else {
             return;
         }
+    };
 
-        const projectData = {
-            id: Math.floor(Math.random()) * 10000,
-            name: nameRef.current?.value,
-            type: type,
-            category: category,
-            //photos: selectedImages,
-        };
-        let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
-
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(projectData),
-        });
-
-        if (response.status === 422) {
-            return response;
+    //Form validation
+    const validateForm = () => {
+        if (yarnsInfo.length <= 0) {
+            setShowYarnsError(true);
+            setProceedSubmit(false);
         }
-
-        if (!response.ok) {
-            throw json({ message: 'Could not save project.' }, { status: 500 });
+        if (!nameRef.current?.value) {
+            setShowNameError(true);
+            setProceedSubmit(false);
         }
-        const data = await response.json();
-        return navigate('/projects');
-    }
-
-    const getYarnsInfo = (yarnsInfo: any) => {
-        setYarnsInfo(yarnsInfo);
-    }
+        if (category === undefined) {
+            setShowCategoriesError(true);
+            setProceedSubmit(false);
+        }
+        if (startDate === undefined) {
+            setRequiredError(true);
+            setProceedSubmit(false);
+        }
+    };
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Create new project</h1>
+            <h1 className={classes.header}>Create new pattern</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
@@ -83,11 +105,13 @@ export default function PatternForm() {
                             inputProps={{
                                 'aria-label': 'name',
                             }}
-                            label="Project name"
-                            required
+                            label="Pattern name"
                             className={classes.formInput}
                             name='name'
                             inputRef={nameRef}
+                            error={showNameError}
+                            helperText={showNameError ? 'Enter pattern name!' : ''}
+                            onChange={() => { setShowNameError(false) }}
                         />
                         <div className={classes.typeToggle}>
                             <ToggleButtonGroup
@@ -127,32 +151,40 @@ export default function PatternForm() {
                             </ToggleButtonGroup>
                         </div>
                         <div className={classes.categoriesContainer}>
-                            <CategoriesMenu chooseCategory={handleCategory} />
+                            <CategoriesMenu showError={showCategoriesError} choseCategory={(categ: string) => { setCategory(categ) }} />
                         </div>
                     </div>
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Photos</h2>
                         <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
-                        <FileInput
-                            onlyImg={true}
-                            addHeader={'Add photo'}
-                            maxFiles={10}
-                            selectedFiles={(images: any) => { setSelectedImages(images) }}
-                        />
+                        <div className={classes.photoInput}>
+                            <FileInput
+                                onlyImg={true}
+                                addHeader={'Add photo'}
+                                maxFiles={10}
+                                selectedFiles={(images: any) => { setSelectedImages(images) }}
+                            />
+                        </div>
                     </div>
 
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm showError={showYarnsError} getInfo={getYarnsInfo} />
+                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} />
                     </div>
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                        <Counter />
-                        <p>Pattern</p>
-
+                        <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
+                        <div className={classes.photoInput}>
+                            <FileInput
+                                onlyImg={false}
+                                addHeader={'Add patterns'}
+                                maxFiles={5}
+                                selectedFiles={(patterns: any) => { setSelectedPatterns(patterns) }}
+                            />
+                        </div>
                         <TextField
                             className={`${classes.notesField} ${classes.formInput}`}
                             id="notes"
@@ -160,10 +192,11 @@ export default function PatternForm() {
                             rows={15}
                             label='Write your notes here'
                             sx={{ width: '100%' }}
+                            inputRef={notesRef}
                         />
                     </div>
                 </div>
-                <Button className={classes.submitBtn} variant="contained" type="submit">Add new project</Button>
+                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new Pattern</Button>
             </form>
         </div>
     );

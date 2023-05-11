@@ -19,11 +19,12 @@ function Tiles(props: TilesProps) {
 
   for (const key in data) {
     loadedProjects.push({
-      id: parseInt(data[key].id),
+      id: key,
       name: data[key].name,
       photos: data[key].photos,
     });
   }
+
 
   const handlePhotoRender = (element: any) => {
     if (element.photos) {

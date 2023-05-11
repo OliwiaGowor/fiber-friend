@@ -1,0 +1,48 @@
+@import url("../../components/root.scss");
+
+.container {
+  font-size: 1em;
+  .details {
+    .header {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 1fr 50px;
+      overflow-wrap: break-word;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      font-size: 2.25rem;
+      .editButton {
+        justify-self: end;
+        padding: 0;
+        min-width: 24px;
+        margin-right: 10px;
+        color: var(--text-color);
+        .editIcon {
+          font-size: 32px;
+        }
+      }
+    }
+
+    .sectionContainer {
+      background-color: var(--background-accents);
+      padding: 32px;
+      margin: 30px 0;
+      border-radius: 10px;
+      max-width: 100%;
+      .sectionHeader {
+        margin-top: 0;
+      }
+      .counters {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        max-height: 700px;
+        overflow: auto;
+        padding: 20px 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1280px) {
+}

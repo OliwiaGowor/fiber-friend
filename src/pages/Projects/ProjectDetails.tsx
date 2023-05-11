@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { FilesDisplay } from "../../components/FilesDisplay";
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
@@ -175,6 +176,7 @@ export default function ProjectDetails() {
                             <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Patterns and notes</h2>
                                 <div className={classes.attributeName}>Patterns</div>
+                                <FilesDisplay files={project.patterns} />
                                 <div className={classes.attributeName}>Notes</div>
                                 <div className={classes.notes}>{project.notes}</div>
                             </div>
@@ -202,13 +204,7 @@ async function loadProjectDetails(id: string) {
         );
     } else {
         const resData = await response.json();
-        const yarnsObj = resData.yarns;
-        const yarnsArray: any = [];
-
-        Object.keys(yarnsObj).forEach((key) => {
-            yarnsArray.push({ yarn: [key], info: yarnsObj[key] });
-        });
-        resData.yarns = yarnsArray;
+        resData.id = id;
         return resData;
     }
 }

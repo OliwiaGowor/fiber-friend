@@ -1,4 +1,4 @@
-import Counter from '../../components/Counter';
+import CounterGroup from '../../components/CounterGroup';
 import * as React from 'react';
 import classes from './NewCounter.module.scss';
 import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 
-//TO DO: style saved as squares similar to counter
 //TO DO: connecting counters to patterns/projects
 export default function NewCounter() {
     const navigate = useNavigate();
@@ -94,11 +93,10 @@ export default function NewCounter() {
         const method = 'post';
         if (counterGroupNameRef.current?.value.length) {
             const counterData = {
-                id: Math.floor(Math.random()) * 10000,
-                counterGroupName: counterGroupNameRef.current?.value,
+                name: counterGroupNameRef.current?.value,
                 counters: counters,
             };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counters.json';
+            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counterGroups.json';
 
             const response = await fetch(url, {
                 method: method,
@@ -163,7 +161,7 @@ export default function NewCounter() {
                             <FormHelperText>With label + helper text</FormHelperText>
                                 </FormControl>*/}
                     </div>
-                    <Counter getCounter={addCounter} />
+                    <CounterGroup getCounter={addCounter} />
                 </div>
 
                 <div className={classes.createdCounters}>

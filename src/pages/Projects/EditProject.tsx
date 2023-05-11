@@ -41,7 +41,7 @@ export default function EditProject() {
     };
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-console.log(yarnsInfo);
+
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -242,39 +242,4 @@ console.log(yarnsInfo);
             </form>
         </div>
     );
-}
-
-async function loadProjectDetails(id: string) {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + id + '.json');
-
-    if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch project.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-        //   status: 500,
-        // });
-        throw json(
-            { message: 'Could not fetch project.' },
-            {
-                status: 500,
-            }
-        );
-    } else {
-        const resData = await response.json();
-        const yarnsObj = resData.yarns;
-        const yarnsArray: any = [];
-        console.log(resData.yarns)
-        Object.keys(yarnsObj).forEach((key) => {
-            yarnsArray.push({ yarn: [key], info: yarnsObj[key] });
-        });
-        console.log(yarnsArray)
-        resData.yarns = yarnsArray;
-        return resData;
-    }
-}
-
-export async function loader({ request, params }: any) {
-    const id = params.projectId;
-    return defer({
-        project: await loadProjectDetails(id),
-    });
 }

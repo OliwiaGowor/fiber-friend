@@ -20,6 +20,8 @@ import Counters, { loader as countersLoader } from './pages/Counters/Counters';
 import NewCounter from './pages/Counters/NewCounter';
 import EditProject from './pages/Projects/EditProject';
 import RecoverPassPage from './pages/RecoverPassPage';
+import CounterDetails, { loader as counterDetailsLoader }  from './pages/Counters/CounterDetails';
+import EditCounter from './pages/Counters/EditCounter';
 
 
 const router = createBrowserRouter([
@@ -122,6 +124,25 @@ const router = createBrowserRouter([
                 element: <NewCounter />,
                 //action: manipulateProjectAction,
                 //loader: checkAuthLoader,
+              },
+              {
+                path: ':counterId',
+                id: 'counter-details',
+                loader: counterDetailsLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <CounterDetails />,
+                    //action: deleteEventAction,
+                  },
+                  {
+                    path: 'edit',
+                    element: <EditCounter />,
+                    //action: manipulateEventAction,
+                    //loader: checkAuthLoader,
+                  },
+
+                ],
               },
             ]
           }

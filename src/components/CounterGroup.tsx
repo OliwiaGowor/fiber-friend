@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classes from "./Counter.module.scss";
+import classes from "./CounterGroup.module.scss";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Button from "@mui/material/Button";
@@ -17,7 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function Counter({ getCounter }: any) {
+export default function CounterGroup({ getCounter }: any) {
     const [count, setCount] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openSetting = Boolean(anchorEl);
@@ -26,7 +26,6 @@ export default function Counter({ getCounter }: any) {
     const manualValue = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
-        console.log("event listener ");
         document.body.addEventListener("keydown", handleSpace);
         return () => {
             document.body.removeEventListener("keydown", handleSpace);
