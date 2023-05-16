@@ -8,11 +8,12 @@
     width: 100%;
     .addedPhoto {
       position: relative;
+      width: 200px;
+        height: 250px;
       .photo {
         border-radius: 5px;
         overflow: hidden;
-        width: 200px;
-        height: 250px;
+        
       }
       .photoNoPreview {
         background-color: var(--background-accents);

@@ -3,10 +3,8 @@ import classes from './PatternsRoot.module.scss';
 
 export default function PatternsRoot() {
   return (
-    <div className={classes.container}>
-      <main>
-        <Outlet />
-      </main>
-    </div>
+    <main className={classes.container}>
+      <Outlet />
+    </main>
   );
 }

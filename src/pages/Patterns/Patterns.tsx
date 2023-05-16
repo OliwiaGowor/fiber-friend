@@ -1,12 +1,11 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { Suspense } from "react";
-import { useLoaderData, Await, json, defer } from "react-router-dom";
+import { useLoaderData, Await, json, defer, useRouteLoaderData } from "react-router-dom";
 import Tiles from "../../components/Tiles";
 import classes from './Patterns.module.scss'
 
 export default function Patterns() {
-
-    const { patterns }: any = useLoaderData();
+    const { patterns }: any = useRouteLoaderData("patterns");
 
     return (
         <div className={classes.container}>
@@ -21,7 +20,7 @@ export default function Patterns() {
 }
 
 async function loadPatterns() {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch events.' };

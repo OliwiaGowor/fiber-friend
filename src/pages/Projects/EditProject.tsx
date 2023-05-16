@@ -1,4 +1,4 @@
-import { json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
+import { json, useRouteLoaderData, useNavigate } from "react-router-dom";
 import classes from './EditProject.module.scss';
 import "swiper/css";
 import "swiper/css/pagination";
@@ -12,7 +12,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import CategoriesMenu from "../../components/CategoriesMenu";
 import { FileInput } from "../../components/FileInput";
 import BasicTabsForm from "../../components/TabsPanelForm";
-
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function EditProject() {
     const { project } = useRouteLoaderData('project-details') as { project: any };
@@ -33,19 +35,50 @@ export default function EditProject() {
     const [selectedImages, setSelectedImages] = React.useState<any | null>(project.photos);
     const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(project.patterns);
     const notesRef = React.useRef<HTMLInputElement | null>(null);
+    const [patterns, setPatterns] = React.useState<any>([]);
+    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
 
+    const fetchAvailablePatterns = React.useCallback(async () => {
+        try {
+            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const data = await response.json();
+            const loadedPatterns = [];
+
+            for (const key in data) {
+                loadedPatterns.push({
+                    id: key,
+                    name: data[key].name,
+                });
+            }
+            setPatterns(loadedPatterns);
+
+        } catch (error) {
+            //setError("Something went wrong, try again.");
+        }
+    }, []);
+
+    React.useEffect(() => {
+        fetchAvailablePatterns();
+    }, [fetchAvailablePatterns]);
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
             setType(newType);
         }
     };
 
+    const handleChange = (event: SelectChangeEvent) => {
+        setSelectedPattern(event.target.value as string);
+    };
+    
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const method = 'put';
         if (proceedSubmit) {
             const projectData = {
                 id: project.id,
@@ -56,11 +89,12 @@ export default function EditProject() {
                 photos: selectedImages,
                 patterns: selectedPatterns,
                 notes: notesRef.current?.value,
+                connectedPattern: selectedPattern ? selectedPattern : null,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json';
 
             const response = await fetch(url, {
-                method: method,
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -216,6 +250,20 @@ export default function EditProject() {
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
+                        <p className={classes.additionalText}>Choose pattern from your library.</p>
+                        <InputLabel id="pattern-select">Pattern</InputLabel>
+                        <Select
+                            labelId="pattern-select"
+                            id="pattern-select"
+                            value={selectedPattern}
+                            label="Pattern"
+                            onChange={handleChange}
+                            className={classes.patternSelect}
+                        >
+                            {patterns && patterns.map((pattern: any) => (
+                                <MenuItem value={pattern.id}>{pattern.name}</MenuItem>
+                            ))}
+                        </Select>
                         <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
                         <div className={classes.photoInput}>
                             <FileInput
@@ -238,7 +286,7 @@ export default function EditProject() {
                         />
                     </div>
                 </div>
-                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new project</Button>
+                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Edit</Button>
             </form>
         </div>
     );

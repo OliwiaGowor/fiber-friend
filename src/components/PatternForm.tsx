@@ -8,7 +8,6 @@ import CategoriesMenu from "./CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
 import { FileInput } from './FileInput';
 import BasicTabsForm from "./TabsPanelForm";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function PatternForm() {
     const navigate = useNavigate();
@@ -20,9 +19,6 @@ export default function PatternForm() {
     const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
-    const [dateError, setDateError] = React.useState<any>(null);
-    const [startDate, setStartDate] = React.useState<any>();
-    const [endDate, setEndDate] = React.useState<any>();
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
     const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(null);
@@ -85,10 +81,6 @@ export default function PatternForm() {
         }
         if (category === undefined) {
             setShowCategoriesError(true);
-            setProceedSubmit(false);
-        }
-        if (startDate === undefined) {
-            setRequiredError(true);
             setProceedSubmit(false);
         }
     };

@@ -17,7 +17,6 @@ export const categories = [
         ],
         
     },
-
     {
         category: 'Toys',
         children: [

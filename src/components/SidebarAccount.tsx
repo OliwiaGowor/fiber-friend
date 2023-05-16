@@ -35,7 +35,7 @@ function SidebarAccount({ open }: any) {
                 <li className={classes.element}>
                     <Link to={'counters'} className={classes.link}>
                         <ShoppingBasketIcon />
-                        <div className={classes.text}>Stitch counters</div>
+                        <div className={classes.text}>Counters</div>
                     </Link>
                 </li>
                 {/*<li className={classes.element}>

@@ -42,7 +42,7 @@ export default function LoginPage() {
                                 inputProps={{
                                     'aria-label': 'username',
                                 }}
-                                label="username"
+                                label="Username"
                                 className={classes.formInput}
                                 name='username'
                                 inputRef={usernameRef}
@@ -57,7 +57,7 @@ export default function LoginPage() {
                                 inputProps={{
                                     'aria-label': 'password',
                                 }}
-                                label="password"
+                                label="Password"
                                 className={classes.formInput}
                                 name='password'
                                 inputRef={passwordRef}

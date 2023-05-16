@@ -1,14 +1,17 @@
 import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import classes from './ProjectForm.module.scss';
 import Button from "@mui/material/Button";
 import CategoriesMenu from "./CategoriesMenu";
-import { json, useNavigate } from "react-router-dom";
+import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
 import { FileInput } from './FileInput';
 import BasicTabsForm from "./TabsPanelForm";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function ProjectForm() {
     const navigate = useNavigate();
@@ -25,8 +28,37 @@ export default function ProjectForm() {
     const [endDate, setEndDate] = React.useState<any>();
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
-    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(null);
+    const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<any | null>(null);
     const notesRef = React.useRef<HTMLInputElement | null>(null);
+    const [patterns, setPatterns] = React.useState<any>([]);
+    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
+
+    const fetchAvailablePatterns = useCallback(async () => {
+        try {
+            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const data = await response.json();
+            const loadedPatterns = [];
+
+            for (const key in data) {
+                loadedPatterns.push({
+                    id: key,
+                    name: data[key].name,
+                });
+            }
+            setPatterns(loadedPatterns);
+
+        } catch (error) {
+            //setError("Something went wrong, try again.");
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchAvailablePatterns();
+    }, [fetchAvailablePatterns]);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -34,12 +66,15 @@ export default function ProjectForm() {
         }
     };
 
+    const handleChange = (event: SelectChangeEvent) => {
+        setSelectedPattern(event.target.value as string);
+    };
+
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-    
+
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const method = 'post';
         if (proceedSubmit) {
             const projectData = {
                 name: nameRef.current?.value,
@@ -47,13 +82,14 @@ export default function ProjectForm() {
                 category: category,
                 yarns: yarnsInfo,
                 photos: selectedImages,
-                patterns: selectedPatterns,
+                patterns: selectedPatternFiles,
                 notes: notesRef.current?.value,
+                connectedPattern: selectedPattern ? selectedPattern : null,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
 
             const response = await fetch(url, {
-                method: method,
+                method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -114,13 +150,14 @@ export default function ProjectForm() {
                             helperText={showNameError ? 'Enter project name!' : ''}
                             onChange={() => { setShowNameError(false) }}
                         />
-                        <div className={classes.typeToggle}>
+                        <div className={classes.typeToggleContainer}>
                             <ToggleButtonGroup
                                 value={type}
                                 exclusive
                                 onChange={handleType}
                                 aria-label="text alignment"
                                 id="types"
+                                className={classes.typeToggle}
                             >
                                 <ToggleButton value="crochet" className={classes.toggleButton} aria-label="crochet" disableRipple
                                     sx={{
@@ -168,7 +205,6 @@ export default function ProjectForm() {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
-
                             />
                             <DatePicker
                                 className={classes.dateInput}
@@ -177,7 +213,6 @@ export default function ProjectForm() {
                                 minDate={startDate}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
                             />
-
                         </div>
                     </div>
 
@@ -202,13 +237,27 @@ export default function ProjectForm() {
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                        <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
+                        <p className={classes.additionalText}>Choose pattern from your library.</p>
+                        <InputLabel id="pattern-select">Pattern</InputLabel>
+                        <Select
+                            labelId="pattern-select"
+                            id="pattern-select"
+                            value={selectedPattern}
+                            label="Pattern"
+                            onChange={handleChange}
+                            className={classes.patternSelect}
+                        >
+                            {patterns && patterns.map((pattern: any) => (
+                                <MenuItem value={pattern.id}>{pattern.name}</MenuItem>
+                            ))}
+                        </Select>
+                        <p className={classes.additionalText}>Add up to 5 files with patterns.</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={false}
                                 addHeader={'Add patterns'}
                                 maxFiles={5}
-                                selectedFiles={(patterns: any) => { setSelectedPatterns(patterns) }}
+                                selectedFiles={(patterns: any) => { setSelectedPatternFiles(patterns) }}
                             />
                         </div>
                         <TextField

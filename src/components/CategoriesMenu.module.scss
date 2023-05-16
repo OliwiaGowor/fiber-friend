@@ -1,8 +1,12 @@
-@use './root';
+@use "./root";
 
+.categoriesMenuBtn {
+  width: calc(40% - 20px);
+  /*justify-content: start;*/
+}
 .categoriesMenu {
   ul {
-    width: 20vw;
+    width: 30vw;
     padding: 0;
   }
   .category {
@@ -11,7 +15,6 @@
     .btnCategory {
       @include root.menuElemButton();
     }
-
     .btnBack {
       flex-basis: 50%;
       justify-content: flex-start;

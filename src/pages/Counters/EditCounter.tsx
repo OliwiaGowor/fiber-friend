@@ -1,16 +1,11 @@
 import CounterGroup from '../../components/CounterGroup';
 import * as React from 'react';
 import classes from './NewCounter.module.scss';
-import { defer, json, useNavigate, useRouteLoaderData } from "react-router-dom";
+import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
 import CounterMiniature from '../../components/CounterMiniature';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
 
 //TO DO: connecting counters to patterns/projects
 export default function NewCounter() {
@@ -90,7 +85,6 @@ export default function NewCounter() {
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const method = 'post';
         if (counterGroupNameRef.current?.value.length) {
             const counterData = {
                 name: counterGroupNameRef.current?.value,
@@ -99,7 +93,7 @@ export default function NewCounter() {
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counterGroups.json';
 
             const response = await fetch(url, {
-                method: method,
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                 },

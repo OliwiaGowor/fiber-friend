@@ -1,26 +1,41 @@
 import { CircularProgress } from "@mui/material";
 import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
+import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
 import classes from './ProjectDetails.module.scss';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import TabsPanelDisplay from "../../components/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { FilesDisplay } from "../../components/FilesDisplay";
+import PhotosDisplay from "../../components/PhotosDisplay";
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
     const { project } = useRouteLoaderData('project-details') as { project: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
+
+    const fetchSelectedPattern = React.useCallback(async () => {
+        try {
+            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + project.connectedPattern + '.json');
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
+
+            const data = await response.json();
+            setSelectedPattern(data);
+
+        } catch (error) {
+            //setError("Something went wrong, try again.");
+        }
+    }, []);
+
+    React.useEffect(() => {
+        fetchSelectedPattern();
+    }, [fetchSelectedPattern]);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -59,35 +74,6 @@ export default function ProjectDetails() {
             return navigate('/fiber-friend/account/projects');
         }
     }
-
-    const handlePhotoRender = (project: any) => {
-        if (project.photos) {
-            return (
-                <div>
-                    {project.photos.map((photo: any, index: number) => (
-                        <SwiperSlide key={index} className={classes.addedPhoto}>
-                            <img
-                                className={classes.photo}
-                                src={`${photo.url}`}
-                                srcSet={`${photo.url}`}
-                                alt="not found"
-                                loading="lazy"
-                                width="449px"
-                                height="449px"
-                            />
-                        </SwiperSlide>
-                    ))}
-                </div>
-            );
-        } else {
-            return (
-                <SwiperSlide className={classes.addedPhoto}>
-                    <InsertPhotoIcon sx={{ fontSize: 449, color: 'grey', width: '100%', height: '100%' }} />
-                </SwiperSlide>
-            );
-        }
-    }
-
 
     return (
         <div className={classes.container}>
@@ -159,15 +145,7 @@ export default function ProjectDetails() {
                                 <div className={classes.sectionContainer}>
                                     <div className={classes.photosContainer}>
                                         <h2 className={classes.sectionHeader}>Photos</h2>
-                                        <Swiper
-                                            pagination={pagination}
-                                            modules={[Pagination, Navigation]}
-                                            className={classes.photos}
-                                            navigation={true}
-                                            rewind={true}
-                                        >
-                                            {handlePhotoRender(project)}
-                                        </Swiper>
+                                        <PhotosDisplay data={project} />
                                     </div>
                                 </div>
                             </div>
@@ -175,9 +153,17 @@ export default function ProjectDetails() {
                         <div className={classes.wholeScreenElements}>
                             <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                                <div className={classes.attributeName}>Patterns</div>
+                                <h3 className={classes.attributeName}>Patterns</h3>
+                                {selectedPattern &&
+                                    <div>
+                                        <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
+                                            <Button variant="contained">
+                                            {selectedPattern.name}
+                                            </Button>
+                                        </Link>
+                                    </div>}
                                 <FilesDisplay files={project.patterns} />
-                                <div className={classes.attributeName}>Notes</div>
+                                <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}>{project.notes}</div>
                             </div>
                         </div>

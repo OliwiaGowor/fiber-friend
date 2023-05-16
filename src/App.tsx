@@ -95,12 +95,14 @@ const router = createBrowserRouter([
           },
           {
             path: 'patterns',
-            element: <PatternsRoot />,
+            element: <PatternsRoot />,                
+            loader: patternsLoader,
+            id: 'patterns',
             children: [
               {
                 index: true,
                 element: <Patterns />,
-                loader: patternsLoader,
+
               },
               {
                 path: 'new-pattern',
@@ -116,8 +118,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Counters />,
-                
+                element: <Counters />, 
               },
               {
                 path: 'new-counter',

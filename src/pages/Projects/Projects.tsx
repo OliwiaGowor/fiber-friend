@@ -5,7 +5,6 @@ import Tiles from "../../components/Tiles";
 import classes from './Projects.module.scss'
 
 function Projects() {
-
     const { projects }: any = useRouteLoaderData("projects");
 
     return (
