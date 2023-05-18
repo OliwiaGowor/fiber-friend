@@ -15,6 +15,7 @@ import BasicTabsForm from "../../components/TabsPanelForm";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import TextEditor from "../../components/TextEditor/TextEditor";
 
 export default function EditProject() {
     const { project } = useRouteLoaderData('project-details') as { project: any };
@@ -284,6 +285,7 @@ export default function EditProject() {
                             defaultValue={project.notes}
                             inputRef={notesRef}
                         />
+                        <TextEditor />
                     </div>
                 </div>
                 <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Edit</Button>
