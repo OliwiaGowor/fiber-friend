@@ -35,7 +35,7 @@ export default function EditProject() {
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(project.photos);
     const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(project.patterns);
-    const notesRef = React.useRef<HTMLInputElement | null>(null);
+    const [notes, setNotes] = React.useState<any>([]);
     const [patterns, setPatterns] = React.useState<any>([]);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
 
@@ -74,7 +74,7 @@ export default function EditProject() {
     const handleChange = (event: SelectChangeEvent) => {
         setSelectedPattern(event.target.value as string);
     };
-    
+
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
     //Handle form submit - request
@@ -89,7 +89,7 @@ export default function EditProject() {
                 yarns: yarnsInfo,
                 photos: selectedImages,
                 patterns: selectedPatterns,
-                notes: notesRef.current?.value,
+                notes: notes,
                 connectedPattern: selectedPattern ? selectedPattern : null,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json';
@@ -275,17 +275,9 @@ export default function EditProject() {
                                 selectedFiles={(patterns: any) => { setSelectedPatterns(patterns) }}
                             />
                         </div>
-                        <TextField
-                            className={`${classes.notesField} ${classes.formInput}`}
-                            id="notes"
-                            multiline
-                            rows={15}
-                            label='Write your notes here'
-                            sx={{ width: '100%' }}
-                            defaultValue={project.notes}
-                            inputRef={notesRef}
-                        />
-                        <TextEditor />
+                        <div className={classes.notesField}>
+                            <TextEditor defaultValue={project.notes} getValue={(notes: any) => {setNotes(notes)}}/>
+                        </div>
                     </div>
                 </div>
                 <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Edit</Button>

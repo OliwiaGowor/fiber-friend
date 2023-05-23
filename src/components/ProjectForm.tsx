@@ -12,6 +12,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import TextEditor from "./TextEditor/TextEditor";
 
 export default function ProjectForm() {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function ProjectForm() {
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
     const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<any | null>(null);
-    const notesRef = React.useRef<HTMLInputElement | null>(null);
+    const [notes, setNotes] = React.useState<any>([]);
     const [patterns, setPatterns] = React.useState<any>([]);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
 
@@ -83,7 +84,7 @@ export default function ProjectForm() {
                 yarns: yarnsInfo,
                 photos: selectedImages,
                 patterns: selectedPatternFiles,
-                notes: notesRef.current?.value,
+                notes: notes,
                 connectedPattern: selectedPattern ? selectedPattern : null,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
@@ -260,15 +261,9 @@ export default function ProjectForm() {
                                 selectedFiles={(patterns: any) => { setSelectedPatternFiles(patterns) }}
                             />
                         </div>
-                        <TextField
-                            className={`${classes.notesField} ${classes.formInput}`}
-                            id="notes"
-                            multiline
-                            rows={15}
-                            label='Write your notes here'
-                            sx={{ width: '100%' }}
-                            inputRef={notesRef}
-                        />
+                        <div className={classes.notesField}>
+                            <TextEditor getValue={(notes: any) => {setNotes(notes)}}/>
+                        </div>
                     </div>
                 </div>
                 <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new project</Button>
