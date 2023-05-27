@@ -19,8 +19,12 @@
       font-weight: 900;
       font-size: 48px;
     }
+    .panelText {
+      font-size: 22px;
+      margin: 0;
+    }
     .btnSignup {
-      @include root.button($margin-tb: 0px, $margin-lr: 0px);
+      @include root.button($margin-tb: 30px, $margin-lr: 0px);
     }
   }
 

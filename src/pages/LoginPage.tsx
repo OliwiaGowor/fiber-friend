@@ -28,10 +28,14 @@ export default function LoginPage() {
         <div className={classes.container}>
             <div className={classes.sidePanel}>
                 <h1 className={classes.panelHeader}>Welcome back!</h1>
-
-                <div>Don't have an account?</div>
-                <Link to='/fiber-friend/signUp'><Button className={classes.btnSignup}>Sign up</Button></Link>
+                <p className={classes.panelText}>Don't have an account?</p>
+                <Link to='/fiber-friend/signUp'>
+                    <Button className={classes.btnSignup}>
+                        Sign up
+                    </Button>
+                </Link>
             </div>
+
             <div className={classes.loginForm}>
                 <Form className={classes.form}>
                     <h1>Log in</h1>

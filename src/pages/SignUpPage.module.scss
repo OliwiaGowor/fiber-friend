@@ -19,8 +19,12 @@
       font-size: 48px;
       font-weight: 900;
     }
+    .panelText {
+      font-size: 22px;
+      margin: 0;
+    }
     .btnSignin {
-      @include root.button($margin-tb: 0px, $margin-lr: 0px);
+      @include root.button($margin-tb: 30px, $margin-lr: 0px);
     }
   }
   .signUpForm {

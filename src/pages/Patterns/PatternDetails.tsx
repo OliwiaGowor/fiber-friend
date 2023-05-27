@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import { Suspense } from "react";
 import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
-import classes from './ProjectDetails.module.scss';
+import classes from './PatternDetails.module.scss';
 import TabsPanelDisplay from "../../components/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react';
@@ -12,22 +12,22 @@ import { FilesDisplay } from "../../components/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 
-export default function ProjectDetails() {
+export default function PatternDetails() {
     const navigate = useNavigate();
-    const { project } = useRouteLoaderData('project-details') as { project: any };
+    const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
+    const [selectedProject, setSelectedProject] = React.useState<any | null>(null);
 
-    const fetchSelectedPattern = React.useCallback(async () => {
+    const fetchSelectedProject = React.useCallback(async () => {
         try {
-            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + project.connectedPattern + '.json');
+            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + pattern.connectedProject + '.json');
             if (!response.ok) {
                 throw new Error('Something went wrong!');
             }
 
             const data = await response.json();
-            setSelectedPattern(data);
+            setSelectedProject(data);
 
         } catch (error) {
             //setError("Something went wrong, try again.");
@@ -35,8 +35,8 @@ export default function ProjectDetails() {
     }, []);
 
     React.useEffect(() => {
-        fetchSelectedPattern();
-    }, [fetchSelectedPattern]);
+        fetchSelectedProject();
+    }, [fetchSelectedProject]);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -53,7 +53,7 @@ export default function ProjectDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json', {
+        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + pattern.id + '.json', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,10 +79,10 @@ export default function ProjectDetails() {
     return (
         <div className={classes.container}>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={project}>
+                <Await resolve={pattern}>
                     <div className={classes.details}>
                         <h1 className={classes.header}>
-                            {project.name}
+                            {pattern.name}
                             <Button
                                 id="basic-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
@@ -107,7 +107,7 @@ export default function ProjectDetails() {
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
                                 <MenuItem onClick={handleClose}>
-                                    <Button onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit') }}>
+                                    <Button onClick={() => { return navigate('/fiber-friend/account/projects/' + pattern.id + '/edit') }}>
                                         Edit
                                     </Button>
                                 </MenuItem>
@@ -124,21 +124,21 @@ export default function ProjectDetails() {
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
-                                        {project.type ? project.type : <br></br>}
+                                        {pattern.type ? pattern.type : <br></br>}
 
                                         <div className={classes.attributeName}>Category: </div>
-                                        {project.category ? project.category : <br></br>}
+                                        {pattern.category ? pattern.category : <br></br>}
 
                                         <div className={classes.attributeName}>Start date: </div>
-                                        {project.startDate ? project.startDate : <br></br>}
+                                        {pattern.startDate ? pattern.startDate : <br></br>}
 
                                         <div className={classes.attributeName}>End date: </div>
-                                        {project.endDate ? project.endDate : <br></br>}
+                                        {pattern.endDate ? pattern.endDate : <br></br>}
                                     </div>
                                 </div>
                                 <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                                     <h2 className={classes.sectionHeader}>Yarns</h2>
-                                    <TabsPanelDisplay yarns={project.yarns ? project.yarns : null} />
+                                    <TabsPanelDisplay yarns={pattern.yarns ? pattern.yarns : null} />
                                 </div>
 
                             </div>
@@ -146,7 +146,7 @@ export default function ProjectDetails() {
                                 <div className={classes.sectionContainer}>
                                     <div className={classes.photosContainer}>
                                         <h2 className={classes.sectionHeader}>Photos</h2>
-                                        <PhotosDisplay data={project} />
+                                        <PhotosDisplay data={pattern} />
                                     </div>
                                 </div>
                             </div>
@@ -155,17 +155,17 @@ export default function ProjectDetails() {
                             <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Patterns and notes</h2>
                                 <h3 className={classes.attributeName}>Patterns</h3>
-                                {selectedPattern &&
+                                {selectedProject &&
                                     <div>
-                                        <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
+                                        <Link to={'/fiber-friend/account/patterns/' + pattern.connectedProject}>
                                             <Button variant="contained">
-                                            {selectedPattern.name}
+                                            {selectedProject.name}
                                             </Button>
                                         </Link>
                                     </div>}
-                                <FilesDisplay files={project.patterns} />
+                                <FilesDisplay files={pattern.patterns} />
                                 <h3 className={classes.attributeName}>Notes</h3>
-                                <div className={classes.notes}><TextDisplay defaultValue={project.notes}/></div>
+                                <div className={classes.notes}><TextDisplay defaultValue={pattern.notes}/></div>
                             </div>
                         </div>
                     </div>
@@ -175,16 +175,16 @@ export default function ProjectDetails() {
     );
 }
 
-async function loadProjectDetails(id: string) {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + id + '.json');
+async function loadPatternDetails(id: string) {
+    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + id + '.json');
 
     if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch project.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
+        // return { isError: true, message: 'Could not fetch pattern.' };
+        // throw new Response(JSON.stringify({ message: 'Could not fetch pattern.' }), {
         //   status: 500,
         // });
         throw json(
-            { message: 'Could not fetch project.' },
+            { message: 'Could not fetch pattern.' },
             {
                 status: 500,
             }
@@ -197,8 +197,8 @@ async function loadProjectDetails(id: string) {
 }
 
 export async function loader({ request, params }: any) {
-    const id = params.projectId;
+    const id = params.patternId;
     return defer({
-        project: await loadProjectDetails(id),
+        pattern: await loadPatternDetails(id),
     });
 }

@@ -29,9 +29,14 @@ export default function SignUpPage() {
         <div className={classes.container}>
             <div className={classes.sidePanel}>
                 <h1 className={classes.panelHeader}>Welcome back!</h1>
-                <div>Already have an account?</div>
-                <Link to='/fiber-friend/login'><Button className={classes.btnSignin}>Sign In</Button></Link>
+                <p className={classes.panelText}>Already have an account?</p>
+                <Link to='/fiber-friend/login'>
+                    <Button className={classes.btnSignin}>
+                        Sign In
+                    </Button>
+                </Link>
             </div>
+
             <div className={classes.signUpForm}>
                 <Form className={classes.form}>
                     <h1 className={classes.header}>Sign Up</h1>
@@ -127,7 +132,7 @@ export default function SignUpPage() {
                     </div>
                     <div className={classes.btnContainer}>
                         <Button className={classes.btnSubmit} disabled={isSubmitting}>
-                            {isSubmitting ? "Rejestrowanie..." : "Zarejestruj się"}
+                            {isSubmitting ? "Registering..." : "Register"}
                         </Button>
                     </div>
                 </Form>

@@ -5,8 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import BrushIcon from '@mui/icons-material/Brush';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ClickAwayListener from '@mui/base/ClickAwayListener';
-import { useState } from "react";
+import CalculateIcon from '@mui/icons-material/Calculate';
 
 function SidebarAccount({ open }: any) {
 
@@ -34,7 +33,7 @@ function SidebarAccount({ open }: any) {
                 </li>
                 <li className={classes.element}>
                     <Link to={'counters'} className={classes.link}>
-                        <ShoppingBasketIcon />
+                        <CalculateIcon />
                         <div className={classes.text}>Counters</div>
                     </Link>
                 </li>
@@ -43,14 +42,14 @@ function SidebarAccount({ open }: any) {
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Orders</div>
                     </Link>
-                </li>
+                </li>*/}
                 <li className={classes.element}>
                     <Link to={'supplies'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Supplies</div>
                     </Link>
                 </li>
-                <li className={classes.element}>
+                {/*<li className={classes.element}>
                     <Link to={'settings'} className={classes.link}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Settings</div>

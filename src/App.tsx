@@ -10,6 +10,7 @@ import PatternsRoot from './pages/Patterns/PatternsRoot';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ProjectDetails, { loader as projectDetailsLoader } from './pages/Projects/ProjectDetails';
+import PatternDetails, { loader as patternDetailsLoader } from './pages/Patterns/PatternDetails';
 import AccountRoot from './pages/AccountRoot';
 import NewPatternPage from './pages/Patterns/NewPatternPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -22,7 +23,8 @@ import EditProject from './pages/Projects/EditProject';
 import RecoverPassPage from './pages/RecoverPassPage';
 import CounterDetails, { loader as counterDetailsLoader }  from './pages/Counters/CounterDetails';
 import EditCounter from './pages/Counters/EditCounter';
-
+import Supplies, { loader as suppliesLoader } from './pages/Supplies/Supplies';
+import SuppliesRoot from './pages/Supplies/SuppliesRoot';
 
 const router = createBrowserRouter([
   {
@@ -74,7 +76,6 @@ const router = createBrowserRouter([
                   {
                     index: true,
                     element: <ProjectDetails />,
-                    //action: deleteEventAction,
                   },
                   {
                     path: 'edit',
@@ -103,6 +104,24 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Patterns />,
 
+              },
+              {
+                path: ':patternId',
+                id: 'pattern-details',
+                loader: patternDetailsLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <PatternDetails />,
+                  },
+                  /*{
+                    path: 'edit',
+                    element: <EditPattern />,
+                    //action: manipulateEventAction,
+                    //loader: checkAuthLoader,
+                  },*/
+
+                ],
               },
               {
                 path: 'new-pattern',
@@ -146,7 +165,43 @@ const router = createBrowserRouter([
                 ],
               },
             ]
-          }
+          },
+          {
+            path: 'supplies',
+            id: "supplies",
+            loader: suppliesLoader,
+            element: <SuppliesRoot />,
+            children: [
+              {
+                index: true,
+                element: <Supplies />,
+              },
+              /*{
+                path: ':projectId',
+                id: 'project-details',
+                loader: projectDetailsLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <ProjectDetails />,
+                  },
+                  {
+                    path: 'edit',
+                    element: <EditProject />,
+                    //action: manipulateEventAction,
+                    //loader: checkAuthLoader,
+                  },
+
+                ],
+              },
+              {
+                path: 'new-project',
+                element: <NewProjectPage />,
+                //action: manipulateProjectAction,
+                //loader: checkAuthLoader,
+              },*/
+            ]
+          },
         ]
       },
     ],
