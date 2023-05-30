@@ -153,8 +153,8 @@ export default function PatternDetails() {
                         </div>
                         <div className={classes.wholeScreenElements}>
                             <div className={classes.sectionContainer}>
-                                <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                                <h3 className={classes.attributeName}>Patterns</h3>
+                                <h2 className={classes.sectionHeader}>Files and notes</h2>
+                                <h3 className={classes.attributeName}>Files</h3>
                                 {selectedProject &&
                                     <div>
                                         <Link to={'/fiber-friend/account/patterns/' + pattern.connectedProject}>

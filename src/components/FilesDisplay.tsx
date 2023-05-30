@@ -50,7 +50,7 @@ export const FilesDisplay = <PROPS extends Props>({ files, ...rest }: PROPS): JS
                 ))}
             </div>
             {!files && <div className={classes.noFiles}>
-                <h2 className={classes.noFilesText}>No patterns</h2>
+                <h2 className={classes.noFilesText}>NO FILES</h2>
             </div>
             }
         </div>

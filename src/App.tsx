@@ -25,6 +25,7 @@ import CounterDetails, { loader as counterDetailsLoader }  from './pages/Counter
 import EditCounter from './pages/Counters/EditCounter';
 import Supplies, { loader as suppliesLoader } from './pages/Supplies/Supplies';
 import SuppliesRoot from './pages/Supplies/SuppliesRoot';
+import NewSupplyPage from './pages/Supplies/NewSupplyPage';
 
 const router = createBrowserRouter([
   {
@@ -193,13 +194,13 @@ const router = createBrowserRouter([
                   },
 
                 ],
-              },
+              },*/
               {
-                path: 'new-project',
-                element: <NewProjectPage />,
+                path: 'new-supply',
+                element: <NewSupplyPage />,
                 //action: manipulateProjectAction,
                 //loader: checkAuthLoader,
-              },*/
+              },
             ]
           },
         ]

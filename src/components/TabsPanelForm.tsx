@@ -166,12 +166,12 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                   'aria-label': 'tool',
                 }}
                 label="Tool size"
-
                 className={classes.formInput}
                 name='tool'
                 inputRef={toolSizeRef}
                 onChange={() => { handleData(yarn.yarn) }}
                 defaultValue={yarn.info.toolSize}
+                required
               />
 
               <TextField
@@ -199,7 +199,6 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                   'aria-label': 'stitch',
                 }}
                 label="Stitch"
-
                 className={classes.formInput}
                 name='stitch'
                 onChange={() => { handleData(yarn.yarn) }}
@@ -215,7 +214,6 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                   'aria-label': 'amount',
                 }}
                 label="Amount of yarn"
-
                 className={classes.formInput}
                 name='amount'
                 onChange={() => { handleData(yarn.yarn) }}

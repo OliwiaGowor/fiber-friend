@@ -6,33 +6,40 @@ import BrushIcon from '@mui/icons-material/Brush';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import Divider from "@mui/material/Divider";
+import * as React from 'react';
 
-function SidebarAccount({ open }: any) {
+function SidebarAccount({ open, getOpen }: any) {
+    const [isOpen, setIsOpen] = React.useState(open);
+    
+    React.useEffect(() => {
+       setIsOpen(open);
+    });
 
     return (
-        <div className={ open ? `${classes.container}` : `${classes.containerHidden}`}>
+        <aside className={ isOpen ? `${classes.container}` : `${classes.containerHidden}`}>
 
             <h2 className={classes.header}>
-                <Link to={'/fiber-friend/account'} className={classes.link}>
+                <Link to={'/fiber-friend/account'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
                     <AccountCircleIcon />
                     <div className={classes.text}>Account</div>
                 </Link>
             </h2>
             <ul className={classes.elements}>
                 <li className={classes.element}>
-                    <Link to={'projects'} className={classes.link}>
+                    <Link to={'/fiber-friend/account/projects'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
                         <GridOnIcon />
                         <div className={classes.text}>Projects</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'patterns'} className={classes.link}>
+                    <Link to={'/fiber-friend/account/patterns'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
                         <BrushIcon />
                         <div className={classes.text}>Patterns</div>
                     </Link>
                 </li>
                 <li className={classes.element}>
-                    <Link to={'counters'} className={classes.link}>
+                    <Link to={'/fiber-friend/account/counters'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
                         <CalculateIcon />
                         <div className={classes.text}>Counters</div>
                     </Link>
@@ -44,19 +51,21 @@ function SidebarAccount({ open }: any) {
                     </Link>
                 </li>*/}
                 <li className={classes.element}>
-                    <Link to={'supplies'} className={classes.link}>
+                    <Link to={'/fiber-friend/account/supplies'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
                         <ShoppingBasketIcon />
                         <div className={classes.text}>Supplies</div>
                     </Link>
                 </li>
-                {/*<li className={classes.element}>
-                    <Link to={'settings'} className={classes.link}>
-                        <ShoppingBasketIcon />
+
+                <Divider style={{width:'100%'}}/>
+                <li className={classes.element}>
+                    <Link to={'/fiber-friend/account/settings'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
+                        <SettingsIcon />
                         <div className={classes.text}>Settings</div>
                     </Link>
-                </li>*/}
+                </li>
             </ul>
-        </div>
+        </aside>
     );
 
 }

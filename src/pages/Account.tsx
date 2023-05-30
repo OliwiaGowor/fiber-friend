@@ -4,6 +4,20 @@ import MiniaturesList from "../components/MiniaturesList";
 import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CircularProgress from "@mui/material/CircularProgress";
+import CalculateIcon from '@mui/icons-material/Calculate';
+
+const tiles = [
+  {
+    title: "Counters",
+    icon: <CalculateIcon />,
+    link: 'counters',
+  },
+  {
+    title: "Supplies",
+    icon: <CalculateIcon />,
+    link: 'supplies',
+  },
+];
 
 export default function Account() {
   const { projects, patterns, orders }: any = useRouteLoaderData('account');
@@ -24,15 +38,19 @@ export default function Account() {
           <h1 className={classes.header}>PATTERNS<ArrowForwardIosIcon className={classes.arrow} /></h1>
         </Link>
         <Await resolve={patterns}>
-          {(loadedPatterns) => <MiniaturesList data={loadedPatterns} link={'patterns/new-pattern'}/>}
+          {(loadedPatterns) => <MiniaturesList data={loadedPatterns} link={'patterns/new-pattern'} />}
         </Await>
       </Suspense>
-      <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-        <h1 className={classes.header}>ORDERS<ArrowForwardIosIcon className={classes.arrow} /></h1>
-        <Await resolve={orders}>
-          {(loadedOrders) => <MiniaturesList data={loadedOrders} />}
-        </Await>
-      </Suspense>
+      <div className={classes.tiles} >
+        {tiles.map((tile: any) =>
+        <Link to={tile.link} key={tile.title}>
+          <div className={classes.tile}>
+            <h2 className={classes.name}>{tile.title}</h2>
+            {tile.icon}
+          </div>
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
