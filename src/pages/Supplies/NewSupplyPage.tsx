@@ -17,20 +17,21 @@ import FormHelperText from "@mui/material/FormHelperText";
 
 export default function NewSupplyPage() {
     const navigate = useNavigate();
+    const re = /[0-9]/;
     const [type, setType] = React.useState('yarn');
-    const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
     const [notes, setNotes] = React.useState<any>([]);
-    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
     const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
     const gaugeRef = React.useRef<HTMLInputElement | null>(null);
     const weightRef = React.useRef<HTMLInputElement | null>(null);
     const amountRef = React.useRef<HTMLInputElement | null>(null);
+    const metersRef = React.useRef<HTMLInputElement | null>(null);
+    const toolTypeRef = React.useRef<HTMLInputElement | null>(null);
+    const otherTypeRef = React.useRef<HTMLInputElement | null>(null);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -38,20 +39,39 @@ export default function NewSupplyPage() {
         }
     };
 
-    let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (proceedSubmit) {
-            const projectData = {
-                name: nameRef.current?.value,
-                type: type,
-                yarns: yarnsInfo,
-                photos: selectedImages,
-                notes: notes,
-            };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
+            let projectData;
+            if(type === "yarn") {
+                projectData = {
+                    name: nameRef.current?.value,
+                    type: type,
+                    toolSize: toolSizeRef.current?.value,
+                    gauge: gaugeRef.current?.value,
+                    weight: weightRef.current?.value,
+                    meters: metersRef.current?.value,
+                    notes: notes,
+                };
+            } else if (type === 'tool') {
+                projectData = {
+                    name: nameRef.current?.value,
+                    type: type,
+                    toolSize: toolSizeRef.current?.value,
+                    toolType: toolTypeRef.current?.value,
+                    notes: notes,
+                };
+            } else {
+                projectData = {
+                    name: nameRef.current?.value,
+                    type: type,
+                    otherType: otherTypeRef.current?.value,
+                    notes: notes,
+                };
+            }
+            
+            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/supplies.json';
 
             const response = await fetch(url, {
                 method: 'post',
@@ -77,13 +97,119 @@ export default function NewSupplyPage() {
 
     //Form validation
     const validateForm = () => {
-        if (yarnsInfo.length <= 0) {
-            setShowYarnsError(true);
-            setProceedSubmit(false);
-        }
         if (!nameRef.current?.value) {
             setShowNameError(true);
             setProceedSubmit(false);
+        }
+    };
+
+    const renderFormElements = () => {
+        if (type === 'yarn') {
+            return (
+                <>
+                    <div className={classes.additionalInfo}>
+                        <TextField
+                            aria-describedby="tool-helper-text"
+                            inputProps={{
+                                'aria-label': 'tool',
+                            }}
+                            label="Tool size"
+                            className={classes.formInput}
+                            name='tool'
+                            inputRef={toolSizeRef}
+                            required
+                        />
+
+                        <TextField
+                            aria-describedby="gauge-helper-text"
+                            inputProps={{
+                                'aria-label': 'gauge',
+                            }}
+                            label="Gauge"
+                            className={classes.formInput}
+                            name='gauge'
+                            inputRef={gaugeRef}
+                            required
+                        />
+                    </div>
+
+                    <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
+
+                    <div className={classes.additionalInfo}>
+                        <TextField
+                            aria-describedby="weight-helper-text"
+                            inputProps={{
+                                'aria-label': 'weight',
+                            }}
+                            label="Skein weight"
+                            className={classes.formInput}
+                            name='weight'
+                            inputRef={weightRef}
+                            required
+                        />
+
+                        <TextField
+                            aria-describedby="meters-helper-text"
+                            inputProps={{
+                                'aria-label': 'meters',
+                            }}
+                            label="Meters in skein"
+                            className={classes.formInput}
+                            name='meters'
+                            inputRef={metersRef}
+                            required
+                        />
+                    </div>
+                </>
+            );
+        } else if (type === 'tool') {
+            return (
+                <>
+                    <div className={classes.additionalInfo}>
+                        <TextField
+                            aria-describedby="size-helper-text"
+                            inputProps={{
+                                'aria-label': 'size',
+                            }}
+                            label="Size"
+                            className={classes.formInput}
+                            name='size'
+                            inputRef={toolSizeRef}
+                            required
+                        />
+
+                        <TextField
+                            aria-describedby="tool-type-helper-text"
+                            inputProps={{
+                                'aria-label': 'tool-type',
+                            }}
+                            label="Tool type"
+                            className={classes.formInput}
+                            name='toolType'
+                            inputRef={toolTypeRef}
+                            required
+                        />
+                    </div>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <div className={classes.additionalInfo}>
+                        <TextField
+                            aria-describedby="other-type-helper-text"
+                            inputProps={{
+                                'aria-label': 'other-type',
+                            }}
+                            label="Type"
+                            className={classes.formInput}
+                            name='otherType'
+                            inputRef={otherTypeRef}
+                            required
+                        />
+                    </div>
+                </>
+            );
         }
     };
 
@@ -145,68 +271,30 @@ export default function NewSupplyPage() {
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </div>
-                        <div className={classes.additionalInfo}>
-                            <TextField
-                                aria-describedby="tool-helper-text"
-                                inputProps={{
-                                    'aria-label': 'tool',
-                                }}
-                                label="Tool size"
-                                className={classes.formInput}
-                                name='tool'
-                                inputRef={toolSizeRef}
-                            />
-
-                            <TextField
-                                aria-describedby="gauge-helper-text"
-                                inputProps={{
-                                    'aria-label': 'gauge',
-                                }}
-                                label="Gauge"
-                                className={classes.formInput}
-                                name='gauge'
-                                inputRef={gaugeRef}
-                                required
-                            />
-                        </div>
-
-                        <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
-
-                        <div className={classes.additionalInfo}>
-                            <TextField
-                                aria-describedby="weight-helper-text"
-                                inputProps={{
-                                    'aria-label': 'weight',
-                                }}
-                                label="Weight"
-                                className={classes.formInput}
-                                name='weight'
-                                inputRef={weightRef}
-                                required
-                            />
-
-                            <TextField
-                                aria-describedby="amount-helper-text"
-                                inputProps={{
-                                    'aria-label': 'amount',
-                                }}
-                                label="Amount in skein"
-                                className={classes.formInput}
-                                name='amount'
-                                inputRef={amountRef}
-                                required
-                            />
-                        </div>
+                        {renderFormElements()}
+                        <TextField
+                            id="amount"
+                            inputProps={{
+                                'aria-label': 'amount',
+                            }}
+                            label="Amount"
+                            className={classes.formInput}
+                            name='name'
+                            inputRef={amountRef}
+                            //error={showAmountError}
+                            helperText={showNameError ? 'Enter supply amount!' : ''}
+                            //onChange={() => { setShowNameError(false) }}
+                        />
                     </div>
 
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Photos</h2>
-                        <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
+                        <p className={classes.additionalText}>Add a photo!</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={true}
                                 addHeader={'Add photo'}
-                                maxFiles={10}
+                                maxFiles={1}
                                 selectedFiles={(images: any) => { setSelectedImages(images) }}
                             />
                         </div>

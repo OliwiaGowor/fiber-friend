@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import { Suspense } from "react";
 import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
-import classes from './PatternDetails.module.scss';
+import classes from './SupplyDetails.module.scss';
 import TabsPanelDisplay from "../../components/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react';
@@ -12,31 +12,11 @@ import { FilesDisplay } from "../../components/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 
-export default function PatternDetails() {
+export default function SupplyDetails() {
     const navigate = useNavigate();
-    const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };
+    const { supply } = useRouteLoaderData('supply-details') as { supply: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const [selectedProject, setSelectedProject] = React.useState<any | null>(null);
-
-    const fetchSelectedProject = React.useCallback(async () => {
-        try {
-            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + pattern.connectedProject + '.json');
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
-
-            const data = await response.json();
-            setSelectedProject(data);
-
-        } catch (error) {
-            //setError("Something went wrong, try again.");
-        }
-    }, []);
-
-    React.useEffect(() => {
-        fetchSelectedProject();
-    }, [fetchSelectedProject]);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -53,7 +33,7 @@ export default function PatternDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + pattern.id + '.json', {
+        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/supplies/' + supply.id + '.json', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +46,7 @@ export default function PatternDetails() {
             //   status: 500,
             // });
             throw json(
-                { message: 'Could not fetch project.' },
+                { message: 'Could not fetch supply.' },
                 {
                     status: 500,
                 }
@@ -74,15 +54,56 @@ export default function PatternDetails() {
         } else {
             return navigate('/fiber-friend/account/projects');
         }
-    }
+    };
+
+    const renderInfoElements = () => {
+        if (supply.type === 'yarn') {
+            return (
+                <>
+                    <div className={classes.attributeName}>Tool size: </div>
+                    {supply.category ? supply.toolSize : <br></br>}
+
+                    <div className={classes.attributeName}>Gauge: </div>
+                    {supply.startDate ? supply.gauge : <br></br>}
+
+                    <div className={classes.attributeName}>Skein weight: </div>
+                    {supply.endDate ? supply.weight : <br></br>}
+
+                    <div className={classes.attributeName}>Meters in skein: </div>
+                    {supply.endDate ? supply.meters : <br></br>}
+                </>
+            );
+        } else if (supply.type === 'tool') {
+            return (
+                <>
+                    <div className={classes.attributeName}>Tool size: </div>
+                    {supply.category ? supply.toolSize : <br></br>}
+
+                    <div className={classes.attributeName}>Tool type: </div>
+                    {supply.startDate ? supply.toolType : <br></br>}
+
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <div className={classes.attributeName}>Tool size: </div>
+                    {supply.category ? supply.toolSize : <br></br>}
+
+                    <div className={classes.attributeName}>Tool type: </div>
+                    {supply.startDate ? supply.toolType : <br></br>}
+                </>
+            );
+        }
+    };
 
     return (
         <div className={classes.container}>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={pattern}>
+                <Await resolve={supply}>
                     <div className={classes.details}>
                         <h1 className={classes.header}>
-                            {pattern.name}
+                            {supply.name}
                             <Button
                                 id="basic-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
@@ -106,11 +127,11 @@ export default function PatternDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
-                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/projects/' + pattern.id + '/edit'); }}>
+                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/supplies/' + supply.id + '/edit'); }}>
                                     Edit
                                 </MenuItem>
-                                <MenuItem onClick={() => { handleClose(); handleDelete(); }}>
-                                    Delete pattern
+                                <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
+                                    Delete counter
                                 </MenuItem>
                             </Menu>
                         </div>
@@ -118,50 +139,26 @@ export default function PatternDetails() {
                             <div className={classes.leftElements}>
                                 <div className={classes.sectionContainer}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
-                                    <div className={classes.projectInfoContainer}>
+                                    <div className={classes.supplyInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
-                                        {pattern.type ? pattern.type : <br></br>}
-
-                                        <div className={classes.attributeName}>Category: </div>
-                                        {pattern.category ? pattern.category : <br></br>}
-
-                                        <div className={classes.attributeName}>Start date: </div>
-                                        {pattern.startDate ? pattern.startDate : <br></br>}
-
-                                        <div className={classes.attributeName}>End date: </div>
-                                        {pattern.endDate ? pattern.endDate : <br></br>}
+                                        {supply.type ? supply.type : <br></br>}
+                                        {renderInfoElements()}
                                     </div>
                                 </div>
-                                <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                                    <h2 className={classes.sectionHeader}>Yarns</h2>
-                                    <TabsPanelDisplay yarns={pattern.yarns ? pattern.yarns : null} />
-                                </div>
-
                             </div>
                             <div className={classes.rightElements}>
                                 <div className={classes.sectionContainer}>
                                     <div className={classes.photosContainer}>
                                         <h2 className={classes.sectionHeader}>Photos</h2>
-                                        <PhotosDisplay data={pattern} />
+                                        <PhotosDisplay data={supply} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className={classes.wholeScreenElements}>
                             <div className={classes.sectionContainer}>
-                                <h2 className={classes.sectionHeader}>Files and notes</h2>
-                                <h3 className={classes.attributeName}>Files</h3>
-                                {selectedProject &&
-                                    <div>
-                                        <Link to={'/fiber-friend/account/patterns/' + pattern.connectedProject}>
-                                            <Button variant="contained">
-                                                {selectedProject.name}
-                                            </Button>
-                                        </Link>
-                                    </div>}
-                                <FilesDisplay files={pattern.patterns} />
-                                <h3 className={classes.attributeName}>Notes</h3>
-                                <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
+                                <h2 className={classes.sectionHeader}>Notes</h2>
+                                <div className={classes.notes}><TextDisplay defaultValue={supply.notes} /></div>
                             </div>
                         </div>
                     </div>
@@ -171,16 +168,16 @@ export default function PatternDetails() {
     );
 }
 
-async function loadPatternDetails(id: string) {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + id + '.json');
+async function loadSupplyDetails(id: string) {
+    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/supplies/' + id + '.json');
 
     if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch pattern.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch pattern.' }), {
+        // return { isError: true, message: 'Could not fetch project.' };
+        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
         //   status: 500,
         // });
         throw json(
-            { message: 'Could not fetch pattern.' },
+            { message: 'Could not fetch project.' },
             {
                 status: 500,
             }
@@ -193,8 +190,8 @@ async function loadPatternDetails(id: string) {
 }
 
 export async function loader({ request, params }: any) {
-    const id = params.patternId;
+    const id = params.supplyId;
     return defer({
-        pattern: await loadPatternDetails(id),
+        supply: await loadSupplyDetails(id),
     });
 }

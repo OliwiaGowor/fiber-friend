@@ -76,15 +76,11 @@ export default function CounterDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
-                                <MenuItem onClick={handleClose}>
-                                    <Button onClick={() => { return navigate('/fiber-friend/account/counters/' + counterGroup.id + '/edit') }}>
-                                        Edit
-                                    </Button>
+                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/counters/' + counterGroup.id + '/edit'); }}>
+                                    Edit
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    <Button onClick={handleDelete}>
-                                        Delete counter
-                                    </Button>
+                                <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
+                                    Delete counter
                                 </MenuItem>
                             </Menu>
                         </div>

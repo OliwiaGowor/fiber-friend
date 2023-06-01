@@ -26,7 +26,7 @@ export default function NewProjectPage() {
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [dateError, setDateError] = React.useState<any>(null);
     const [startDate, setStartDate] = React.useState<any>();
-    const [endDate, setEndDate] = React.useState<any>();
+    const [endDate, setEndDate] = React.useState<any>(null);
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
     const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<any | null>(null);
@@ -82,10 +82,13 @@ export default function NewProjectPage() {
                 type: type,
                 category: category,
                 yarns: yarnsInfo,
+                startDate: startDate,
+                endDate: endDate,
                 photos: selectedImages,
                 patterns: selectedPatternFiles,
                 notes: notes,
                 connectedPattern: selectedPattern ? selectedPattern : null,
+                finished: endDate !== null ? true : false,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
 
@@ -214,6 +217,8 @@ export default function NewProjectPage() {
                                 minDate={startDate}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
                             />
+                            <br></br>
+                            <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
                         </div>
                     </div>
 

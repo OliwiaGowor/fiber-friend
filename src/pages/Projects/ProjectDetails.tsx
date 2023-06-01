@@ -11,6 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import { FilesDisplay } from "../../components/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
@@ -18,6 +21,16 @@ export default function ProjectDetails() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
+    const [anchorElPopover, setAnchorElPopover] = React.useState<HTMLElement | null>(null);
+    const openPopover = Boolean(anchorElPopover);
+
+    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElPopover(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorElPopover(null);
+    };
 
     const fetchSelectedPattern = React.useCallback(async () => {
         try {
@@ -82,7 +95,40 @@ export default function ProjectDetails() {
                 <Await resolve={project}>
                     <div className={classes.details}>
                         <h1 className={classes.header}>
-                            {project.name}
+                            <div>
+                                <div className={classes.name}>{project.name}</div>
+                                {project.finished &&
+                                    <Typography
+                                        aria-owns={openPopover ? 'mouse-over-popover' : undefined}
+                                        aria-haspopup="true"
+                                        onMouseEnter={handlePopoverOpen}
+                                        onMouseLeave={handlePopoverClose}
+                                        sx={{ display: "inline-block" }}
+                                    >
+                                        <CheckCircleIcon sx={{ fontSize: 30 }} />
+                                    </Typography>
+                                }
+                                <Popover
+                                    id="mouse-over-popover"
+                                    sx={{
+                                        pointerEvents: 'none',
+                                    }}
+                                    open={openPopover}
+                                    anchorEl={anchorElPopover}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                    }}
+                                    onClose={handlePopoverClose}
+                                    disableRestoreFocus
+                                >
+                                    <Typography sx={{ p: 2 }}>Project finished</Typography>
+                                </Popover>
+                            </div>
                             <Button
                                 id="basic-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
@@ -91,7 +137,7 @@ export default function ProjectDetails() {
                                 onClick={handleClick}
                                 className={classes.editButton}
                             >
-                                <EditIcon className={classes.editIcon} />
+                                <EditIcon sx={{ fontSize: 32 }} />
                             </Button>
                         </h1>
                         <div className={classes.editMenu}>
@@ -106,21 +152,17 @@ export default function ProjectDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
-                                <MenuItem onClick={handleClose}>
-                                    <Button onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit') }}>
-                                        Edit
-                                    </Button>
+                                <MenuItem onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit'); handleClose(); }} disableRipple>
+                                    Edit
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    <Button onClick={handleDelete}>
-                                        Delete project
-                                    </Button>
+                                <MenuItem onClick={() => { handleClose(); handleDelete() }} disableRipple>
+                                    Delete project
                                 </MenuItem>
                             </Menu>
                         </div>
                         <div className={classes.dividedContainer}>
                             <div className={classes.leftElements}>
-                                <div className={classes.sectionContainer}>
+                                <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
@@ -159,13 +201,13 @@ export default function ProjectDetails() {
                                     <div>
                                         <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
                                             <Button variant="contained">
-                                            {selectedPattern.name}
+                                                {selectedPattern.name}
                                             </Button>
                                         </Link>
                                     </div>}
                                 <FilesDisplay files={project.patterns} />
                                 <h3 className={classes.attributeName}>Notes</h3>
-                                <div className={classes.notes}><TextDisplay defaultValue={project.notes}/></div>
+                                <div className={classes.notes}><TextDisplay defaultValue={project.notes} /></div>
                             </div>
                         </div>
                     </div>

@@ -24,7 +24,8 @@
         .datePickers {
           display: block;
           .dateInput {
-            @include input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+            @include input($margin-lr: 0, $margin-tb: 10px, $width: 100%);
+            margin-top: 20px;
           }
         }
         .typeToggleContainer {
@@ -36,6 +37,7 @@
         .categoriesContainer {
           margin-top: 40px;
           margin-bottom: 20px;
+          width: 100%;
         }
         .toggleButton {
           color: var(--text-color-dark);
@@ -69,7 +71,7 @@
   }
 }
 
-@media screen and (min-width: 760px) {
+@media screen and (min-width: 800px) {
   .container {
     .form {
       .formContent {
@@ -80,13 +82,19 @@
           .datePickers {
             display: grid;
             grid-template-columns: repeat(2, calc(40% - 20px));
-            gap: 40px;
+            column-gap: 40px;
+            .additionalText {
+              margin: 0;
+            }
           }
           .notesField {
             width: 80%;
           }
           .photoInput {
             width: 80%;
+          }
+          .categoriesContainer {
+            width: calc(40% - 20px);
           }
         }
       }

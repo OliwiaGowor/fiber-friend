@@ -34,7 +34,7 @@ export default function EditProject() {
     const [endDate, setEndDate] = React.useState<any>(project.endDate);
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(project.photos);
-    const [selectedPatterns, setSelectedPatterns] = React.useState<any | null>(project.patterns);
+    const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<any | null>(project.patterns);
     const [notes, setNotes] = React.useState<any>([]);
     const [patterns, setPatterns] = React.useState<any>([]);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
@@ -65,6 +65,7 @@ export default function EditProject() {
     React.useEffect(() => {
         fetchAvailablePatterns();
     }, [fetchAvailablePatterns]);
+
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
             setType(newType);
@@ -87,10 +88,13 @@ export default function EditProject() {
                 type: type,
                 category: category,
                 yarns: yarnsInfo,
+                startDate: startDate,
+                endDate: endDate,
                 photos: selectedImages,
-                patterns: selectedPatterns,
+                patterns: selectedPatternFiles,
                 notes: notes,
                 connectedPattern: selectedPattern ? selectedPattern : null,
+                finished: endDate !== null ? true : false,
             };
             let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json';
 
@@ -138,7 +142,7 @@ export default function EditProject() {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Create new project</h1>
+            <h1 className={classes.header}>Edit project</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
@@ -157,13 +161,14 @@ export default function EditProject() {
                             onChange={() => { setShowNameError(false) }}
                             defaultValue={project.name}
                         />
-                        <div className={classes.typeToggle}>
+                        <div className={classes.typeToggleContainer}>
                             <ToggleButtonGroup
                                 value={type}
                                 exclusive
                                 onChange={handleType}
                                 aria-label="text alignment"
                                 id="types"
+                                className={classes.typeToggle}
                             >
                                 <ToggleButton value="crochet" className={classes.toggleButton} aria-label="crochet" disableRipple
                                     sx={{
@@ -215,17 +220,18 @@ export default function EditProject() {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
-                                defaultValue={project.startDate}
+                                //defaultValue={project.startDate}
                             />
                             <DatePicker
                                 className={classes.dateInput}
                                 label="End date"
                                 format="DD-MM-YYYY"
-                                minDate={startDate}
+                                //minDate={startDate}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
-                                defaultValue={project.endDate}
+                                //defaultValue={project.endDate}
                             />
-
+                            <br></br>
+                            <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
                         </div>
                     </div>
 
@@ -272,7 +278,7 @@ export default function EditProject() {
                                 addHeader={'Add patterns'}
                                 maxFiles={5}
                                 defaultValue={project.patterns}
-                                selectedFiles={(patterns: any) => { setSelectedPatterns(patterns) }}
+                                selectedFiles={(patterns: any) => { setSelectedPatternFiles(patterns) }}
                             />
                         </div>
                         <div className={classes.notesField}>

@@ -26,6 +26,7 @@ import EditCounter from './pages/Counters/EditCounter';
 import Supplies, { loader as suppliesLoader } from './pages/Supplies/Supplies';
 import SuppliesRoot from './pages/Supplies/SuppliesRoot';
 import NewSupplyPage from './pages/Supplies/NewSupplyPage';
+import SupplyDetails, {loader as supplyDetailsLoader} from './pages/Supplies/SupplyDetails';
 
 const router = createBrowserRouter([
   {
@@ -177,14 +178,14 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Supplies />,
               },
-              /*{
-                path: ':projectId',
-                id: 'project-details',
-                loader: projectDetailsLoader,
+              {
+                path: ':supplyId',
+                id: 'supply-details',
+                loader: supplyDetailsLoader,
                 children: [
                   {
                     index: true,
-                    element: <ProjectDetails />,
+                    element: <SupplyDetails />,
                   },
                   {
                     path: 'edit',
@@ -194,7 +195,7 @@ const router = createBrowserRouter([
                   },
 
                 ],
-              },*/
+              },
               {
                 path: 'new-supply',
                 element: <NewSupplyPage />,
