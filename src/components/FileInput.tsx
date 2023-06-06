@@ -10,8 +10,6 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from "@mui/material/Collapse";
 
-//TO DO: fix defaultValue
-
 type Props = {
   onlyImg: boolean;
   addHeader: string;

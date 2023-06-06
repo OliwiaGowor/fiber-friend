@@ -27,6 +27,9 @@ import Supplies, { loader as suppliesLoader } from './pages/Supplies/Supplies';
 import SuppliesRoot from './pages/Supplies/SuppliesRoot';
 import NewSupplyPage from './pages/Supplies/NewSupplyPage';
 import SupplyDetails, {loader as supplyDetailsLoader} from './pages/Supplies/SupplyDetails';
+import EditPattern from './pages/Patterns/EditPattern';
+import EditSupply from './pages/Supplies/EditSupply';
+import AccountSettings from './pages/AccountSettings';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +62,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Account />,
+          },
+          {
+            path: 'account-settings',
+            element: <AccountSettings />,
           },
           {
             path: 'projects',
@@ -116,12 +123,12 @@ const router = createBrowserRouter([
                     index: true,
                     element: <PatternDetails />,
                   },
-                  /*{
+                  {
                     path: 'edit',
                     element: <EditPattern />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
-                  },*/
+                  },
 
                 ],
               },
@@ -189,7 +196,7 @@ const router = createBrowserRouter([
                   },
                   {
                     path: 'edit',
-                    element: <EditProject />,
+                    element: <EditSupply />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
                   },

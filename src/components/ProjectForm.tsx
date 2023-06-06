@@ -1,44 +1,40 @@
-import { json, useRouteLoaderData, useNavigate } from "react-router-dom";
-import classes from './EditProject.module.scss';
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import * as React from 'react';
-import Button from '@mui/material/Button';
 import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import React, { useCallback, useEffect } from "react";
+import classes from './ProjectForm.module.scss';
+import Button from "@mui/material/Button";
+import CategoriesMenu from "./CategoriesMenu";
+import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
+import { FileInput } from './FileInput';
+import BasicTabsForm from "./TabsPanelForm";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import CategoriesMenu from "../../components/CategoriesMenu";
-import { FileInput } from "../../components/FileInput";
-import BasicTabsForm from "../../components/TabsPanelForm";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import TextEditor from "../../components/TextEditor/TextEditor";
+import TextEditor from "./TextEditor/TextEditor";
 
-export default function EditProject() {
-    const { project } = useRouteLoaderData('project-details') as { project: any };
+export default function ProjectForm() {
     const navigate = useNavigate();
-    const [type, setType] = React.useState(project.type);
-    const [yarnsInfo, setYarnsInfo] = React.useState<any>(project.yarns ? project.yarns : []);
+    const [type, setType] = React.useState('crochet');
+    const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    const [category, setCategory] = React.useState<string | null>(project.category);
+    const [category, setCategory] = React.useState<string | null>();
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
     const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [dateError, setDateError] = React.useState<any>(null);
-    const [startDate, setStartDate] = React.useState<any>(project.startDate);
-    const [endDate, setEndDate] = React.useState<any>(project.endDate);
+    const [startDate, setStartDate] = React.useState<any>();
+    const [endDate, setEndDate] = React.useState<any>();
     const [requiredError, setRequiredError] = React.useState<any>(false);
-    const [selectedImages, setSelectedImages] = React.useState<any | null>(project.photos);
-    const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<any | null>(project.patterns);
+    const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
+    const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<any | null>(null);
     const [notes, setNotes] = React.useState<any>([]);
     const [patterns, setPatterns] = React.useState<any>([]);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
 
-    const fetchAvailablePatterns = React.useCallback(async () => {
+    const fetchAvailablePatterns = useCallback(async () => {
         try {
             const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
             if (!response.ok) {
@@ -61,7 +57,7 @@ export default function EditProject() {
         }
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchAvailablePatterns();
     }, [fetchAvailablePatterns]);
 
@@ -82,23 +78,19 @@ export default function EditProject() {
         e.preventDefault();
         if (proceedSubmit) {
             const projectData = {
-                id: project.id,
                 name: nameRef.current?.value,
                 type: type,
                 category: category,
                 yarns: yarnsInfo,
-                startDate: startDate,
-                endDate: endDate,
                 photos: selectedImages,
                 patterns: selectedPatternFiles,
                 notes: notes,
                 connectedPattern: selectedPattern ? selectedPattern : null,
-                finished: endDate !== null ? true : false,
             };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + project.id + '.json';
+            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
 
             const response = await fetch(url, {
-                method: 'PATCH',
+                method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -141,7 +133,7 @@ export default function EditProject() {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Edit project</h1>
+            <h1 className={classes.header}>Create new project</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
@@ -158,7 +150,6 @@ export default function EditProject() {
                             error={showNameError}
                             helperText={showNameError ? 'Enter project name!' : ''}
                             onChange={() => { setShowNameError(false) }}
-                            defaultValue={project.name}
                         />
                         <div className={classes.typeToggleContainer}>
                             <ToggleButtonGroup
@@ -199,11 +190,7 @@ export default function EditProject() {
                             </ToggleButtonGroup>
                         </div>
                         <div className={classes.categoriesContainer}>
-                            <CategoriesMenu
-                                showError={showCategoriesError}
-                                choseCategory={(categ: string) => { setCategory(categ) }}
-                                defaultValue={project.category}
-                            />
+                            <CategoriesMenu showError={showCategoriesError} choseCategory={(categ: string) => { setCategory(categ) }} />
                         </div>
                         <div className={classes.datePickers}>
                             <DatePicker
@@ -219,18 +206,14 @@ export default function EditProject() {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
-                                //defaultValue={project.startDate}
                             />
                             <DatePicker
                                 className={classes.dateInput}
                                 label="End date"
                                 format="DD-MM-YYYY"
-                                //minDate={startDate}
+                                minDate={startDate}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
-                                //defaultValue={project.endDate}
                             />
-                            <br></br>
-                            <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
                         </div>
                     </div>
 
@@ -242,7 +225,6 @@ export default function EditProject() {
                                 onlyImg={true}
                                 addHeader={'Add photo'}
                                 maxFiles={10}
-                                defaultValue={project.photos}
                                 selectedFiles={(images: any) => { setSelectedImages(images) }}
                             />
                         </div>
@@ -251,7 +233,7 @@ export default function EditProject() {
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} defaultValue={project.yarns} />
+                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} />
                     </div>
 
                     <div className={classes.sectionContainer}>
@@ -270,24 +252,21 @@ export default function EditProject() {
                                 <MenuItem value={pattern.id}>{pattern.name}</MenuItem>
                             ))}
                         </Select>
-                        <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
+                        <p className={classes.additionalText}>Add up to 5 files with patterns.</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={false}
                                 addHeader={'Add patterns'}
                                 maxFiles={5}
-                                defaultValue={project.patterns}
                                 selectedFiles={(patterns: any) => { setSelectedPatternFiles(patterns) }}
                             />
                         </div>
                         <div className={classes.notesField}>
-                            <TextEditor 
-                            defaultValue={project.notes} 
-                            getValue={(notes: any) => {setNotes(notes)}}/>
+                            <TextEditor getValue={(notes: any) => {setNotes(notes)}}/>
                         </div>
                     </div>
                 </div>
-                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Edit</Button>
+                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new project</Button>
             </form>
         </div>
     );
