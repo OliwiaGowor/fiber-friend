@@ -1,0 +1,88 @@
+@use "../../components/root.scss";
+@use "./NewProjectPage.module.scss";
+
+.container {
+  width: 100%;
+  margin-top: 50px;
+  font-size: 16px;
+  .form {
+    .formContent {
+      gap: 100px;
+
+      .sectionContainer {
+        background-color: var(--background-accents);
+        padding: 32px;
+        margin: 32px 0;
+        border-radius: 10px;
+
+        .formInput {
+          @include NewProjectPage.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+        }
+
+        .typeToggleContainer {
+          margin: 20px 0;
+          .typeToggle {
+            width: 100%;
+          }
+        }
+        .categoriesContainer {
+          margin-top: 20px;
+          margin-bottom: 10px;
+          width: 100%;
+        }
+
+        .toggleButton {
+          color: var(--text-color-dark);
+          width: 100%;
+          &:hover {
+            background-color: var(--accent-color-btn);
+            transition: 0.5s;
+          }
+        }
+        .additionalText {
+          color: rgb(87, 87, 87);
+          font-size: 16px;
+        }
+        .notesField {
+          width: 100%;
+          margin-top: 40px;
+          margin-bottom: 40px;
+        }
+      }
+    }
+    .submitBtn {
+      @include root.button($margin-tb: 0px, $margin-lr: 0px);
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .container {
+    .form {
+      .formContent {
+        .sectionContainer {
+          .formInput {
+            @include NewProjectPage.input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
+          }
+          .datePickers {
+            display: grid;
+            grid-template-columns: repeat(2, calc(40% - 20px));
+            column-gap: 40px;
+            .additionalText {
+              margin: 0;
+            }
+          }
+          .notesField {
+            width: 80%;
+          }
+          .toggleButton {
+            width: calc((40% - 20px) / 3);
+          }
+          .categoriesContainer {
+            width: calc(40% - 20px);
+          }
+        }
+      }
+    }
+  }
+}

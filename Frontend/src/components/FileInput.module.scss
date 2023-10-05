@@ -1,0 +1,50 @@
+.photosContainer {
+  .photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 200px);
+    gap: 20px;
+    border: 1px dashed grey;
+    background-color: var(--background-color);
+    width: 100%;
+    .addPhoto {
+      height: inherit;
+      .btnAddPhoto {
+        height: 250px;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 30px;
+        color: var(--main-color-dark);
+        background-color: var(--background-accents);
+        .btnAddPhotoText {
+          color: var(--text-color-dark);
+        }
+      }
+    }
+    .addedPhoto {
+      position: relative;
+      .photo {
+        border-radius: 5px;
+        overflow: hidden;
+        width: 200px;
+        height: 250px;
+      }
+      .photoNoPreview {
+        background-color: var(--background-accents);
+        border: 1px solid rgba(25, 118, 210, 0.5);
+      }
+      .btnDeletePhoto {
+        position: absolute;
+        top: 3%;
+        left: 74%;
+        border-radius: 50%;
+        padding-top: 5px;
+        height: 40px;
+        width: 40px;
+        border: none;
+      }
+    }
+  }
+}
