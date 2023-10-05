@@ -1,0 +1,47 @@
+@use "../components/root.scss";
+@mixin input($margin-lr, $margin-tb, $width) {
+  margin: $margin-tb $margin-lr;
+  width: $width;
+  div {
+    background-color: var(--background-color);
+  }
+}
+
+.container {
+  width: 100%;
+  font-size: 16px;
+  .form {
+    .formContent {
+      gap: 100px;
+      .sectionContainer {
+        background-color: var(--background-accents);
+        padding: 32px;
+        margin: 32px 0;
+        border-radius: 10px;
+        .formInput {
+          @include input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+        }
+        .error {
+          color: #d32f2f;
+        }
+      }
+    }
+    .submitBtn {
+      @include root.button($margin-tb: 0, $margin-lr: 0);
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .container {
+    .form {
+      .formContent {
+        .sectionContainer {
+          .formInput {
+            @include input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
+          }
+        }
+      }
+    }
+  }
+}

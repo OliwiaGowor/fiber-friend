@@ -59,7 +59,7 @@ function SidebarAccount({ open, getOpen }: any) {
 
                 <Divider style={{width:'100%'}}/>
                 <li className={classes.element}>
-                    <Link to={'/fiber-friend/account/settings'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
+                    <Link to={'/fiber-friend/account/account-settings'} className={classes.link} onClick={() => {setIsOpen(false); getOpen((prev: boolean) => !prev);}}>
                         <SettingsIcon />
                         <div className={classes.text}>Settings</div>
                     </Link>

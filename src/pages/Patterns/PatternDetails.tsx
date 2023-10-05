@@ -106,7 +106,7 @@ export default function PatternDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
-                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/projects/' + pattern.id + '/edit'); }}>
+                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/patterns/' + pattern.id + '/edit'); }}>
                                     Edit
                                 </MenuItem>
                                 <MenuItem onClick={() => { handleClose(); handleDelete(); }}>
@@ -159,7 +159,7 @@ export default function PatternDetails() {
                                             </Button>
                                         </Link>
                                     </div>}
-                                <FilesDisplay files={pattern.patterns} />
+                                <FilesDisplay files={pattern.files} />
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                             </div>

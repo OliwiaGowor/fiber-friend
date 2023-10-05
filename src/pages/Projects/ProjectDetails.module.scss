@@ -52,11 +52,10 @@
       margin-bottom: 50px;
     }
     .dividedContainer {
-      gap: 30px;
       display: flex;
-      flex-direction: row;
+      flex-direction: column-reverse;
       .leftElements {
-        width: 60%;
+        width: 100%;
         
         .yarnDetails {
           width: 100%;
@@ -66,7 +65,7 @@
       }
 
       .rightElements {
-        width: 40%;
+        width: 100%;
         min-width: 420px;
         .photosContainer {
           .photos {
@@ -100,5 +99,35 @@
 }
 
 @media screen and (min-width: 1280px) {
-  
+  .container {
+    .details {
+      .dividedContainer {
+        gap: 30px;
+        flex-direction: row;
+        .leftElements {
+          width: 60%;  
+          .yarnDetails {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+          }
+        }
+        .rightElements {
+          width: 40%;
+          min-width: 420px;
+          .photosContainer {
+            .photos {
+              border: 1px dashed grey;
+              .addedPhoto {
+                position: relative;
+                .photo {
+                  border-radius: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
