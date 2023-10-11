@@ -2,22 +2,26 @@
   .photosContainer {
     .photos {
       border: 1px dashed grey;
+
       .swiper-pagination-bullet {
         width: 20px;
         height: 20px;
-        text-align: center;
-        line-height: 20px;
-        font-size: 12px;
         color: #000;
         opacity: 1;
         background: rgba(0, 0, 0, 0.2);
+        font-size: 12px;
+        text-align: center;
+        line-height: 20px;
       }
+
       .swiper-pagination-bullet-active {
-        color: #fff;
         background: var(--main-color-dark);
+        color: #fff;
       }
+
       .addedPhoto {
         position: relative;
+
         .photo {
           border-radius: 5px;
         }
@@ -31,25 +35,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   .photosZoomed {
     width: min-content !important;
+
     .photos {
       .swiper-pagination-bullet {
         width: 20px;
         height: 20px;
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.2);
         text-align: center;
         line-height: 20px;
         font-size: 12px;
         color: #000;
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.2);
       }
+
       .swiper-pagination-bullet-active {
-        color: #fff;
         background: var(--main-color-dark);
+        color: #fff;
       }
+
       .addedPhoto {
         width: min-content !important;
+
         .photo {
           border-radius: 5px;
         }

@@ -2,14 +2,16 @@
 
 .container {
   .sectionContainer {
-    background-color: var(--background-accents);
     padding: 32px;
     margin: 32px 0;
     border-radius: 10px;
+    background-color: var(--background-accents);
   }
+
   .formInput {
-    margin: 0;
     width: 80%;
+    margin: 0;
+
     div {
       background-color: var(--background-color);
     }
@@ -22,20 +24,24 @@
     overflow: auto;
     padding: 20px 0;
   }
+
   .btnContainer {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .submitBtn {
       @include root.button($margin-tb: 20px, $margin-lr: 0);
+
       font-size: 18px;
     }
 
     .submitBtnOff {
       @include root.button($margin-tb: 20px, $margin-lr: 0);
-      pointer-events: none;
+
       background-color: gray;
       font-size: 18px;
+      pointer-events: none;
     }
   }
 }

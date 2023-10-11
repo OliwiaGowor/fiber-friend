@@ -1,21 +1,27 @@
 @use 'root';
 .container {
+
   .addYarns {
     display: grid;
     grid-template-columns: minmax(calc(80% - 124px), 80%) 124px;
+
   .formInput {
-    margin: 10px 0;
     width: 100%;
+    margin: 10px 0;
+    
     div { 
     background-color: var(--background-color);
     }
   }
 }
+
   .addButton {
     @include root.button($margin-tb: 12px, $margin-lr: 40px);
-    margin-right: 0;
+
     justify-self: end;
+    margin-right: 0;
   }
+
   .tab {
     display: flex;
     flex-direction: row;
@@ -27,6 +33,7 @@
     grid-template-columns: repeat(2, 37%);
     gap: 0px 5.5%;
     margin-top: 16px;
+
     .formInput {
       width: 100%;
     }

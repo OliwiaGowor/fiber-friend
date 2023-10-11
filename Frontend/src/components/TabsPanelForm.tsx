@@ -54,12 +54,12 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
   const amountRef = React.useRef<HTMLInputElement | null>(null);
-  const [yarns, setYarns] = React.useState<any>(defaultValue ? defaultValue : []);
+  const [yarns, setYarns] = React.useState<any>(defaultValue ?? []);
   const [yarnInput, setYarnInput] = React.useState<any>('');
   const yarnNameRef = React.useRef<HTMLInputElement | null>(null);
 
   const handleData = (yarnName: string) => {
-    const tmpYarnsInfo = yarns.map((yarn: any) => {
+    const tmpYarnsInfo = yarns?.map((yarn: any) => {
       if (yarn.yarn === yarnName) {
         return ({
           id: yarn.id,
@@ -96,7 +96,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   };
 
   const handleDeleteTab = (yarn: any) => {
-    let tmpArray = yarns.filter((y: any) =>
+    let tmpArray = yarns?.filter((y: any) =>
       y.id !== yarn.id);
 
     for (let i = 0; i < tmpArray.length; i++) {
@@ -137,7 +137,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                 backgroundColor: "var(--main-color-dark)"
               }
             }}>
-            {yarns.map((yarn: any, index: number) => {
+            {yarns?.map((yarn: any, index: number) => {
               return (
                 <Tab key={index}
                   className={classes.tab}
@@ -156,7 +156,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
             })}
           </Tabs>
         </Box>
-        {yarns.map((yarn: any, index: number) => {
+        {yarns?.map((yarn: any, index: number) => {
           return (<TabPanel key={index} value={value} index={index} >
             <div className={classes.yarnInputs}>
               <TextField

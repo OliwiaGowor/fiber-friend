@@ -3,43 +3,48 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: var(--background-accents);
     min-width: $minWidth;
+    min-height: $height;
+    max-height: $height;
+    margin: 0px;
     padding: 30px;
     -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
     -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
     box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
     border-radius: 10px;
-    min-height: $height;
-    max-height: $height;
-    margin: 0px;
+    background-color: var(--background-accents);
+    
     .name {
-      word-break: break-word;
       margin-top: 15px;
       margin-bottom: 30px;
+      word-break: break-word;
     }
+    
     .addIcon {
-      color: var(--main-color-dark);
       margin: 82.5px;
+      color: var(--main-color-dark);
     }
+    
     &:hover {
-      transition: 0.2s;
       background-color: var(--accent-color-btn);
+      transition: 0.2s;
     }
 }
 
 .container {
   .elements {
-    list-style: none;
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-items: stretch;
     align-items: center;
     gap: 2rem;
     margin: 0;
     padding: 0;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    justify-items: stretch;
+    list-style: none;
+    
     .element {
       @include tile($minWidth: 200px, $height: 290px);
+      
       max-width: 300px;
     }
   }
@@ -49,8 +54,10 @@
   .container {
     .elements {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      
       .element {
         @include tile($minWidth: 300px, $height: 390px);
+        
         max-width: 400px;
       }
     }

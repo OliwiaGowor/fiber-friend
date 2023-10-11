@@ -47,14 +47,8 @@ interface BasicTabsDisplayProps {
   yarns: any;
 }
 
-export default function BasicTabsDisplay(props: BasicTabsDisplayProps) {
+export default function BasicTabsDisplay({yarns}: BasicTabsDisplayProps) {
   const [value, setValue] = React.useState(0);
-  const { yarns, ...other } = props;
-  const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
-  const gaugeRef = React.useRef<HTMLInputElement | null>(null);
-  const stitchRef = React.useRef<HTMLInputElement | null>(null);
-  const amountRef = React.useRef<HTMLInputElement | null>(null);
-  const [yarnsInfo, setYarnsInfo] = React.useState<any>(yarns);
 
   const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -74,7 +68,7 @@ export default function BasicTabsDisplay(props: BasicTabsDisplayProps) {
                 backgroundColor: "var(--main-color-dark)"
               }
             }}>
-            {yarns.map((yarn: any, index: number) => {
+            {yarns?.map((yarn: any, index: number) => {
               return (
                 <Tab key={index}
                   className={classes.tab}
@@ -92,7 +86,7 @@ export default function BasicTabsDisplay(props: BasicTabsDisplayProps) {
             })}
           </Tabs>
         </Box>
-        {yarns.map((yarn: any, index: number) => {
+        {yarns?.map((yarn: any, index: number) => {
           return (<TabPanel key={index} value={value} index={index}>
             <div className={classes.yarnInfoContainer}>
               <div className={classes.attributeName}>Tool size: </div>

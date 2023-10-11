@@ -1,7 +1,9 @@
 @use "../../components/root.scss";
+
 @mixin input($margin-lr, $margin-tb, $width) {
-  margin: $margin-tb $margin-lr;
   width: $width;
+  margin: $margin-tb $margin-lr;
+
   div {
     background-color: var(--background-color);
   }
@@ -10,15 +12,16 @@
 .container {
   width: 100%;
   font-size: 16px;
+
   .form {
     .formContent {
       gap: 100px;
 
       .sectionContainer {
-        background-color: var(--background-accents);
         padding: 32px;
         margin: 32px 0;
         border-radius: 10px;
+        background-color: var(--background-accents);
 
         .formInput {
           @include input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
@@ -49,18 +52,22 @@
             transition: 0.5s;
           }
         }
+
         .additionalText {
           color: rgb(87, 87, 87);
           font-size: 16px;
         }
+
         .notesField {
           width: 100%;
         }
+
         .error {
           color: #d32f2f;
         }
       }
     }
+
     .submitBtn {
       @include root.button($margin-tb: 0, $margin-lr: 0);
     }
@@ -75,14 +82,17 @@
           .formInput {
             @include input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
           }
+
           .datePickers {
             display: grid;
             grid-template-columns: repeat(2, calc(40% - 20px));
             gap: 40px; 
           }
+
           .notesField {
             width: 80%;
           }
+
           .photoInput {
             width: 80%;
           }

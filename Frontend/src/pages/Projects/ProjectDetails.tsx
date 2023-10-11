@@ -25,6 +25,7 @@ export default function ProjectDetails() {
     const openPopover = Boolean(anchorElPopover);
 
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
         setAnchorElPopover(event.currentTarget);
     };
 
@@ -74,10 +75,6 @@ export default function ProjectDetails() {
         });
 
         if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch project.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-            //   status: 500,
-            // });
             throw json(
                 { message: 'Could not fetch project.' },
                 {
@@ -125,6 +122,7 @@ export default function ProjectDetails() {
                                     }}
                                     onClose={handlePopoverClose}
                                     disableRestoreFocus
+                                    disableScrollLock={true}
                                 >
                                     <Typography sx={{ p: 2 }}>Project finished</Typography>
                                 </Popover>
@@ -151,7 +149,8 @@ export default function ProjectDetails() {
                                 }}
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                            >
+                                disableScrollLock={true}
+                                >
                                 <MenuItem onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit'); handleClose(); }} disableRipple>
                                     Edit
                                 </MenuItem>
@@ -172,15 +171,15 @@ export default function ProjectDetails() {
                                         {project.category ? project.category : <br></br>}
 
                                         <div className={classes.attributeName}>Start date: </div>
-                                        {project.startDate ? project.startDate : <br></br>}
+                                        {project.startDate?.slice(0,10) ?? <br></br>}
 
                                         <div className={classes.attributeName}>End date: </div>
-                                        {project.endDate ? project.endDate : <br></br>}
+                                        {project.endDate?.slice(0,10) ?? <br></br>}
                                     </div>
                                 </div>
                                 <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                                     <h2 className={classes.sectionHeader}>Yarns</h2>
-                                    <TabsPanelDisplay yarns={project.yarns ? project.yarns : null} />
+                                    <TabsPanelDisplay yarns={project.yarns ?? []} />
                                 </div>
 
                             </div>
@@ -221,10 +220,6 @@ async function loadProjectDetails(id: string) {
     const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + id + '.json');
 
     if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch project.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-        //   status: 500,
-        // });
         throw json(
             { message: 'Could not fetch project.' },
             {

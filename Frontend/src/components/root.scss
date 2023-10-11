@@ -8,7 +8,6 @@
   --text-color-dark: black;
   --background-accents: white;
   --main-color-dark-btn: #ee524f;
-
   --swiper-navigation-color: #ef6e6b;
 
   --navbar-height: 74px;
@@ -19,38 +18,42 @@
 }
 
 @mixin button($margin-tb, $margin-lr) {
-  background-color: var(--main-color-dark);
+  margin: $margin-tb $margin-lr;
+  padding: 14px 32px;
   border: none;
   border-radius: 10px;
-  padding: 14px 32px;
-  margin: $margin-tb $margin-lr;
+  background-color: var(--main-color-dark);
+
   &:hover {
-    cursor: pointer;
     background-color: var(--main-color-dark-btn);
     transition: 0.4s;
+    cursor: pointer;
   }
 }
 
 @mixin menuElem() {
   display: flex;
+  align-items: flex-start;
+  flex-direction: column;
   padding: 0;
   margin: 0;
-  flex-direction: column;
-  align-items: flex-start;
   border-bottom: 1px solid rgb(206, 206, 206);
   background-color: var(--background-accents);
+
   &:hover {
     background-color: var(--accent-color-btn);
   }
 }
+
 @mixin menuElemButton() {
   display: flex;
+  justify-content: space-between;
   width: 100%;
   padding: 16px;
-  font-size: 16px;
   background-color: white;
   border: none;
-  justify-content: space-between;
+  font-size: 16px;
+
   &:hover {
     background-color: var(--accent-color-btn);
     cursor: pointer;
