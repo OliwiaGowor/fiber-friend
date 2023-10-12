@@ -5,16 +5,9 @@ import { Transforms, createEditor, Editor, BaseEditor, Descendant } from 'slate'
 import { Slate, Editable, withReact, useSlate } from 'slate-react';
 import isHotkey from "is-hotkey";
 import { withHistory } from 'slate-history';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
-import CodeIcon from '@mui/icons-material/Code';
-import LooksOneIcon from '@mui/icons-material/LooksOne';
-import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import classes from './TextDisplay.module.scss';
+
+//FIXME: text has to be one string not arrays
 
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
