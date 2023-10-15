@@ -1,14 +1,13 @@
 import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import classes from './NewPatternPage.module.scss';
 import Button from "@mui/material/Button";
-import CategoriesMenu from "../../components/CategoriesMenu";
+import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
-import { FileInput } from '../../components/FileInput';
-import BasicTabsForm from "../../components/TabsPanelForm";
-import { SelectChangeEvent, InputLabel, Select, MenuItem } from "@mui/material";
+import { FileInput } from '../../components/FileInput/FileInput';
+import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
 import { DatePicker } from "@mui/x-date-pickers";
 import TextEditor from "../../components/TextEditor/TextEditor";
 

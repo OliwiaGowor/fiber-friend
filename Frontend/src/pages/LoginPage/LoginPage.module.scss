@@ -1,0 +1,93 @@
+@use "../../root";
+.container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - var(--navbar-height));
+
+  .sidePanel {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 35vw;
+    padding-bottom: 200px;
+    background-color: var(--accent-color);
+    background-image: url("../../photos/mel-poole-vJgD2A1CPjE-unsplash.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    .panelHeader {
+      font-weight: 900;
+      font-size: 48px;
+    }
+
+    .panelText {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .btnSignup {
+      @include root.button($margin-tb: 30px, $margin-lr: 0px);
+    }
+  }
+
+  .loginForm {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 58vw;
+    padding-bottom: 250px;
+    margin-top: 90px;
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 40px;
+      text-align: center;
+      font-weight: 900;
+      font-size: 48px;
+    }
+
+    .form {
+    padding: 60px;
+    border-radius: 10px;
+    background-color: var(--background-accents);
+
+      .loginFormContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        
+        .formSection {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 25px;
+          
+          .formInput {
+            width: 25vw;
+            
+            div {
+              background-color: var(--background-color);
+            }
+          }
+        }
+      }
+
+      .btnContainer {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        
+        .btnSubmit {
+          @include root.button($margin-tb: 0px, $margin-lr: 0px);
+        }
+      }
+    }
+  }
+}

@@ -1,17 +1,17 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import HomePage from './pages/HomePage'
+import HomePage from './pages/HomePage/HomePage'
 import Root from './pages/Root';
-import Account, { loader as dataLoader } from './pages/Account';
+import Account, { loader as dataLoader } from './pages/Account/Account';
 import Projects, { loader as projectsLoader } from './pages/Projects/Projects';
 import NewProjectPage from './pages/Projects/NewProjectPage';
 import Patterns, { loader as patternsLoader } from './pages/Patterns/Patterns';
 import PatternsRoot from './pages/Patterns/PatternsRoot';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import SignUpPage from './pages/SignUpPage/SignUpPage';
 import ProjectDetails, { loader as projectDetailsLoader } from './pages/Projects/ProjectDetails';
 import PatternDetails, { loader as patternDetailsLoader } from './pages/Patterns/PatternDetails';
-import AccountRoot from './pages/AccountRoot';
+import AccountRoot from './pages/Account/AccountRoot';
 import NewPatternPage from './pages/Patterns/NewPatternPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -20,13 +20,15 @@ import CountersRoot from './pages/Counters/CountersRoot';
 import Counters, { loader as countersLoader } from './pages/Counters/Counters';
 import NewCounter from './pages/Counters/NewCounter';
 import EditProject from './pages/Projects/EditProject';
-import RecoverPassPage from './pages/RecoverPassPage';
-import CounterDetails, { loader as counterDetailsLoader }  from './pages/Counters/CounterDetails';
+import RecoverPassPage from './pages/RecoverPassPage/RecoverPassPage';
+import CounterDetails, { loader as counterDetailsLoader } from './pages/Counters/CounterDetails';
 import EditCounter from './pages/Counters/EditCounter';
 import Supplies, { loader as suppliesLoader } from './pages/Supplies/Supplies';
 import SuppliesRoot from './pages/Supplies/SuppliesRoot';
 import NewSupplyPage from './pages/Supplies/NewSupplyPage';
-import SupplyDetails, {loader as supplyDetailsLoader} from './pages/Supplies/SupplyDetails';
+import SupplyDetails, { loader as supplyDetailsLoader } from './pages/Supplies/SupplyDetails';
+import PageNotFound from './pages/PageNotFound/PageNotFound';
+import AccountSettingsPage from './pages/AccountSettingsPage';
 
 const router = createBrowserRouter([
   {
@@ -98,7 +100,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'patterns',
-            element: <PatternsRoot />,                
+            element: <PatternsRoot />,
             loader: patternsLoader,
             id: 'patterns',
             children: [
@@ -139,7 +141,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Counters />, 
+                element: <Counters />,
               },
               {
                 path: 'new-counter',
@@ -204,10 +206,19 @@ const router = createBrowserRouter([
               },
             ]
           },
+          {
+            path: 'settings',
+            element: <AccountSettingsPage />,
+          },
         ]
+      }, 
+      {
+        path: '*',
+        element: <PageNotFound />
       },
     ],
   },
+
 ]);
 
 

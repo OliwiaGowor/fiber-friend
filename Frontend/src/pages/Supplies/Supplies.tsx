@@ -1,7 +1,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import { Suspense } from "react";
 import { useRouteLoaderData, Await, json, defer } from "react-router-dom";
-import Tiles from "../../components/Tiles";
+import Tiles from "../../components/Tiles/Tiles";
 import classes from './Supplies.module.scss'
 
 export default function Supplies() {

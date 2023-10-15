@@ -1,8 +1,8 @@
-import CounterGroup from '../../components/CounterGroup';
+import CounterGroup from '../../components/CounterGroup/CounterGroup';
 import * as React from 'react';
 import classes from './NewCounter.module.scss';
 import { json, useNavigate } from "react-router-dom";
-import CounterMiniature from '../../components/CounterMiniature';
+import CounterMiniature from '../../components/CounterMiniature/CounterMiniature';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -115,7 +115,7 @@ export default function NewCounter() {
             return;
         }
     };
-    console.log(availableProjects);
+
     return (
         <div className={classes.container}>
             <form onSubmit={handleSubmit}>

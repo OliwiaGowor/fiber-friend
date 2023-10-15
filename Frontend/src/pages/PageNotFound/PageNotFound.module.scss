@@ -1,0 +1,41 @@
+@use "../../root";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+
+  .textContainer {
+    z-index: 100;
+    left: 8%;
+    top: 17%;
+    width: 35vw;
+    color: white;
+
+    .firstHeader {
+      color: var(--text-color-dark);
+      font-size: 4rem;
+    }
+
+    .secondHeader {
+      color: var(--text-color-dark);
+      font-size: 3rem;
+    }
+
+    .text {
+      margin: 40px 0px;
+      color: var(--text-color-dark);
+      font-size: 1.25rem;
+    }
+  }
+
+  .buttons {
+    .landingButton {
+      @include root.button($margin-tb: 20px, $margin-lr: 30px);
+
+      font-weight: 600;
+    }
+  }
+}

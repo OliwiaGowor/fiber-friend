@@ -2,14 +2,14 @@ import { CircularProgress } from "@mui/material";
 import { Suspense } from "react";
 import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
 import classes from './PatternDetails.module.scss';
-import TabsPanelDisplay from "../../components/TabsPanelDisplay";
+import TabsPanelDisplay from "../../components/TabsPanelDisplay/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { FilesDisplay } from "../../components/FilesDisplay";
-import PhotosDisplay from "../../components/PhotosDisplay";
+import { FilesDisplay } from "../../components/FilesDisplay/FilesDisplay";
+import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 
 export default function PatternDetails() {

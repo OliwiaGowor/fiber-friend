@@ -7,7 +7,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import CounterMiniature from "../../components/CounterMiniature";
+import CounterMiniature from "../../components/CounterMiniature/CounterMiniature";
 
 export default function CounterDetails() {
     const navigate = useNavigate();
