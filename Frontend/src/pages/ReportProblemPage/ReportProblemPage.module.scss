@@ -1,0 +1,53 @@
+@use "../../root";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - var(--navbar-height) - 60px);
+
+  .contactForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 65vw;
+    height: fit-content;
+    padding: 60px;
+    border-radius: 10px;
+    background-color: var(--background-accents);
+
+    .header {
+        margin-bottom: 10px;
+    }
+
+    .additionalText {
+        font-size: 18px;
+    }
+
+    .inputs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+
+      .topElements {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .formInput {
+        @include root.input($margin-lr: 0, $margin-tb: 15px, $width: 100%);
+      }
+    }
+
+    .button {
+      @include root.button($margin-tb: 20px, $margin-lr: 30px);
+
+      font-weight: 600;
+    }
+  }
+}

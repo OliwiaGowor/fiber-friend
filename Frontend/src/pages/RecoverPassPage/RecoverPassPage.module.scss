@@ -40,9 +40,7 @@
         margin-bottom: 25px;
 
         .formInput {
-          div {
-            background-color: var(--background-color);
-          }
+          @include root.input();
         }
       }
     }

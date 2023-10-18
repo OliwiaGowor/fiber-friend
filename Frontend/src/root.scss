@@ -31,6 +31,15 @@
   }
 }
 
+@mixin input($margin-lr: auto, $margin-tb: auto, $width: auto) {
+  width: $width;
+  margin: $margin-tb $margin-lr;
+
+  div {
+    background-color: var(--background-color);
+  }
+}
+
 @mixin menuElem() {
   display: flex;
   align-items: flex-start;

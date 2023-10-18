@@ -1,14 +1,5 @@
 @use "../../root.scss";
 
-@mixin input($margin-lr, $margin-tb, $width) {
-  width: $width;
-  margin: $margin-tb $margin-lr;
-
-  div {
-    background-color: var(--background-color);
-  }
-}
-
 .container {
   width: 100%;
   font-size: 16px;
@@ -24,14 +15,14 @@
         background-color: var(--background-accents);
 
         .formInput {
-          @include input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+          @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
         }
 
         .datePickers {
           display: block;
 
           .dateInput {
-            @include input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+            @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
           }
         }
 
@@ -80,7 +71,7 @@
       .formContent {
         .sectionContainer {
           .formInput {
-            @include input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
+            @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
           }
 
           .datePickers {

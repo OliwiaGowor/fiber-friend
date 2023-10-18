@@ -1,5 +1,4 @@
 @use "../../root.scss";
-@use "./NewProjectPage.module.scss";
 
 .container {
   width: 100%;
@@ -17,7 +16,7 @@
         background-color: var(--background-accents);
 
         .formInput {
-          @include NewProjectPage.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+          @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
         }
 
         .typeToggleContainer {
@@ -69,7 +68,7 @@
       .formContent {
         .sectionContainer {
           .formInput {
-            @include NewProjectPage.input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
+            @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
           }
 
           .datePickers {

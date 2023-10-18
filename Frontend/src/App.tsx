@@ -29,6 +29,7 @@ import NewSupplyPage from './pages/Supplies/NewSupplyPage';
 import SupplyDetails, { loader as supplyDetailsLoader } from './pages/Supplies/SupplyDetails';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import AccountSettingsPage from './pages/AccountSettingsPage';
+import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
 
 const router = createBrowserRouter([
   {
@@ -212,6 +213,10 @@ const router = createBrowserRouter([
           },
         ]
       }, 
+      {
+        path: 'report-problem',
+        element: <ReportProblemPage />
+      },
       {
         path: '*',
         element: <PageNotFound />

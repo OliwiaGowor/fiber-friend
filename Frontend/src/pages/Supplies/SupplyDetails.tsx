@@ -1,16 +1,14 @@
-import { CircularProgress } from "@mui/material";
-import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
-import classes from './SupplyDetails.module.scss';
-import TabsPanelDisplay from "../../components/TabsPanelDisplay/TabsPanelDisplay";
-import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react';
+import { Suspense } from "react";
+import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
+import { CircularProgress } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { FilesDisplay } from "../../components/FilesDisplay/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
+import classes from './SupplyDetails.module.scss';
 
 export default function SupplyDetails() {
     const navigate = useNavigate();
@@ -143,6 +141,8 @@ export default function SupplyDetails() {
                                         <div className={classes.attributeName}>Type: </div>
                                         {supply.type ? supply.type : <br></br>}
                                         {renderInfoElements()}
+                                        <div className={classes.attributeName}>Quantity: </div>
+                                        {supply.quantity ? supply.quantity : <br></br>}
                                     </div>
                                 </div>
                             </div>

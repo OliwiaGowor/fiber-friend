@@ -1,19 +1,13 @@
+import React from "react";
+import { json, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import React, { useCallback, useEffect } from "react";
+import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
-import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
-import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
 import { FileInput } from '../../components/FileInput/FileInput';
-import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import TextEditor from "../../components/TextEditor/TextEditor";
 import classes from './NewSupplyPage.module.scss';
-import FormHelperText from "@mui/material/FormHelperText";
 
 export default function NewSupplyPage() {
     const navigate = useNavigate();
@@ -21,6 +15,7 @@ export default function NewSupplyPage() {
     const [type, setType] = React.useState('yarn');
     const nameRef = React.useRef<HTMLInputElement | null>(null);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
+    const [showQuantityError, setShowQuantityError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
@@ -28,7 +23,7 @@ export default function NewSupplyPage() {
     const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
     const gaugeRef = React.useRef<HTMLInputElement | null>(null);
     const weightRef = React.useRef<HTMLInputElement | null>(null);
-    const amountRef = React.useRef<HTMLInputElement | null>(null);
+    const quantityRef = React.useRef<HTMLInputElement | null>(null);
     const metersRef = React.useRef<HTMLInputElement | null>(null);
     const toolTypeRef = React.useRef<HTMLInputElement | null>(null);
     const otherTypeRef = React.useRef<HTMLInputElement | null>(null);
@@ -48,6 +43,7 @@ export default function NewSupplyPage() {
                 projectData = {
                     name: nameRef.current?.value,
                     type: type,
+                    quantity: quantityRef.current?.value,
                     toolSize: toolSizeRef.current?.value,
                     gauge: gaugeRef.current?.value,
                     weight: weightRef.current?.value,
@@ -58,6 +54,7 @@ export default function NewSupplyPage() {
                 projectData = {
                     name: nameRef.current?.value,
                     type: type,
+                    quantity: quantityRef.current?.value,
                     toolSize: toolSizeRef.current?.value,
                     toolType: toolTypeRef.current?.value,
                     notes: notes,
@@ -66,6 +63,7 @@ export default function NewSupplyPage() {
                 projectData = {
                     name: nameRef.current?.value,
                     type: type,
+                    quantity: quantityRef.current?.value,
                     otherType: otherTypeRef.current?.value,
                     notes: notes,
                 };
@@ -88,7 +86,7 @@ export default function NewSupplyPage() {
             if (!response.ok) {
                 throw json({ message: 'Could not save supply.' }, { status: 500 });
             }
-            const data = await response.json();
+
             return navigate('/fiber-friend/account/supplies');
         } else {
             return;
@@ -99,6 +97,11 @@ export default function NewSupplyPage() {
     const validateForm = () => {
         if (!nameRef.current?.value) {
             setShowNameError(true);
+            setProceedSubmit(false);
+        }
+
+        if (!quantityRef.current?.value) {
+            setShowQuantityError(true);
             setProceedSubmit(false);
         }
     };
@@ -273,17 +276,17 @@ export default function NewSupplyPage() {
                         </div>
                         {renderFormElements()}
                         <TextField
-                            id="amount"
+                            id="quantity"
                             inputProps={{
-                                'aria-label': 'amount',
+                                'aria-label': 'quantity',
                             }}
-                            label="Amount"
+                            label="Quantity"
                             className={classes.formInput}
-                            name='name'
-                            inputRef={amountRef}
-                            //error={showAmountError}
-                            helperText={showNameError ? 'Enter supply amount!' : ''}
-                            //onChange={() => { setShowNameError(false) }}
+                            name='quantity'
+                            inputRef={quantityRef}
+                            error={showQuantityError}
+                            helperText={showNameError ? 'Enter supply quantity!' : ''}
+                            onChange={() => { setShowQuantityError(false) }}
                         />
                     </div>
 

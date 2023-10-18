@@ -66,11 +66,7 @@
           margin-bottom: 25px;
           
           .formInput {
-            width: 25vw;
-            
-            div {
-              background-color: var(--background-color);
-            }
+            @include root.input($width: 25vw);
           }
         }
       }
