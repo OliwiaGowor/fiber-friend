@@ -174,7 +174,7 @@ export default function EditProject() {
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
-                                            backgroundColor: "var(--main-color-light)",
+                                            backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
                                     Crochet
@@ -183,7 +183,7 @@ export default function EditProject() {
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
-                                            backgroundColor: "var(--main-color-light)",
+                                            backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
                                     Knitting
@@ -192,7 +192,7 @@ export default function EditProject() {
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
-                                            backgroundColor: "var(--main-color-light)",
+                                            backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
                                     Other

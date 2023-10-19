@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import classes from './Navbar.module.scss';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

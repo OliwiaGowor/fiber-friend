@@ -249,7 +249,7 @@ export default function NewSupplyPage() {
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
-                                            backgroundColor: "var(--main-color-light)",
+                                            backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
                                     Yarn
@@ -258,7 +258,7 @@ export default function NewSupplyPage() {
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
-                                            backgroundColor: "var(--main-color-light)",
+                                            backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
                                     Tool
@@ -267,7 +267,7 @@ export default function NewSupplyPage() {
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
-                                            backgroundColor: "var(--main-color-light)",
+                                            backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
                                     Other

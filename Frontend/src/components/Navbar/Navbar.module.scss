@@ -61,6 +61,13 @@
           vertical-align: middle;
           padding-top: 6px;
           font-size: 45px;
+
+          &:hover {
+            svg {
+              fill: var(--main-color-dark);
+              transition: 0.2s fill;
+            }
+          }
         }
       }
     }

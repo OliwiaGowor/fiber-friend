@@ -1,12 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-export default function Root () {
-    return (
+import Footer from "../components/Footer/Footer";
+
+export default function Root() {
+  return (
     <>
-    <Navbar />
-    <main style={{position: 'relative', top: 'var(--navbar-height)'}}>
+      <Navbar />
+      <main style={{ position: 'relative', top: 'var(--navbar-height)', marginBottom: "0px" }}>
         <Outlet />
       </main>
+      <Footer />
     </>
-    );
+  );
 }
