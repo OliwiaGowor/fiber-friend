@@ -9,8 +9,10 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from "@mui/material/Collapse";
+//TODO: smaller miniatures, for mobile add scroll - only one row
+//TODO: add info that the first photo would be main one
 
-//TO DO: fix defaultValue
+//TODO: fix defaultValue
 
 type Props = {
   onlyImg: boolean;
@@ -69,8 +71,8 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
       return (
         <object
           data={file.url}
-          width="200px"
-          height="250px"
+          width="150px"
+          height="175px"
           className={classes.photo}
         >
         </object>
@@ -84,8 +86,8 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
           srcSet={`${file.url}`}
           alt="not found"
           loading="lazy"
-          width="200px"
-          height="250px"
+          width="150px"
+          height="175px"
         />
       );
     }
@@ -98,20 +100,32 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
           <Button variant="outlined" component="label" className={classes.btnAddPhoto}>
             <h2 className={classes.btnAddPhotoText}>{addHeader}</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 70 }} />
-            <input hidden accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'} multiple type="file" onChange={handleAddingFile} />
+            <input
+              hidden
+              accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'}
+              multiple type="file"
+              onChange={handleAddingFile}
+            />
           </Button>
         </div>
         {addedFiles && addedFiles.map((file: any, index: number) => (
           <div key={index} className={classes.addedPhoto}>
-            <button className={classes.btnDeletePhoto} onClick={(e) => { handleDeleteFile(index, e) }}><DeleteIcon>Remove</DeleteIcon></button>
+            <button
+              className={classes.btnDeletePhoto}
+              onClick={(e) => { handleDeleteFile(index, e) }}
+            >
+              <DeleteIcon>
+                Remove
+              </DeleteIcon>
+            </button>
             {onlyImg && <img
               className={classes.photo}
               src={`${file.url}`}
               srcSet={`${file.url}`}
               alt="not found"
               loading="lazy"
-              width="200px"
-              height="250px"
+              width="150px"
+              height="175px"
             />}
             {!onlyImg && displayDifferentFiles(file)}
           </div>

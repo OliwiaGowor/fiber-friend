@@ -212,18 +212,18 @@ const router = createBrowserRouter([
             element: <AccountSettingsPage />,
           },
         ]
-      }, 
+      },
       {
         path: 'report-problem',
         element: <ReportProblemPage />
       },
-      {
-        path: '*',
-        element: <PageNotFound />
-      },
+
     ],
   },
-
+  {
+    path: '*',
+    element: <PageNotFound />
+  },
 ]);
 
 

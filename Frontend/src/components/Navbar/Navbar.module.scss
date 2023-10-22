@@ -1,5 +1,5 @@
 @import url("../../root.scss");
-
+//TODO: fix on moblie
 .container {
   z-index: 10000;
   position: fixed;
@@ -66,6 +66,7 @@
             svg {
               fill: var(--main-color-dark);
               transition: 0.2s fill;
+              cursor: pointer;
             }
           }
         }

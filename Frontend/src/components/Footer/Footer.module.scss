@@ -3,79 +3,36 @@
   top: var(--navbar-height);
   height: fit-content;
   margin-top: 50px;
-  padding: 50px 200px 20px 200px;
+  padding: 30px 50px 20px 50px;
   background-color: var(--main-color-light);
 
   .main {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;
+    justify-content: center;
 
-    .logo {
-      display: flex;
-      align-items: center;
-
-      .logoPicture {
-        margin-right: 10px;
-      }
-
-      .logoText {
-        display: inline-block;
-        margin: 0;
-      }
-    }
-
-    .section {
-      &:first-child {
-        display: grid;
-        grid-template-rows: repeat(2, 1fr);
+    .logoAndMedia {
+      .logo {
+        display: flex;
         align-items: center;
-      }
 
-      .sectionHeader {
-        width: fit-content;
-        margin-top: 0;
-
-        &::after {
-          content: "";
-          display: block;
-          width: 70%;
-          height: 1px;
-          background-color: var(--main-color-dark);
-          -webkit-box-shadow: 0px 0px 2px 0px var(--main-color-dark);
-          -moz-box-shadow: 0px 0px 2px 0px var(--main-color-dark);
-          box-shadow: 0px 0px 2px 0px var(--main-color-dark);
+        .logoPicture {
+          margin-right: 10px;
         }
-      }
 
-      ul {
-        padding: 0;
-        list-style: none;
-        font-size: 18px;
-
-        li {
-          padding: 5px 0;
-
-          &:hover,
-          &:hover a {
-            cursor: pointer;
-            color: var(--main-color-dark);
-            transition: 0.1s color;
-          }
-
-          .elementIcon {
-            display: inline-block;
-            margin-right: 5px;
-
-            svg {
-              width: 15px;
-              height: 15px;
-            }
-          }
+        .logoText {
+          display: inline-block;
+          margin: 0;
         }
       }
 
       .mediaIcons {
-        margin-left: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 15px;
 
         .mediaIcon {
           margin: 0 7px 0 7px;
@@ -101,6 +58,60 @@
         }
       }
     }
+
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      align-items: center;
+      margin-top: 20px;
+
+      .section {
+        .sectionHeader {
+          width: fit-content;
+          margin-top: 0;
+          font-size: 22px;
+
+          &::after {
+            content: "";
+            display: block;
+            width: 70%;
+            height: 1px;
+            background-color: var(--main-color-dark);
+            -webkit-box-shadow: 0px 0px 2px 0px var(--main-color-dark);
+            -moz-box-shadow: 0px 0px 2px 0px var(--main-color-dark);
+            box-shadow: 0px 0px 2px 0px var(--main-color-dark);
+          }
+        }
+
+        ul {
+          padding: 0;
+          list-style: none;
+          font-size: 16px;
+
+          li {
+            padding: 5px 0;
+
+            &:hover,
+            &:hover a {
+              cursor: pointer;
+              color: var(--main-color-dark);
+              transition: 0.1s color;
+            }
+
+            .elementIcon {
+              display: inline-block;
+              margin-right: 5px;
+
+              svg {
+                width: 15px;
+                height: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .bottom {
@@ -119,6 +130,33 @@
       -webkit-box-shadow: 0px 0px 2px 0px var(--main-color-dark);
       -moz-box-shadow: 0px 0px 2px 0px var(--main-color-dark);
       box-shadow: 0px 0px 2px 0px var(--main-color-dark);
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .footer {
+    padding: 50px 15% 20px 15%;
+
+    .main {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: unset;
+
+      .logoAndMedia {
+        .mediaIcons {
+          margin: 20px 0px 0px 52px;
+          display: inline-block;
+
+        }
+      }
+
+      .links {
+        .section {
+          .sectionHeader {
+            font-size: 24px;
+          }
+        }
+      }
     }
   }
 }

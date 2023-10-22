@@ -21,7 +21,7 @@
     }
     
     .addIcon {
-      margin: 82.5px;
+      margin: 40px;
       color: var(--main-color-dark);
     }
     
@@ -59,6 +59,10 @@
         @include tile($minWidth: 300px, $height: 390px);
         
         max-width: 400px;
+
+        .addIcon {
+          margin: 82.5px;
+        }
       }
     }
   }

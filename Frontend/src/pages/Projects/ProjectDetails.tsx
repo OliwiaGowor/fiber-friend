@@ -233,7 +233,7 @@ async function loadProjectDetails(id: string) {
     }
 }
 
-export async function loader({ request, params }: any) {
+export async function loader({ params }: any) {
     const id = params.projectId;
     return defer({
         project: await loadProjectDetails(id),

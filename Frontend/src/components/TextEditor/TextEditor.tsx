@@ -15,7 +15,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import classes from './TextEditor.module.scss';
-
+//TODO: display only most important buttons on mobile
 const HOTKEYS = {
   "mod+b": "bold",
   "mod+i": "italic",

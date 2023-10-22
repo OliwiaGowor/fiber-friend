@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classes from './Navbar.module.scss';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import logoPicture from '../../photos/yarn-ball.png';
@@ -8,6 +8,7 @@ import SidebarAccount from "../SidebarAccount/SidebarAccount";
 import { useMediaQuery } from "@mui/material";
 
 export default function Navbar() {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const isMobile = useMediaQuery('(max-width: 760px)');
     const smallerLogo = useMediaQuery('(max-width: 560px)');
@@ -33,14 +34,14 @@ export default function Navbar() {
                     </div>
                     <ul className={classes.navElements}>
                         <li className={classes.accountIcon} onClick={handleClick}>
-                            <Link to={"account"}><AccountCircleIcon fontSize="inherit" /></Link>
+                            <AccountCircleIcon fontSize="inherit" onClick={() => { if (!isMobile) navigate("account") }} />
                         </li>
                     </ul>
                 </div>
             </div>
             <div className={classes.sidebarContainer}>
                 <ClickAwayListener onClickAway={handleClickAway}>
-                    <SidebarAccount open={isMobile ? open : false} getOpen={(isOpen: boolean) => setOpen(isOpen)}/>
+                    <SidebarAccount open={isMobile ? open : false} getOpen={(isOpen: boolean) => setOpen(isOpen)} />
                 </ClickAwayListener>
             </div>
         </nav>

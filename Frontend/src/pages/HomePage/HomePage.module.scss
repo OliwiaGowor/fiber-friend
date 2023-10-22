@@ -20,15 +20,16 @@
 
     .waves {
       position: absolute;
-      top: 59vh;
+      top: 532px;
       z-index: 50;
       height: auto;
-      width: 100vw;
+      width: 1960px;
 
       svg {
         width: 100%;
         height: auto;
         fill: var(--background-color);
+        transform: rotateY(180deg);
       }
     }
 
@@ -36,8 +37,8 @@
       position: absolute;
       z-index: 100;
       left: 8%;
-      top: 17%;
-      width: 35vw;
+      top: 40px;
+      width: 80vw;
       color: white;
 
       .landingHeader {
@@ -54,6 +55,67 @@
         @include root.button($margin-tb: 0px, $margin-lr: 0px);
 
         font-weight: 600;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .container {
+    overflow: hidden;
+    height: calc(100vh - var(--navbar-height));
+  
+    .landingPage {
+      position: relative;
+      width: 100%;
+      height: calc(90vh - 68px);
+  
+      .landingPhoto {
+        position: relative;
+        z-index: 1;
+        width: inherit;
+        height: inherit;
+        object-position: top;
+        object-fit: cover;
+      }
+  
+      .waves {
+        position: absolute;
+        //top: 58vh;
+        z-index: 50;
+        height: auto;
+        width: 1920px;
+  
+        svg {
+          width: 100%;
+          height: auto;
+          fill: var(--background-color);
+        }
+      }
+  
+      .landingTextContainer {
+        position: absolute;
+        z-index: 100;
+        left: 8%;
+        top: 17%;
+        width: 35vw;
+        color: white;
+  
+        .landingHeader {
+          color: var(--text-color-light);
+          font-size: 3rem;
+        }
+  
+        .landingText {
+          margin: 40px 0px;
+          font-size: 1.25rem;
+        }
+  
+        .landingButton {
+          @include root.button($margin-tb: 0px, $margin-lr: 0px);
+  
+          font-weight: 600;
+        }
       }
     }
   }

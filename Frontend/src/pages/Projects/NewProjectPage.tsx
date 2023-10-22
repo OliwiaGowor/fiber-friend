@@ -253,6 +253,7 @@ export default function NewProjectPage() {
                             onChange={handleChange}
                             className={classes.patternSelect}
                         >
+                            <MenuItem value=''>SELECT PATTERN</MenuItem>
                             {patterns && patterns.map((pattern: any) => (
                                 <MenuItem value={pattern.id}>{pattern.name}</MenuItem>
                             ))}

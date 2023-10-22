@@ -25,23 +25,10 @@ const AccountSettingsPage = () => {
 
   return (
     <div className={classes.container}>
-      <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-        <Link to={"projects"}>
-          <h1 className={classes.header}>PROJECTS<ArrowForwardIosIcon className={classes.arrow} /></h1>
-        </Link>
-        <Await resolve={projects}>
-          {(loadedProjects) => <MiniaturesList data={loadedProjects} link={'projects/new-project'} />}
-        </Await>
-      </Suspense>
-      <div className={classes.tiles} >
-        {tiles.map((tile: any) =>
-        <Link to={tile.link} key={tile.title}>
-          <div className={classes.tile}>
-            <h2 className={classes.name}>{tile.title}</h2>
-            {tile.icon}
-          </div>
-          </Link>
-        )}
+      <div className={classes.main}>
+          <h1 className={classes.header}>Account settings</h1>
+          Username: {}
+          
       </div>
     </div>
   );
