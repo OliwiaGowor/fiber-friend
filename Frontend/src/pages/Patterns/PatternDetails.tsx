@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { FilesDisplay } from "../../components/FilesDisplay/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
-
+//TODO: mobile design
 export default function PatternDetails() {
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };

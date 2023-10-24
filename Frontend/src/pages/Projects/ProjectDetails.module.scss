@@ -59,11 +59,11 @@
 
     .dividedContainer {
       display: flex;
-      flex-direction: row;
-      gap: 30px;
+      flex-direction: column-reverse;
+      gap: 0px;
 
       .leftElements {
-        width: 60%;
+        width: 100%;
 
         .yarnDetails {
           display: flex;
@@ -75,39 +75,17 @@
       .rightElements {
         min-width: 420px;
         height: 100%;
-        width: 40%;
+        width: 100%;
 
         .sectionContainer {
           height: 100%;
-        }
 
-        .photosContainer {
-          .photos {
-            border: 1px dashed grey;
-
-            .swiper-pagination-bullet {
-              width: 20px;
-              height: 20px;
-              background: rgba(0, 0, 0, 0.2);
-              opacity: 1;
-              text-align: center;
-              line-height: 20px;
-              font-size: 12px;
-              color: #000;
-            }
-
-            .swiper-pagination-bullet-active {
-              color: #fff;
-              background: var(--main-color-dark);
-            }
-
-            .addedPhoto {
-              position: relative;
-
-              .photo {
-                border-radius: 5px;
-              }
-            }
+          &.photosSection {
+            position: relative;
+            left: calc(0px - var(--margin-mobile));
+            width: calc(100vw - 2 * var(--margin-mobile));
+            padding: 0;
+            margin: 30px var(--margin-mobile) ;
           }
         }
       }
@@ -115,20 +93,27 @@
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 800px) {
   .container {
     .details {
       .dividedContainer {
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 0px;
+        flex-direction: row;
+        gap: 30px;
 
         .leftElements {
-          width: 100%;
+          width: 60%;
         }
 
         .rightElements {
-          width: 100%;
+          width: 40%;
+
+          .sectionContainer {
+            &.photosSection {
+              position: unset;
+              padding: 32px;
+              margin: 30px 0;
+            }
+          }
         }
       }
     }

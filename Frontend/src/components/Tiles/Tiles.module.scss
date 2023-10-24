@@ -7,7 +7,7 @@
     min-height: $height;
     max-height: $height;
     margin: 0px;
-    padding: 30px;
+    padding: 20px;
     -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
     -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
     box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
@@ -15,8 +15,8 @@
     background-color: var(--background-accents);
     
     .name {
-      margin-top: 15px;
-      margin-bottom: 30px;
+      margin-top: 0px;
+      margin-bottom: 20px;
       word-break: break-word;
     }
     
@@ -30,7 +30,7 @@
       transition: 0.2s;
     }
 }
-
+//TODO: center header for mobile
 .container {
   .elements {
     display: grid;

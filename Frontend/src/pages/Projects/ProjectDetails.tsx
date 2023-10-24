@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import { Suspense } from "react";
 import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
 import classes from './ProjectDetails.module.scss';
@@ -22,6 +22,7 @@ export default function ProjectDetails() {
     const open = Boolean(anchorEl);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
     const [anchorElPopover, setAnchorElPopover] = React.useState<HTMLElement | null>(null);
+    const isMobile = useMediaQuery('(max-width: 760px)');
     const openPopover = Boolean(anchorElPopover);
 
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -150,7 +151,7 @@ export default function ProjectDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 disableScrollLock={true}
-                                >
+                            >
                                 <MenuItem onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit'); handleClose(); }} disableRipple>
                                     Edit
                                 </MenuItem>
@@ -171,10 +172,10 @@ export default function ProjectDetails() {
                                         {project.category ? project.category : <br></br>}
 
                                         <div className={classes.attributeName}>Start date: </div>
-                                        {project.startDate?.slice(0,10) ?? <br></br>}
+                                        {project.startDate?.slice(0, 10) ?? <br></br>}
 
                                         <div className={classes.attributeName}>End date: </div>
-                                        {project.endDate?.slice(0,10) ?? <br></br>}
+                                        {project.endDate?.slice(0, 10) ?? <br></br>}
                                     </div>
                                 </div>
                                 <div className={`${classes.sectionContainer} ${classes.formInput}`}>
@@ -184,11 +185,9 @@ export default function ProjectDetails() {
 
                             </div>
                             <div className={classes.rightElements}>
-                                <div className={classes.sectionContainer}>
-                                    <div className={classes.photosContainer}>
-                                        <h2 className={classes.sectionHeader}>Photos</h2>
-                                        <PhotosDisplay data={project} />
-                                    </div>
+                                <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
+                                    {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                    <PhotosDisplay data={project} />
                                 </div>
                             </div>
                         </div>

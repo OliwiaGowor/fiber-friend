@@ -4,7 +4,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+//TODO: smaller tiles for mobile
 interface TilesProps {
   children?: React.ReactNode;
   data: any;
@@ -28,7 +28,7 @@ function Tiles(props: TilesProps) {
   const handlePhotoRender = (element: any) => {
     if (element.photos) {
       return (
-        <img src={element.photos ? element.photos[0].url : element.photos} alt={element.name} height={isMobile ? '180px' : '270px'} width={isMobile ? '180px' : '270px'} />
+        <img src={element?.photos ? element.photos[1]?.url : element?.photos} alt={element.name} height={isMobile ? '180px' : '270px'} width={isMobile ? '180px' : '270px'} />
       );
     } else {
       return (
