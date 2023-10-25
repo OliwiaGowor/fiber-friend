@@ -6,7 +6,7 @@ export default function Root() {
   return (
     <>
       <Navbar />
-      <main style={{ position: 'relative', top: 'var(--navbar-height)', marginBottom: "0px" }}>
+      <main style={{ paddingTop: 'var(--navbar-height)', marginBottom: "0px", overflowX: "hidden" }}>
         <Outlet />
       </main>
       <Footer />

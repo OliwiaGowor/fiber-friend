@@ -14,6 +14,7 @@ import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
+//TODO: add counters
 
 export default function ProjectDetails() {
     const navigate = useNavigate();

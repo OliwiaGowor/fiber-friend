@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import classes from './PhotosDisplay.module.scss';
@@ -26,12 +27,12 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
     const vw = (percent: number) => {
         var w = Math.max(document.documentElement.clientWidth, windowWidth.current || 0);
         return (percent * w) / 100;
-      }
+    }
 
     const displayWidth = (isZoomed: boolean) => {
         if (isMobile) {
             if (isZoomed) {
-                return (windowWidth.current - 100).toString() + "px";
+                return (windowWidth.current).toString() + "px";
             } else {
                 return (windowWidth.current - vw(12)).toString() + "px";
             }
@@ -47,7 +48,7 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
     const displayHeight = (isZoomed: boolean) => {
         if (isMobile) {
             if (isZoomed) {
-                return (windowHeight.current - 100).toString() + "px";
+                return (windowHeight.current).toString() + "px";
             } else {
                 return (windowHeight.current / 2).toString() + "px";
             }
@@ -110,12 +111,16 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                     pagination={pagination}
                     modules={[Pagination, Navigation]}
                     className={classes.photos}
-                    navigation={!isMobile}
+                    navigation={true}
                     rewind={true}
                 >
                     {handlePhotoRender(data, false)}
                 </Swiper>
             </div>
+            {open &&
+                <span className={classes.closeIcon} onClick={handleClose}>
+                    <CloseIcon sx={{ fontSize: '2rem' }} />
+                </span>}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -124,6 +129,7 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                 className={classes.modal}
             >
                 <div className={classes.photosZoomed} onClick={handleClickOpen}>
+
                     <Swiper
                         pagination={pagination}
                         modules={[Pagination, Navigation]}

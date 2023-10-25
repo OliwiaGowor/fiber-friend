@@ -12,6 +12,7 @@ import { FilesDisplay } from "../../components/FilesDisplay/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 //TODO: mobile design
+//TODO: add counters
 export default function PatternDetails() {
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };

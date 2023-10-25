@@ -33,14 +33,39 @@
   }
 }
 
+.closeIcon {
+  position: absolute;
+  top: -140px;
+  right: 10px;
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ffffffcc;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+}
+
 .modal {
-  position: relative;
+  position: absolute;
+  top: 0;
+  z-index: 10001 !important;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .photosZoomed {
-    width: min-content !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw !important;
+    height: 100vh !important;
 
     .photos {
       .swiper-pagination-bullet {
@@ -60,12 +85,23 @@
       }
 
       .addedPhoto {
-        width: min-content !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw !important;
 
         .photo {
-          border-radius: 5px;
+          object-fit: cover;
+          object-position: center;
         }
       }
     }
+  }
+}
+
+@media screen and (min-width: 800px) { 
+  .closeIcon {
+    top: 30px;
+    right: 30px;
   }
 }
