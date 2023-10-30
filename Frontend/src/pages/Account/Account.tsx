@@ -26,30 +26,37 @@ export default function Account() {
   return (
     <div className={classes.container}>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-        <Link to={"projects"}>
-          <h1 className={classes.header}>PROJECTS<ArrowForwardIosIcon className={classes.arrow} /></h1>
-        </Link>
+        <h1 className={classes.header}>
+          <Link to={"projects"}>
+            PROJECTS<ArrowForwardIosIcon className={classes.arrow} />
+          </Link>
+        </h1>
         <Await resolve={projects}>
           {(loadedProjects) => <MiniaturesList data={loadedProjects} link={'projects/new-project'} />}
         </Await>
       </Suspense>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-        <Link to={"patterns"}>
-          <h1 className={classes.header}>PATTERNS<ArrowForwardIosIcon className={classes.arrow} /></h1>
-        </Link>
+        <h1 className={classes.header}>
+          <Link to={"patterns"}>
+            PATTERNS<ArrowForwardIosIcon className={classes.arrow} />
+          </Link>
+        </h1>
         <Await resolve={patterns}>
           {(loadedPatterns) => <MiniaturesList data={loadedPatterns} link={'patterns/new-pattern'} />}
         </Await>
       </Suspense>
-      <div className={classes.tiles} >
-        {tiles.map((tile: any) =>
-        <Link to={tile.link} key={tile.title}>
-          <div className={classes.tile}>
-            <h2 className={classes.name}>{tile.title}</h2>
-            {tile.icon}
-          </div>
-          </Link>
-        )}
+      <div className={classes.container} >
+        <h1 className={classes.header}>OTHERS</h1>
+        <div className={classes.tiles} >
+          {tiles.map((tile: any) =>
+            <Link to={tile.link} key={tile.title}>
+              <div className={classes.tile}>
+                <h2 className={classes.name}>{tile.title}</h2>
+                {tile.icon}
+              </div>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

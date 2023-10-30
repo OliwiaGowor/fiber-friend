@@ -2,13 +2,13 @@
 
 .container {
   position: fixed;
-  top: var(--navbar-height);
-  right: 0;
+  bottom: var(--navbar-height);
+  left: 0;
   display: flex;
   flex-direction: column;
   min-width: var(--sidebar-width-mobile);
-  height: max-content;
-  padding: 30px 20px 20px 20px;
+  height: calc(100vh - var(--navbar-height));
+  padding: 50px 20px 20px 20px;
   border-radius: 10px;
   background-color: var(--background-color);
   -webkit-box-shadow: 0px 3px 15px -4px rgb(146, 147, 153);
@@ -79,6 +79,8 @@
 @media screen and (min-width: 800px) {
   .container {
     position: static;
+    top: var(--navbar-height);
+    bottom: unset;
     min-width: var(--sidebar-width);
     padding: 60px 60px 60px 50px;
     -webkit-box-shadow: none;

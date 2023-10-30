@@ -15,11 +15,13 @@
     }
 
     &:hover {
-      color: var(--main-color-dark);
-      transition: 0.2s;
+      a {
+        color: var(--main-color-dark);
+        transition: 0.2s;
 
-      .arrow {
-        font-size: 28px;
+        .arrow {
+          font-size: 28px;
+        }
       }
     }
   }

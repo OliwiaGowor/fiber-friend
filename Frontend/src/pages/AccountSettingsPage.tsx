@@ -27,8 +27,13 @@ const AccountSettingsPage = () => {
     <div className={classes.container}>
       <div className={classes.main}>
           <h1 className={classes.header}>Account settings</h1>
+          <h2>General</h2>
           Username: {}
-          
+          Email: {}
+
+          <h2>Access</h2>
+          Change your password
+          Delete account
       </div>
     </div>
   );
