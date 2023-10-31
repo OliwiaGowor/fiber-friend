@@ -7,7 +7,7 @@ import ErrorPopup from "../../components/ErrorPopup/ErrorPopup";
 
 function Projects() {
     const { projects }: any = useRouteLoaderData("projects");
-    console.log(projects);
+
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>PROJECTS</h1>
@@ -21,7 +21,6 @@ function Projects() {
                             </>
                         return <Tiles data={loadedProjects} link='new-project' addText='New project' />
                     }}
-
                 </Await>
             </Suspense>
         </div>

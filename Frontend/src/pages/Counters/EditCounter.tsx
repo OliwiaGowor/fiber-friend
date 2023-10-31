@@ -1,4 +1,4 @@
-import CounterGroup from '../../components/CounterGroup/CounterGroup';
+import CounterGroup from '../../components/BigCounter/BigCounter';
 import * as React from 'react';
 import classes from './NewCounter.module.scss';
 import { json, useNavigate, useRouteLoaderData } from "react-router-dom";

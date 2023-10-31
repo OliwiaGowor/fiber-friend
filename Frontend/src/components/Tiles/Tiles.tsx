@@ -47,8 +47,8 @@ function Tiles(props: TilesProps) {
           </li>
         </Link>
         {loadedProjects.map((element: any) => (
-          <Link to={`${element.id}`}>
-            <li key={element.id} className={classes.element}>
+          <Link to={`${element.id}`} key={element.id}>
+            <li className={classes.element}>
               <h2 className={classes.name}>{element.name}</h2>
               {handlePhotoRender(element)}
             </li>

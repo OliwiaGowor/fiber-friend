@@ -14,16 +14,16 @@ import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-//TODO: add counters
+import SmallCounterGroup from "../../components/CounterGroup/CounterGroup";
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
     const { project } = useRouteLoaderData('project-details') as { project: any };
+    const isMobile = useMediaQuery('(max-width: 760px)');
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
     const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
     const [anchorElPopover, setAnchorElPopover] = React.useState<HTMLElement | null>(null);
-    const isMobile = useMediaQuery('(max-width: 760px)');
+    const open = Boolean(anchorEl);
     const openPopover = Boolean(anchorElPopover);
 
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -57,15 +57,9 @@ export default function ProjectDetails() {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const pagination = {
-        clickable: true,
-        renderBullet: function (index: number, className: string) {
-            return '<span class="' + className + '">' + "</span>";
-        },
     };
 
     const handleDelete = async () => {
@@ -87,6 +81,8 @@ export default function ProjectDetails() {
             return navigate('/fiber-friend/account/projects');
         }
     }
+
+
 
     return (
         <div className={classes.container}>
@@ -205,8 +201,14 @@ export default function ProjectDetails() {
                                         </Link>
                                     </div>}
                                 <FilesDisplay files={project.patterns} />
+                                <h3 className={classes.attributeName}>Counters</h3>
+                                <div className={classes.notes}>
+                                    {<SmallCounterGroup />}
+                                </div>
                                 <h3 className={classes.attributeName}>Notes</h3>
-                                <div className={classes.notes}><TextDisplay defaultValue={project.notes} /></div>
+                                <div className={classes.notes}>
+                                    <TextDisplay defaultValue={project.notes} />
+                                </div>
                             </div>
                         </div>
                     </div>

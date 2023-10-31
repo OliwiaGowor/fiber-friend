@@ -11,8 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import { FilesDisplay } from "../../components/FilesDisplay/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
+import CounterGroup from "../../components/CounterGroup/CounterGroup";
 //TODO: mobile design
-//TODO: add counters
+//TODO: maybe editing counters in dialog?
 export default function PatternDetails() {
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };
@@ -161,6 +162,8 @@ export default function PatternDetails() {
                                         </Link>
                                     </div>}
                                 <FilesDisplay files={pattern.patterns} />
+                                <h3 className={classes.attributeName}>Counters</h3>
+                                <div className={classes.counters}><CounterGroup /></div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                             </div>

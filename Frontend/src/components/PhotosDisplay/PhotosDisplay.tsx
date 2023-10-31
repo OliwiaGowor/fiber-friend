@@ -11,6 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import classes from './PhotosDisplay.module.scss';
 
 //TODO: Moblie design
+//TODO: add on fullscreen to either show original size or fit to screen
 interface PhotosDisplayProps {
     data: any;
     miniatureSize?: string;
@@ -120,7 +121,8 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
             {open &&
                 <span className={classes.closeIcon} onClick={handleClose}>
                     <CloseIcon sx={{ fontSize: '2rem' }} />
-                </span>}
+                </span>
+            }
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -128,18 +130,15 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                 aria-describedby="alert-dialog-description"
                 className={classes.modal}
             >
-                <div className={classes.photosZoomed} onClick={handleClickOpen}>
-
-                    <Swiper
-                        pagination={pagination}
-                        modules={[Pagination, Navigation]}
-                        className={classes.photos}
-                        navigation={true}
-                        rewind={true}
-                    >
-                        {handlePhotoRender(data, true)}
-                    </Swiper>
-                </div>
+                <Swiper
+                    pagination={pagination}
+                    modules={[Pagination, Navigation]}
+                    className={classes.photos}
+                    navigation={true}
+                    rewind={true}
+                >
+                    {handlePhotoRender(data, true)}
+                </Swiper>
             </Modal>
         </div>
     );

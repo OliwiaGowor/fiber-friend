@@ -9,9 +9,9 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import classes from './SidebarAccount.module.scss'
-//FIXME: fix dissapearring sidebar on desktop
+
 function SidebarAccount({ open, getOpen }: any) {
-    const [isOpen, setIsOpen] = React.useState<boolean>();
+    const [isOpen, setIsOpen] = React.useState<boolean>(true);
     const isMobile = useMediaQuery('(max-width: 760px)');
 
     React.useEffect(() => {
@@ -25,30 +25,37 @@ function SidebarAccount({ open, getOpen }: any) {
         }
     };
 
+    const handleClick = () => {
+        if (isMobile) {
+            setIsOpen(false);
+            getOpen((prev: boolean) => !prev);
+        }
+    }
+
     return (
         <ClickAwayListener onClickAway={handleClickAway} touchEvent={'onTouchStart'}>
             <aside className={isOpen ? `${classes.container}` : `${classes.containerHidden}`}>
                 <h2 className={classes.header}>
-                    <Link to={'/fiber-friend/account'} className={classes.link} onClick={() => { setIsOpen(false); getOpen((prev: boolean) => !prev); }}>
+                    <Link to={'/fiber-friend/account'} className={classes.link} onClick={handleClick}>
                         <AccountCircleIcon />
                         <div className={classes.text}>Account</div>
                     </Link>
                 </h2>
                 <ul className={classes.elements}>
                     <li className={classes.element}>
-                        <Link to={'/fiber-friend/account/projects'} className={classes.link} onClick={() => { setIsOpen(false); getOpen((prev: boolean) => !prev); }}>
+                        <Link to={'/fiber-friend/account/projects'} className={classes.link} onClick={handleClick}>
                             <GridOnIcon />
                             <div className={classes.text}>Projects</div>
                         </Link>
                     </li>
                     <li className={classes.element}>
-                        <Link to={'/fiber-friend/account/patterns'} className={classes.link} onClick={() => { setIsOpen(false); getOpen((prev: boolean) => !prev); }}>
+                        <Link to={'/fiber-friend/account/patterns'} className={classes.link} onClick={handleClick}>
                             <BrushIcon />
                             <div className={classes.text}>Patterns</div>
                         </Link>
                     </li>
                     <li className={classes.element}>
-                        <Link to={'/fiber-friend/account/counters'} className={classes.link} onClick={() => { setIsOpen(false); getOpen((prev: boolean) => !prev); }}>
+                        <Link to={'/fiber-friend/account/counters'} className={classes.link} onClick={handleClick}>
                             <CalculateIcon />
                             <div className={classes.text}>Counters</div>
                         </Link>
@@ -60,7 +67,7 @@ function SidebarAccount({ open, getOpen }: any) {
                     </Link>
                 </li>*/}
                     <li className={classes.element}>
-                        <Link to={'/fiber-friend/account/supplies'} className={classes.link} onClick={() => { setIsOpen(false); getOpen((prev: boolean) => !prev); }}>
+                        <Link to={'/fiber-friend/account/supplies'} className={classes.link} onClick={handleClick}>
                             <ShoppingBasketIcon />
                             <div className={classes.text}>Supplies</div>
                         </Link>
@@ -68,7 +75,7 @@ function SidebarAccount({ open, getOpen }: any) {
 
                     <span className={classes.divider} />
                     <li className={classes.element}>
-                        <Link to={'/fiber-friend/account/settings'} className={classes.link} onClick={() => { setIsOpen(false); getOpen((prev: boolean) => !prev); }}>
+                        <Link to={'/fiber-friend/account/settings'} className={classes.link} onClick={handleClick}>
                             <SettingsIcon />
                             <div className={classes.text}>Settings</div>
                         </Link>

@@ -5,6 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function AccountRoot() {
   const isMobile = useMediaQuery('(max-width: 800px)');
+  console.log(isMobile)
   return (
     <div className={classes.container}>
       <SidebarAccount open={!isMobile}/>

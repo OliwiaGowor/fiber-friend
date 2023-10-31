@@ -59,47 +59,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100vw !important;
+  height: 100vh !important;
 
-  .photosZoomed {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw !important;
-    height: 100vh !important;
+  .photos {
+    width: fit-content !important;
+    
+    .swiper-pagination-bullet {
+      width: 20px;
+      height: 20px;
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.2);
+      text-align: center;
+      line-height: 20px;
+      font-size: 12px;
+      color: #000;
+    }
 
-    .photos {
-      .swiper-pagination-bullet {
-        width: 20px;
-        height: 20px;
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.2);
-        text-align: center;
-        line-height: 20px;
-        font-size: 12px;
-        color: #000;
-      }
+    .swiper-pagination-bullet-active {
+      background: var(--main-color-dark);
+      color: #fff;
+    }
 
-      .swiper-pagination-bullet-active {
-        background: var(--main-color-dark);
-        color: #fff;
-      }
+    .addedPhoto {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw !important;
 
-      .addedPhoto {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100vw !important;
-
-        .photo {
-          object-fit: cover;
-          object-position: center;
-        }
+      .photo {
+        object-fit: cover;
+        object-position: center;
       }
     }
   }
 }
 
-@media screen and (min-width: 800px) { 
+@media screen and (min-width: 800px) {
   .closeIcon {
     top: 30px;
     right: 30px;

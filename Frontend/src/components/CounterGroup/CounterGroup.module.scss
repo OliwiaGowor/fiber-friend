@@ -1,93 +1,19 @@
 @use "../../root";
+@use "../Tiles/Tiles.module.scss";
 
 .container {
-  .counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 10px;
-    border-radius: 10px;
-    background-color: var(--background-accents);
-    -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
-    -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
-    box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+  .addButton {
+    @include Tiles.tile($minWidth: 200px, $height: 290px);
+  }
 
-    .settings {
-      display: flex;
-      justify-content: end;
-      width: 100%;
-      margin-right: 20px;
-    }
+  .counters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    grid-gap: 20px;
 
-    .number {
-      margin: 40px 0px;
-      font-size: 7em;
-      font-weight: 900;
-      color: var(--main-color-dark);
-    }
-
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(50px, 1fr));
-      justify-items: center;
-      align-items: center;
-      width: 100%;
-
-      .subBtn,
-      .addBtn {
-        width: 100%;
-        background-color: var(--background-accents);
-        border-radius: 0px;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border-top: 2px solid var(--background-color);
-        padding: 10px 0px;
-
-        &:hover {
-          background-color: var(--accent-color-btn);
-          cursor: pointer;
-          transition: 0.4s;
-        }
-      }
-
-      .subBtn {
-        border-bottom-left-radius: 10px;
-        border-right: 2px solid var(--background-color);
-      }
-
-      .addBtn {
-        border-bottom-right-radius: 10px;
-      }
+    .counter {
+      height: 290px;
     }
   }
 
-  .btnContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-
-    .btnAddCounter {
-      @include root.button($margin-tb: 20px, $margin-lr: 0);
-    }
-  }
-
-  .additionalText {
-    color: rgb(87, 87, 87);
-    font-size: 18px;
-    text-align: center;
-  }
-}
-
-.settingsMenu {
-
-  .menuElem {
-    @include root.menuElem();
-  }
-
-  .menuElemBtn {
-    @include root.menuElemButton();
-  }
 }

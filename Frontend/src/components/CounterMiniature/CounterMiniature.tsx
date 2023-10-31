@@ -25,40 +25,42 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
     };
 
     return (
-        <div className={classes.container}>
-            <div className={classes.counter} style={{backgroundColor: (backgroundColor !== undefined) ? backgroundColor : ''}}>
-                {editable && <div className={classes.settings}>
-                    <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? 'long-menu' : undefined}
-                        aria-expanded={open ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                            'aria-labelledby': 'long-button',
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                        className={classes.settingsMenu}
-                    >
-                        <MenuItem onClick={handleClose} className={classes.menuElem}>
-                            <button className={classes.menuElemBtn} onClick={deleteCounter}>Delete counter</button>
-                        </MenuItem>
-                    </Menu>
-                </div>
-                }
-                <h1 className={classes.counterName}>{counter.name}</h1>
-                <div className={classes.number}>{counter.amount}</div>
+        <div className={classes.counter}
+            style={{
+                backgroundColor: (backgroundColor !== undefined) ? backgroundColor : ''
+            }}
+        >
+            {editable && <div className={classes.settings}>
+                <IconButton
+                    aria-label="more"
+                    id="long-button"
+                    aria-controls={open ? 'long-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="long-menu"
+                    MenuListProps={{
+                        'aria-labelledby': 'long-button',
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    className={classes.settingsMenu}
+                >
+                    <MenuItem onClick={handleClose} className={classes.menuElem}>
+                        <button className={classes.menuElemBtn} onClick={deleteCounter}>Delete counter</button>
+                    </MenuItem>
+                </Menu>
             </div>
+            }
+            <h1 className={classes.counterName}>{counter.name}</h1>
+            <div className={classes.number}>{counter.amount}</div>
         </div>
     );
 }
