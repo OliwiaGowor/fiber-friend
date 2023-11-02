@@ -30,6 +30,7 @@ import SupplyDetails, { loader as supplyDetailsLoader } from './pages/Supplies/S
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import AccountSettingsPage from './pages/AccountSettingsPage';
 import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
+import StatisticsPage from './pages/StatisticsPage/StatisticsPage';
 
 const router = createBrowserRouter([
   {
@@ -210,6 +211,14 @@ const router = createBrowserRouter([
           {
             path: 'settings',
             element: <AccountSettingsPage />,
+          },
+          {
+            path: 'statistics',
+            id: "statistics",
+            //loader: statisticsLoader,
+            element: <StatisticsPage />,
+            children: [
+            ]
           },
         ]
       },

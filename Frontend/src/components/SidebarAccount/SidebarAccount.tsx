@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
-import ClickAwayListener from "@mui/base/ClickAwayListener";
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import SettingsIcon from '@mui/icons-material/Settings';
 import BrushIcon from '@mui/icons-material/Brush';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import InsightsIcon from '@mui/icons-material/Insights';
 import classes from './SidebarAccount.module.scss'
 
 function SidebarAccount({ open, getOpen }: any) {
@@ -60,18 +61,18 @@ function SidebarAccount({ open, getOpen }: any) {
                             <div className={classes.text}>Counters</div>
                         </Link>
                     </li>
-                    {/*<li className={classes.element}>
-                    <Link to={'orders'} className={classes.link}>
-                        <ShoppingBasketIcon />
-                        <div className={classes.text}>Orders</div>
-                    </Link>
-                </li>*/}
                     <li className={classes.element}>
                         <Link to={'/fiber-friend/account/supplies'} className={classes.link} onClick={handleClick}>
                             <ShoppingBasketIcon />
                             <div className={classes.text}>Supplies</div>
                         </Link>
                     </li>
+                    <li className={classes.element}>
+                    <Link to={'statistics'} className={classes.link}>
+                        <InsightsIcon />
+                        <div className={classes.text}>Statistics</div>
+                    </Link>
+                </li>
 
                     <span className={classes.divider} />
                     <li className={classes.element}>

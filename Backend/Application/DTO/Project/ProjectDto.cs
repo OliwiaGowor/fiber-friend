@@ -14,7 +14,8 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
     public DateTime EndDate { get; set; }
     public bool Finished { get; set; } = false;
     public string Category { get; set; } = "";
-    public List<YarnDto>? Yarns {get; set;}
+    public string Notes { get; set; }
+    public List<YarnDto>? Yarns {get; set; }
 
     public static void Mapping(Profile profile)
     {
@@ -26,6 +27,7 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.EndDate, opt => opt.MapFrom(s => s.EndDate))
             .ForMember(d => d.Finished, opt => opt.MapFrom(s => s.Finished))
             .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
+            .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
             .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns));
 
         profile.CreateMap<ProjectDto, Domain.Entities.Project>().ReverseMap();

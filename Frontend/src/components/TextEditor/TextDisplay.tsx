@@ -1,13 +1,8 @@
 import React, { useMemo, useState } from 'react';
-// Import the Slate editor factory.
-import { Transforms, createEditor, Editor, BaseEditor, Descendant } from 'slate';
-// Import the Slate components and React plugin.
+import { createEditor } from 'slate';
 import { Slate, Editable, withReact, useSlate } from 'slate-react';
-import isHotkey from "is-hotkey";
 import { withHistory } from 'slate-history';
 import classes from './TextDisplay.module.scss';
-
-//FIXME: text has to be one string not arrays
 
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
@@ -17,14 +12,15 @@ interface TextEditorProps {
 
 export default function TextEditor(props: TextEditorProps) {
   const { defaultValue, ...other } = props;
+  const [formattedValue, setFormattedValue] = useState(defaultValue ? (typeof(defaultValue) !== "object" ?  JSON.parse(defaultValue) : defaultValue) : '');
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderElement = React.useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = React.useCallback((props: any) => <Leaf {...props} />, []);
 
   return (
     <div className={classes.textEditor}>
-     {Object.prototype.toString.call(defaultValue) === '[object Array]' && 
-     <Slate editor={editor} value={defaultValue} >
+     {Object.prototype.toString.call(formattedValue) === '[object Array]' && 
+     <Slate editor={editor} value={formattedValue} >
         <Editable
         className={classes.textField}
         renderElement={renderElement}
@@ -32,8 +28,8 @@ export default function TextEditor(props: TextEditorProps) {
         readOnly={true}
         />
       </Slate>}
-      {Object.prototype.toString.call(defaultValue) !== '[object Array]' && 
-      <div className={classes.standardNotes}>{defaultValue}</div>}
+      {Object.prototype.toString.call(formattedValue) !== '[object Array]' && 
+      <div className={classes.standardNotes}>{formattedValue}</div>}
     </div>
   );
 }

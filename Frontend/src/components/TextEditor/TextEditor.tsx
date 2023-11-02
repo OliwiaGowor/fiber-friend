@@ -1,7 +1,5 @@
 import React, { useMemo, useState } from 'react';
-// Import the Slate editor factory.
-import { Transforms, createEditor, Editor, BaseEditor, Descendant } from 'slate';
-// Import the Slate components and React plugin.
+import { Transforms, createEditor, Editor, BaseEditor } from 'slate';
 import { Slate, Editable, withReact, useSlate } from 'slate-react';
 import isHotkey from "is-hotkey";
 import { withHistory } from 'slate-history';
@@ -63,7 +61,7 @@ export default function TextEditor(props: TextEditorProps) {
 
   return (
     <div className={classes.textEditor}>
-      <Slate editor={editor} value={value} onChange={(value: any) => {setValue(value); getValue(value);}} >
+      <Slate editor={editor} value={value} onChange={(value: any) => {setValue(value); getValue(JSON.stringify(value));}} >
         <div className={classes.toolbar}>
           <MarkButton format='bold' icon={<FormatBoldIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
           <MarkButton format='italic' icon={<FormatItalicIcon sx={{fontSize: 27}} />} className={classes.formatButton} />

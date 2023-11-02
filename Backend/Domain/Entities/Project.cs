@@ -9,5 +9,6 @@ public class Project
     public DateTime EndDate { get; set; }
     public bool Finished { get; set; }
     public string Category { get; set; }
+    public string Notes { get; set; }
     public List<Yarn> Yarns {get; set;}
 }
