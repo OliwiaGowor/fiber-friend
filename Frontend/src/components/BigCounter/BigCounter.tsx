@@ -20,7 +20,6 @@ import classes from "./BigCounter.module.scss";
 //FIXME: style number input
 //FIXME: add auto width function to count input
 //TODO: add count input validation (only numbers)
-//FIXME: adding one smaller value than displayed
 
 export default function BigCounter({ getCounter }: any) {
     const [count, setCount] = React.useState(0);
@@ -36,6 +35,15 @@ export default function BigCounter({ getCounter }: any) {
             document.body.removeEventListener("keydown", handleSpace);
         };
     }, [count]);
+
+    React.useEffect(() => {
+        const counter = {
+            name: nameRef.current?.value,
+            amount: count,
+        };
+        getCounter(counter);
+    }, [count, nameRef.current?.value]);
+
 
     const handleClickOpen = () => {
         setOpenDialog(true);
@@ -53,16 +61,9 @@ export default function BigCounter({ getCounter }: any) {
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleCloseSetting = () => {
         setAnchorEl(null);
-    };
-
-    const createCounter = () => {
-        const counter = {
-            name: nameRef.current?.value,
-            amount: count,
-        };
-        getCounter(counter);
     };
 
     const handleSpace = (e: any) => {
@@ -138,26 +139,22 @@ export default function BigCounter({ getCounter }: any) {
                             <EditIcon></EditIcon>
                         </InputAdornment>
                     }
-                    onChange={() => { createCounter() }}
                 />
                 <input
                     className={classes.number}
                     id="amount"
                     type="text"
                     value={count}
-                    onChange={(e) => setCount(Number(e.target.value))}
                 />
                 <div className={classes.buttons}>
                     <Button variant='contained' className={classes.subBtn} onClick={() => {
                         (count > 0) ? setCount(count - 1) : setCount(count);
-                        createCounter();
                     }}
                     >
                         <RemoveIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }} ></RemoveIcon>
                     </Button>
                     <Button variant='contained' className={classes.addBtn} onClick={() => {
                         setCount(count + 1);
-                        createCounter();
                     }}
                     >
                         <AddIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }}></AddIcon>

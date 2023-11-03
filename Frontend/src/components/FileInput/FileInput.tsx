@@ -26,9 +26,9 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
   let loadedFiles = [];
   for (const key in defaultValue) {
     loadedFiles.push({
-      id: parseInt(defaultValue[key].id),
-      name: defaultValue[key].name,
-      url: defaultValue[key].url,
+      id: parseInt(defaultValue[key]?.id),
+      name: defaultValue[key]?.name,
+      url: defaultValue[key]?.url,
     });
   }
   const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ? loadedFiles : []);
@@ -50,7 +50,7 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
     e.preventDefault();
     if (addedFiles.length > 0) {
       const tmp = addedFiles.filter((file: { id: number; }) =>
-        file.id !== index)
+        file?.id !== index)
       for (let i = 0; i < tmp.length; i++) {
         tmp[i].id = i
       }
@@ -60,17 +60,17 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
   };
 
   const displayDifferentFiles = (file: any) => {
-    if (file.name.slice(-3) == 'doc' || file.name.slice(-4) == 'docx') {
+    if (file?.name.slice(-3) == 'doc' || file?.name.slice(-4) == 'docx') {
       return (
         <div className={`${classes.photo} ${classes.photoNoPreview}`}>
-          <p>{file.name}</p>
+          <p>{file?.name}</p>
           <p>Preview unavailable</p>
         </div>
       );
-    } else if (file.name.slice(-3) == 'pdf') {
+    } else if (file?.name.slice(-3) == 'pdf') {
       return (
         <object
-          data={file.url}
+          data={file?.url}
           width="150px"
           height="175px"
           className={classes.photo}
@@ -82,8 +82,8 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
       return (
         <img
           className={classes.photo}
-          src={`${file.url}`}
-          srcSet={`${file.url}`}
+          src={`${file?.url}`}
+          srcSet={`${file?.url}`}
           alt="not found"
           loading="lazy"
           width="150px"
@@ -99,7 +99,7 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
         <div className={classes.addPhoto}>
           <Button variant="outlined" component="label" className={classes.btnAddPhoto}>
             <h2 className={classes.btnAddPhotoText}>{addHeader}</h2>
-            <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 70 }} />
+            <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 60 }} />
             <input
               hidden
               accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'}
@@ -120,8 +120,8 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
             </button>
             {onlyImg && <img
               className={classes.photo}
-              src={`${file.url}`}
-              srcSet={`${file.url}`}
+              src={`${file?.url}`}
+              srcSet={`${file?.url}`}
               alt="not found"
               loading="lazy"
               width="150px"

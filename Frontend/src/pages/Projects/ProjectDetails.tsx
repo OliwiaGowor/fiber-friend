@@ -52,7 +52,7 @@ export default function ProjectDetails() {
 
     React.useEffect(() => {
         fetchSelectedPattern();
-    }, [fetchSelectedPattern]);
+    }, []);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -202,7 +202,7 @@ export default function ProjectDetails() {
                                     </div>}
                                 <FilesDisplay files={project.patterns} />
                                 <h3 className={classes.attributeName}>Counters</h3>
-                                <div className={classes.notes}>
+                                <div className={classes.counters}>
                                     {<SmallCounterGroup />}
                                 </div>
                                 <h3 className={classes.attributeName}>Notes</h3>

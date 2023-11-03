@@ -1,0 +1,5 @@
+@use "../../root.scss";
+
+.formInput {
+    @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+  }

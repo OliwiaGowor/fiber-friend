@@ -2,18 +2,76 @@
 @use "../Tiles/Tiles.module.scss";
 
 .container {
-  .addButton {
-    @include Tiles.tile($minWidth: 200px, $height: 290px);
-  }
+  display: flex;
+  flex-direction: column;
 
   .counters {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
-    grid-gap: 20px;
+    grid-auto-columns: minmax(175px, 1fr);
+    grid-auto-flow: column;
+    width: 100%;
+    border: 1px dashed grey;
+    background-color: var(--background-color);
 
     .counter {
-      height: 290px;
+      height: 240px;
+    }
+
+    .addButton {
+      @include Tiles.tile($minWidth: 150px, $height: 240px);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      box-shadow: none;
+
+      .name {
+        margin: 0;
+        font-size: 18px;
+        color: var(--text-color-dark);
+      }
+
+      .addIcon {
+        margin: 25px;
+        color: var(--main-color-dark);
+      }
     }
   }
 
+  .saveChangesButton {
+    @include root.button($margin-lr: 0, $margin-tb: 0px);
+
+    align-self: flex-end;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .container {
+    .counters {
+      .counter {
+        height: 240px;
+      }
+  
+      .addButton {
+        @include Tiles.tile($minWidth: 150px, $height: 240px);
+  
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: none;
+  
+        .name {
+          margin: 0;
+          font-size: 18px;
+          color: var(--text-color-dark);
+        }
+  
+        .addIcon {
+          margin: 25px;
+          color: var(--main-color-dark);
+        }
+      }
+    }
+  }
 }

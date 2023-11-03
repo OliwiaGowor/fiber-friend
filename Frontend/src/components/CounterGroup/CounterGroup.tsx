@@ -8,11 +8,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import BigCounter from '../BigCounter/BigCounter';
 import CounterMiniature from '../CounterMiniature/CounterMiniature';
-
+import { UnsavedPrompt } from '../UnsavedPrompt/UnsavedPrompt';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
+//TODO: save counter button logic
+//TODO: smaller tiles on mobile and horizontal scroll
+//FIXME: fix dialog on mobile
 const CounterGroup = () => {
     const [tmpCounter, setTmpCounter] = React.useState();
     const [counters, setCounters] = React.useState<any>([]);
     const [openDialog, setOpenDialog] = React.useState(false);
+    const [editingCounters, setEditingCounters] = React.useState<boolean>(false);
 
     const handleClickOpen = () => {
         setOpenDialog(true);
@@ -36,8 +42,13 @@ const CounterGroup = () => {
         setCounters(tmpArray);
     };
 
+    const handleSaveChanges = () => {
+        setEditingCounters(false);
+    }
+
     return (
         <div className={classes.container} >
+            <UnsavedPrompt hasUnsavedChanges={editingCounters} />
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>Add counter</DialogTitle>
                 <DialogContent>
@@ -55,18 +66,61 @@ const CounterGroup = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            
-            <div className={classes.counters}>
-            <Button className={classes.addButton} variant='contained' onClick={handleClickOpen}>
-                <h2 className={classes.name}>Add counter</h2>
-                <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} />
-            </Button>
+            <Swiper
+                slidesPerView={1}
+                spaceBetween={20}
+                navigation={true}
+                breakpoints={{
+                    600: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                    950: {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
+                    },
+                    1400: {
+                        slidesPerView: 5,
+                        spaceBetween: 20,
+                    },
+                }}
+                modules={[Navigation]}
+                className={classes.counters}
+            >
+                <SwiperSlide className={classes.element}>
+                    <Button
+                        className={classes.addButton}
+                        variant='contained'
+                        onClick={() => {
+                            handleClickOpen();
+                            setEditingCounters(true);
+                        }}
+                    >
+                        <h2 className={classes.name}>Add counter</h2>
+                        <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 80 }} />
+                    </Button>
+                </SwiperSlide>
                 {counters!.map((counter: any, index: number) => (
-                    <div className={classes.counter} key={index}>
-                        <CounterMiniature editable={true} counter={counter} deleteCounter={() => { handleDeleteCounter(counter) }} />
-                    </div>
+                    <SwiperSlide key={index} className={classes.loadedElement} style={{ height: '240px', width: '240px' }}>
+                        <div className={classes.counter} key={index}>
+                            <CounterMiniature
+                                editable={true}
+                                counter={counter}
+                                deleteCounter={() => { handleDeleteCounter(counter) }}
+                                boxShadow={false}
+                            />
+                        </div>
+                    </SwiperSlide>
                 ))}
-            </div>
+            </Swiper>
+            {editingCounters &&
+                <Button
+                    className={classes.saveChangesButton}
+                    variant='contained'
+                    onClick={() => { handleSaveChanges() }}>
+                    Save changes
+                </Button>
+            }
         </div>
     );
 }

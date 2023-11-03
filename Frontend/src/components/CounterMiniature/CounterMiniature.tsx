@@ -10,22 +10,24 @@ interface CounterMiniatureProps {
     counter: any;
     deleteCounter?: any;
     backgroundColor?: string;
+    boxShadow?: boolean;
 }
 
 export default function CounterMiniature(props: CounterMiniatureProps) {
-    const { editable, counter, deleteCounter, backgroundColor, ...other } = props;
+    const { editable, counter, deleteCounter, backgroundColor, boxShadow = true, ...other } = props;
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+    
     const handleClose = () => {
         setAnchorEl(null);
     };
 
     return (
-        <div className={classes.counter}
+        <div className={`${classes.counter}` + (!boxShadow ? ` ${classes.noShadow}` : '')}
             style={{
                 backgroundColor: (backgroundColor !== undefined) ? backgroundColor : ''
             }}

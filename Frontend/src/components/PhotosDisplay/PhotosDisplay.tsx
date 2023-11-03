@@ -82,7 +82,7 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
             return (
                 <div>
                     {project?.photos?.map((photo: any, index: number) => (
-                        photo !== null && <SwiperSlide key={index} className={classes.addedPhoto}>
+                        photo !== null && <SwiperSlide key={index} className={classes.photoSlide}>
                             <img
                                 className={classes.photo}
                                 src={`${photo?.url}`}

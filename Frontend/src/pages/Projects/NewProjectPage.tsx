@@ -1,16 +1,16 @@
+import React, { useCallback, useEffect } from "react";
+import { Form, json, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import React, { useCallback, useEffect } from "react";
 import Button from "@mui/material/Button";
-import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
-import { json, useNavigate, useRouteLoaderData } from "react-router-dom";
-import { FileInput } from '../../components/FileInput/FileInput';
-import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
+import { FileInput } from '../../components/FileInput/FileInput';
+import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
 import TextEditor from "../../components/TextEditor/TextEditor";
 import classes from './NewProjectPage.module.scss';
 
@@ -59,7 +59,7 @@ export default function NewProjectPage() {
 
     useEffect(() => {
         fetchAvailablePatterns();
-    }, [fetchAvailablePatterns]);
+    }, []);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -137,7 +137,7 @@ export default function NewProjectPage() {
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>Create new project</h1>
-            <form onSubmit={handleSubmit} className={classes.form} >
+            <Form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Details</h2>
@@ -273,7 +273,7 @@ export default function NewProjectPage() {
                     </div>
                 </div>
                 <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new project</Button>
-            </form>
+            </Form>
         </div>
     );
 }

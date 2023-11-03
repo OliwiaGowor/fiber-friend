@@ -48,8 +48,8 @@ interface BasicTabsFormProps {
 }
 
 export default function BasicTabsForm(props: BasicTabsFormProps) {
-  const [value, setValue] = React.useState(0);
   const { getInfo, showError, defaultValue, ...other } = props;
+  const [value, setValue] = React.useState(0);
   const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
@@ -93,6 +93,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
       }
     }])
     setYarnInput('');
+    setValue(yarns.length);
   };
 
   const handleDeleteTab = (yarn: any) => {
