@@ -31,12 +31,15 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 import AccountSettingsPage from './pages/AccountSettingsPage';
 import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
+import ErrorPopup from './components/ErrorPopup/ErrorPopup';
 
 const router = createBrowserRouter([
   {
     path: '/fiber-friend',
     element: <Root />,
     id: 'root',
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -73,7 +76,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <Projects />,
-              },
+          },
               {
                 path: ':projectId',
                 id: 'project-details',

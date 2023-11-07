@@ -1,7 +1,11 @@
-
 .errorPopup {
-    position: absolute;
-    z-index: 99999;
-    bottom: 100px;
-    right: 100px;
+  position: absolute;
+  z-index: 99999;
+  bottom: 100px;
+  right: 100px;
+
+  .snackbarContent {
+    background-color: var(--main-color-medium);
+    color: var(--text-color-dark);
+  }
 }

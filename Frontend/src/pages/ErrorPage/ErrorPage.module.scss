@@ -1,0 +1,49 @@
+@use "../../root";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: calc(100vh - var(--navbar-height) - 120px);
+
+  .background {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 60vw;
+    height: fit-content;
+    padding: 60px;
+    border-radius: 10px;
+    background-color: var(--background-accents);
+
+    .textContainer {
+      z-index: 100;
+      left: 8%;
+      top: 17%;
+      width: 35vw;
+      color: white;
+
+      .header {
+        color: var(--text-color-dark);
+        text-align: center;
+        font-size: 3rem;
+      }
+
+      .text {
+        margin: 40px 0px;
+        color: var(--text-color-dark);
+        font-size: 1.25rem;
+      }
+    }
+
+    .buttons {
+      .button {
+        @include root.button($margin-tb: 20px, $margin-lr: 30px);
+
+        font-weight: 600;
+      }
+    }
+  }
+}
