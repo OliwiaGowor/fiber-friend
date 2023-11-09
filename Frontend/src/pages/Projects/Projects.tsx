@@ -13,7 +13,7 @@ function Projects() {
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={projects}>
                     {(loadedProjects) => {
-                        if (loadedProjects?.status !== 200)
+                        if (loadedProjects?.status === 500 )
                             return <>
                                 <Tiles data={null} link='new-project' addText='New project' />
                             </>
@@ -29,7 +29,7 @@ export default Projects;
 
 async function loadProjects() {
     try {
-        const response = await fetch('httpss://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
 
         if (!response.ok) {
             localStorage.setItem("error", "Could not fetch projects.");

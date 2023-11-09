@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import logoPicture from '../../photos/yarn-ball.png';
-import classes from './Footer.module.scss';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { EmailIcon, FacebookIcon } from '../../svg/MediaIcons';
-//TODO: mobile version
+import classes from './Footer.module.scss';
+
+//TODO: hide footer in mobile view and move information to account page
+
 const Footer = () => {
     return (
         <footer className={classes.footer}>
