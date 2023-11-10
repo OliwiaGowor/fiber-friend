@@ -14,7 +14,7 @@ import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import SmallCounterGroup from "../../components/CounterGroup/CounterGroup";
+import CounterGroup from "../../components/CounterGroup/CounterGroup";
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
@@ -26,6 +26,10 @@ export default function ProjectDetails() {
     const open = Boolean(anchorEl);
     const openPopover = Boolean(anchorElPopover);
 
+    React.useEffect(() => {
+        fetchSelectedPattern();
+    }, []);
+
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
         setAnchorElPopover(event.currentTarget);
@@ -34,25 +38,6 @@ export default function ProjectDetails() {
     const handlePopoverClose = () => {
         setAnchorElPopover(null);
     };
-
-    const fetchSelectedPattern = React.useCallback(async () => {
-        try {
-            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + project.connectedPattern + '.json');
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
-
-            const data = await response.json();
-            setSelectedPattern(data);
-
-        } catch (error) {
-            //setError("Something went wrong, try again.");
-        }
-    }, []);
-
-    React.useEffect(() => {
-        fetchSelectedPattern();
-    }, []);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -82,7 +67,20 @@ export default function ProjectDetails() {
         }
     }
 
+    const fetchSelectedPattern = React.useCallback(async () => {
+        try {
+            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + project.connectedPattern + '.json');
+            if (!response.ok) {
+                throw new Error('Something went wrong!');
+            }
 
+            const data = await response.json();
+            setSelectedPattern(data);
+
+        } catch (error) {
+            //setError("Something went wrong, try again.");
+        }
+    }, []);
 
     return (
         <div className={classes.container}>
@@ -126,19 +124,18 @@ export default function ProjectDetails() {
                                 </Popover>
                             </div>
                             <Button
-                                id="basic-button"
+                                className={classes.editButton}
+                                aria-label="Edit Project"
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                                 onClick={handleClick}
-                                className={classes.editButton}
                             >
                                 <EditIcon sx={{ fontSize: 32 }} />
                             </Button>
                         </h1>
                         <div className={classes.editMenu}>
                             <Menu
-                                id="basic-menu"
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={handleClose}
@@ -149,10 +146,22 @@ export default function ProjectDetails() {
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 disableScrollLock={true}
                             >
-                                <MenuItem onClick={() => { return navigate('/fiber-friend/account/projects/' + project.id + '/edit'); handleClose(); }} disableRipple>
+                                <MenuItem
+                                    onClick={() => {
+                                        navigate('/fiber-friend/account/projects/' + project.id + '/edit');
+                                        handleClose();
+                                    }}
+                                    disableRipple
+                                >
                                     Edit
                                 </MenuItem>
-                                <MenuItem onClick={() => { handleClose(); handleDelete() }} disableRipple>
+                                <MenuItem
+                                    onClick={() => {
+                                        handleClose();
+                                        handleDelete()
+                                    }}
+                                    disableRipple
+                                >
                                     Delete project
                                 </MenuItem>
                             </Menu>
@@ -203,7 +212,7 @@ export default function ProjectDetails() {
                                 <FilesDisplay files={project.patterns} />
                                 <h3 className={classes.attributeName}>Counters</h3>
                                 <div className={classes.counters}>
-                                    {<SmallCounterGroup />}
+                                    {<CounterGroup defaultValue={project.counters} parentId={project.id}/>}
                                 </div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}>

@@ -35,7 +35,7 @@ function SidebarAccount({ open, getOpen }: any) {
 
     return (
         <ClickAwayListener onClickAway={handleClickAway} touchEvent={'onTouchStart'}>
-            <aside className={isOpen ? `${classes.container}` : `${classes.containerHidden}`}>
+            <aside className={isOpen ? `${classes.sidebarAccount}` : `${classes.sidebarAccountHidden}`}>
                 <h2 className={classes.header}>
                     <Link to={'/fiber-friend/account'} className={classes.link} onClick={handleClick}>
                         <AccountCircleIcon />

@@ -1,6 +1,6 @@
 @import url("../../root.scss");
 
-.container {
+.sidebarAccount {
   position: fixed;
   bottom: var(--navbar-height);
   left: 0;
@@ -72,12 +72,12 @@
   }
 }
 
-.containerHidden {
+.sidebarAccountHidden {
   display: none;
 }
 
 @media screen and (min-width: 800px) {
-  .container {
+  .sidebarAccount {
     position: static;
     top: var(--navbar-height);
     bottom: unset;

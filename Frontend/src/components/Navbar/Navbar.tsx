@@ -41,14 +41,20 @@ export default function Navbar() {
                 {!isMobile &&
                     <div className={classes.logo}>
                         <Link to={"/fiber-friend"}>
-                            <img className={classes.logoPicture} src={logoPicture} width='45px' height='45px' />
+                            <img
+                                className={classes.logoPicture}
+                                src={logoPicture}
+                                alt="Fiber Friend Logo"
+                                width='45px'
+                                height='45px'
+                            />
                             {!smallerLogo && 'Fiber Friend'}
                         </Link>
                     </div>
                 }
                 {isMobile &&
                     <li className={classes.menuIcon}>
-                        <button onClick={handleClickMenu}><MenuIcon sx={{ fontSize: 43 }}/></button>
+                        <button onClick={handleClickMenu}><MenuIcon sx={{ fontSize: 43 }} /></button>
                     </li>
                 }
                 {isMobile &&
@@ -56,47 +62,47 @@ export default function Navbar() {
                         <button onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClickAdd(e)}>
                             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 46 }} />
                         </button>
-                            <Menu
-                                className={classes.addMenu}
-                                anchorEl={anchorEl}
-                                open={openAdd}
-                                onClose={handleCloseAdd}
-                                MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                }}
-                                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                                transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                                PaperProps={{ className: `${classes.addMenuPaper}` }}
+                        <Menu
+                            className={classes.addMenu}
+                            anchorEl={anchorEl}
+                            open={openAdd}
+                            onClose={handleCloseAdd}
+                            MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                            }}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                            transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                            PaperProps={{ className: `${classes.addMenuPaper}` }}
+                        >
+                            <MenuItem onClick={() => {
+                                handleCloseAdd();
+                                navigate("account/projects/new-project");
+                            }}
                             >
-                                <MenuItem onClick={() => {
-                                    handleCloseAdd();
-                                    navigate("account/projects/new-project");
-                                }}
-                                >
-                                    Add project
-                                </MenuItem>
-                                <MenuItem onClick={() => {
-                                    handleCloseAdd();
-                                    navigate("account/patterns/new-pattern");
-                                }}
-                                >
-                                    Add pattern
-                                </MenuItem>
-                                <MenuItem onClick={() => {
-                                    handleCloseAdd();
-                                    navigate("account/supplies/new-supply");
-                                }}
-                                >
-                                    Add supply
-                                </MenuItem>
-                                <MenuItem onClick={() => {
-                                    handleCloseAdd();
-                                    navigate("account/counters/new-counter");
-                                }}
-                                >
-                                    Add counter
-                                </MenuItem>
-                            </Menu>
+                                Add project
+                            </MenuItem>
+                            <MenuItem onClick={() => {
+                                handleCloseAdd();
+                                navigate("account/patterns/new-pattern");
+                            }}
+                            >
+                                Add pattern
+                            </MenuItem>
+                            <MenuItem onClick={() => {
+                                handleCloseAdd();
+                                navigate("account/supplies/new-supply");
+                            }}
+                            >
+                                Add supply
+                            </MenuItem>
+                            <MenuItem onClick={() => {
+                                handleCloseAdd();
+                                navigate("account/counters/new-counter");
+                            }}
+                            >
+                                Add counter
+                            </MenuItem>
+                        </Menu>
                     </li>
                 }
                 <li className={classes.accountIcon}>

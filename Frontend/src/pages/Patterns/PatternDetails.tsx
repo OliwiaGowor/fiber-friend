@@ -164,7 +164,7 @@ export default function PatternDetails() {
                                     </div>}
                                 <FilesDisplay files={pattern.patterns} />
                                 <h3 className={classes.attributeName}>Counters</h3>
-                                <div className={classes.counters}><CounterGroup /></div>
+                                <div className={classes.counters}><CounterGroup parentId={pattern.id}/></div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                             </div>
@@ -197,7 +197,7 @@ async function loadPatternDetails(id: string) {
     }
 }
 
-export async function loader({ request, params }: any) {
+export async function loader({ params }: any) {
     const id = params.patternId;
     return defer({
         pattern: await loadPatternDetails(id),

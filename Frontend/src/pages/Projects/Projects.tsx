@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { useRouteLoaderData, Await, json, defer } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Projects.module.scss'
+import FiltersBar from "../../components/FiltersBar/FiltersBar";
+import { projectsFilters } from "../../data/FiltersBarData";
 
 function Projects() {
     const { projects }: any = useRouteLoaderData("projects");
@@ -10,6 +12,7 @@ function Projects() {
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>PROJECTS</h1>
+            <FiltersBar filters={projectsFilters} />
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={projects}>
                     {(loadedProjects) => {

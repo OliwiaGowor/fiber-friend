@@ -11,12 +11,19 @@ import CounterMiniature from '../CounterMiniature/CounterMiniature';
 import { UnsavedPrompt } from '../UnsavedPrompt/UnsavedPrompt';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
+import { json } from 'react-router';
 //TODO: save counter button logic
 //TODO: smaller tiles on mobile and horizontal scroll
 //FIXME: fix dialog on mobile
-const CounterGroup = () => {
+
+interface CounterGroupProps {
+    defaultValue?: object;
+    parentId: string;
+}
+
+const CounterGroup = ({defaultValue, parentId}: CounterGroupProps) => {
     const [tmpCounter, setTmpCounter] = React.useState();
-    const [counters, setCounters] = React.useState<any>([]);
+    const [counters, setCounters] = React.useState<any>(defaultValue ?? []);
     const [openDialog, setOpenDialog] = React.useState(false);
     const [editingCounters, setEditingCounters] = React.useState<boolean>(false);
 
@@ -42,9 +49,28 @@ const CounterGroup = () => {
         setCounters(tmpArray);
     };
 
-    const handleSaveChanges = () => {
+    const handleSaveChanges = async () => {
+        const method = defaultValue ? 'PATCH' : 'POST';
+
+        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + parentId + '.json', {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                body: JSON.stringify(counters),
+            },
+        });
+
+        if (!response.ok) {
+            throw json(
+                { message: 'Could not fetch project.' },
+                {
+                    status: 500,
+                }
+            );
+        }
         setEditingCounters(false);
     }
+
 
     return (
         <div className={classes.container} >
