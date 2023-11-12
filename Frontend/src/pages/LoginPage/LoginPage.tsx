@@ -1,13 +1,16 @@
-import Button from "@mui/material/Button";
+import React from "react";
+import { useState } from "react";
 import { Form, Link, useNavigate, useNavigation } from "react-router-dom";
-import classes from "./LoginPage.module.scss";
+
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useState } from "react";
-import React from "react";
+
+import classes from "./LoginPage.module.scss";
 
 export default function LoginPage() {
     const navigation = useNavigation();
@@ -34,7 +37,6 @@ export default function LoginPage() {
                     Sign up
                 </Button>
             </div>
-
             <div className={classes.loginForm}>
                 <Form className={classes.form}>
                     <h1>Log in</h1>
@@ -52,6 +54,7 @@ export default function LoginPage() {
                                 error={showUsernameError}
                                 helperText={showUsernameError ? 'Enter username!' : ''}
                                 onChange={() => { setShowUsernameError(false) }}
+                                autoFocus
                             />
                         </div>
                         <div className={classes.formSection}>
@@ -94,7 +97,6 @@ export default function LoginPage() {
                             </div>
                         </Link>
                     </div>
-
                 </Form>
             </div>
         </div>

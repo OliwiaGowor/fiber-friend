@@ -13,7 +13,13 @@ function Counters() {
             <h1 className={classes.header}>COUNTERS</h1>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={counters}>
-                    {(loadedCounters) => <Tiles data={loadedCounters} link='new-counter' addText='New counter'/>}
+                    {(loadedCounters) =>
+                        <Tiles
+                            key="counters-tiles"
+                            data={loadedCounters}
+                            link='new-counter'
+                            addText='New counter'
+                        />}
                 </Await>
             </Suspense>
         </div>

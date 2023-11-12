@@ -1,6 +1,6 @@
-import classes from './PageNotFound.module.scss';
-import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import classes from './PageNotFound.module.scss';
 
 const PageNotFound = () => {
     const navigate = useNavigate();

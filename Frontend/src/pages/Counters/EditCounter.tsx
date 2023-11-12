@@ -22,6 +22,16 @@ export default function NewCounter() {
     const [chosenProject, setChosenProject] = React.useState<any | null>(null);
     const { counterGroup } = useRouteLoaderData('counter-details') as { counterGroup: any };
 
+    React.useEffect(() => {
+        if (counters.length > 0) {
+            setSubmitActive(true);
+        }
+        else {
+            setSubmitActive(false);
+        }
+        fetchAvailableProjects();
+    }, [submitActive, counters]);
+    
     const fetchAvailableProjects = React.useCallback(async () => {
         setIsLoading(true);
         const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
@@ -48,17 +58,6 @@ export default function NewCounter() {
         }
         setIsLoading(false);
     }, []);
-
-
-    React.useEffect(() => {
-        if (counters.length > 0) {
-            setSubmitActive(true);
-        }
-        else {
-            setSubmitActive(false);
-        }
-        fetchAvailableProjects();
-    }, [submitActive, counters, fetchAvailableProjects]);
 
     const addCounter = (counter: any) => {
         setCounters([...counters, {

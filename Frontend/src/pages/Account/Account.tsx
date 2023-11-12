@@ -62,65 +62,31 @@ export default function Account() {
   );
 }
 
-async function loadProjects() {
-  const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+async function fetchData(url: string) {
+  const response = await fetch(url);
 
   if (!response.ok) {
-    // return { isError: true, message: 'Could not fetch events.' };
-    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-    //   status: 500,
-    // });
     throw json(
-      { message: 'Could not fetch projects.' },
+      { message: `Could not fetch data from ${url}.` },
       {
         status: 500,
       }
     );
-  } else {
-    const resData = await response.json();
-
-    return resData;
   }
+
+  return response.json();
+}
+
+async function loadProjects() {
+  return fetchData('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
 }
 
 async function loadPatterns() {
-  const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
-
-  if (!response.ok) {
-    // return { isError: true, message: 'Could not fetch events.' };
-    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-    //   status: 500,
-    // });
-    throw json(
-      { message: 'Could not fetch projects.' },
-      {
-        status: 500,
-      }
-    );
-  } else {
-    const resData = await response.json();
-    return resData;
-  }
+  return fetchData('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
 }
 
 async function loadOrders() {
-  const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
-
-  if (!response.ok) {
-    // return { isError: true, message: 'Could not fetch events.' };
-    // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-    //   status: 500,
-    // });
-    throw json(
-      { message: 'Could not fetch projects.' },
-      {
-        status: 500,
-      }
-    );
-  } else {
-    const resData = await response.json();
-    return resData;
-  }
+  return fetchData('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/orders.json');
 }
 
 export async function loader() {

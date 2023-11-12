@@ -1,10 +1,10 @@
 import classes from './FilesDisplay.module.scss';
 
-type Props = {
+interface FilesDisplayProps {
     files: any;
 }
 
-export const FilesDisplay = <PROPS extends Props>({ files, ...rest }: PROPS): JSX.Element => {
+export const FilesDisplay = ({files}: FilesDisplayProps) => {
 
     const displayDifferentFiles = (file: any) => {
         if (file.name.slice(-3) == 'doc' || file.name.slice(-4) == 'docx') {
@@ -31,7 +31,7 @@ export const FilesDisplay = <PROPS extends Props>({ files, ...rest }: PROPS): JS
                     className={classes.photo}
                     src={`${file.url}`}
                     srcSet={`${file.url}`}
-                    alt="not found"
+                    alt={`File: ${file.name}`}
                     loading="lazy"
                     width="200px"
                     height="250px"

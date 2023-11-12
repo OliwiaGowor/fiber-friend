@@ -1,11 +1,10 @@
-import CounterGroup from '../../components/BigCounter/BigCounter';
 import * as React from 'react';
 import classes from './NewCounter.module.scss';
 import { json, useNavigate } from "react-router-dom";
 import CounterMiniature from '../../components/CounterMiniature/CounterMiniature';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import BigCounter from '../../components/BigCounter/BigCounter';
 //FIXME: move counters to countergroup?
 //TODO: connecting counters to patterns/projects
@@ -22,6 +21,16 @@ export default function NewCounter() {
     const [availableProjects, setAvailableProjects] = React.useState<any | null>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [chosenProject, setChosenProject] = React.useState<any | null>(null);
+
+    React.useEffect(() => {
+        if (counters.length > 0) {
+            setSubmitActive(true);
+        }
+        else {
+            setSubmitActive(false);
+        }
+        fetchAvailableProjects();
+    }, [submitActive, counters, isLoading]);
 
     const fetchAvailableProjects = React.useCallback(async () => {
         setIsLoading(true);
@@ -49,17 +58,6 @@ export default function NewCounter() {
         }
         setIsLoading(false);
     }, []);
-
-
-    React.useEffect(() => {
-        if (counters.length > 0) {
-            setSubmitActive(true);
-        }
-        else {
-            setSubmitActive(false);
-        }
-        fetchAvailableProjects();
-    }, [submitActive, counters, isLoading]);
 
     const addCounter = (counter: any) => {
         setCounters([...counters, {
@@ -169,8 +167,15 @@ export default function NewCounter() {
                     </Button>
                 </div>
                 <div className={classes.createdCounters}>
-                    {counters.map((counter: any) => (
-                        <CounterMiniature editable={true} counter={counter} deleteCounter={() => { handleDeleteCounter(counter) }} />
+                    {counters.map((counter: any, index: number) => (
+                        <CounterMiniature 
+                        key={index}
+                        editable={true} 
+                        counter={counter} 
+                        deleteCounter={() => { 
+                            handleDeleteCounter(counter) 
+                        }} 
+                        />
                     ))}
                 </div>
                 <div className={classes.btnContainer} >

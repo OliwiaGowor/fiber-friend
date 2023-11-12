@@ -61,7 +61,7 @@ export default function CounterDetails() {
                                 onClick={handleClick}
                                 className={classes.editButton}
                             >
-                                <EditIcon className={classes.editIcon} />
+                                <EditIcon className={classes.editIcon} aria-label="Edit" />
                             </Button>
                         </h1>
                         <div className={classes.editMenu}>
@@ -87,8 +87,13 @@ export default function CounterDetails() {
                         <div className={classes.sectionContainer}>
                             <h2 className={classes.sectionHeader}>Counters</h2>
                             <div className={classes.counters}>
-                                {counterGroup.counters.map((counter: any) => (
-                                    <CounterMiniature editable={false} counter={counter} backgroundColor="var(--background-color)" />
+                                {counterGroup.counters.map((counter: any, index: number) => (
+                                    <CounterMiniature 
+                                    key={index}
+                                    editable={false} 
+                                    counter={counter} 
+                                    backgroundColor="var(--background-color)" 
+                                    />
                                 ))}
                             </div>
                         </div>

@@ -28,11 +28,16 @@ function Tiles(props: TilesProps) {
   const handlePhotoRender = (element: any) => {
     if (element.photos) {
       return (
-        <img src={element?.photos ? element.photos[1]?.url : element?.photos} alt={element.name} height={isMobile ? '180px' : '270px'} width={isMobile ? '180px' : '270px'} />
+        <img
+          src={element?.photos ? element.photos[1]?.url : element?.photos}
+          alt={element.name}
+          height={isMobile ? '180px' : '270px'}
+          width={isMobile ? '180px' : '270px'}
+        />
       );
     } else {
       return (
-        <InsertPhotoIcon sx={{ fontSize: isMobile ? 180 : 270, color: 'grey' }} />
+        <InsertPhotoIcon sx={{ fontSize: isMobile ? 180 : 270, color: 'grey' }} aria-label="Default photo" />
       );
     }
   };
@@ -43,7 +48,7 @@ function Tiles(props: TilesProps) {
         <Link to={`${link}`}>
           <li className={classes.element}>
             <h2 className={classes.name}>{addText}</h2>
-            <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} />
+            <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} aria-label="Add project" />
           </li>
         </Link>
         {loadedProjects.map((element: any) => (
@@ -58,6 +63,5 @@ function Tiles(props: TilesProps) {
     </div>
   );
 }
-
 
 export default Tiles;

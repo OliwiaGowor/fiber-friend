@@ -14,7 +14,7 @@ import Collapse from "@mui/material/Collapse";
 
 //TODO: fix defaultValue
 
-type Props = {
+interface FileInputProps {
   onlyImg: boolean;
   addHeader: string;
   maxFiles: number;
@@ -22,7 +22,7 @@ type Props = {
   selectedFiles: any;
 }
 
-export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, defaultValue, selectedFiles, ...rest }: PROPS): JSX.Element => {
+export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selectedFiles }: FileInputProps) => {
   let loadedFiles = [];
   for (const key in defaultValue) {
     loadedFiles.push({
@@ -97,13 +97,18 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
     <div className={classes.photosContainer}>
       <div className={classes.photos}>
         <div className={classes.addPhoto}>
-          <Button variant="outlined" component="label" className={classes.btnAddPhoto}>
+          <Button
+            variant="outlined"
+            component="label"
+            className={classes.btnAddPhoto}
+          >
             <h2 className={classes.btnAddPhotoText}>{addHeader}</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 60 }} />
             <input
               hidden
               accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'}
-              multiple type="file"
+              multiple 
+              type="file"
               onChange={handleAddingFile}
             />
           </Button>
@@ -118,15 +123,16 @@ export const FileInput = <PROPS extends Props,>({ onlyImg, addHeader, maxFiles, 
                 Remove
               </DeleteIcon>
             </button>
-            {onlyImg && <img
-              className={classes.photo}
-              src={`${file?.url}`}
-              srcSet={`${file?.url}`}
-              alt="not found"
-              loading="lazy"
-              width="150px"
-              height="175px"
-            />}
+            {onlyImg &&
+              <img
+                className={classes.photo}
+                src={`${file?.url}`}
+                srcSet={`${file?.url}`}
+                alt="not found"
+                loading="lazy"
+                width="150px"
+                height="175px"
+              />}
             {!onlyImg && displayDifferentFiles(file)}
           </div>
         ))}

@@ -87,8 +87,8 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                                 className={classes.photo}
                                 src={`${photo?.url}`}
                                 srcSet={`${photo?.url}`}
-                                alt="not found"
-                                loading="lazy"
+                                alt={`Image ${index + 1}`}
+                                loading="eager"
                                 width={displayWidth(isZoomed)}
                                 height={displayHeight(isZoomed)}
                             />
@@ -119,9 +119,9 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                 </Swiper>
             </div>
             {open &&
-                <span className={classes.closeIcon} onClick={handleClose}>
+                <button className={classes.closeIcon} onClick={handleClose}>
                     <CloseIcon sx={{ fontSize: '2rem' }} />
-                </span>
+                </button>
             }
             <Modal
                 open={open}

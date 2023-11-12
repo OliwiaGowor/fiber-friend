@@ -21,7 +21,11 @@ import classes from "./BigCounter.module.scss";
 //FIXME: add auto width function to count input
 //TODO: add count input validation (only numbers)
 
-export default function BigCounter({ getCounter }: any) {
+interface BigCounterProps {
+    getCounter: (counter: any) => void;
+}
+
+export default function BigCounter({ getCounter }: BigCounterProps) {
     const [count, setCount] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openSetting = Boolean(anchorEl);
@@ -66,7 +70,7 @@ export default function BigCounter({ getCounter }: any) {
         setAnchorEl(null);
     };
 
-    const handleSpace = (e: any) => {
+    const handleSpace = (e: KeyboardEvent) => {
         if (e.key === ' ') {
             e.preventDefault();
             setCount(count + 1);
@@ -78,8 +82,7 @@ export default function BigCounter({ getCounter }: any) {
             <div className={classes.counter}>
                 <div className={classes.settings}>
                     <IconButton
-                        aria-label="more"
-                        id="long-button"
+                        aria-label="More Options"
                         aria-controls={openSetting ? 'long-menu' : undefined}
                         aria-expanded={openSetting ? 'true' : undefined}
                         aria-haspopup="true"
@@ -136,7 +139,7 @@ export default function BigCounter({ getCounter }: any) {
                     inputRef={nameRef}
                     endAdornment={
                         <InputAdornment position="end">
-                            <EditIcon></EditIcon>
+                            <EditIcon aria-label="Edit Counter Name"></EditIcon>
                         </InputAdornment>
                     }
                 />
@@ -145,17 +148,20 @@ export default function BigCounter({ getCounter }: any) {
                     id="amount"
                     type="text"
                     value={count}
+                    aria-label="Counter Value"
                 />
                 <div className={classes.buttons}>
                     <Button variant='contained' className={classes.subBtn} onClick={() => {
                         (count > 0) ? setCount(count - 1) : setCount(count);
                     }}
+                    aria-label="Decrease Counter"
                     >
                         <RemoveIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }} ></RemoveIcon>
                     </Button>
                     <Button variant='contained' className={classes.addBtn} onClick={() => {
                         setCount(count + 1);
                     }}
+                    aria-label="Increase Counter"
                     >
                         <AddIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }}></AddIcon>
                     </Button>

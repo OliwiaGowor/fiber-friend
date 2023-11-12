@@ -16,16 +16,18 @@ const ErrorPage = () => {
                 </div>
                 <div className={classes.buttons}>
                     <Button
-                        variant="contained"
                         className={classes.button}
+                        variant="contained"
                         onClick={() => navigate(-1)}
+                        aria-label="Return back"
                     >
                         Return back
                     </Button>
                     <Button
-                        variant="contained"
                         className={classes.button}
+                        variant="contained"
                         onClick={() => navigate('report-problem')}
+                        aria-label="Report problem"
                     >
                         Report problem
                     </Button>

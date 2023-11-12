@@ -21,7 +21,12 @@ export default function MiniaturesList({ data, link }: any) {
   const handlePhotoRender = (element: any) => {
     if (element.photos) {
       return (
-        <img src={element.photos ? element.photos[0] : element.photos} alt={element.name} height='250px' width='250px' />
+        <img
+          src={element.photos ? element.photos[0] : element.photos}
+          alt={element.name}
+          height='250px'
+          width='250px'
+        />
       );
     } else {
       return (
@@ -33,6 +38,7 @@ export default function MiniaturesList({ data, link }: any) {
   return (
     <div className={classes.container}>
       <Swiper
+        className="mySwiper"
         slidesPerView={1}
         spaceBetween={30}
         navigation={true}
@@ -51,7 +57,6 @@ export default function MiniaturesList({ data, link }: any) {
           },
         }}
         modules={[Navigation]}
-        className="mySwiper"
       >
         <SwiperSlide className={classes.loadedElement} style={{ marginLeft: '20px' }}>
           <Link to={`/fiber-friend/account/${link}`}>
@@ -67,7 +72,7 @@ export default function MiniaturesList({ data, link }: any) {
             </Link>
           </SwiperSlide>
         ))}
-        <span style={{ display: 'block', height: '30px' }}></span>
+        <span style={{ display: 'block', height: '30px' }} />
       </Swiper>
     </div>
   );

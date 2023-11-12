@@ -16,7 +16,8 @@ const FiltersBar = ({ filters }: FiltersBarProps) => {
                     <Select
                         className={classes.select}
                         onChange={(e) => filter.setValue(e.target.value)}
-                        defaultValue={"all"}
+                        defaultValue="all"
+                        aria-labelledby={`${filter.name}-label`}
                     >
                         <MenuItem value="all">All</MenuItem>
                         {filter.options.map((option: any) => (

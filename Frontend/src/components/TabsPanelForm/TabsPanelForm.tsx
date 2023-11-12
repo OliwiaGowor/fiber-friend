@@ -124,7 +124,12 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
           error={showError}
           helperText={showError ? 'You must add at least one yarn!' : ''}
         />
-        <Button className={classes.addButton} onClick={handleAddTab} variant="contained">Add</Button>
+        <Button
+          className={classes.addButton}
+          onClick={handleAddTab}
+          variant="contained">
+          Add
+        </Button>
       </div>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -163,8 +168,9 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
               <TextField
                 id={`tool-${index}`}
                 aria-describedby="tool-helper-text"
+                aria-label="Tool size"
                 inputProps={{
-                  'aria-label': 'tool',
+                  'aria-labelledby': `tool-label-${index}`,
                 }}
                 label="Tool size"
                 className={classes.formInput}
@@ -178,11 +184,11 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
               <TextField
                 id={`gauge-${index}`}
                 aria-describedby="gauge-helper-text"
+                aria-label="Gauge"
                 inputProps={{
-                  'aria-label': 'gauge',
+                  'aria-labelledby': `gauge-label-${index}`,
                 }}
                 label="Gauge"
-
                 className={classes.formInput}
                 name='gauge'
                 onChange={() => { handleData(yarn.yarn) }}
@@ -196,8 +202,9 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
               <TextField
                 id={`stitch-${index}`}
                 aria-describedby="stitch-helper-text"
+                aria-label="Stitch"
                 inputProps={{
-                  'aria-label': 'stitch',
+                  'aria-labelledby': `stitch-label-${index}`,
                 }}
                 label="Stitch"
                 className={classes.formInput}
@@ -211,8 +218,9 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
               <TextField
                 id={`amount-${index}`}
                 aria-describedby="amount-helper-text"
+                aria-label="Amount of yarn"
                 inputProps={{
-                  'aria-label': 'amount',
+                  'aria-labelledby': `amount-of-yarn-label-${index}`,
                 }}
                 label="Amount of yarn"
                 className={classes.formInput}
@@ -225,7 +233,6 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
             </div>
           </TabPanel>)
         })}
-
       </Box>
     </div>
   );

@@ -47,7 +47,7 @@ interface BasicTabsDisplayProps {
   yarns: any;
 }
 
-export default function BasicTabsDisplay({yarns}: BasicTabsDisplayProps) {
+export default function BasicTabsDisplay({ yarns }: BasicTabsDisplayProps) {
   const [value, setValue] = React.useState(0);
 
   const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
@@ -87,23 +87,27 @@ export default function BasicTabsDisplay({yarns}: BasicTabsDisplayProps) {
           </Tabs>
         </Box>
         {yarns?.map((yarn: any, index: number) => {
-          return (<TabPanel key={index} value={value} index={index}>
+          return (<TabPanel key={yarn.id || index} value={value} index={index}>
             <div className={classes.yarnInfoContainer}>
               <div className={classes.attributeName}>Tool size: </div>
-              {yarn.info.toolSize ? yarn.info.toolSize : <br></br>}
+              {yarn.info.toolSize ? yarn.info.toolSize : <br />}
 
               <div className={classes.attributeName}>Stitch: </div>
-              {yarn.info.stitch ? yarn.info.stitch : <br></br>}
+              {yarn.info.stitch ? yarn.info.stitch : <br />}
 
-              <div className={classes.attributeName}>Gauge <FormHelperText style={{display: "inline"}}>(10cm x 10cm)</FormHelperText>: </div>
-              {yarn.info.gauge ? yarn.info.gauge : <br></br>}
+              <div className={classes.attributeName}>
+                Gauge
+                <FormHelperText style={{ display: "inline" }}>
+                  (10cm x 10cm)
+                </FormHelperText>:
+              </div>
+              {yarn.info.gauge ? yarn.info.gauge : <br />}
 
               <div className={classes.attributeName}>Amount: </div>
-              {yarn.info.amount ? yarn.info.amount : <br></br>}
+              {yarn.info.amount ? yarn.info.amount : <br />}
             </div>
           </TabPanel>)
         })}
-
       </Box>
     </div>
   );

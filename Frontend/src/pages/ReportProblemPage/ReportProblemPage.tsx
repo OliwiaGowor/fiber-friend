@@ -1,8 +1,8 @@
-import { Form } from "react-router-dom";
-import classes from "./ReportProblemPage.module.scss";
 import React from "react";
+import { Form } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import classes from "./ReportProblemPage.module.scss";
 
 const ReportProblemPage = () => {
     const nameRef = React.useRef<HTMLInputElement | null>(null);
@@ -27,6 +27,7 @@ const ReportProblemPage = () => {
                             name='name'
                             inputRef={nameRef}
                             autoComplete="off"
+                            required
                         //error={showUsernameError}
                         //helperText={'Enter username!' : ''}
                         //onChange={() => { setShowUsernameError(false) }}
@@ -40,6 +41,8 @@ const ReportProblemPage = () => {
                             className={classes.formInput}
                             name='email'
                             inputRef={emailRef}
+                            required
+                            autoComplete="email"
                         //error={showUsernameError}
                         //helperText={'Enter username!' : ''}
                         //onChange={() => { setShowUsernameError(false) }}
@@ -55,6 +58,7 @@ const ReportProblemPage = () => {
                         name='topic'
                         inputRef={topicRef}
                         autoComplete="off"
+                        required
                     //error={showUsernameError}
                     //helperText={'Enter username!' : ''}
                     //onChange={() => { setShowUsernameError(false) }}
@@ -71,6 +75,7 @@ const ReportProblemPage = () => {
                         multiline
                         rows={4}
                         maxRows={10}
+                        required
                     />
                 </div>
                 <Button

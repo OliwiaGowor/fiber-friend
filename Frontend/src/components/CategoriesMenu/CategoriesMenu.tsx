@@ -8,7 +8,13 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { categories } from '../../data/Categories';
 import classes from './CategoriesMenu.module.scss'
 
-export default function CategoriesMenu({choseCategory, showError, defaultValue}: any) {
+interface CategoriesMenuProps {
+    choseCategory: (category: string) => void;
+    showError: boolean;
+    defaultValue?: string;
+}
+
+export default function CategoriesMenu({choseCategory, showError, defaultValue}: CategoriesMenuProps) {
     const [currentCategory, setCurrentCategory] = React.useState(categories); //represents the currently displayed category in the menu
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); //represents the anchor element where the menu will be positioned
     const [categHistory, setCategHistory] = React.useState<any>([]); //represents the category history - the stack of previous categories selected
@@ -83,7 +89,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
                             setCurrentCategory(categHistory[categHistory.length - 2].children); 
                         }
                         setCategHistory(
-                            categHistory.filter((c: { category: any; }) =>
+                            categHistory.filter((c: { category: string; }) =>
                                 c.category !== categHistory[categHistory.length - 1].category
                             ));
                     }}>

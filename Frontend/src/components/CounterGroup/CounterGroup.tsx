@@ -21,7 +21,7 @@ interface CounterGroupProps {
     parentId: string;
 }
 
-const CounterGroup = ({defaultValue, parentId}: CounterGroupProps) => {
+const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
     const [tmpCounter, setTmpCounter] = React.useState();
     const [counters, setCounters] = React.useState<any>(defaultValue ?? []);
     const [openDialog, setOpenDialog] = React.useState(false);
@@ -75,18 +75,25 @@ const CounterGroup = ({defaultValue, parentId}: CounterGroupProps) => {
     return (
         <div className={classes.container} >
             <UnsavedPrompt hasUnsavedChanges={editingCounters} />
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="add-counter-dialog-title"
+            >
                 <DialogTitle>Add counter</DialogTitle>
                 <DialogContent>
                     <BigCounter getCounter={setTmpCounter} />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                    <Button onClick={handleCloseDialog} aria-label="Cancel">
+                        Cancel
+                    </Button>
                     <Button
                         onClick={() => {
                             addCounter((tmpCounter));
                             handleCloseDialog();
                         }}
+                        aria-label="Enter"
                     >
                         Enter
                     </Button>

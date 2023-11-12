@@ -54,12 +54,17 @@ export default function Navbar() {
                 }
                 {isMobile &&
                     <li className={classes.menuIcon}>
-                        <button onClick={handleClickMenu}><MenuIcon sx={{ fontSize: 43 }} /></button>
+                        <button onClick={handleClickMenu} aria-label="Toggle Menu">
+                            <MenuIcon sx={{ fontSize: 43 }} />
+                        </button>
                     </li>
                 }
                 {isMobile &&
                     <li className={classes.addIcon} >
-                        <button onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClickAdd(e)}>
+                        <button
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClickAdd(e)}
+                            aria-label="Add"
+                        >
                             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 46 }} />
                         </button>
                         <Menu
@@ -106,7 +111,12 @@ export default function Navbar() {
                     </li>
                 }
                 <li className={classes.accountIcon}>
-                    <button onClick={() => { navigate("account") }}><AccountCircleIcon sx={{ fontSize: 43 }} /></button>
+                    <button
+                        onClick={() => { navigate("account") }}
+                        aria-label="Account"
+                    >
+                        <AccountCircleIcon sx={{ fontSize: 43 }} />
+                    </button>
                 </li>
             </ul>
             <div className={classes.sidebarContainer}>

@@ -28,7 +28,7 @@ export default function NewPatternPage() {
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
     const [selectedFiles, setSelectedFiles] = React.useState<any | null>(null);
     const [notes, setNotes] = React.useState<any>([]);
-   
+
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
             setType(newType);
@@ -97,14 +97,20 @@ export default function NewPatternPage() {
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>Create new pattern</h1>
-            <form onSubmit={handleSubmit} className={classes.form} >
+            <form
+                onSubmit={handleSubmit}
+                className={classes.form}
+                aria-labelledby="create-pattern-form"
+            >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Details</h2>
                         <TextField
                             id="name"
                             inputProps={{
-                                'aria-label': 'name',
+                                'aria-label': 'Pattern name',
+                                'aria-required': true,
+                                'aria-invalid': showNameError,
                             }}
                             label="Pattern name"
                             className={classes.formInput}
@@ -211,11 +217,19 @@ export default function NewPatternPage() {
                             />
                         </div>
                         <div className={classes.notesField}>
-                            <TextEditor getValue={(notes: any) => {setNotes(notes)}}/>
+                            <TextEditor getValue={(notes: any) => { setNotes(notes) }} />
                         </div>
                     </div>
                 </div>
-                <Button className={classes.submitBtn} variant="contained" type="submit" onClick={validateForm}>Add new pattern</Button>
+                <Button
+                    className={classes.submitBtn}
+                    variant="contained"
+                    type="submit"
+                    onClick={validateForm}
+                    aria-label="Add new pattern"
+                >
+                    Add new pattern
+                </Button>
             </form>
         </div>
     );

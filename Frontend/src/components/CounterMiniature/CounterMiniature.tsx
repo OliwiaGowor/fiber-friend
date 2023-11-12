@@ -21,7 +21,7 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -56,7 +56,13 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
                     className={classes.settingsMenu}
                 >
                     <MenuItem onClick={handleClose} className={classes.menuElem}>
-                        <button className={classes.menuElemBtn} onClick={deleteCounter}>Delete counter</button>
+                        <button
+                            className={classes.menuElemBtn}
+                            onClick={deleteCounter}
+                            aria-label="Delete counter"
+                        >
+                            Delete counter
+                        </button>
                     </MenuItem>
                 </Menu>
             </div>

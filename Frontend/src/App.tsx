@@ -28,7 +28,7 @@ import SuppliesRoot from './pages/Supplies/SuppliesRoot';
 import NewSupplyPage from './pages/Supplies/NewSupplyPage';
 import SupplyDetails, { loader as supplyDetailsLoader } from './pages/Supplies/SupplyDetails';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
-import AccountSettingsPage from './pages/AccountSettingsPage';
+import AccountSettingsPage from './pages/Account/AccountSettingsPage';
 import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';

@@ -33,6 +33,8 @@ const ErrorPopup = () => {
                             aria-label="close"
                             color="inherit"
                             onClick={handleClose}
+                            tabIndex={0} // Make the button focusable
+                            role="button"
                         >
                             <CloseIcon />
                         </IconButton>
