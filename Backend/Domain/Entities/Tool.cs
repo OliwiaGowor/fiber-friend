@@ -1,13 +1,11 @@
 namespace Domain.Entities;
 
-public class Yarn
+public class Tool
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
+    public string Type { get; set; }
     public int Quantity { get; set; }
-    public string Gauge { get; set; }
-    public string Stitch { get; set; }
-    public string ToolSize { get; set; }
+    public string? Size { get; set; }
     public Guid ParentId { get; set; }
     public Project Parent { get; set; }
 }

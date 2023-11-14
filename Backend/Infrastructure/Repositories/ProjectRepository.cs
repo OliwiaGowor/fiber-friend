@@ -45,14 +45,14 @@ public class ProjectRepository : IProjectRepository
     {
         _dbContext.Attach(service);
         _dbContext.Entry(service).Property("ProjectType").IsModified = true;
-        _dbContext.Entry(service).Property("BeginDate").IsModified = true;
+        _dbContext.Entry(service).Property("StartDate").IsModified = true;
         _dbContext.Entry(service).Property("EndDate").IsModified = true;
         _dbContext.Entry(service).Property("ProjectStatus").IsModified = true;
         _dbContext.Entry(service).Property("PaymentStatus").IsModified = true;
         _dbContext.Entry(service).Property("City").IsModified = true;
         _dbContext.Entry(service).Property("Price").IsModified = true;
 
-        var oldMaterials = _dbContext.Yarns.Where(m => m.ProjectId == service.Id).ToList();
+        var oldMaterials = _dbContext.Yarns.Where(m => m.ParentId == service.Id).ToList();
         
         _dbContext.SaveChanges();
     }

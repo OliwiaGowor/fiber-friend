@@ -10,7 +10,9 @@ namespace Domain.Entities
         public DateTime EndDate { get; set; }
         public bool Finished { get; set; }
         public string Category { get; set; }
-    public string Notes { get; set; }
+        public string Notes { get; set; }
+        public Guid UserId { get; set; }
         public List<Yarn> Yarns { get; set; }
+        public List<Tool> Tools { get; set; }
     }
 }

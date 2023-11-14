@@ -10,5 +10,7 @@ public class Project
     public bool Finished { get; set; }
     public string Category { get; set; }
     public string Notes { get; set; }
-    public List<Yarn> Yarns {get; set;}
+    public Guid UserId { get; set; }
+    public List<Yarn> Yarns { get; set; }
+    public List<Tool> Tools { get; set; }
 }

@@ -8,5 +8,5 @@ public class User
     public string HashedPassword { get; set; } = null!;
     public List<Pattern> Patterns { get; set; }
     public List<Project> Projects { get; set; }
-    public List<CountersGroup> Counters { get; set; }
+    public List<CountersGroup> CountersGroups { get; set; }
 }

@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Project> Projects { get; set; }
+    public DbSet<Pattern> Patterns { get; set; }
     public DbSet<Yarn> Yarns { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -19,8 +20,8 @@ public class ApplicationDbContext : DbContext
 
         builder.Entity<Project>()
             .HasMany(e => e.Yarns)
-            .WithOne(e => e.Project)
-            .HasForeignKey(e => e.ProjectId)
+            .WithOne(e => e.Parent)
+            .HasForeignKey(e => e.ParentId)
             .IsRequired(false);
     }
 }
