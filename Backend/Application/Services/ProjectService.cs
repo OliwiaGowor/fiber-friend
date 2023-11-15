@@ -5,6 +5,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Interfaces.Repository;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Services;
 
@@ -19,37 +20,72 @@ internal class ProjectService : IProjectService
         _mapper = mapper;
     }
 
-    public Guid AddProject(ProjectDto report)
+    public Guid AddProject(NewProjectDto project, List<NewYarnDto> yarns)
     {
-        var reportEnity = _mapper.Map<Project>(report);
-        var id = _projectRepo.AddProject(reportEnity);
+        var projectEnity = _mapper.Map<Project>(project);
+        var yarnsEntity = _mapper.Map<List<Yarn>>(yarns);
+
+        var id = _projectRepo.AddProject(projectEnity, yarnsEntity);
+
         return id;
     }
 
-    public void DeleteProject(Guid reportId)
+    public void DeleteProject(Guid projectId)
     {
-        _projectRepo.DeleteProject(reportId);
+        _projectRepo.DeleteProject(projectId);
     }
 
-    public object GetProjectById(Guid reportId)
+    public object GetProjectById(Guid projectId)
     {
-        var report = _projectRepo.GetProjectById(reportId);
-        var reportDto = _mapper.Map<ProjectDto>(report);
-        return reportDto;
+        var project = _projectRepo.GetProjectById(projectId);
+        var projectDto = _mapper.Map<ProjectDto>(project);
+
+        return projectDto;
     }
 
     public List<ProjectDto> GetProjectsList()
     {
-        var reports = _projectRepo.GetAllProjects()
+        var projects = _projectRepo.GetAllProjects()
             .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
             .ToList();
-        return reports;
+
+        return projects;
     }
 
-    public object UpdateProject(ProjectDto newProject)
+    public List<ProjectDto> GetProjectsByCategory(string category)
     {
-        var report = _mapper.Map<Project>(newProject);
-        _projectRepo.UpdateProject(report);
-        return report;
+        var projects = _projectRepo.GetProjectsByCategory(category)
+            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return projects;
+    }
+
+    public List<ProjectDto> GetProjectsByStatus(bool finished)
+    {
+        var projects = _projectRepo.GetProjectsByStatus(finished)
+            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return projects;
+    }
+
+    public List<ProjectDto> GetProjectsByType(NeedleworkType type)
+    {
+        var projects = _projectRepo.GetProjectsByType(type)
+            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return projects;
+    }
+
+    public object UpdateProject(NewProjectDto newProject, List<NewYarnDto> yarns)
+    {
+        var project = _mapper.Map<Project>(newProject);
+        var yarnsEntity = _mapper.Map<List<Yarn>>(yarns);
+
+        _projectRepo.UpdateProject(project, yarnsEntity);
+
+        return project;
     }
 }

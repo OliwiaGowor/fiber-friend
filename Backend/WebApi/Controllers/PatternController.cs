@@ -1,4 +1,4 @@
-﻿using Application.DTO.Project;
+﻿using Application.DTO.Pattern;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Enums;
@@ -10,22 +10,22 @@ namespace WebApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class ProjectController : ControllerBase
+public class PatternController : ControllerBase
 {
-    private readonly IProjectService _projectService;
+    private readonly IPatternService _patternService;
     private readonly IMapper _mapper;
 
-    public ProjectController(IProjectService projectService, IMapper mapper)
+    public PatternController(IPatternService patternService, IMapper mapper)
     {
-        _projectService = projectService;
+        _patternService = patternService;
         _mapper = mapper;
     }
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<ProjectDto>> GetAllProjects()
+    public ActionResult<IEnumerable<PatternDto>> GetAllPatterns()
     {
-        var list = _projectService.GetProjectsList();
+        var list = _patternService.GetPatternsList();
         return Ok(list);
     }
 
@@ -33,50 +33,50 @@ public class ProjectController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectById(Guid id)
+    public ActionResult<PatternDto> GetPatternById(Guid id)
     {
         if (id.Equals("0") || id.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectById(id);
+        var service = _patternService.GetPatternById(id);
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByType/{type}")]
+    [HttpGet("GetPatternsByType/{type}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByType(NeedleworkType type)
+    public ActionResult<PatternDto> GetPatternsByType(NeedleworkType type)
     {
         if (!Enum.IsDefined(typeof(NeedleworkType), type) || type.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectsByType(type);
+        var service = _patternService.GetPatternsByType(type);
 
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByStatus/{finished:bool}")]
+    [HttpGet("GetPatternsByStatus/{finished:bool}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByStatus(bool finished)
+    public ActionResult<PatternDto> GetPatternsByStatus(bool finished)
     {
-        var service = _projectService.GetProjectsByStatus(finished);
+        var service = _patternService.GetPatternsByStatus(finished);
 
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByCategory/{category}")]
+    [HttpGet("GetPatternsByCategory/{category}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByCategory(string category)
+    public ActionResult<PatternDto> GetPatternsByCategory(string category)
     {
         if (category.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectsByCategory(category);
+        var service = _patternService.GetPatternsByCategory(category);
 
         if (service is null) return NotFound();
 
@@ -87,24 +87,24 @@ public class ProjectController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult Create([FromBody] NewProjectDto newProject)
+    public ActionResult Create([FromBody] NewPatternDto newPattern)
     {
         if (!ModelState.IsValid) return BadRequest();
 
-        var onlyProject = new NewProjectDto
+        var onlyPattern = new NewPatternDto
         {
-            Type = newProject.Type,
-            StartDate = newProject.StartDate,
-            EndDate = newProject.EndDate,
-            Finished = newProject.Finished,
-            Category = newProject.Category,
-            Notes = newProject.Notes
+            Type = newPattern.Type,
+            StartDate = newPattern.StartDate,
+            EndDate = newPattern.EndDate,
+            Finished = newPattern.Finished,
+            Category = newPattern.Category,
+            Notes = newPattern.Notes
         };
 
-        var projectId = _projectService.AddProject(onlyProject, newProject.Yarns);
-        newProject.Id = projectId;
+        var patternId = _patternService.AddPattern(onlyPattern, newPattern.Yarns);
+        newPattern.Id = patternId;
 
-        return CreatedAtRoute("GetProject", new { id = projectId }, newProject);
+        return CreatedAtRoute("GetPattern", new { id = patternId }, newPattern);
     }
 
     [HttpDelete("{id:Guid}")]
@@ -113,7 +113,7 @@ public class ProjectController : ControllerBase
     public IActionResult Delete(Guid id)
     {
         if (id.Equals("0") || id.Equals("")) return BadRequest();
-        _projectService.DeleteProject(id);
+        _patternService.DeletePattern(id);
 
         return NoContent();
     }
@@ -121,21 +121,21 @@ public class ProjectController : ControllerBase
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Update([FromBody] NewProjectDto newProject)
+    public IActionResult Update([FromBody] NewPatternDto newPattern)
     {
         if (!this.ModelState.IsValid) return BadRequest();
 
-        var onlyProject = new NewProjectDto
+        var onlyPattern = new NewPatternDto
         {
-            Type = newProject.Type,
-            StartDate = newProject.StartDate,
-            EndDate = newProject.EndDate,
-            Finished = newProject.Finished,
-            Category = newProject.Category,
-            Notes = newProject.Notes
+            Type = newPattern.Type,
+            StartDate = newPattern.StartDate,
+            EndDate = newPattern.EndDate,
+            Finished = newPattern.Finished,
+            Category = newPattern.Category,
+            Notes = newPattern.Notes
         };
 
-        _projectService.UpdateProject(onlyProject, newProject.Yarns);
+        _patternService.UpdatePattern(onlyPattern, newPattern.Yarns);
         return NoContent();
     }
 }

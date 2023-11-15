@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
@@ -12,8 +13,16 @@ public class PatternRepository : IPatternRepository
         _dbContext = dbContext;
     }
 
-    public Guid AddPattern(Pattern pattern)
+    public Guid AddPattern(Pattern pattern, List<Yarn> yarns)
     {
+        _dbContext.Patterns.Add(pattern);
+
+        foreach (var yarn in yarns)
+        {
+            yarn.ParentId = pattern.Id;
+            _dbContext.Yarns.Add(yarn);
+        }
+
 
         _dbContext.SaveChanges();
         return pattern.Id;
@@ -41,19 +50,43 @@ public class PatternRepository : IPatternRepository
         return pattern;
     }
 
-    public void UpdatePattern(Pattern service)
+    public IQueryable<Pattern> GetPatternsByType(NeedleworkType type)
     {
-        _dbContext.Attach(service);
-        _dbContext.Entry(service).Property("ype").IsModified = true;
-        _dbContext.Entry(service).Property("StartDate").IsModified = true;
-        _dbContext.Entry(service).Property("EndDate").IsModified = true;
-        _dbContext.Entry(service).Property("Status").IsModified = true;
-        _dbContext.Entry(service).Property("PaymentStatus").IsModified = true;
-        _dbContext.Entry(service).Property("City").IsModified = true;
-        _dbContext.Entry(service).Property("Price").IsModified = true;
+        var patterns = _dbContext.Patterns.Where(y => y.Type == type);
+        return patterns;
+    }
 
-        var oldMaterials = _dbContext.Yarns.Where(m => m.Id == service.Id).ToList();
-        
+    public IQueryable<Pattern> GetPatternsByCategory(string category)
+    {
+        var patterns = _dbContext.Patterns.Where(y => y.Category == category);
+        return patterns;
+    }
+
+    public IQueryable<Pattern> GetPatternsByStatus(bool finished)
+    {
+        var patterns = _dbContext.Patterns.Where(y => y.Finished == finished);
+        return patterns;
+    }
+
+    public void UpdatePattern(Pattern pattern, List<Yarn> yarns)
+    {
+        _dbContext.Attach(pattern);
+        _dbContext.Entry(pattern).Property("PatternType").IsModified = true;
+        _dbContext.Entry(pattern).Property("StartDate").IsModified = true;
+        _dbContext.Entry(pattern).Property("EndDate").IsModified = true;
+        _dbContext.Entry(pattern).Property("Finished").IsModified = true;
+        _dbContext.Entry(pattern).Property("Category").IsModified = true;
+        _dbContext.Entry(pattern).Property("Notes").IsModified = true;
+
+        var existingYarns = _dbContext.Yarns.Where(y => y.ParentId == pattern.Id);
+        _dbContext.Yarns.RemoveRange(existingYarns);
+
+        foreach (var yarn in yarns)
+        {
+            _dbContext.Yarns.Add(yarn);
+        }
+
+
         _dbContext.SaveChanges();
     }
 }

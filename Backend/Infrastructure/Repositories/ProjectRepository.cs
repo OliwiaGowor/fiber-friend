@@ -1,8 +1,9 @@
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
-//TODO: implement
+//TODO: implement 
 public class ProjectRepository : IProjectRepository
 {
     private readonly ApplicationDbContext _dbContext;
@@ -12,8 +13,16 @@ public class ProjectRepository : IProjectRepository
         _dbContext = dbContext;
     }
 
-    public Guid AddProject(Project project)
+    public Guid AddProject(Project project, List<Yarn> yarns)
     {
+        _dbContext.Projects.Add(project);
+
+        foreach (var yarn in yarns)
+        {
+            yarn.ParentId = project.Id;
+            _dbContext.Yarns.Add(yarn);
+        }
+
 
         _dbContext.SaveChanges();
         return project.Id;
@@ -41,19 +50,43 @@ public class ProjectRepository : IProjectRepository
         return project;
     }
 
-    public void UpdateProject(Project service)
+    public IQueryable<Project> GetProjectsByType(NeedleworkType type)
     {
-        _dbContext.Attach(service);
-        _dbContext.Entry(service).Property("ProjectType").IsModified = true;
-        _dbContext.Entry(service).Property("StartDate").IsModified = true;
-        _dbContext.Entry(service).Property("EndDate").IsModified = true;
-        _dbContext.Entry(service).Property("ProjectStatus").IsModified = true;
-        _dbContext.Entry(service).Property("PaymentStatus").IsModified = true;
-        _dbContext.Entry(service).Property("City").IsModified = true;
-        _dbContext.Entry(service).Property("Price").IsModified = true;
+        var projects = _dbContext.Projects.Where(y => y.Type == type);
+        return projects;
+    }
 
-        var oldMaterials = _dbContext.Yarns.Where(m => m.ParentId == service.Id).ToList();
-        
+    public IQueryable<Project> GetProjectsByCategory(string category)
+    {
+        var projects = _dbContext.Projects.Where(y => y.Category == category);
+        return projects;
+    }
+
+        public IQueryable<Project> GetProjectsByStatus(bool finished)
+    {
+        var projects = _dbContext.Projects.Where(y => y.Finished == finished);
+        return projects;
+    }
+
+    public void UpdateProject(Project project, List<Yarn> yarns)
+    {
+        _dbContext.Attach(project);
+        _dbContext.Entry(project).Property("ProjectType").IsModified = true;
+        _dbContext.Entry(project).Property("StartDate").IsModified = true;
+        _dbContext.Entry(project).Property("EndDate").IsModified = true;
+        _dbContext.Entry(project).Property("Finished").IsModified = true;
+        _dbContext.Entry(project).Property("Category").IsModified = true;
+        _dbContext.Entry(project).Property("Notes").IsModified = true;
+
+        var existingYarns = _dbContext.Yarns.Where(y => y.ParentId == project.Id);
+        _dbContext.Yarns.RemoveRange(existingYarns);
+
+        foreach (var yarn in yarns)
+        {
+            _dbContext.Yarns.Add(yarn);
+        }
+
+
         _dbContext.SaveChanges();
     }
 }

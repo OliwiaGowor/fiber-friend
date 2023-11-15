@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
-
+//TODO: do onModelCreating
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options)
@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Project> Projects { get; set; }
     public DbSet<Pattern> Patterns { get; set; }
+    public DbSet<Resource> Resources { get; set; }
     public DbSet<Yarn> Yarns { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
