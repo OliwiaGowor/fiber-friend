@@ -16,7 +16,7 @@ export default function RecoverPassPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (proceedSubmit) {
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
+            let url = `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
             const response = await fetch(url, {
                 method: 'post',

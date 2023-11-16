@@ -23,16 +23,15 @@ import EditProject from './pages/Projects/EditProject';
 import RecoverPassPage from './pages/RecoverPassPage/RecoverPassPage';
 import CounterDetails, { loader as counterDetailsLoader } from './pages/Counters/CounterDetails';
 import EditCounter from './pages/Counters/EditCounter';
-import Supplies, { loader as suppliesLoader } from './pages/Supplies/Supplies';
-import SuppliesRoot from './pages/Supplies/SuppliesRoot';
-import NewSupplyPage from './pages/Supplies/NewSupplyPage';
-import SupplyDetails, { loader as supplyDetailsLoader } from './pages/Supplies/SupplyDetails';
+import Resources, { loader as resourcesLoader } from './pages/Resources/Resources';
+import ResourcesRoot from './pages/Resources/ResourcesRoot';
+import NewResourcePage from './pages/Resources/NewResourcePage';
+import ResourceDetails, { loader as resourceDetailsLoader } from './pages/Resources/ResourceDetails';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
 import AccountSettingsPage from './pages/Account/AccountSettingsPage';
 import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
-import ErrorPopup from './components/ErrorPopup/ErrorPopup';
 
 const router = createBrowserRouter([
   {
@@ -176,23 +175,23 @@ const router = createBrowserRouter([
             ]
           },
           {
-            path: 'supplies',
-            id: "supplies",
-            loader: suppliesLoader,
-            element: <SuppliesRoot />,
+            path: 'resources',
+            id: "resources",
+            loader: resourcesLoader,
+            element: <ResourcesRoot />,
             children: [
               {
                 index: true,
-                element: <Supplies />,
+                element: <Resources />,
               },
               {
-                path: ':supplyId',
-                id: 'supply-details',
-                loader: supplyDetailsLoader,
+                path: ':resourceId',
+                id: 'resource-details',
+                loader: resourceDetailsLoader,
                 children: [
                   {
                     index: true,
-                    element: <SupplyDetails />,
+                    element: <ResourceDetails />,
                   },
                   {
                     path: 'edit',
@@ -204,8 +203,8 @@ const router = createBrowserRouter([
                 ],
               },
               {
-                path: 'new-supply',
-                element: <NewSupplyPage />,
+                path: 'new-resource',
+                element: <NewResourcePage />,
                 //action: manipulateProjectAction,
                 //loader: checkAuthLoader,
               },

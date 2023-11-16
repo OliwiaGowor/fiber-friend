@@ -8,11 +8,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
-import classes from './SupplyDetails.module.scss';
+import classes from './ResourceDetails.module.scss';
 
-export default function SupplyDetails() {
+export default function ResourceDetails() {
     const navigate = useNavigate();
-    const { supply } = useRouteLoaderData('supply-details') as { supply: any };
+    const { resource } = useRouteLoaderData('resource-details') as { resource: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -31,7 +31,7 @@ export default function SupplyDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/supplies/' + supply.id + '.json', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Resource/${resource.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export default function SupplyDetails() {
             //   status: 500,
             // });
             throw json(
-                { message: 'Could not fetch supply.' },
+                { message: 'Could not fetch resource.' },
                 {
                     status: 500,
                 }
@@ -55,30 +55,30 @@ export default function SupplyDetails() {
     };
 
     const renderInfoElements = () => {
-        if (supply.type === 'yarn') {
+        if (resource.type === 'yarn') {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {supply.category ? supply.toolSize : <br></br>}
+                    {resource.category ? resource.toolSize : <br></br>}
 
                     <div className={classes.attributeName}>Gauge: </div>
-                    {supply.startDate ? supply.gauge : <br></br>}
+                    {resource.startDate ? resource.gauge : <br></br>}
 
                     <div className={classes.attributeName}>Skein weight: </div>
-                    {supply.endDate ? supply.weight : <br></br>}
+                    {resource.endDate ? resource.weight : <br></br>}
 
                     <div className={classes.attributeName}>Meters in skein: </div>
-                    {supply.endDate ? supply.meters : <br></br>}
+                    {resource.endDate ? resource.meters : <br></br>}
                 </>
             );
-        } else if (supply.type === 'tool') {
+        } else if (resource.type === 'tool') {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {supply.category ? supply.toolSize : <br></br>}
+                    {resource.category ? resource.toolSize : <br></br>}
 
                     <div className={classes.attributeName}>Tool type: </div>
-                    {supply.startDate ? supply.toolType : <br></br>}
+                    {resource.startDate ? resource.toolType : <br></br>}
 
                 </>
             );
@@ -86,10 +86,10 @@ export default function SupplyDetails() {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {supply.category ? supply.toolSize : <br></br>}
+                    {resource.category ? resource.toolSize : <br></br>}
 
                     <div className={classes.attributeName}>Tool type: </div>
-                    {supply.startDate ? supply.toolType : <br></br>}
+                    {resource.startDate ? resource.toolType : <br></br>}
                 </>
             );
         }
@@ -98,10 +98,10 @@ export default function SupplyDetails() {
     return (
         <div className={classes.container}>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={supply}>
+                <Await resolve={resource}>
                     <div className={classes.details}>
                         <h1 className={classes.header}>
-                            {supply.name}
+                            {resource.name}
                             <Button
                                 id="basic-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
@@ -125,7 +125,7 @@ export default function SupplyDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
-                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/supplies/' + supply.id + '/edit'); }}>
+                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/resources/' + resource.id + '/edit'); }}>
                                     Edit
                                 </MenuItem>
                                 <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
@@ -137,12 +137,12 @@ export default function SupplyDetails() {
                             <div className={classes.leftElements}>
                                 <div className={classes.sectionContainer}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
-                                    <div className={classes.supplyInfoContainer}>
+                                    <div className={classes.resourceInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
-                                        {supply.type ? supply.type : <br></br>}
+                                        {resource.type ? resource.type : <br></br>}
                                         {renderInfoElements()}
                                         <div className={classes.attributeName}>Quantity: </div>
-                                        {supply.quantity ? supply.quantity : <br></br>}
+                                        {resource.quantity ? resource.quantity : <br></br>}
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@ export default function SupplyDetails() {
                                 <div className={classes.sectionContainer}>
                                     <div className={classes.photosContainer}>
                                         <h2 className={classes.sectionHeader}>Photos</h2>
-                                        <PhotosDisplay data={supply} />
+                                        <PhotosDisplay data={resource} />
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@ export default function SupplyDetails() {
                         <div className={classes.wholeScreenElements}>
                             <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Notes</h2>
-                                <div className={classes.notes}><TextDisplay defaultValue={supply.notes} /></div>
+                                <div className={classes.notes}><TextDisplay defaultValue={resource.notes} /></div>
                             </div>
                         </div>
                     </div>
@@ -168,8 +168,8 @@ export default function SupplyDetails() {
     );
 }
 
-async function loadSupplyDetails(id: string) {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/supplies/' + id + '.json');
+async function loadResourceDetails(id: string) {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Resource/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch project.' };
@@ -190,8 +190,8 @@ async function loadSupplyDetails(id: string) {
 }
 
 export async function loader({ request, params }: any) {
-    const id = params.supplyId;
+    const id = params.resourceId;
     return defer({
-        supply: await loadSupplyDetails(id),
+        resource: await loadResourceDetails(id),
     });
 }

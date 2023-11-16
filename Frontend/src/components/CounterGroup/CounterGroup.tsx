@@ -52,7 +52,7 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
     const handleSaveChanges = async () => {
         const method = defaultValue ? 'PATCH' : 'POST';
 
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + parentId + '.json', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${parentId}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
             method: method,
             headers: {
                 'Content-Type': 'application/json',

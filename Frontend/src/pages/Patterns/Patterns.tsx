@@ -20,7 +20,7 @@ export default function Patterns() {
 }
 
 async function loadPatterns() {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 
     if (!response.ok) {
         throw json(

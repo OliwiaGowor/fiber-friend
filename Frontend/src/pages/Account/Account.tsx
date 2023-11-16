@@ -13,9 +13,9 @@ const tiles = [
     link: 'counters',
   },
   {
-    title: "Supplies",
+    title: "Resources",
     icon: <CalculateIcon />,
-    link: 'supplies',
+    link: 'resources',
   },
 ];
 
@@ -78,15 +78,15 @@ async function fetchData(url: string) {
 }
 
 async function loadProjects() {
-  return fetchData('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+  return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 }
 
 async function loadPatterns() {
-  return fetchData('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
+  return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 }
 
 async function loadOrders() {
-  return fetchData('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/orders.json');
+  return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 }
 
 export async function loader() {

@@ -50,7 +50,7 @@ export default function NewPatternPage() {
                 patterns: selectedFiles,
                 notes: notes,
             };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json';
+            let url = `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
             const response = await fetch(url, {
                 method: 'post',

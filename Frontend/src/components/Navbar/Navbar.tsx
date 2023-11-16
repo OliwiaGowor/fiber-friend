@@ -95,10 +95,10 @@ export default function Navbar() {
                             </MenuItem>
                             <MenuItem onClick={() => {
                                 handleCloseAdd();
-                                navigate("account/supplies/new-supply");
+                                navigate("account/resources/new-resource");
                             }}
                             >
-                                Add supply
+                                Add resource
                             </MenuItem>
                             <MenuItem onClick={() => {
                                 handleCloseAdd();

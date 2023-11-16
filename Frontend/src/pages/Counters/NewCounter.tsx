@@ -34,7 +34,7 @@ export default function NewCounter() {
 
     const fetchAvailableProjects = React.useCallback(async () => {
         setIsLoading(true);
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
         if (!response.ok) {
             throw json(
                 { message: 'Could not fetch projects.' },
@@ -90,7 +90,7 @@ export default function NewCounter() {
                 name: counterGroupNameRef.current?.value,
                 counters: counters,
             };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counterGroups.json';
+            let url = `${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
             const response = await fetch(url, {
                 method: method,

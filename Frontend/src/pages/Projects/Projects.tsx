@@ -32,7 +32,7 @@ export default Projects;
 
 async function loadProjects() {
     try {
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 
         if (!response.ok) {
             localStorage.setItem("error", "Could not fetch projects.");

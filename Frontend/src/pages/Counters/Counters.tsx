@@ -29,7 +29,7 @@ function Counters() {
 export default Counters;
 
 async function loadCounters() {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counterGroups.json');
+    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch events.' };

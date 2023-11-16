@@ -76,7 +76,7 @@ export const patternsFilters = [
     }
 ]
 
-export const suppliesFilters = [ 
+export const resourcesFilters = [ 
     {
         name: "Type",
         options: [

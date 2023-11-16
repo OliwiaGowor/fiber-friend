@@ -23,7 +23,7 @@ export default function PatternDetails() {
 
     const fetchSelectedProject = React.useCallback(async () => {
         try {
-            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + pattern.connectedProject + '.json');
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${pattern.connectedProject}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
             if (!response.ok) {
                 throw new Error('Something went wrong!');
             }
@@ -56,7 +56,7 @@ export default function PatternDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects/' + pattern.id + '.json', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ export default function PatternDetails() {
 }
 
 async function loadPatternDetails(id: string) {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns/' + id + '.json');
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch pattern.' };

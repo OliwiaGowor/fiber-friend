@@ -23,7 +23,7 @@ export default function CounterDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counterGroups/' + counterGroup.id + '.json', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export default function CounterDetails() {
 }
 
 async function loadCounterDetails(id: string) {
-    const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/counterGroups/' + id + '.json');
+    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup/${id }${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch Counter.' };

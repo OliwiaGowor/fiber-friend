@@ -62,9 +62,9 @@ function SidebarAccount({ open, getOpen }: any) {
                         </Link>
                     </li>
                     <li className={classes.element}>
-                        <Link to={'/fiber-friend/account/supplies'} className={classes.link} onClick={handleClick}>
+                        <Link to={'/fiber-friend/account/resources'} className={classes.link} onClick={handleClick}>
                             <ShoppingBasketIcon />
-                            <div className={classes.text}>Supplies</div>
+                            <div className={classes.text}>Resources</div>
                         </Link>
                     </li>
                     <li className={classes.element}>

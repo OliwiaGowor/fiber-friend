@@ -7,9 +7,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
 import { FileInput } from '../../components/FileInput/FileInput';
 import TextEditor from "../../components/TextEditor/TextEditor";
-import classes from './NewSupplyPage.module.scss';
+import classes from './NewResourcePage.module.scss';
 
-export default function NewSupplyPage() {
+export default function NewResourcePage() {
     const navigate = useNavigate();
     const re = /[0-9]/;
     const [type, setType] = React.useState('yarn');
@@ -69,7 +69,7 @@ export default function NewSupplyPage() {
                 };
             }
             
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/supplies.json';
+            let url = `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
             const response = await fetch(url, {
                 method: 'post',
@@ -84,10 +84,10 @@ export default function NewSupplyPage() {
             }
 
             if (!response.ok) {
-                throw json({ message: 'Could not save supply.' }, { status: 500 });
+                throw json({ message: 'Could not save resource.' }, { status: 500 });
             }
 
-            return navigate('/fiber-friend/account/supplies');
+            return navigate('/fiber-friend/account/resources');
         } else {
             return;
         }
@@ -218,7 +218,7 @@ export default function NewSupplyPage() {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Add new supply</h1>
+            <h1 className={classes.header}>Add new resource</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
@@ -228,12 +228,12 @@ export default function NewSupplyPage() {
                             inputProps={{
                                 'aria-label': 'name',
                             }}
-                            label="Supply name"
+                            label="Resource name"
                             className={classes.formInput}
                             name='name'
                             inputRef={nameRef}
                             error={showNameError}
-                            helperText={showNameError ? 'Enter supply name!' : ''}
+                            helperText={showNameError ? 'Enter resource name!' : ''}
                             onChange={() => { setShowNameError(false) }}
                         />
                         <div className={classes.typeToggleContainer}>
@@ -285,7 +285,7 @@ export default function NewSupplyPage() {
                             name='quantity'
                             inputRef={quantityRef}
                             error={showQuantityError}
-                            helperText={showNameError ? 'Enter supply quantity!' : ''}
+                            helperText={showNameError ? 'Enter resource quantity!' : ''}
                             onChange={() => { setShowQuantityError(false) }}
                         />
                     </div>

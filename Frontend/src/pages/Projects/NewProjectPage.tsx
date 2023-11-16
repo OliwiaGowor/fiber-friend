@@ -36,7 +36,7 @@ export default function NewProjectPage() {
 
     const fetchAvailablePatterns = useCallback(async () => {
         try {
-            const response = await fetch('https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/patterns.json');
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
             if (!response.ok) {
                 throw new Error('Something went wrong!');
             }
@@ -90,7 +90,7 @@ export default function NewProjectPage() {
                 connectedPattern: selectedPattern ? selectedPattern : null,
                 finished: endDate !== null ? true : false,
             };
-            let url = 'https://fiber-frined-default-rtdb.europe-west1.firebasedatabase.app/projects.json';
+            let url = `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
             const response = await fetch(url, {
                 method: 'post',
