@@ -13,8 +13,10 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import logoPicture from '../../photos/yarn-ball.png';
 
 import classes from './Navbar.module.scss';
+import { getAuthToken } from "../../utils/auth";
 
 export default function Navbar() {
+    const isLoggedIn = getAuthToken() !== null;
     const navigate = useNavigate();
     const [openSidebar, setOpenSidebar] = useState(false);
     const isMobile = useMediaQuery('(max-width: 760px)');

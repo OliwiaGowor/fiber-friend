@@ -5,6 +5,7 @@ import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CircularProgress from "@mui/material/CircularProgress";
 import CalculateIcon from '@mui/icons-material/Calculate';
+import { tokenLoader } from "../../utils/auth";
 
 const tiles = [
   {
@@ -63,7 +64,12 @@ export default function Account() {
 }
 
 async function fetchData(url: string) {
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: "Bearer " + tokenLoader(),
+    },
+  });
 
   if (!response.ok) {
     throw json(

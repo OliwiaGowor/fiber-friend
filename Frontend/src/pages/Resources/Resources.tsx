@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { useRouteLoaderData, Await, json, defer } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Resources.module.scss'
+import { tokenLoader } from "../../utils/auth";
 
 export default function Resources() {
     const { resources }: any = useRouteLoaderData("resources");
@@ -20,7 +21,12 @@ export default function Resources() {
 }
 
 async function loadResources() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+        },
+    });
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch events.' };

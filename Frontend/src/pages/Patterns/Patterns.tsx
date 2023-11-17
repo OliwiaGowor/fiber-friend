@@ -3,6 +3,7 @@ import { Await, json, defer, useRouteLoaderData } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Patterns.module.scss'
+import { tokenLoader } from "../../utils/auth";
 
 export default function Patterns() {
     const { patterns }: any = useRouteLoaderData("patterns");
@@ -20,7 +21,12 @@ export default function Patterns() {
 }
 
 async function loadPatterns() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+        },
+    });
 
     if (!response.ok) {
         throw json(

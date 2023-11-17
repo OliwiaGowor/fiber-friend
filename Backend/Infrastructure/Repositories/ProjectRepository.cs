@@ -62,7 +62,7 @@ public class ProjectRepository : IProjectRepository
         return projects;
     }
 
-        public IQueryable<Project> GetProjectsByStatus(bool finished)
+    public IQueryable<Project> GetProjectsByStatus(bool finished)
     {
         var projects = _dbContext.Projects.Where(y => y.Finished == finished);
         return projects;

@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { FileInput } from '../../components/FileInput/FileInput';
 import TextEditor from "../../components/TextEditor/TextEditor";
 import classes from './NewResourcePage.module.scss';
+import { tokenLoader } from "../../utils/auth";
 
 export default function NewResourcePage() {
     const navigate = useNavigate();
@@ -75,6 +76,7 @@ export default function NewResourcePage() {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: "Bearer " + tokenLoader(),
                 },
                 body: JSON.stringify(projectData),
             });

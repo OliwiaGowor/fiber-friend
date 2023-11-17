@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { defer, json, useRouteLoaderData } from "react-router-dom";
 import classes from './AccountSettingsPage.module.scss'
+import { tokenLoader } from "../../utils/auth";
 
 const AccountSettingsPage = () => {
   const { userData }: any = {username: "", email: ""}//useRouteLoaderData('account');
@@ -40,11 +41,16 @@ const AccountSettingsPage = () => {
 
 export default AccountSettingsPage;
 
-async function loadUserData() {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+async function loadUserData() {  
+  const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + tokenLoader(),
+      },
+  });
 
   if (!response.ok) {
-    // return { isError: true, message: 'Could not fetch events.' };
+    // return { isError: true, message: 'Could not  events.' };
     // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
     //   status: 500,
     // });

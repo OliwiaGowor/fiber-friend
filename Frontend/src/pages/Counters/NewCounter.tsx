@@ -6,9 +6,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { SelectChangeEvent } from '@mui/material/Select';
 import BigCounter from '../../components/BigCounter/BigCounter';
+import { tokenLoader } from '../../utils/auth';
 //FIXME: move counters to countergroup?
 //TODO: connecting counters to patterns/projects
 export default function NewCounter() {
+    const token = tokenLoader();
     const navigate = useNavigate();
     const [counters, setCounters] = React.useState<any>([]);
     const [tmpCounter, setTmpCounter] = React.useState();
@@ -34,7 +36,12 @@ export default function NewCounter() {
 
     const fetchAvailableProjects = React.useCallback(async () => {
         setIsLoading(true);
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + token,
+            },
+        });
         if (!response.ok) {
             throw json(
                 { message: 'Could not fetch projects.' },
@@ -96,6 +103,7 @@ export default function NewCounter() {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: "Bearer " + token,
                 },
                 body: JSON.stringify(counterData),
             });

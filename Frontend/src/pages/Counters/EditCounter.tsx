@@ -6,9 +6,11 @@ import CounterMiniature from '../../components/CounterMiniature/CounterMiniature
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { tokenLoader } from '../../utils/auth';
 
 //TO DO: connecting counters to patterns/projects
 export default function NewCounter() {
+    const token = tokenLoader();
     const navigate = useNavigate();
     const [counters, setCounters] = React.useState<any>([]);
     const nameRef = React.useRef<string | null>();
@@ -34,7 +36,12 @@ export default function NewCounter() {
     
     const fetchAvailableProjects = React.useCallback(async () => {
         setIsLoading(true);
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + token,
+            },
+        });
         if (!response.ok) {
             throw json(
                 { message: 'Could not fetch projects.' },
@@ -95,6 +102,7 @@ export default function NewCounter() {
                 method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: "Bearer " + token,
                 },
                 body: JSON.stringify(counterData),
             });

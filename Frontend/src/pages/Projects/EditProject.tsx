@@ -16,8 +16,10 @@ import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextEditor from "../../components/TextEditor/TextEditor";
+import { getAuthToken } from "../../utils/auth";
 
 export default function EditProject() {
+    const token = getAuthToken();
     const { project } = useRouteLoaderData('project-details') as { project: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate();
@@ -41,7 +43,12 @@ export default function EditProject() {
 
     const fetchAvailablePatterns = React.useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: "Bearer " + token,
+                },
+            });
             if (!response.ok) {
                 throw new Error('Something went wrong!');
             }
@@ -102,6 +109,7 @@ export default function EditProject() {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authoriaztion: "Bearer " + token,
                 },
                 body: JSON.stringify(projectData),
             });

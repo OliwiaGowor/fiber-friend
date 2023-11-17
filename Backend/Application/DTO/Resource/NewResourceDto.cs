@@ -4,7 +4,7 @@ using Domain.Enums;
 using FluentValidation;
 
 namespace Application.DTO.Resource;
-public class NewResourceDto: IMapFrom<Domain.Entities.Resource>
+public class NewResourceDto : IMapFrom<Domain.Entities.Resource>
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -13,10 +13,10 @@ public class NewResourceDto: IMapFrom<Domain.Entities.Resource>
     public string? Gauge { get; set; }
     public string ToolSize { get; set; }
 
-public static void Mapping(Profile profile)
+    public static void Mapping(Profile profile)
     {
         profile.CreateMap<NewResourceDto, Domain.Entities.Resource>().ReverseMap();
-    }  
+    }
 }
 
 public class NewResourceValidation : AbstractValidator<ResourceDto>

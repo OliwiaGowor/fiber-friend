@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { MenuItem, Select } from "@mui/material";
 import { PieChart } from '@mui/x-charts/PieChart';
+import { getAuthToken } from "../../utils/auth";
 
 const data = {
     totalProjects: 40,
@@ -42,6 +43,7 @@ export default function StatisticsPage() {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: "Bearer" + getAuthToken(),
             },
             body: JSON.stringify(date),
         });
@@ -161,7 +163,14 @@ export default function StatisticsPage() {
 }
 
 async function loadStatistics() {
-    const response = await fetch('');
+    const response = await fetch('', {
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer" + getAuthToken(),
+        },
+    
+    });
 
     if (!response.ok) {
         throw json(

@@ -3,9 +3,9 @@ using Application.DTO.Yarn;
 using Application.Interfaces.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain.Interfaces.Repository;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.Interfaces.Repository;
 
 namespace Application.Services;
 

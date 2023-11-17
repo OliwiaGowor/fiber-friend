@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { useRouteLoaderData, Await, json, defer } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Counters.module.scss'
+import { tokenLoader } from "../../utils/auth";
 
 function Counters() {
 
@@ -29,7 +30,12 @@ function Counters() {
 export default Counters;
 
 async function loadCounters() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+        },
+    });
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch events.' };

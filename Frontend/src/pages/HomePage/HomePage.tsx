@@ -23,7 +23,7 @@ function HomePage() {
                     <Button
                         variant="contained"
                         className={classes.landingButton}
-                        onClick={() => navigate('/login')}
+                        onClick={() => navigate('login')}
                     >
                         TRY NOW!
                     </Button>

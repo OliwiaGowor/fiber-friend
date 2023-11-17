@@ -7,7 +7,7 @@ import Projects, { loader as projectsLoader } from './pages/Projects/Projects';
 import NewProjectPage from './pages/Projects/NewProjectPage';
 import Patterns, { loader as patternsLoader } from './pages/Patterns/Patterns';
 import PatternsRoot from './pages/Patterns/PatternsRoot';
-import LoginPage from './pages/LoginPage/LoginPage';
+import LoginPage, {action as loginAction} from './pages/LoginPage/LoginPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import ProjectDetails, { loader as projectDetailsLoader } from './pages/Projects/ProjectDetails';
 import PatternDetails, { loader as patternDetailsLoader } from './pages/Patterns/PatternDetails';
@@ -46,7 +46,8 @@ const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <LoginPage />
+        element: <LoginPage />,
+        action: loginAction,
       },
       {
         path: 'signUp',

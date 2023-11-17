@@ -20,14 +20,14 @@ public class NewYarnDto : IMapFrom<Domain.Entities.Yarn>
     }
 
     public class NewYarnValidation : AbstractValidator<NewYarnDto>
-{
-    public NewYarnValidation()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.Quantity).NotEmpty();
-        RuleFor(x => x.Gauge).NotEmpty().MaximumLength(20);
-        RuleFor(x => x.Stitch).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.ToolSize).NotEmpty().MaximumLength(20);
+        public NewYarnValidation()
+        {
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.Quantity).NotEmpty();
+            RuleFor(x => x.Gauge).NotEmpty().MaximumLength(20);
+            RuleFor(x => x.Stitch).NotEmpty().MaximumLength(50);
+            RuleFor(x => x.ToolSize).NotEmpty().MaximumLength(20);
+        }
     }
-}
 }

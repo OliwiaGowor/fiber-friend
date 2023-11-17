@@ -10,6 +10,7 @@ import { FileInput } from '../../components/FileInput/FileInput';
 import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
 import { DatePicker } from "@mui/x-date-pickers";
 import TextEditor from "../../components/TextEditor/TextEditor";
+import { tokenLoader } from "../../utils/auth";
 
 export default function NewPatternPage() {
     const navigate = useNavigate();
@@ -56,6 +57,7 @@ export default function NewPatternPage() {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: "Bearer " + tokenLoader(),
                 },
                 body: JSON.stringify(patternData),
             });

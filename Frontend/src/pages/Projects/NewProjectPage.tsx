@@ -13,8 +13,10 @@ import { FileInput } from '../../components/FileInput/FileInput';
 import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
 import TextEditor from "../../components/TextEditor/TextEditor";
 import classes from './NewProjectPage.module.scss';
+import { getAuthToken } from "../../utils/auth";
 
 export default function NewProjectPage() {
+    const token = getAuthToken();
     const navigate = useNavigate();
     const [type, setType] = React.useState('crochet');
     const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
@@ -36,7 +38,12 @@ export default function NewProjectPage() {
 
     const fetchAvailablePatterns = useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
             if (!response.ok) {
                 throw new Error('Something went wrong!');
             }
@@ -96,6 +103,7 @@ export default function NewProjectPage() {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authoriaztion: "Bearer " + token,
                 },
                 body: JSON.stringify(projectData),
             });

@@ -3,6 +3,7 @@ import { Form, json, useNavigate, useNavigation } from "react-router-dom";
 import classes from "./RecoverPassPage.module.scss";
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
+import { tokenLoader } from "../../utils/auth";
 
 export default function RecoverPassPage() {
     const navigation = useNavigation();
@@ -22,6 +23,7 @@ export default function RecoverPassPage() {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: "Bearer " + tokenLoader(),
                 },
                 body: JSON.stringify(emailRef.current?.value),
             });

@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CounterMiniature from "../../components/CounterMiniature/CounterMiniature";
+import { tokenLoader } from "../../utils/auth";
 
 export default function CounterDetails() {
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function CounterDetails() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: "Bearer " + tokenLoader(),
             },
         });
 
@@ -105,7 +107,12 @@ export default function CounterDetails() {
 }
 
 async function loadCounterDetails(id: string) {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup/${id }${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup/${id }${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+        },
+    });
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch Counter.' };

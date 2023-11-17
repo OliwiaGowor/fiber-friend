@@ -9,8 +9,10 @@ import MenuItem from '@mui/material/MenuItem';
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import classes from './ResourceDetails.module.scss';
+import { getAuthToken } from '../../utils/auth';
 
 export default function ResourceDetails() {
+    const token = getAuthToken();
     const navigate = useNavigate();
     const { resource } = useRouteLoaderData('resource-details') as { resource: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -35,6 +37,7 @@ export default function ResourceDetails() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                Authoriaztion: "Bearer " + token,
             },
         });
 
@@ -169,7 +172,13 @@ export default function ResourceDetails() {
 }
 
 async function loadResourceDetails(id: string) {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Resource/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Resource/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authoriaztion: "Bearer " + getAuthToken(),
+        },
+    });
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch project.' };

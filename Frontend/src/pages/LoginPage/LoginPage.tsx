@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Form, Link, useNavigate, useNavigation } from "react-router-dom";
+import { Form, Link, json, redirect, useNavigate, useNavigation } from "react-router-dom";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -102,3 +102,35 @@ export default function LoginPage() {
         </div>
     );
 }
+
+export async function action({ request }: { request: Request }) {
+    const searchParams = new URL(request.url).searchParams;
+  
+    const data = await request.formData();
+    const authData = {
+      username: data.get("username"),
+      password: data.get("password"),
+    };
+  
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/Login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(authData),
+    });
+  
+    if (!response.ok) {
+        throw json({ message: "Could not authenticate user." }, { status: 500 });
+        return null;
+    }
+
+    const resData = await response.json();
+    const expiration = new Date();
+    expiration.setTime(expiration.getTime() + 1 * 60 * 60 * 1000);
+    localStorage.setItem("token", resData.token);
+    localStorage.setItem("expiration", expiration.toISOString());
+    localStorage.setItem("userId", resData.id);
+  
+    return redirect("/account");
+  }

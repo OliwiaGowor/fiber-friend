@@ -15,7 +15,7 @@ public class AuthenticationService : IAuthenticationService
         _userRepository = userRepository;
     }
 
-    public AuthenticationResult Register(string username,  string email, string password)
+    public AuthenticationResult Register(string username, string email, string password)
     {
         if (_userRepository.GetUserByEmail(email) is not null)
             throw new Exception("User with given email already exists");

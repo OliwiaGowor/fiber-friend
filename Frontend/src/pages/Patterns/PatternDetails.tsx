@@ -12,9 +12,11 @@ import { FilesDisplay } from "../../components/FilesDisplay/FilesDisplay";
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CounterGroup from "../../components/CounterGroup/CounterGroup";
+import { tokenLoader } from "../../utils/auth";
 //TODO: mobile design
 //TODO: maybe editing counters in dialog?
 export default function PatternDetails() {
+    const token = tokenLoader();
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -23,7 +25,12 @@ export default function PatternDetails() {
 
     const fetchSelectedProject = React.useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${pattern.connectedProject}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${pattern.connectedProject}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            });
             if (!response.ok) {
                 throw new Error('Something went wrong!');
             }
@@ -60,6 +67,7 @@ export default function PatternDetails() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                Authoriaztion: "Bearer " + token,
             },
         });
 
@@ -177,7 +185,12 @@ export default function PatternDetails() {
 }
 
 async function loadPatternDetails(id: string) {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+        },
+    });
 
     if (!response.ok) {
         // return { isError: true, message: 'Could not fetch pattern.' };

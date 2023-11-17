@@ -51,7 +51,7 @@ public class ResourceController : ControllerBase
 
         var resourceId = _resourceService.AddResource(newResource);
         newResource.Id = resourceId;
- 
+
         return CreatedAtRoute("GetResource", new { id = resourceId }, newResource);
     }
 
