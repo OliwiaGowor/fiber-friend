@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Application.DTO.Statistics
 {
-    internal class StatisticsDto
+    public class StatisticsDto
     {
+        public int ActiveProjects { get; set; }
+        public int FinishedProjects { get; set; }
+        public int SkeinsUsed { get; set; }
+        public string MostFreqToolSize { get; set; }
+        public string MostFreqStitch { get; set; }
+        public string MostFreqCategory { get; set; }
+        public string CrochetProjects { get; set; }
+        public string KnittingProjects { get; set; }
+        public string OtherProjects { get; set; }
     }
 }
+

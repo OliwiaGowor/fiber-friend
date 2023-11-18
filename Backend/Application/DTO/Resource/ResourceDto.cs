@@ -11,6 +11,7 @@ public class ResourceDto : IMapFrom<Domain.Entities.Resource>
     public int Quantity { get; set; }
     public string? Gauge { get; set; }
     public string ToolSize { get; set; }
+    public Guid UserId { get; set; }
 
     public static void Mapping(Profile profile)
     {

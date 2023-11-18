@@ -40,13 +40,22 @@ internal class ResourceService : IResourceService
         return resourceDto;
     }
 
-    public List<ResourceDto> GetResourcesList()
+    public List<ResourceDto> GetResourcesListForUser(Guid userId)
     {
-        var resources = _resourceRepo.GetAllResources()
+        var resources = _resourceRepo.GetAllResourcesForUser(userId)
             .ProjectTo<ResourceDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return resources;
+    }
+
+        public List<ResourceDto> GetYarnsListForUser(Guid userId)
+    {
+        var yarns = _resourceRepo.GetAllYarnsForUser(userId)
+            .ProjectTo<ResourceDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return yarns;
     }
 
     public object UpdateResource(NewResourceDto newResource)

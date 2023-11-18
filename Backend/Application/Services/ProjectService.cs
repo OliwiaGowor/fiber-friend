@@ -43,36 +43,45 @@ internal class ProjectService : IProjectService
         return projectDto;
     }
 
-    public List<ProjectDto> GetProjectsList()
+    public List<ProjectDto> GetProjectsListForUser(Guid userId)
     {
-        var projects = _projectRepo.GetAllProjects()
+        var projects = _projectRepo.GetAllProjectsForUser(userId)
             .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return projects;
     }
 
-    public List<ProjectDto> GetProjectsByCategory(string category)
+    public List<ProjectDto> GetProjectsByCategoryForUser(string category, Guid userId)
     {
-        var projects = _projectRepo.GetProjectsByCategory(category)
+        var projects = _projectRepo.GetProjectsByCategoryForUser(category, userId)
             .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return projects;
     }
 
-    public List<ProjectDto> GetProjectsByStatus(bool finished)
+    public List<ProjectDto> GetProjectsByStatusForUser(bool finished, Guid userId)
     {
-        var projects = _projectRepo.GetProjectsByStatus(finished)
+        var projects = _projectRepo.GetProjectsByStatusForUser(finished, userId)
             .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return projects;
     }
 
-    public List<ProjectDto> GetProjectsByType(NeedleworkType type)
+    public List<ProjectDto> GetProjectsByTypeForUser(NeedleworkType type, Guid userId)
     {
-        var projects = _projectRepo.GetProjectsByType(type)
+        var projects = _projectRepo.GetProjectsByTypeForUser(type, userId)
+            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return projects;
+    }
+
+        public List<ProjectDto> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
+    {
+        var projects = _projectRepo.GetProjectsByTimePeriodForUser(timePeriodStart, timePeriodEnd, userId)
             .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
             .ToList();
 

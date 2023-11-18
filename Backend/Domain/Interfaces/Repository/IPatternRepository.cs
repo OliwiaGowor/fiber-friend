@@ -7,10 +7,10 @@ public interface IPatternRepository
 {
     void DeletePattern(Guid patternId);
     Guid AddPattern(Pattern pattern, List<Yarn> yarns);
-    IQueryable<Pattern> GetAllPatterns();
+    IQueryable<Pattern> GetAllPatternsForUser(Guid userId);
     Pattern GetPatternById(Guid patternId);
-    IQueryable<Pattern> GetPatternsByType(NeedleworkType type);
-    IQueryable<Pattern> GetPatternsByCategory(string category);
-    IQueryable<Pattern> GetPatternsByStatus(bool finished);
+    IQueryable<Pattern> GetPatternsByTypeForUser(NeedleworkType type, Guid userId);
+    IQueryable<Pattern> GetPatternsByCategoryForUser(string category, Guid userId);
+    IQueryable<Pattern> GetPatternsByStatusForUser(bool finished, Guid userId);
     void UpdatePattern(Pattern pattern, List<Yarn> yarns);
 }

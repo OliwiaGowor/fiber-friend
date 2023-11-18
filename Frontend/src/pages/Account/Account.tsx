@@ -64,21 +64,18 @@ export default function Account() {
 }
 
 async function fetchData(url: string) {
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: "Bearer " + tokenLoader(),
-    },
-  });
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
 
-  if (!response.ok) {
-    throw json(
-      { message: `Could not fetch data from ${url}.` },
-      {
-        status: 500,
-      }
-    );
+  const token = tokenLoader();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
+
+  const response = await fetch(url, {
+    headers,
+  });
 
   return response.json();
 }

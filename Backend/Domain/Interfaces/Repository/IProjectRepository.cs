@@ -7,10 +7,11 @@ public interface IProjectRepository
 {
     void DeleteProject(Guid projectId);
     Guid AddProject(Project project, List<Yarn> yarns);
-    IQueryable<Project> GetAllProjects();
+    IQueryable<Project> GetAllProjectsForUser(Guid userId);
     Project GetProjectById(Guid projectId);
-    IQueryable<Project> GetProjectsByType(NeedleworkType type);
-    IQueryable<Project> GetProjectsByCategory(string category);
-    IQueryable<Project> GetProjectsByStatus(bool finished);
+    IQueryable<Project> GetProjectsByTypeForUser(NeedleworkType type, Guid userId);
+    IQueryable<Project> GetProjectsByCategoryForUser(string category, Guid userId);
+    IQueryable<Project> GetProjectsByStatusForUser(bool finished, Guid userId);
+    IQueryable<Project> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
     void UpdateProject(Project project, List<Yarn> yarns);
 }

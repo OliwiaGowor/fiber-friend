@@ -21,11 +21,14 @@ public class ProjectController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet("/GetAllProjectsForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<ProjectDto>> GetAllProjects()
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<IEnumerable<ProjectDto>> GetAllProjectsForUser(Guid userId)
     {
-        var list = _projectService.GetProjectsList();
+        if (userId.Equals("0") || userId.Equals("")) return BadRequest();
+        var list = _projectService.GetProjectsListForUser(userId);
         return Ok(list);
     }
 
@@ -42,41 +45,41 @@ public class ProjectController : ControllerBase
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByType/{type}")]
+    [HttpGet("GetProjectsByTypeForUser/{type}/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByType(NeedleworkType type)
+    public ActionResult<ProjectDto> GetProjectsByTypeForUser(NeedleworkType type, Guid userId)
     {
         if (!Enum.IsDefined(typeof(NeedleworkType), type) || type.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectsByType(type);
+        var service = _projectService.GetProjectsByTypeForUser(type, userId);
 
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByStatus/{finished:bool}")]
+    [HttpGet("GetProjectsByStatusForUser/{finished:bool}/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByStatus(bool finished)
+    public ActionResult<ProjectDto> GetProjectsByStatusForUser(bool finished, Guid userId)
     {
-        var service = _projectService.GetProjectsByStatus(finished);
+        var service = _projectService.GetProjectsByStatusForUser(finished, userId);
 
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByCategory/{category}")]
+    [HttpGet("GetProjectsByCategoryForUser/{category}/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByCategory(string category)
+    public ActionResult<ProjectDto> GetProjectsByCategoryForUser(string category, Guid userId)
     {
         if (category.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectsByCategory(category);
+        var service = _projectService.GetProjectsByCategoryForUser(category, userId);
 
         if (service is null) return NotFound();
 

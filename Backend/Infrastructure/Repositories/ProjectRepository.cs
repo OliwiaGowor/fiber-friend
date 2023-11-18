@@ -38,9 +38,9 @@ public class ProjectRepository : IProjectRepository
         }
     }
 
-    public IQueryable<Project> GetAllProjects()
+    public IQueryable<Project> GetAllProjectsForUser(Guid userId)
     {
-        var projects = _dbContext.Projects;
+        var projects = _dbContext.Projects.Where(y => y.UserId == userId);
         return projects;
     }
 
@@ -50,21 +50,27 @@ public class ProjectRepository : IProjectRepository
         return project;
     }
 
-    public IQueryable<Project> GetProjectsByType(NeedleworkType type)
+    public IQueryable<Project> GetProjectsByTypeForUser(NeedleworkType type, Guid userId)
     {
-        var projects = _dbContext.Projects.Where(y => y.Type == type);
+        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.Type == type);
         return projects;
     }
 
-    public IQueryable<Project> GetProjectsByCategory(string category)
+    public IQueryable<Project> GetProjectsByCategoryForUser(string category, Guid userId)
     {
-        var projects = _dbContext.Projects.Where(y => y.Category == category);
+        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.Category == category);
         return projects;
     }
 
-    public IQueryable<Project> GetProjectsByStatus(bool finished)
+    public IQueryable<Project> GetProjectsByStatusForUser(bool finished, Guid userId)
     {
-        var projects = _dbContext.Projects.Where(y => y.Finished == finished);
+        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.Finished == finished);
+        return projects;
+    }
+
+        public IQueryable<Project> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
+    {
+        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.StartDate >= timePeriodStart && y.EndDate <= timePeriodEnd);
         return projects;
     }
 

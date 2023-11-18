@@ -15,6 +15,7 @@ import CounterGroup from "../../components/CounterGroup/CounterGroup";
 import { tokenLoader } from "../../utils/auth";
 //TODO: mobile design
 //TODO: maybe editing counters in dialog?
+//TODO: for generating pdfs ask if attach added pattern files to it
 export default function PatternDetails() {
     const token = tokenLoader();
     const navigate = useNavigate();

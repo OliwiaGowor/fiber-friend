@@ -21,11 +21,11 @@ public class PatternController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet("GetAllPatternsForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<PatternDto>> GetAllPatterns()
+    public ActionResult<IEnumerable<PatternDto>> GetAllPatternsForUser(Guid userId)
     {
-        var list = _patternService.GetPatternsList();
+        var list = _patternService.GetPatternsListForUser(userId);
         return Ok(list);
     }
 
@@ -42,41 +42,41 @@ public class PatternController : ControllerBase
         return Ok(service);
     }
 
-    [HttpGet("GetPatternsByType/{type}")]
+    [HttpGet("GetPatternsByTypeForUser/{type}/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetPatternsByType(NeedleworkType type)
+    public ActionResult<PatternDto> GetPatternsByTypeForUser(NeedleworkType type, Guid userId)
     {
         if (!Enum.IsDefined(typeof(NeedleworkType), type) || type.Equals("")) return BadRequest();
-        var service = _patternService.GetPatternsByType(type);
+        var service = _patternService.GetPatternsByTypeForUser(type, userId);
 
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetPatternsByStatus/{finished:bool}")]
+    [HttpGet("GetPatternsByStatusForUser/{finished:bool}/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetPatternsByStatus(bool finished)
+    public ActionResult<PatternDto> GetPatternsByStatusForUser(bool finished, Guid userId)
     {
-        var service = _patternService.GetPatternsByStatus(finished);
+        var service = _patternService.GetPatternsByStatusForUser(finished, userId);
 
         if (service is null) return NotFound();
 
         return Ok(service);
     }
 
-    [HttpGet("GetPatternsByCategory/{category}")]
+    [HttpGet("GetPatternsByCategoryForUser/{category}/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetPatternsByCategory(string category)
+    public ActionResult<PatternDto> GetPatternsByCategoryForUser(string category, Guid userId)
     {
         if (category.Equals("")) return BadRequest();
-        var service = _patternService.GetPatternsByCategory(category);
+        var service = _patternService.GetPatternsByCategoryForUser(category, userId);
 
         if (service is null) return NotFound();
 

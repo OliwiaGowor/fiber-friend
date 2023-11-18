@@ -177,6 +177,7 @@ export default function NewPatternPage() {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
+                                format="DD-MM-YYYY"
                             />
                             <DatePicker
                                 className={classes.dateInput}

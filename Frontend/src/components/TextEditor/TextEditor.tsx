@@ -14,6 +14,8 @@ import LooksOneIcon from '@mui/icons-material/LooksOne';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import classes from './TextEditor.module.scss';
 //TODO: display only most important buttons on mobile
+//TODO: add if my pattern?
+
 const HOTKEYS = {
   "mod+b": "bold",
   "mod+i": "italic",
@@ -61,7 +63,13 @@ export default function TextEditor(props: TextEditorProps) {
 
   return (
     <div className={classes.textEditor}>
-      <Slate editor={editor} value={value} onChange={(value: any) => {setValue(value); getValue(JSON.stringify(value));}} >
+      <Slate 
+      editor={editor} 
+      value={value} 
+      onChange={(value: any) => {
+        setValue(value); getValue(JSON.stringify(value));
+        }}
+        >
         <div className={classes.toolbar}>
           <MarkButton format='bold' icon={<FormatBoldIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
           <MarkButton format='italic' icon={<FormatItalicIcon sx={{fontSize: 27}} />} className={classes.formatButton} />

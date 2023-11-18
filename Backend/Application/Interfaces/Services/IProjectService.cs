@@ -7,11 +7,12 @@ namespace Application.Interfaces.Services;
 public interface IProjectService
 {
     Guid AddProject(NewProjectDto project, List<NewYarnDto> yarns);
-    List<ProjectDto> GetProjectsList();
+    List<ProjectDto> GetProjectsListForUser(Guid userId);
     object GetProjectById(Guid projectId);
-    List<ProjectDto> GetProjectsByType(NeedleworkType type);
-    List<ProjectDto> GetProjectsByCategory(string category);
-    List<ProjectDto> GetProjectsByStatus(bool finished);
+    List<ProjectDto> GetProjectsByTypeForUser(NeedleworkType type, Guid userId);
+    List<ProjectDto> GetProjectsByCategoryForUser(string category, Guid userId);
+    List<ProjectDto> GetProjectsByStatusForUser(bool finished, Guid userId);
+    List<ProjectDto> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
     object UpdateProject(NewProjectDto project, List<NewYarnDto> yarns);
     void DeleteProject(Guid id);
 }

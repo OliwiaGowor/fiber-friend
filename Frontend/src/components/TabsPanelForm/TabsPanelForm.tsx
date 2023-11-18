@@ -5,9 +5,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
 import CloseIcon from '@mui/icons-material/Close';
-import classes from './TabsPanelForm.module.scss';
 import Button from '@mui/material/Button';
-import { TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
+import { useCallback, useEffect } from 'react';
+import { tokenLoader } from '../../utils/auth';
+import classes from './TabsPanelForm.module.scss';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -46,7 +48,7 @@ interface BasicTabsFormProps {
   showError: boolean;
   defaultValue?: any;
 }
-
+//TODO: make it also for tools for patterns?
 export default function BasicTabsForm(props: BasicTabsFormProps) {
   const { getInfo, showError, defaultValue, ...other } = props;
   const [value, setValue] = React.useState(0);
@@ -55,22 +57,58 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
   const amountRef = React.useRef<HTMLInputElement | null>(null);
   const [yarns, setYarns] = React.useState<any>(defaultValue ?? []);
-  const [yarnInput, setYarnInput] = React.useState<any>('');
-  const yarnNameRef = React.useRef<HTMLInputElement | null>(null);
+  const [yarnName, setYarnName] = React.useState<string | null>('');
+  const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
+
+  const fetchAvailableYarns = useCallback(async () => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    const token = tokenLoader();
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "/GetAllYarnsForUser" : ".json"}`, {
+        headers,
+      });
+
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+
+      const data = await response.json();
+      const loadedYarns = [];
+
+      for (const key in data) {
+        loadedYarns.push({
+          id: key,
+          name: data[key].name,
+        });
+      }
+      setFetchedYarns(loadedYarns);
+
+    } catch (error) {
+      //setError("Something went wrong, try again.");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAvailableYarns();
+  }, []);
 
   const handleData = (yarnName: string) => {
     const tmpYarnsInfo = yarns?.map((yarn: any) => {
-      if (yarn.yarn === yarnName) {
+      if (yarn.name === yarnName) {
         return ({
           id: yarn.id,
-          yarn: yarn.yarn,
-          info:
-          {
-            toolSize: toolSizeRef.current?.value,
-            gauge: gaugeRef.current?.value,
-            stitch: stitchRef.current?.value,
-            amount: amountRef.current?.value,
-          }
+          yarn: yarn.name,
+          toolSize: toolSizeRef.current?.value,
+          gauge: gaugeRef.current?.value,
+          stitch: stitchRef.current?.value,
+          quantity: amountRef.current?.value,
         });
       } else {
         return (yarn);
@@ -83,16 +121,13 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const handleAddTab = () => {
     setYarns([...yarns, {
       id: yarns.length,
-      yarn: yarnNameRef.current?.value,
-      info:
-      {
-        toolSize: '',
-        gauge: '',
-        stitch: '',
-        amount: '',
-      }
+      name: yarnName,
+      toolSize: '',
+      gauge: '',
+      stitch: '',
+      amount: '',
     }])
-    setYarnInput('');
+    setYarnName('');
     setValue(yarns.length);
   };
 
@@ -109,20 +144,15 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   return (
     <div className={classes.container}>
       <div className={classes.addYarns}>
-        <TextField
+        <Autocomplete
           id="yarn-input"
-          inputProps={{
-            'aria-label': 'yarn',
-          }}
-          label="Add new yarn"
+          freeSolo
           size="medium"
           className={classes.formInput}
-          name='name'
-          inputRef={yarnNameRef}
-          onChange={(event: any) => { setYarnInput(event.target.value) }}
-          value={yarnInput}
-          error={showError}
-          helperText={showError ? 'You must add at least one yarn!' : ''}
+          options={fetchedYarns?.map((option: any) => option.name)}
+          renderInput={(params) => <TextField {...params} label="Add new yarn" />}
+          onChange={(event: React.SyntheticEvent, newValue: string | null) => { setYarnName(newValue) }}
+          value={yarnName}
         />
         <Button
           className={classes.addButton}
@@ -147,7 +177,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
               return (
                 <Tab key={index}
                   className={classes.tab}
-                  label={yarn.yarn}
+                  label={yarn.name}
                   {...a11yProps(index)}
                   disableRipple
                   iconPosition='end'
@@ -176,8 +206,8 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                 className={classes.formInput}
                 name='tool'
                 inputRef={toolSizeRef}
-                onChange={() => { handleData(yarn.yarn) }}
-                defaultValue={yarn.info.toolSize}
+                onChange={() => { handleData(yarn.name) }}
+                defaultValue={yarn.toolSize}
                 required
               />
 
@@ -191,9 +221,9 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                 label="Gauge"
                 className={classes.formInput}
                 name='gauge'
-                onChange={() => { handleData(yarn.yarn) }}
+                onChange={() => { handleData(yarn.name) }}
                 inputRef={gaugeRef}
-                defaultValue={yarn.info.gauge}
+                defaultValue={yarn.gauge}
                 required
               />
               <br></br>
@@ -209,25 +239,26 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                 label="Stitch"
                 className={classes.formInput}
                 name='stitch'
-                onChange={() => { handleData(yarn.yarn) }}
+                onChange={() => { handleData(yarn.name) }}
                 inputRef={stitchRef}
-                defaultValue={yarn.info.stitch}
+                defaultValue={yarn.stitch}
                 required
               />
 
               <TextField
-                id={`amount-${index}`}
-                aria-describedby="amount-helper-text"
-                aria-label="Amount of yarn"
-                inputProps={{
-                  'aria-labelledby': `amount-of-yarn-label-${index}`,
-                }}
-                label="Amount of yarn"
                 className={classes.formInput}
+                id={`amount-${index}`}
+                type='number'
+                aria-describedby="amount-helper-text"
+                aria-label="Amount of skeins"
+                inputProps={{
+                  'aria-labelledby': `amount-of-skeins-label-${index}`,
+                }}
+                label="Amount of skeins"
                 name='amount'
-                onChange={() => { handleData(yarn.yarn) }}
+                onChange={() => { handleData(yarn.name) }}
                 inputRef={amountRef}
-                defaultValue={yarn.info.amount}
+                defaultValue={yarn.amount}
                 required
               />
             </div>

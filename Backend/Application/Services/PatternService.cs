@@ -43,36 +43,36 @@ internal class PatternService : IPatternService
         return patternDto;
     }
 
-    public List<PatternDto> GetPatternsList()
+    public List<PatternDto> GetPatternsListForUser(Guid userId)
     {
-        var patterns = _patternRepo.GetAllPatterns()
+        var patterns = _patternRepo.GetAllPatternsForUser(userId)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return patterns;
     }
 
-    public List<PatternDto> GetPatternsByCategory(string category)
+    public List<PatternDto> GetPatternsByCategoryForUser(string category, Guid userId)
     {
-        var patterns = _patternRepo.GetPatternsByCategory(category)
+        var patterns = _patternRepo.GetPatternsByCategoryForUser(category, userId)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return patterns;
     }
 
-    public List<PatternDto> GetPatternsByType(NeedleworkType type)
+    public List<PatternDto> GetPatternsByTypeForUser(NeedleworkType type, Guid userId)
     {
-        var patterns = _patternRepo.GetPatternsByType(type)
+        var patterns = _patternRepo.GetPatternsByTypeForUser(type, userId)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
             .ToList();
 
         return patterns;
     }
 
-    public List<PatternDto> GetPatternsByStatus(bool finished)
+    public List<PatternDto> GetPatternsByStatusForUser(bool finished, Guid userId)
     {
-        var patterns = _patternRepo.GetPatternsByStatus(finished)
+        var patterns = _patternRepo.GetPatternsByStatusForUser(finished, userId)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
             .ToList();
 

@@ -28,7 +28,7 @@ import ResourcesRoot from './pages/Resources/ResourcesRoot';
 import NewResourcePage from './pages/Resources/NewResourcePage';
 import ResourceDetails, { loader as resourceDetailsLoader } from './pages/Resources/ResourceDetails';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
-import AccountSettingsPage from './pages/Account/AccountSettingsPage';
+import AccountSettingsPage from './pages/AccountSettings/AccountSettingsPage';
 import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';

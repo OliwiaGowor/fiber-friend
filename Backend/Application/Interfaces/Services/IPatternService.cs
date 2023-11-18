@@ -7,11 +7,11 @@ namespace Application.Interfaces.Services;
 public interface IPatternService
 {
     Guid AddPattern(NewPatternDto pattern, List<NewYarnDto> yarns);
-    List<PatternDto> GetPatternsList();
+    List<PatternDto> GetPatternsListForUser(Guid userId);
     object GetPatternById(Guid patternId);
-    List<PatternDto> GetPatternsByType(NeedleworkType type);
-    List<PatternDto> GetPatternsByCategory(string category);
-    List<PatternDto> GetPatternsByStatus(bool finished);
+    List<PatternDto> GetPatternsByTypeForUser(NeedleworkType type, Guid userId);
+    List<PatternDto> GetPatternsByCategoryForUser(string category, Guid userId);
+    List<PatternDto> GetPatternsByStatusForUser(bool finished, Guid userId);
     object UpdatePattern(NewPatternDto pattern, List<NewYarnDto> yarns);
     void DeletePattern(Guid id);
 }

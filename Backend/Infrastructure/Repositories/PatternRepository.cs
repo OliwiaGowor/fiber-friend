@@ -38,9 +38,9 @@ public class PatternRepository : IPatternRepository
         }
     }
 
-    public IQueryable<Pattern> GetAllPatterns()
+    public IQueryable<Pattern> GetAllPatternsForUser(Guid userId)
     {
-        var patterns = _dbContext.Patterns;
+        var patterns = _dbContext.Patterns.Where(y => y.UserId == userId);
         return patterns;
     }
 
@@ -50,21 +50,21 @@ public class PatternRepository : IPatternRepository
         return pattern;
     }
 
-    public IQueryable<Pattern> GetPatternsByType(NeedleworkType type)
+    public IQueryable<Pattern> GetPatternsByTypeForUser(NeedleworkType type, Guid userId)
     {
-        var patterns = _dbContext.Patterns.Where(y => y.Type == type);
+        var patterns = _dbContext.Patterns.Where(y => y.UserId == userId && y.Type == type);
         return patterns;
     }
 
-    public IQueryable<Pattern> GetPatternsByCategory(string category)
+    public IQueryable<Pattern> GetPatternsByCategoryForUser(string category, Guid userId)
     {
-        var patterns = _dbContext.Patterns.Where(y => y.Category == category);
+        var patterns = _dbContext.Patterns.Where(y => y.UserId == userId && y.Category == category);
         return patterns;
     }
 
-    public IQueryable<Pattern> GetPatternsByStatus(bool finished)
+    public IQueryable<Pattern> GetPatternsByStatusForUser(bool finished, Guid userId)
     {
-        var patterns = _dbContext.Patterns.Where(y => y.Finished == finished);
+        var patterns = _dbContext.Patterns.Where(y => y.UserId == userId && y.Finished == finished);
         return patterns;
     }
 

@@ -13,6 +13,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Project> Projects { get; set; }
     public DbSet<Pattern> Patterns { get; set; }
     public DbSet<Resource> Resources { get; set; }
+    public DbSet<CountersGroup> CountersGroups { get; set; }
     public DbSet<Yarn> Yarns { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)

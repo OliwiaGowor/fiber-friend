@@ -20,11 +20,19 @@ public class ResourceController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet("GetAllResourcesForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<ResourceDto>> GetAllResources()
+    public ActionResult<IEnumerable<ResourceDto>> GetAllResourcesForUser(Guid userId)
     {
-        var list = _resourceService.GetResourcesList();
+        var list = _resourceService.GetResourcesListForUser(userId);
+        return Ok(list);
+    }
+
+        [HttpGet("GetAllYarnsForUser/{userId:Guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<IEnumerable<ResourceDto>> GetAllYarnsForUser(Guid userId)
+    {
+        var list = _resourceService.GetYarnsListForUser(userId);
         return Ok(list);
     }
 

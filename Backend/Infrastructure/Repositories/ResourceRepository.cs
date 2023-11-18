@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
@@ -30,9 +31,15 @@ public class ResourceRepository : IResourceRepository
         }
     }
 
-    public IQueryable<Resource> GetAllResources()
+    public IQueryable<Resource> GetAllResourcesForUser(Guid userId)
     {
-        var resources = _dbContext.Resources;
+        var resources = _dbContext.Resources.Where(i => i.UserId == userId);
+        return resources;
+    }
+
+    public IQueryable<Resource> GetAllYarnsForUser(Guid userId)
+    {
+        var resources = _dbContext.Resources.Where(i => i.UserId == userId && i.Type == ResourceType.Yarn);
         return resources;
     }
 

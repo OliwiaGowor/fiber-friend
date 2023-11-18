@@ -14,7 +14,7 @@ import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
 import TextEditor from "../../components/TextEditor/TextEditor";
 import classes from './NewProjectPage.module.scss';
 import { getAuthToken } from "../../utils/auth";
-
+//TODO: change quantity to number of skeins
 export default function NewProjectPage() {
     const token = getAuthToken();
     const navigate = useNavigate();
@@ -97,9 +97,8 @@ export default function NewProjectPage() {
                 connectedPattern: selectedPattern ? selectedPattern : null,
                 finished: endDate !== null ? true : false,
             };
-            let url = `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
-            const response = await fetch(url, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -161,6 +160,7 @@ export default function NewProjectPage() {
                             error={showNameError}
                             helperText={showNameError ? 'Enter project name!' : ''}
                             onChange={() => { setShowNameError(false) }}
+                            autoComplete="off"
                         />
                         <div className={classes.typeToggleContainer}>
                             <ToggleButtonGroup
@@ -217,6 +217,7 @@ export default function NewProjectPage() {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
+                                format="DD-MM-YYYY"
                             />
                             <DatePicker
                                 className={classes.dateInput}
