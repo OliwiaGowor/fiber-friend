@@ -4,7 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import SnackbarContent from '@mui/material/SnackbarContent';
-
+//FIXME change error handling to redux
 const ErrorPopup = () => {
     const message = localStorage.getItem("error");
     const [open, setOpen] = React.useState(message ? true : false);

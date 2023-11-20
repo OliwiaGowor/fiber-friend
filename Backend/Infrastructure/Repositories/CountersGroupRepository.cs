@@ -13,24 +13,6 @@ public class CountersGroupRepository : ICountersGroupRepository
         _dbContext = dbContext;
     }
 
-    public Guid AddCountersGroup(CountersGroup countersGroup)
-    {
-        _dbContext.CountersGroups.Add(countersGroup);
-
-        _dbContext.SaveChanges();
-        return countersGroup.Id;
-    }
-
-    public void DeleteCountersGroup(Guid countersGroupId)
-    {
-        var countersGroup = _dbContext.CountersGroups.Find(countersGroupId);
-        if (countersGroup is not null)
-        {
-            _dbContext.CountersGroups.Remove(countersGroup);
-            _dbContext.SaveChanges();
-        }
-    }
-
     public CountersGroup GetCountersGroupById(Guid countersGroupId)
     {
         var countersGroup = _dbContext.CountersGroups.FirstOrDefault(i => i.Id == countersGroupId);
@@ -47,6 +29,23 @@ public class CountersGroupRepository : ICountersGroupRepository
     {
         var countersGroups = _dbContext.CountersGroups.Where(y => y.PatternId == projectId );
         return countersGroups;
+    }
+
+    public Guid AddCountersGroup(CountersGroup countersGroup)
+    {
+        _dbContext.CountersGroups.Add(countersGroup);
+        _dbContext.SaveChanges();
+        return countersGroup.Id;
+    }
+
+    public void DeleteCountersGroup(Guid countersGroupId)
+    {
+        var countersGroup = _dbContext.CountersGroups.Find(countersGroupId);
+        if (countersGroup is not null)
+        {
+            _dbContext.CountersGroups.Remove(countersGroup);
+            _dbContext.SaveChanges();
+        }
     }
 
     public void UpdateCountersGroup(CountersGroup countersGroup)

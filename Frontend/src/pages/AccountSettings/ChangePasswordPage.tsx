@@ -1,64 +1,66 @@
 import { useState } from "react";
 import { defer, json, useRouteLoaderData } from "react-router-dom";
-import classes from './AccountSettingsPage.module.scss'
+import classes from './ChangePasswordPage.module.scss'
 import { tokenLoader } from "../../utils/auth";
 import { Button, TextField } from "@mui/material";
 import TextInput from "../../components/TextInput/TextInput";
 
 const ChangePasswordPage = () => {
-  const { userData }: any = {username: "", email: ""}//useRouteLoaderData('account');
+  const { userData }: any = { username: "", email: "" }//useRouteLoaderData('account');
   const [username, setUsername] = useState(userData?.username ?? "");
-  const [email, setEmail] = useState(userData?.email ?? "");
+  const [email, setEmail] = useState(userData?.email ?? "");
 
   const handleChangePassword = () => {
 
   };
 
-  const handleDeleteAccount = () => {
+  const checkNewPassword = () => {
 
+  };
+
+  const checkCurrentPassword = () => {
+      
   };
 
   return (
     <div className={classes.container}>
-      <div className={classes.formContent}>
-        <div className={classes.sectionContainer}>
-          <h1 className={classes.header}>Account settings</h1>
-          <h2>General</h2>
-            <TextField 
+          <h1 className={classes.header}>Change password</h1>
+          <div className={classes.sectionContainer}>
+          <TextField
             className={classes.formInput}
-            type="text" 
-            label="Username"
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            />
-            <TextField 
+            type="text"
+            label="Your current password"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
             className={classes.formInput}
-            type="text" 
-            label="E-mail"
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            />
-          <h2>Access</h2>
-          <h3>Change password</h3>
-          <TextField 
-          className={classes.formInput}
-          type="text" 
-          value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Button className={classes.button} onClick={handleDeleteAccount}>Delete account</Button>
+            type="text"
+            label="New password"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <TextField
+            className={classes.formInput}
+            type="text"
+            label="Repeat new password"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Button className={classes.submitBtn}>Change password</Button>
         </div>
-      </div>
     </div>
   );
 }
 
 export default ChangePasswordPage;
 
-async function loadUserData() {  
+async function loadUserData() {
   const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: "Bearer " + tokenLoader(),
-      },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: "Bearer " + tokenLoader(),
+    },
   });
 
   if (!response.ok) {

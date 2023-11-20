@@ -1,27 +1,53 @@
 import Button from "@mui/material/Button";
-import { Form, useNavigation, Link, useNavigate, json, redirect } from "react-router-dom";
+import { Form, useNavigation, useNavigate, json, redirect } from "react-router-dom";
 import classes from "./SignUpPage.module.scss"
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
+import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
 
 export default function SignUpPage() {
     const navigation = useNavigation();
     const navigate = useNavigate();
     const isSubmitting = navigation.state === "submitting";
+    const [showEmailError, setShowEmailError] = useState<boolean>(false);
     const [showUsernameError, setShowUsernameError] = useState<boolean>(false);
     const [showPasswordError, setShowPasswordError] = useState<boolean>(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const usernameRef = React.useRef<HTMLInputElement | null>(null);
-    const passwordRef = React.useRef<HTMLInputElement | null>(null);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
 
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (!validateEmail(email)) {
+            setShowEmailError(true);
+        }
+
+        if (username.length === 0) {
+            setShowUsernameError(true);
+        }
+
+        if (password === '' || password.length < 8) {
+            setShowPasswordError(true);
+            return;
+        }
+
+        try {
+            await action({
+                request: new Request("/fiber-friend/signUp", {
+                    method: "POST",
+
+                    body: new FormData(event.currentTarget),
+                })
+            });
+        } catch (error) {
+            localStorage.setItem("error", "Something went wrong, please try again later.");
+        }
     };
 
     return (
@@ -33,9 +59,8 @@ export default function SignUpPage() {
                     Sign In
                 </Button>
             </div>
-
             <div className={classes.signUpForm}>
-                <Form className={classes.form}>
+                <Form className={classes.form} method="post" onSubmit={handleSubmit}>
                     <h1 className={classes.header}>Sign Up</h1>
                     <div className={classes.signUpFormContainer}>
                         <div className={classes.formSection}>
@@ -47,10 +72,12 @@ export default function SignUpPage() {
                                 label="E-mail"
                                 className={classes.formInput}
                                 name='email'
-                                inputRef={usernameRef}
-                                error={showUsernameError}
-                                helperText={showUsernameError ? 'Enter e-mail!' : ''}
-                                onChange={() => { setShowUsernameError(false) }}
+                                error={showEmailError}
+                                helperText={showEmailError ? 'Enter e-mail!' : ''}
+                                onChange={(e) => {
+                                    setShowEmailError(false);
+                                    setEmail(e.target.value)
+                                }}
                             />
                         </div>
                         <div className={classes.formSection}>
@@ -62,73 +89,21 @@ export default function SignUpPage() {
                                 label="Username"
                                 className={classes.formInput}
                                 name='username'
-                                inputRef={usernameRef}
+                                autoComplete="none"
                                 error={showUsernameError}
                                 helperText={showUsernameError ? 'Enter username!' : ''}
-                                onChange={() => { setShowUsernameError(false) }}
-                            />
-                        </div>
-                        <div className={classes.formSection}>
-                            <TextField
-                                id="password"
-                                inputProps={{
-                                    'aria-label': 'password',
-                                }}
-                                label="Password"
-                                className={classes.formInput}
-                                name='password'
-                                inputRef={passwordRef}
-                                error={showPasswordError}
-                                helperText={showPasswordError ? 'Enter password!' : ''}
-                                onChange={() => { setShowPasswordError(false) }}
-                                type={showPassword ? 'text' : 'password'}
-                                InputProps={{
-                                    endAdornment:
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
+                                onChange={(e) => {
+                                    setShowUsernameError(false);
+                                    setUsername(e.target.value)
                                 }}
                             />
                         </div>
                         <div className={classes.formSection}>
-                            <TextField
-                                id="repPassword"
-                                inputProps={{
-                                    'aria-label': 'repPassword',
-                                }}
-                                label="Repeat password"
-                                className={classes.formInput}
-                                name='repPassword'
-                                inputRef={passwordRef}
-                                error={showPasswordError}
-                                helperText={showPasswordError ? 'Enter password!' : ''}
-                                onChange={() => { setShowPasswordError(false) }}
-                                type={showPassword ? 'text' : 'password'}
-                                InputProps={{
-                                    endAdornment:
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                }}
-                            />
+                            <PasswordValidation getPassword={setPassword} showError={showPasswordError} />
                         </div>
                     </div>
                     <div className={classes.btnContainer}>
-                        <Button className={classes.btnSubmit} disabled={isSubmitting}>
+                        <Button className={classes.btnSubmit} disabled={isSubmitting} type="submit">
                             {isSubmitting ? "Registering..." : "Register"}
                         </Button>
                     </div>
@@ -139,34 +114,37 @@ export default function SignUpPage() {
 }
 
 export async function action({ request }: { request: Request }) {
-    const searchParams = new URL(request.url).searchParams;
-  
     const data = await request.formData();
+
     const authData = {
-      username: data.get("username"),
-      email: data.get("email"),
-      password: data.get("password"),
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password"),
     };
-  
-    const response = await fetch(`${process.env.REACT_APP_API_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(authData),
-    });
-  
-    if (!response.ok) {
-      throw json({ message: "Could not authenticate user." }, { status: 500 });
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}`, { //FIXME: fill the url
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(authData),
+        });
+
+        if (!response.ok) {
+            localStorage.setItem("error", "Something went wrong, please try again later.");
+        }
+        const resData = await response.json();
+        const token = resData.token;
+
+        localStorage.setItem("token", token);
+        const expiration = new Date();
+        expiration.setHours(expiration.getHours() + 1);
+        localStorage.setItem("expiration", expiration.toISOString());
+
+        return redirect("/account");
+
+    } catch (error) {
+        localStorage.setItem("error", "Something went wrong, please try again later.");
     }
-  
-    const resData = await response.json();
-    const token = resData.token;
-  
-    localStorage.setItem("token", token);
-    const expiration = new Date();
-    expiration.setHours(expiration.getHours() + 1);
-    localStorage.setItem("expiration", expiration.toISOString());
-  
-    return redirect("/account");
-  }
+}

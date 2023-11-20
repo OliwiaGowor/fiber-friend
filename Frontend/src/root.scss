@@ -10,6 +10,7 @@
   --background-accents: white;
   --main-color-dark-btn: #ee524f;
   --swiper-navigation-color: #ef6e6b;
+  --light-grey: #b8b1a1;
 
   --navbar-height: 74px;
   --sidebar-width: 270px;
@@ -25,6 +26,7 @@
   border: none;
   border-radius: 10px;
   background-color: var(--main-color-dark);
+  color: var(--text-color-light);
 
   &:hover {
     background-color: var(--main-color-dark-btn);

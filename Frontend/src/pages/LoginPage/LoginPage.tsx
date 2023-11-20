@@ -16,16 +16,41 @@ export default function LoginPage() {
     const navigation = useNavigation();
     const navigate = useNavigate();
     const isSubmitting = navigation.state === 'submitting';
-    const [showUsernameError, setShowUsernameError] = useState<boolean>(false);
-    const [showPasswordError, setShowPasswordError] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState(false);
-    const usernameRef = React.useRef<HTMLInputElement | null>(null);
-    const passwordRef = React.useRef<HTMLInputElement | null>(null);
+    const [showEmailError, setShowEmailError] = useState<boolean>(false);
+    const [showPasswordError, setShowPasswordError] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (email === '' || email.length < 3) {
+            setShowEmailError(true);
+        }
+
+        if (password === '' || password.length < 8) {
+            setShowPasswordError(true);
+            return;
+        }
+
+        try {
+            await action({
+                request: new Request("/fiber-friend/login", {
+                    method: "POST",
+
+                    body: new FormData(event.currentTarget),
+                })
+            });
+        } catch (error) {
+            localStorage.setItem("error", "Something went wrong, please try again later.");
+        }
     };
 
     return (
@@ -38,22 +63,24 @@ export default function LoginPage() {
                 </Button>
             </div>
             <div className={classes.loginForm}>
-                <Form className={classes.form}>
+                <Form className={classes.form} method="post" onSubmit={handleSubmit}>
                     <h1>Log in</h1>
                     <div className={classes.loginFormContainer}>
                         <div className={classes.formSection}>
                             <TextField
-                                id="username"
+                                id="email"
                                 inputProps={{
-                                    'aria-label': 'username',
+                                    'aria-label': 'email',
                                 }}
-                                label="Username"
+                                label="Email"
                                 className={classes.formInput}
-                                name='username'
-                                inputRef={usernameRef}
-                                error={showUsernameError}
-                                helperText={showUsernameError ? 'Enter username!' : ''}
-                                onChange={() => { setShowUsernameError(false) }}
+                                name='email'
+                                error={showEmailError}
+                                helperText={showEmailError ? 'Enter email!' : ''}
+                                onChange={(e) => {
+                                    setShowEmailError(false);
+                                    setEmail(e.target.value)
+                                }}
                                 autoFocus
                             />
                         </div>
@@ -66,10 +93,12 @@ export default function LoginPage() {
                                 label="Password"
                                 className={classes.formInput}
                                 name='password'
-                                inputRef={passwordRef}
                                 error={showPasswordError}
                                 helperText={showPasswordError ? 'Enter password!' : ''}
-                                onChange={() => { setShowPasswordError(false) }}
+                                onChange={(e) => {
+                                    setShowPasswordError(false);
+                                    setPassword(e.target.value)
+                                }}
                                 type={showPassword ? 'text' : 'password'}
                                 InputProps={{
                                     endAdornment:
@@ -88,7 +117,12 @@ export default function LoginPage() {
                         </div>
                     </div>
                     <div className={classes.btnContainer}>
-                        <Button variant="contained" className={classes.btnSubmit} disabled={isSubmitting}>
+                        <Button
+                            variant="contained"
+                            className={classes.btnSubmit}
+                            disabled={isSubmitting}
+                            type="submit"
+                        >
                             {isSubmitting ? "Logging in..." : "Log in"}
                         </Button>
                         <Link to='/fiber-friend/recover-password'>
@@ -104,33 +138,39 @@ export default function LoginPage() {
 }
 
 export async function action({ request }: { request: Request }) {
-    const searchParams = new URL(request.url).searchParams;
-  
     const data = await request.formData();
+
     const authData = {
-      username: data.get("username"),
-      password: data.get("password"),
+        email: data.get("email"),
+        password: data.get("password"),
     };
-  
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/Login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(authData),
-    });
-  
-    if (!response.ok) {
-        throw json({ message: "Could not authenticate user." }, { status: 500 });
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/Login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(authData),
+        });
+
+        if (!response.ok) {
+            throw json({ message: "Could not authenticate user." }, { status: 500 });
+            return null;
+        }
+
+        const resData = await response.json();
+        const expiration = new Date();
+        expiration.setTime(expiration.getTime() + 1 * 60 * 60 * 1000);
+        localStorage.setItem("token", resData.token);
+        localStorage.setItem("expiration", expiration.toISOString());
+        localStorage.setItem("userId", resData.id);
+
+        return redirect("/account");
+
+    } catch (error) {
+        localStorage.setItem("error", "Something went wrong, please try again later.");
+
         return null;
     }
-
-    const resData = await response.json();
-    const expiration = new Date();
-    expiration.setTime(expiration.getTime() + 1 * 60 * 60 * 1000);
-    localStorage.setItem("token", resData.token);
-    localStorage.setItem("expiration", expiration.toISOString());
-    localStorage.setItem("userId", resData.id);
-  
-    return redirect("/account");
-  }
+}

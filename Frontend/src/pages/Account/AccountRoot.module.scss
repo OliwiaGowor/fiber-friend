@@ -4,6 +4,7 @@
 
   .mainContainer {
     width: 100vw;
+    margin-top: 15px;
   }
 }
 
@@ -12,7 +13,8 @@
     margin: unset;
 
     .mainContainer {
-      width: calc(100vw - var(--sidebar-width));
+      width: calc(100vw - var(--sidebar-width) - var(--margin-right));
+      margin-top: 35px;
     }
   }
 }

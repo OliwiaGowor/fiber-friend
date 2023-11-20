@@ -90,10 +90,10 @@ export default function BasicTabsDisplay({ yarns }: BasicTabsDisplayProps) {
           return (<TabPanel key={yarn.id || index} value={value} index={index}>
             <div className={classes.yarnInfoContainer}>
               <div className={classes.attributeName}>Tool size: </div>
-              {yarn.info.toolSize ? yarn.info.toolSize : <br />}
+              {yarn.toolSize ?? <br />}
 
               <div className={classes.attributeName}>Stitch: </div>
-              {yarn.info.stitch ? yarn.info.stitch : <br />}
+              {yarn.stitch ?? <br />}
 
               <div className={classes.attributeName}>
                 Gauge
@@ -101,10 +101,10 @@ export default function BasicTabsDisplay({ yarns }: BasicTabsDisplayProps) {
                   (10cm x 10cm)
                 </FormHelperText>:
               </div>
-              {yarn.info.gauge ? yarn.info.gauge : <br />}
+              {yarn.gauge ?? <br />}
 
               <div className={classes.attributeName}>Amount: </div>
-              {yarn.info.amount ? yarn.info.amount : <br />}
+              {yarn.amount ?? <br />}
             </div>
           </TabPanel>)
         })}

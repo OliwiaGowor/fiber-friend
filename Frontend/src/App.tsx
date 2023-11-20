@@ -1,66 +1,67 @@
-import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import HomePage from './pages/HomePage/HomePage'
-import Root from './pages/Root';
-import Account, { loader as dataLoader } from './pages/Account/Account';
-import Projects, { loader as projectsLoader } from './pages/Projects/Projects';
-import NewProjectPage from './pages/Projects/NewProjectPage';
-import Patterns, { loader as patternsLoader } from './pages/Patterns/Patterns';
-import PatternsRoot from './pages/Patterns/PatternsRoot';
-import LoginPage, {action as loginAction} from './pages/LoginPage/LoginPage';
-import SignUpPage from './pages/SignUpPage/SignUpPage';
-import ProjectDetails, { loader as projectDetailsLoader } from './pages/Projects/ProjectDetails';
-import PatternDetails, { loader as patternDetailsLoader } from './pages/Patterns/PatternDetails';
-import AccountRoot from './pages/Account/AccountRoot';
-import NewPatternPage from './pages/Patterns/NewPatternPage';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import ProjectsRoot from './pages/Projects/ProjectsRoot';
-import CountersRoot from './pages/Counters/CountersRoot';
-import Counters, { loader as countersLoader } from './pages/Counters/Counters';
-import NewCounter from './pages/Counters/NewCounter';
-import EditProject from './pages/Projects/EditProject';
-import RecoverPassPage from './pages/RecoverPassPage/RecoverPassPage';
-import CounterDetails, { loader as counterDetailsLoader } from './pages/Counters/CounterDetails';
-import EditCounter from './pages/Counters/EditCounter';
-import Resources, { loader as resourcesLoader } from './pages/Resources/Resources';
-import ResourcesRoot from './pages/Resources/ResourcesRoot';
-import NewResourcePage from './pages/Resources/NewResourcePage';
-import ResourceDetails, { loader as resourceDetailsLoader } from './pages/Resources/ResourceDetails';
-import PageNotFound from './pages/PageNotFound/PageNotFound';
-import AccountSettingsPage from './pages/AccountSettings/AccountSettingsPage';
-import ReportProblemPage from './pages/ReportProblemPage/ReportProblemPage';
-import StatisticsPage from './pages/StatisticsPage/StatisticsPage';
-import ErrorPage from './pages/ErrorPage/ErrorPage';
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/HomePage/HomePage"
+import Root from "./pages/Root";
+import Account, { loader as dataLoader } from "./pages/Account/Account";
+import Projects, { loader as projectsLoader } from "./pages/Projects/Projects";
+import NewProjectPage from "./pages/Projects/NewProjectPage";
+import Patterns, { loader as patternsLoader } from "./pages/Patterns/Patterns";
+import PatternsRoot from "./pages/Patterns/PatternsRoot";
+import LoginPage, {action as loginAction} from "./pages/LoginPage/LoginPage";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
+import ProjectDetails, { loader as projectDetailsLoader } from "./pages/Projects/ProjectDetails";
+import PatternDetails, { loader as patternDetailsLoader } from "./pages/Patterns/PatternDetails";
+import AccountRoot from "./pages/Account/AccountRoot";
+import NewPatternPage from "./pages/Patterns/NewPatternPage";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import ProjectsRoot from "./pages/Projects/ProjectsRoot";
+import CountersRoot from "./pages/Counters/CountersRoot";
+import Counters, { loader as countersLoader } from "./pages/Counters/Counters";
+import NewCounter from "./pages/Counters/NewCounter";
+import EditProject from "./pages/Projects/EditProject";
+import RecoverPassPage from "./pages/RecoverPassPage/RecoverPassPage";
+import CounterDetails, { loader as counterDetailsLoader } from "./pages/Counters/CounterDetails";
+import EditCounter from "./pages/Counters/EditCounter";
+import Resources, { loader as resourcesLoader } from "./pages/Resources/Resources";
+import ResourcesRoot from "./pages/Resources/ResourcesRoot";
+import NewResourcePage from "./pages/Resources/NewResourcePage";
+import ResourceDetails, { loader as resourceDetailsLoader } from "./pages/Resources/ResourceDetails";
+import PageNotFound from "./pages/PageNotFound/PageNotFound";
+import AccountSettingsPage from "./pages/AccountSettings/AccountSettingsPage";
+import ReportProblemPage from "./pages/ReportProblemPage/ReportProblemPage";
+import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import ChangePasswordPage from "./pages/AccountSettings/ChangePasswordPage";
 
 const router = createBrowserRouter([
   {
-    path: '/fiber-friend',
+    path: "/fiber-friend",
     element: <Root />,
-    id: 'root',
-    errorElement: <ErrorPage />,
+    id: "root",
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <HomePage />,    
+        errorElement: <ErrorPage />,
       },
       {
-        path: 'login',
+        path: "login",
         element: <LoginPage />,
         action: loginAction,
       },
       {
-        path: 'signUp',
+        path: "signUp",
         element: <SignUpPage />
       },
       {
-        path: 'recover-password',
+        path: "recover-password",
         element: <RecoverPassPage />
       },
       {
-        path: 'account',
+        path: "account",
         loader: dataLoader,
-        id: 'account',
+        id: "account",
         element: <AccountRoot />,
         children: [
           {
@@ -68,7 +69,7 @@ const router = createBrowserRouter([
             element: <Account />,
           },
           {
-            path: 'projects',
+            path: "projects",
             id: "projects",
             loader: projectsLoader,
             element: <ProjectsRoot />,
@@ -78,8 +79,8 @@ const router = createBrowserRouter([
                 element: <Projects />,
           },
               {
-                path: ':projectId',
-                id: 'project-details',
+                path: ":projectId",
+                id: "project-details",
                 loader: projectDetailsLoader,
                 children: [
                   {
@@ -87,7 +88,7 @@ const router = createBrowserRouter([
                     element: <ProjectDetails />,
                   },
                   {
-                    path: 'edit',
+                    path: "edit",
                     element: <EditProject />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
@@ -96,7 +97,7 @@ const router = createBrowserRouter([
                 ],
               },
               {
-                path: 'new-project',
+                path: "new-project",
                 element: <NewProjectPage />,
                 //action: manipulateProjectAction,
                 //loader: checkAuthLoader,
@@ -104,10 +105,10 @@ const router = createBrowserRouter([
             ]
           },
           {
-            path: 'patterns',
+            path: "patterns",
             element: <PatternsRoot />,
             loader: patternsLoader,
-            id: 'patterns',
+            id: "patterns",
             children: [
               {
                 index: true,
@@ -115,8 +116,8 @@ const router = createBrowserRouter([
 
               },
               {
-                path: ':patternId',
-                id: 'pattern-details',
+                path: ":patternId",
+                id: "pattern-details",
                 loader: patternDetailsLoader,
                 children: [
                   {
@@ -124,7 +125,7 @@ const router = createBrowserRouter([
                     element: <PatternDetails />,
                   },
                   /*{
-                    path: 'edit',
+                    path: "edit",
                     element: <EditPattern />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
@@ -133,15 +134,15 @@ const router = createBrowserRouter([
                 ],
               },
               {
-                path: 'new-pattern',
+                path: "new-pattern",
                 element: <NewPatternPage />
               }
             ]
           },
           {
-            path: 'counters',
+            path: "counters",
             element: <CountersRoot />,
-            id: 'counters',
+            id: "counters",
             loader: countersLoader,
             children: [
               {
@@ -149,14 +150,14 @@ const router = createBrowserRouter([
                 element: <Counters />,
               },
               {
-                path: 'new-counter',
+                path: "new-counter",
                 element: <NewCounter />,
                 //action: manipulateProjectAction,
                 //loader: checkAuthLoader,
               },
               {
-                path: ':counterId',
-                id: 'counter-details',
+                path: ":counterId",
+                id: "counter-details",
                 loader: counterDetailsLoader,
                 children: [
                   {
@@ -165,7 +166,7 @@ const router = createBrowserRouter([
                     //action: deleteEventAction,
                   },
                   {
-                    path: 'edit',
+                    path: "edit",
                     element: <EditCounter />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
@@ -176,7 +177,7 @@ const router = createBrowserRouter([
             ]
           },
           {
-            path: 'resources',
+            path: "resources",
             id: "resources",
             loader: resourcesLoader,
             element: <ResourcesRoot />,
@@ -186,8 +187,8 @@ const router = createBrowserRouter([
                 element: <Resources />,
               },
               {
-                path: ':resourceId',
-                id: 'resource-details',
+                path: ":resourceId",
+                id: "resource-details",
                 loader: resourceDetailsLoader,
                 children: [
                   {
@@ -195,7 +196,7 @@ const router = createBrowserRouter([
                     element: <ResourceDetails />,
                   },
                   {
-                    path: 'edit',
+                    path: "edit",
                     element: <EditProject />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
@@ -204,7 +205,7 @@ const router = createBrowserRouter([
                 ],
               },
               {
-                path: 'new-resource',
+                path: "new-resource",
                 element: <NewResourcePage />,
                 //action: manipulateProjectAction,
                 //loader: checkAuthLoader,
@@ -212,28 +213,35 @@ const router = createBrowserRouter([
             ]
           },
           {
-            path: 'settings',
-            element: <AccountSettingsPage />,
+            path: "settings",
+            children: [
+              {
+                index: true,
+                element: <AccountSettingsPage />,
+              },
+              {
+                path: "change-password",
+                element: <ChangePasswordPage />,
+              }
+            ]
           },
           {
-            path: 'statistics',
+            path: "statistics",
             id: "statistics",
             //loader: statisticsLoader,
             element: <StatisticsPage />,
-            children: [
-            ]
           },
         ]
       },
       {
-        path: 'report-problem',
+        path: "report-problem",
         element: <ReportProblemPage />
       },
 
     ],
   },
   {
-    path: '*',
+    path: "*",
     element: <PageNotFound />
   },
 ]);

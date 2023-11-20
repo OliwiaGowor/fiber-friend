@@ -49,4 +49,13 @@ public class AuthenticationService : IAuthenticationService
             user,
             token);
     }
+
+    public bool CheckPassword(string password, Guid userId)
+    {
+        var user = _userRepository.GetUserById(userId);
+        if (user is null) throw new Exception("User with given id does not exists");
+
+        var isPasswordCorrect = PasswordHasher.Verify(password, user.HashedPassword);
+        return isPasswordCorrect;
+    }
 }

@@ -1,13 +1,13 @@
 using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Domain.Interfaces.Repository;
 
 public interface IUserRepository
 {
-    void DeleteUser(Guid userId);
-    Guid AddUser(User user);
-    IQueryable<User> GetAllUsers();
     User GetUserById(Guid userId);
     User GetUserByEmail(string email);
+    Guid AddUser(User user);
+    void DeleteUser(Guid userId);
     void UpdateUser(User user);
 }
