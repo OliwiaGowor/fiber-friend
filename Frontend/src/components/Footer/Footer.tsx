@@ -11,7 +11,7 @@ const Footer = () => {
             <div className={classes.main}>
                 <div className={classes.logoAndMedia}>
                     <div className={classes.logo}>
-                        <img className={classes.logoPicture} src={logoPicture} width='45px' height='45px' />
+                        <img className={classes.logoPicture} src={logoPicture} width='45px' height='45px' alt='Logo' />
                         <h1 className={classes.logoText}>Fiber Friend</h1>
                     </div>
                     <div className={classes.mediaIcons}>

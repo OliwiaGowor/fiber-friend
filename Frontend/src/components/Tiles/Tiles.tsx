@@ -29,7 +29,7 @@ function Tiles(props: TilesProps) {
     if (element.photos) {
       return (
         <img
-          src={element?.photos ? element.photos[1]?.url : element?.photos}
+          src={element?.photos[0]?.url}
           alt={element.name}
           height={isMobile ? '180px' : '270px'}
           width={isMobile ? '180px' : '270px'}

@@ -22,7 +22,7 @@ export default function MiniaturesList({ data, link }: any) {
     if (element.photos) {
       return (
         <img
-          src={element.photos ? element.photos[0] : element.photos}
+          src={element?.photos[0]}
           alt={element.name}
           height='250px'
           width='250px'

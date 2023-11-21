@@ -29,7 +29,7 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
     const [count, setCount] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openSetting = Boolean(anchorEl);
-    const nameRef = React.useRef<HTMLInputElement | null>(null);
+    const [counterName, setCounterName] = React.useState<string>("");
     const [openDialog, setOpenDialog] = React.useState(false);
     const manualValue = React.useRef<HTMLInputElement | null>(null);
 
@@ -42,11 +42,11 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
 
     React.useEffect(() => {
         const counter = {
-            name: nameRef.current?.value,
+            name: counterName,
             amount: count,
         };
         getCounter(counter);
-    }, [count, nameRef.current?.value]);
+    }, [count, counterName]);
 
 
     const handleClickOpen = () => {
@@ -80,7 +80,7 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
     return (
         <div className={classes.container}>
             <div className={classes.counter}>
-                <div className={classes.settings}>
+                {/*<div className={classes.settings}>
                     <IconButton
                         aria-label="More Options"
                         aria-controls={openSetting ? 'long-menu' : undefined}
@@ -131,12 +131,13 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
                             <Button onClick={() => { handleSetCounter(Number(manualValue.current?.value)) }}>Enter</Button>
                         </DialogActions>
                     </Dialog>
-                </div>
+                    </div>*/}
                 <Input
                     className={classes.counterName}
                     id="counter-name"
                     placeholder={'Untitled counter'}
-                    inputRef={nameRef}
+                    value={counterName}
+                    onChange={(e) => { setCounterName(e.target.value) }}
                     endAdornment={
                         <InputAdornment position="end">
                             <EditIcon aria-label="Edit Counter Name"></EditIcon>
@@ -148,6 +149,7 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
                     id="amount"
                     type="text"
                     value={count}
+                    onChange={(e) => { setCount(Number(e.target.value)) }}
                     aria-label="Counter Value"
                 />
                 <div className={classes.buttons}>

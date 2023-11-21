@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
 import { json } from 'react-router';
 import { getAuthToken, tokenLoader } from '../../utils/auth';
-//TODO: save counter button logic
+
 //TODO: smaller tiles on mobile and horizontal scroll
 //FIXME: fix dialog on mobile
 
@@ -72,7 +72,6 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
         }
         setEditingCounters(false);
     }
-
 
     return (
         <div className={classes.container} >

@@ -35,7 +35,7 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
             {editable && <div className={classes.settings}>
                 <IconButton
                     aria-label="more"
-                    id="long-button"
+                    id="edit-button"
                     aria-controls={open ? 'long-menu' : undefined}
                     aria-expanded={open ? 'true' : undefined}
                     aria-haspopup="true"

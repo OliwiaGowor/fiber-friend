@@ -52,21 +52,21 @@
       .counter {
         height: 240px;
       }
-  
+
       .addButton {
         @include Tiles.tile($minWidth: 150px, $height: 240px);
-  
+
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: none;
-  
+
         .name {
           margin: 0;
           font-size: 18px;
           color: var(--text-color-dark);
         }
-  
+
         .addIcon {
           margin: 25px;
           color: var(--main-color-dark);

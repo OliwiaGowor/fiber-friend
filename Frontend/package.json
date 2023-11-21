@@ -69,5 +69,18 @@
   },
   "devDependencies": {
     "gh-pages": "^5.0.0"
-  }
+  },
+
+  "jest": {
+    "transformIgnorePatterns": [
+      "'/node_modules/(?![swiper/react/swiper-react.js])'",
+      "'/node_modules/(?![swiper/react/swiper.js])'",
+      "'node_modules/(?!swiper)/'"
+    ],
+    "moduleNameMapper": {
+      "^swiper/css": "<rootDir>/node_modules/swiper/swiper.css",
+      "^swiper/css/navigation": "<rootDir>/node_modules/swiper/modules/navigation.css"
+    }
+  },
+  "type": "commonjs"
 }
