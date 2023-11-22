@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { defer, json, useRouteLoaderData } from "react-router-dom";
-import classes from './ChangePasswordPage.module.scss'
+import classes from './DeleteAccountPage.module.scss'
 import { tokenLoader } from "../../utils/auth";
 import { Button, TextField } from "@mui/material";
 import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
@@ -12,6 +12,24 @@ const ChangePasswordPage = () => {
 
   const checkRepPassword = () => {
     return newPassword === repPassword;
+  };
+
+  const handleDeleteAccount = () => {
+    checkCurrentPassword().then((data) => {
+      if (checkRepPassword()) {
+        const response = fetch(`${process.env.REACT_APP_API_URL}User${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+          method: "DELETE",
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+          },
+        });
+      }
+
+    }).catch((err) => {
+      console.log(err);
+    });
+
   };
 
   const checkCurrentPassword = async () => {
@@ -40,7 +58,7 @@ const ChangePasswordPage = () => {
 
   return (
     <div className={classes.container}>
-      <h1 className={classes.header}>Change password</h1>
+      <h1 className={classes.header}>Delete account</h1>
       <div className={classes.sectionContainer}>
         <TextField
           className={classes.formInput}
@@ -49,16 +67,19 @@ const ChangePasswordPage = () => {
           value={currPassword}
           onChange={(e) => setCurrPassword(e.target.value)}
         />
-        <PasswordValidation getPassword={setNewPassword}
-          showError={false} />
         <TextField
           className={classes.formInput}
           type="text"
-          label="Repeat new password"
+          label="Repeat password"
           value={repPassword}
           onChange={(e) => setRepPassword(e.target.value)}
         />
-        <Button className={classes.submitBtn}>Change password</Button>
+        <Button 
+        className={classes.submitBtn}
+        onClick={handleDeleteAccount}
+        >
+          Delete account
+          </Button>
       </div>
     </div>
   );

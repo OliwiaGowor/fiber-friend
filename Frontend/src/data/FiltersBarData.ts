@@ -11,9 +11,26 @@ export const projectsFilters = [
                 value: "completed"
             }
         ]
-    }, 
+    },
     {
         name: "Type",
+        options: [
+            {
+                name: "Knit",
+                value: "knit"
+            },
+            {
+                name: "Crochet",
+                value: "crochet"
+            },
+            {
+                name: "Other",
+                value: "other"
+            },
+        ]
+    },
+    {
+        name: "Category",
         options: [
             {
                 name: "Clothes",
@@ -32,7 +49,7 @@ export const projectsFilters = [
                 value: "other"
             }
         ]
-    }
+    },
 ]
 
 export const patternsFilters = [
@@ -48,7 +65,7 @@ export const patternsFilters = [
                 value: "completed"
             }
         ]
-    }, 
+    },
     {
         name: "Type",
         options: [
@@ -76,7 +93,7 @@ export const patternsFilters = [
     }
 ]
 
-export const resourcesFilters = [ 
+export const resourcesFilters = [
     {
         name: "Type",
         options: [

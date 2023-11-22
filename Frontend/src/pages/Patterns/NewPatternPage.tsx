@@ -8,29 +8,30 @@ import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
 import { json, useNavigate } from "react-router-dom";
 import { FileInput } from '../../components/FileInput/FileInput';
 import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
-import { DatePicker } from "@mui/x-date-pickers";
 import TextEditor from "../../components/TextEditor/TextEditor";
 import { tokenLoader } from "../../utils/auth";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import { PatternDto } from "../../DTOs/PatternDto";
+import { NeedleworkType } from "../../DTOs/Enums";
 
 export default function NewPatternPage() {
     const navigate = useNavigate();
-    const [type, setType] = React.useState('crochet');
+    const [type, setType] = React.useState<NeedleworkType>(NeedleworkType.crochet);
     const [yarnsInfo, setYarnsInfo] = React.useState<any>([]);
     const nameRef = React.useRef<HTMLInputElement | null>(null);
-    const [category, setCategory] = React.useState<string | null>();
+    const [category, setCategory] = React.useState<string>("");
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
     const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
-    const [dateError, setDateError] = React.useState<any>(null);
-    const [startDate, setStartDate] = React.useState<any>();
-    const [endDate, setEndDate] = React.useState<any>();
+    const [isAuthorial, setIsAuthorial] = React.useState<boolean>(false);
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(null);
     const [selectedFiles, setSelectedFiles] = React.useState<any | null>(null);
     const [notes, setNotes] = React.useState<any>([]);
 
-    const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
+    const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
             setType(newType);
         }
@@ -42,14 +43,16 @@ export default function NewPatternPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (proceedSubmit) {
-            const patternData = {
-                name: nameRef.current?.value,
+            const patternData: PatternDto = {
+                name: nameRef.current?.value ?? "",
                 type: type,
                 category: category,
+                isAuthorial: isAuthorial,
                 yarns: yarnsInfo,
-                photos: selectedImages,
-                patterns: selectedFiles,
+                //photos: selectedImages,
+                //patterns: selectedFiles,
                 notes: notes,
+                userId: localStorage.getItem('userId') ?? "",
             };
             let url = `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
@@ -90,10 +93,6 @@ export default function NewPatternPage() {
             setShowCategoriesError(true);
             setProceedSubmit(false);
         }
-        if (startDate === undefined) {
-            setRequiredError(true);
-            setProceedSubmit(false);
-        }
     };
 
     return (
@@ -131,7 +130,7 @@ export default function NewPatternPage() {
                                 id="types"
                                 className={classes.typeToggle}
                             >
-                                <ToggleButton value="crochet" className={classes.toggleButton} aria-label="crochet" disableRipple
+                                <ToggleButton value={NeedleworkType.crochet} className={classes.toggleButton} aria-label="crochet" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -140,7 +139,7 @@ export default function NewPatternPage() {
                                     }}>
                                     Crochet
                                 </ToggleButton>
-                                <ToggleButton value="knitting" className={classes.toggleButton} aria-label="knitting" disableRipple
+                                <ToggleButton value={NeedleworkType.knitting} className={classes.toggleButton} aria-label="knitting" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -149,7 +148,7 @@ export default function NewPatternPage() {
                                     }}>
                                     Knitting
                                 </ToggleButton>
-                                <ToggleButton value="other" className={classes.toggleButton} aria-label="other" disableRipple
+                                <ToggleButton value={NeedleworkType.other} className={classes.toggleButton} aria-label="other" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -164,28 +163,15 @@ export default function NewPatternPage() {
                             <CategoriesMenu showError={showCategoriesError} choseCategory={(categ: string) => { setCategory(categ) }} />
                         </div>
                         <div className={classes.datePickers}>
-                            <DatePicker
-                                className={classes.dateInput}
-                                label="Start date *"
-                                onChange={(newValue: any) => { setStartDate(newValue) }}
-                                onError={(newError) => {
-                                    setDateError(newError);
-                                    setRequiredError(false)
-                                }}
-                                slotProps={{
-                                    textField: {
-                                        helperText: dateErrorMessage,
-                                    },
-                                }}
-                                format="DD-MM-YYYY"
-                            />
-                            <DatePicker
-                                className={classes.dateInput}
-                                label="End date"
-                                format="DD-MM-YYYY"
-                                minDate={startDate}
-                                onChange={(newValue: any) => { setEndDate(newValue) }}
-                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch 
+                                    className={classes.authorialSwitch} 
+                                    checked={isAuthorial}
+                                    onChange={() => { setIsAuthorial(!isAuthorial) }}
+                                    />
+                                }
+                                label="This is my pattern!" />
                         </div>
                     </div>
 

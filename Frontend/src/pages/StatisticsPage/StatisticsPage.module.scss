@@ -70,7 +70,7 @@
         border-radius: 10px;
       }
 
-      .typeSelect {
+      .typeSelect, .timePeriodSelect {
         @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
 
         margin-bottom: 40px;

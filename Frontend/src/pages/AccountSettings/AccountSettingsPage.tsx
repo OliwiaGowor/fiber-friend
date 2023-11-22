@@ -13,17 +13,6 @@ const AccountSettingsPage = () => {
   const [username, setUsername] = useState(userData?.username ?? "");
   const [email, setEmail] = useState(userData?.email ?? "");
 
-  const handleDeleteAccount = () => {
-    //first check password
-    const response = fetch(`${process.env.REACT_APP_API_URL}User${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: "Bearer " + tokenLoader(),
-      },
-    });
-  };
-
   return (
     <div className={classes.container}>
       <h1 className={classes.header}>Account settings</h1>
@@ -45,6 +34,10 @@ const AccountSettingsPage = () => {
         />
       </div>
       <div className={classes.sectionContainer}>
+        <h2 className={classes.sectionHeader}>Language</h2>
+        
+      </div>
+      <div className={classes.sectionContainer}>
         <h2 className={classes.sectionHeader}>Access</h2>
         <button
           className={classes.settingsButton}
@@ -56,7 +49,7 @@ const AccountSettingsPage = () => {
         </button>
         <button
           className={classes.settingsButton}
-          onClick={handleDeleteAccount}
+          onClick={() => navigate("delete-account")}
         >
           <PersonRemoveIcon className={classes.icon} />
           Delete account

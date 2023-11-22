@@ -5,6 +5,8 @@ import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CircularProgress from "@mui/material/CircularProgress";
 import CalculateIcon from '@mui/icons-material/Calculate';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import InsightsIcon from '@mui/icons-material/Insights';
 import { tokenLoader } from "../../utils/auth";
 
 const tiles = [
@@ -15,14 +17,19 @@ const tiles = [
   },
   {
     title: "Resources",
-    icon: <CalculateIcon />,
+    icon: <ShoppingBasketIcon />,
     link: 'resources',
+  },
+  {
+    title: "Statistics",
+    icon: <InsightsIcon />,
+    link: 'statistics',
   },
 ];
 
 export default function Account() {
-  const { projects, patterns, orders }: any = useRouteLoaderData('account');
-  const pages = ['account', 'projects', 'patterns', 'orders'];
+  const { projects, patterns }: any = useRouteLoaderData('account');
+  const pages = ['account', 'projects', 'patterns'];
 
   return (
     <div className={classes.container}>
@@ -88,20 +95,14 @@ async function loadPatterns() {
   return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
 }
 
-async function loadOrders() {
-  return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
-}
-
 export async function loader() {
-  const [projects, patterns, orders] = await Promise.all([
+  const [projects, patterns] = await Promise.all([
     loadProjects(),
     loadPatterns(),
-    loadOrders()
   ]);
 
   return defer({
     projects,
     patterns,
-    orders,
   });
 }

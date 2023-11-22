@@ -33,17 +33,18 @@ import ReportProblemPage from "./pages/ReportProblemPage/ReportProblemPage";
 import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ChangePasswordPage from "./pages/AccountSettings/ChangePasswordPage";
+import DeleteAccountPage from "./pages/AccountSettings/DeleteAccountPage";
 
 const router = createBrowserRouter([
   {
     path: "/fiber-friend",
     element: <Root />,
-    id: "root",
+    id: "root",        
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
         element: <HomePage />,    
-        errorElement: <ErrorPage />,
       },
       {
         path: "login",
@@ -222,7 +223,11 @@ const router = createBrowserRouter([
               {
                 path: "change-password",
                 element: <ChangePasswordPage />,
-              }
+              },
+              {
+                path: "delete-account",
+                element: <DeleteAccountPage />,
+              },
             ]
           },
           {

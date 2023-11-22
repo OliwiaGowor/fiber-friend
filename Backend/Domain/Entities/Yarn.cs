@@ -9,5 +9,4 @@ public class Yarn
     public string Stitch { get; set; }
     public string ToolSize { get; set; }
     public Guid ParentId { get; set; }
-    public Project Parent { get; set; }
 }

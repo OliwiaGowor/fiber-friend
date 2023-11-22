@@ -13,6 +13,9 @@ import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CounterGroup from "../../components/CounterGroup/CounterGroup";
 import { tokenLoader } from "../../utils/auth";
+import ReactPDF, { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
+import ReactDOM from "react-dom";
 //TODO: mobile design
 //TODO: maybe editing counters in dialog?
 //TODO: for generating pdfs ask if attach added pattern files to it
@@ -29,7 +32,7 @@ export default function PatternDetails() {
             const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${pattern.connectedProject}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + token,
+                    //Authorization: "Bearer " + token,
                 },
             });
             if (!response.ok) {
@@ -88,6 +91,14 @@ export default function PatternDetails() {
         }
     }
 
+    React.useEffect(() => {
+        if (pattern) {
+            // store your data in a session or local storage
+            // Why don't we use "state" and pass it down as props?
+            sessionStorage.setItem('patternData', JSON.stringify(pattern));
+        };
+    }, [pattern]);
+
     return (
         <div className={classes.container}>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
@@ -118,6 +129,14 @@ export default function PatternDetails() {
                                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                             >
+                                <MenuItem onClick={() => {
+                                    handleClose();
+                                }}
+                                >
+                                    <PDFDownloadLink document={<PatternPdf />} fileName={`${pattern.name}.pdf`}>
+                                        Generate PDF
+                                    </PDFDownloadLink>
+                                </MenuItem>
                                 <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/projects/' + pattern.id + '/edit'); }}>
                                     Edit
                                 </MenuItem>
@@ -173,7 +192,7 @@ export default function PatternDetails() {
                                     </div>}
                                 <FilesDisplay files={pattern.patterns} />
                                 <h3 className={classes.attributeName}>Counters</h3>
-                                <div className={classes.counters}><CounterGroup parentId={pattern.id}/></div>
+                                <div className={classes.counters}><CounterGroup parentId={pattern.id} /></div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                             </div>
@@ -181,15 +200,17 @@ export default function PatternDetails() {
                     </div>
                 </Await>
             </Suspense>
+            <PDFViewer>
+                <PatternPdf />
+            </PDFViewer>
         </div>
     );
 }
-
 async function loadPatternDetails(id: string) {
     const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
         headers: {
             'Content-Type': 'application/json',
-            Authorization: "Bearer " + tokenLoader(),
+            //Authorization: "Bearer " + tokenLoader(),
         },
     });
 

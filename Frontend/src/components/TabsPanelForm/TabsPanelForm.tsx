@@ -10,6 +10,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { tokenLoader } from '../../utils/auth';
 import classes from './TabsPanelForm.module.scss';
+import { YarnDto } from '../../DTOs/YarnDto';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -56,7 +57,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
   const amountRef = React.useRef<HTMLInputElement | null>(null);
-  const [yarns, setYarns] = React.useState<any>(defaultValue ?? []);
+  const [yarns, setYarns] = React.useState<YarnDto[]>(defaultValue ?? []);
   const [yarnName, setYarnName] = React.useState<string | null>('');
   const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
 
@@ -100,15 +101,15 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   }, []);
 
   const handleData = (yarnName: string) => {
-    const tmpYarnsInfo = yarns?.map((yarn: any) => {
+    const tmpYarnsInfo: YarnDto[] = yarns?.map((yarn: YarnDto) => {
       if (yarn.name === yarnName) {
         return ({
-          id: yarn.id,
-          yarn: yarn.name,
-          toolSize: toolSizeRef.current?.value,
-          gauge: gaugeRef.current?.value,
-          stitch: stitchRef.current?.value,
-          quantity: amountRef.current?.value,
+          id: yarn.id ?? "",
+          name: yarn.name ?? "",
+          toolSize: toolSizeRef.current?.value ?? "",
+          gauge: gaugeRef.current?.value ?? "",
+          stitch: stitchRef.current?.value ?? "",
+          quantity: Number(amountRef.current?.value) ?? "",
         });
       } else {
         return (yarn);
@@ -120,12 +121,12 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
 
   const handleAddTab = () => {
     setYarns([...yarns, {
-      id: yarns.length,
-      name: yarnName,
+      id: String(yarns.length),
+      name: yarnName ?? "",
       toolSize: '',
       gauge: '',
       stitch: '',
-      amount: '',
+      quantity: 1,
     }])
     setYarnName('');
     setValue(yarns.length);
@@ -136,7 +137,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
       y.id !== yarn.id);
 
     for (let i = 0; i < tmpArray.length; i++) {
-      tmpArray[i].id = i;
+      tmpArray[i].id = String(i);
     }
     setYarns(tmpArray);
   };
@@ -150,7 +151,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
           size="medium"
           className={classes.formInput}
           options={fetchedYarns?.map((option: any) => option.name)}
-          renderInput={(params) => <TextField {...params} label="Add new yarn" />}
+          renderInput={(params) => <TextField variant='outlined' label="Add new yarn" />}
           onChange={(event: React.SyntheticEvent, newValue: string | null) => { setYarnName(newValue) }}
           value={yarnName}
         />

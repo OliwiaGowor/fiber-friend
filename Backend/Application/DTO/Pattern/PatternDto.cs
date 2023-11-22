@@ -10,9 +10,7 @@ namespace Application.DTO.Pattern
         public Guid Id { get; set; }
         public string Name { get; set; } = "";
         public NeedleworkType Type { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public bool Finished { get; set; } = false;
+        public bool IsAuthorial { get; set; }
         public string Category { get; set; } = "";
         public string Notes { get; set; }
         //public ??? List<Photo> Photos { get; set; }
@@ -25,9 +23,7 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))
-                .ForMember(d => d.StartDate, opt => opt.MapFrom(s => s.StartDate))
-                .ForMember(d => d.EndDate, opt => opt.MapFrom(s => s.EndDate))
-                .ForMember(d => d.Finished, opt => opt.MapFrom(s => s.Finished))
+                .ForMember(d => d.IsAuthorial, opt => opt.MapFrom(s => s.IsAuthorial))
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
                 .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
                 .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns));

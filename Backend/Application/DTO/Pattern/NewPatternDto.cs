@@ -11,14 +11,13 @@ namespace Application.DTO.Pattern
         public Guid Id { get; set; }
         public string Name { get; set; } = "Unnamed Pattern";
         public NeedleworkType Type { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public bool Finished { get; set; } = false;
+        public bool IsAuthorial { get; set; }
         public string Category { get; set; } = "";
         public string Notes { get; set; } = "";
         //public ??? List<Photo> Photos { get; set; }
         //public ??? List<File> Files { get; set; }
         public List<NewYarnDto>? Yarns { get; set; }
+        public Guid UserId { get; set; }
 
         public static void Mapping(Profile profile)
         {
@@ -32,9 +31,9 @@ namespace Application.DTO.Pattern
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
             RuleFor(x => x.Type).NotEmpty();
-            RuleFor(x => x.StartDate).NotEmpty();
-            RuleFor(x => x.Finished).NotEmpty();
+            RuleFor(x => x.IsAuthorial).NotEmpty();
             RuleFor(x => x.Category).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }
