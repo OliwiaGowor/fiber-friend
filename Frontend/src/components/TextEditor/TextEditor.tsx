@@ -35,7 +35,7 @@ const initialValue = [
 ];
 
 interface TextEditorProps {
-  defaultValue? : any;
+  defaultValue?: any;
   getValue: any
 }
 
@@ -54,8 +54,6 @@ export default function TextEditor(props: TextEditorProps) {
         return "italic";
       case "mod+u":
         return "underline";
-      case "mod+`":
-        return "code";
       default:
         return '';
     }
@@ -63,26 +61,25 @@ export default function TextEditor(props: TextEditorProps) {
 
   return (
     <div className={classes.textEditor}>
-      <Slate 
-      editor={editor} 
-      value={value} 
-      onChange={(value: any) => {
-        setValue(value); getValue(JSON.stringify(value));
+      <Slate
+        editor={editor}
+        value={value}
+        onChange={(value: any) => {
+          setValue(value); getValue(JSON.stringify(value));
         }}
-        >
+      >
         <div className={classes.toolbar}>
-          <MarkButton format='bold' icon={<FormatBoldIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <MarkButton format='italic' icon={<FormatItalicIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <MarkButton format='underline' icon={<FormatUnderlinedIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <MarkButton format='code' icon={<CodeIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <BlockButton format="heading-one" icon={<LooksOneIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <BlockButton format="heading-two" icon={<LooksTwoIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <BlockButton format="block-quote" icon={<FormatQuoteIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <BlockButton format="numbered-list" icon={<FormatListNumberedIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
-          <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon sx={{fontSize: 27}} />} className={classes.formatButton} />
+          <MarkButton format='bold' icon={<FormatBoldIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <MarkButton format='italic' icon={<FormatItalicIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <MarkButton format='underline' icon={<FormatUnderlinedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <BlockButton format="heading-one" icon={<LooksOneIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <BlockButton format="heading-two" icon={<LooksTwoIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <BlockButton format="block-quote" icon={<FormatQuoteIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <BlockButton format="numbered-list" icon={<FormatListNumberedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
         </div>
         <Editable
-        className={classes.textField}
+          className={classes.textField}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           onKeyDown={event => {
@@ -175,10 +172,6 @@ const Leaf = ({ attributes, children, leaf }: any) => {
     children = <strong>{children}</strong>;
   }
 
-  if (leaf.code) {
-    children = <code>{children}</code>;
-  }
-
   if (leaf.italic) {
     children = <em>{children}</em>;
   }
@@ -215,7 +208,7 @@ const BlockButton = ({ format, icon, className }: any) => {
         event.preventDefault();
         toggleBlock(editor, format);
       }}
-      style={{ color: isBlockActive(editor, format) ? 'black' : 'grey'}}
+      style={{ color: isBlockActive(editor, format) ? 'black' : 'grey' }}
     >
       {icon}
     </div>

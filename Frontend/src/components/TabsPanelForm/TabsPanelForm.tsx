@@ -10,7 +10,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { tokenLoader } from '../../utils/auth';
 import classes from './TabsPanelForm.module.scss';
-import { YarnDto } from '../../DTOs/YarnDto';
+import { Yarn } from '../../DTOs/Yarn';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -57,7 +57,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
   const amountRef = React.useRef<HTMLInputElement | null>(null);
-  const [yarns, setYarns] = React.useState<YarnDto[]>(defaultValue ?? []);
+  const [yarns, setYarns] = React.useState<Yarn[]>(defaultValue ?? []);
   const [yarnName, setYarnName] = React.useState<string | null>('');
   const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
 
@@ -101,7 +101,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   }, []);
 
   const handleData = (yarnName: string) => {
-    const tmpYarnsInfo: YarnDto[] = yarns?.map((yarn: YarnDto) => {
+    const tmpYarnsInfo: Yarn[] = yarns?.map((yarn: Yarn) => {
       if (yarn.name === yarnName) {
         return ({
           id: yarn.id ?? "",

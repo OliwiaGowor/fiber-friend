@@ -85,8 +85,8 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                         photo !== null && <SwiperSlide key={index} className={classes.photoSlide}>
                             <img
                                 className={classes.photo}
-                                src={`${photo?.url}`}
-                                srcSet={`${photo?.url}`}
+                                src={`${photo?.src}`}
+                                srcSet={`${photo?.src}`}
                                 alt={`Image ${index + 1}`}
                                 loading="eager"
                                 width={displayWidth(isZoomed)}

@@ -1,4 +1,4 @@
-export interface YarnDto {
+export interface Yarn {
     id?: string,
     name: string,
     quantity: number,

@@ -13,7 +13,9 @@ namespace Domain.Entities
         //public ??? List<Photo> Photos { get; set; }
         //public ??? List<File> Files { get; set; }
         public Guid UserId { get; set; }
+        public User User { get; set; }
         public List<Yarn> Yarns { get; set; }
-        public List<Tool>? Tools { get; set; }
+        public List<Tool> Tools { get; set; }
+        public List<OtherSupply>? OtherSupplies { get; set; }
     }
 }

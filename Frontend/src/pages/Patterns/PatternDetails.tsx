@@ -200,9 +200,6 @@ export default function PatternDetails() {
                     </div>
                 </Await>
             </Suspense>
-            <PDFViewer>
-                <PatternPdf />
-            </PDFViewer>
         </div>
     );
 }

@@ -12,7 +12,7 @@ import TextEditor from "../../components/TextEditor/TextEditor";
 import { tokenLoader } from "../../utils/auth";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { PatternDto } from "../../DTOs/PatternDto";
+import { Pattern } from "../../DTOs/Pattern";
 import { NeedleworkType } from "../../DTOs/Enums";
 
 export default function NewPatternPage() {
@@ -43,7 +43,7 @@ export default function NewPatternPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (proceedSubmit) {
-            const patternData: PatternDto = {
+            const patternData: Pattern = {
                 name: nameRef.current?.value ?? "",
                 type: type,
                 category: category,
