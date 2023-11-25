@@ -34,13 +34,14 @@ import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ChangePasswordPage from "./pages/AccountSettings/ChangePasswordPage";
 import DeleteAccountPage from "./pages/AccountSettings/DeleteAccountPage";
+import EditPattern from "./pages/Patterns/EditPattern";
 
 const router = createBrowserRouter([
   {
     path: "/fiber-friend",
     element: <Root />,
     id: "root",        
-    errorElement: <ErrorPage />,
+    //errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -125,12 +126,12 @@ const router = createBrowserRouter([
                     index: true,
                     element: <PatternDetails />,
                   },
-                  /*{
+                  {
                     path: "edit",
                     element: <EditPattern />,
                     //action: manipulateEventAction,
                     //loader: checkAuthLoader,
-                  },*/
+                  },
 
                 ],
               },

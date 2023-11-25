@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, AutocompleteRenderInputParams, InputLabelProps, TextField } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { tokenLoader } from '../../utils/auth';
 import classes from './TabsPanelForm.module.scss';
@@ -60,7 +60,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const [yarns, setYarns] = React.useState<Yarn[]>(defaultValue ?? []);
   const [yarnName, setYarnName] = React.useState<string | null>('');
   const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
-
+console.log(fetchedYarns);
   const fetchAvailableYarns = useCallback(async () => {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -145,16 +145,32 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   return (
     <div className={classes.container}>
       <div className={classes.addYarns}>
-        <Autocomplete
-          id="yarn-input"
-          freeSolo
-          size="medium"
-          className={classes.formInput}
-          options={fetchedYarns?.map((option: any) => option.name)}
-          renderInput={(params) => <TextField variant='outlined' label="Add new yarn" />}
-          onChange={(event: React.SyntheticEvent, newValue: string | null) => { setYarnName(newValue) }}
-          value={yarnName}
-        />
+        {fetchedYarns.length > 0 &&
+          <Autocomplete
+            id="yarn-input"
+            freeSolo
+            size="medium"
+            className={classes.formInput}
+            options={fetchedYarns?.map((option: any) => option.name)}
+            renderInput={(params) => <TextField {...params} variant='outlined' label="Add new yarn" InputLabelProps= {{ children: '' } as Partial<InputLabelProps>} />}
+            onChange={(event: React.SyntheticEvent, newValue: string | null) => { setYarnName(newValue) }}
+            value={yarnName}
+          />}
+        {fetchedYarns.length === 0 &&
+          <TextField
+            id="yarn-input"
+            inputProps={{
+              'aria-label': 'yarn',
+            }}
+            label="Add new yarn"
+            size="medium"
+            className={classes.formInput}
+            name='name'
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setYarnName(event.target.value) }}
+            value={yarnName}
+            error={showError}
+            helperText={showError ? 'You must add at least one yarn!' : ''}
+          />}
         <Button
           className={classes.addButton}
           onClick={handleAddTab}

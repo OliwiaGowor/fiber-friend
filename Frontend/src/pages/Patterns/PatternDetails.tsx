@@ -15,41 +15,16 @@ import CounterGroup from "../../components/CounterGroup/CounterGroup";
 import { tokenLoader } from "../../utils/auth";
 import ReactPDF, { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
-import ReactDOM from "react-dom";
+import { Pattern } from "../../DTOs/Pattern";
 //TODO: mobile design
-//TODO: maybe editing counters in dialog?
+
 //TODO: for generating pdfs ask if attach added pattern files to it
 export default function PatternDetails() {
     const token = tokenLoader();
     const navigate = useNavigate();
-    const { pattern } = useRouteLoaderData('pattern-details') as { pattern: any };
+    const { pattern } = useRouteLoaderData('pattern-details') as { pattern: Pattern };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const [selectedProject, setSelectedProject] = React.useState<any | null>(null);
-
-    const fetchSelectedProject = React.useCallback(async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${pattern.connectedProject}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    //Authorization: "Bearer " + token,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
-
-            const data = await response.json();
-            setSelectedProject(data);
-
-        } catch (error) {
-            //setError("Something went wrong, try again.");
-        }
-    }, []);
-
-    React.useEffect(() => {
-        fetchSelectedProject();
-    }, []);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -137,7 +112,11 @@ export default function PatternDetails() {
                                         Generate PDF
                                     </PDFDownloadLink>
                                 </MenuItem>
-                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/projects/' + pattern.id + '/edit'); }}>
+                                <MenuItem onClick={() => {
+                                    handleClose();
+                                    return navigate('/fiber-friend/account/patterns/' + pattern.id + '/edit');
+                                }}
+                                >
                                     Edit
                                 </MenuItem>
                                 <MenuItem onClick={() => { handleClose(); handleDelete(); }}>
@@ -151,23 +130,17 @@ export default function PatternDetails() {
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
-                                        {pattern.type ? pattern.type : <br></br>}
-
+                                        {pattern.type ?? <br></br>}
                                         <div className={classes.attributeName}>Category: </div>
-                                        {pattern.category ? pattern.category : <br></br>}
-
+                                        {pattern.category ?? <br></br>}
                                         <div className={classes.attributeName}>Start date: </div>
-                                        {pattern.startDate ? pattern.startDate : <br></br>}
-
-                                        <div className={classes.attributeName}>End date: </div>
-                                        {pattern.endDate ? pattern.endDate : <br></br>}
+                                        {pattern.isAuthorial ?? <br></br>}
                                     </div>
                                 </div>
                                 <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                                     <h2 className={classes.sectionHeader}>Yarns</h2>
                                     <TabsPanelDisplay yarns={pattern.yarns ? pattern.yarns : null} />
                                 </div>
-
                             </div>
                             <div className={classes.rightElements}>
                                 <div className={classes.sectionContainer}>
@@ -182,17 +155,9 @@ export default function PatternDetails() {
                             <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Files and notes</h2>
                                 <h3 className={classes.attributeName}>Files</h3>
-                                {selectedProject &&
-                                    <div>
-                                        <Link to={'/fiber-friend/account/patterns/' + pattern.connectedProject}>
-                                            <Button variant="contained">
-                                                {selectedProject.name}
-                                            </Button>
-                                        </Link>
-                                    </div>}
-                                <FilesDisplay files={pattern.patterns} />
+                                <FilesDisplay files={pattern.files} />
                                 <h3 className={classes.attributeName}>Counters</h3>
-                                <div className={classes.counters}><CounterGroup parentId={pattern.id} /></div>
+                                <div className={classes.counters}><CounterGroup parentId={pattern.id ?? ''} /></div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                             </div>

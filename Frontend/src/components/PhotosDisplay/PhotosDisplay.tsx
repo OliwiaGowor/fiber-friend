@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import classes from './PhotosDisplay.module.scss';
+import FullScreenDisplay from '../FullScreenDisplay/FullScreenDisplay';
 
 //TODO: Moblie design
 //TODO: add on fullscreen to either show original size or fit to screen
@@ -30,35 +31,19 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
         return (percent * w) / 100;
     }
 
-    const displayWidth = (isZoomed: boolean) => {
+    const displayWidth = () => {
         if (isMobile) {
-            if (isZoomed) {
-                return (windowWidth.current).toString() + "px";
-            } else {
-                return (windowWidth.current - vw(12)).toString() + "px";
-            }
+            return (windowWidth.current - vw(12)).toString() + "px";
         } else {
-            if (isZoomed) {
-                return "749px";
-            } else {
-                return "449px";
-            }
+            return "449px";
         }
     }
 
-    const displayHeight = (isZoomed: boolean) => {
+    const displayHeight = () => {
         if (isMobile) {
-            if (isZoomed) {
-                return (windowHeight.current).toString() + "px";
-            } else {
-                return (windowHeight.current / 2).toString() + "px";
-            }
+            return (windowHeight.current / 2).toString() + "px";
         } else {
-            if (isZoomed) {
-                return "749px";
-            } else {
-                return "449px";
-            }
+            return "449px";
         }
     }
 
@@ -89,8 +74,8 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                                 srcSet={`${photo?.src}`}
                                 alt={`Image ${index + 1}`}
                                 loading="eager"
-                                width={displayWidth(isZoomed)}
-                                height={displayHeight(isZoomed)}
+                                width={displayWidth()}
+                                height={displayHeight()}
                             />
                         </SwiperSlide>
                     ))}
@@ -99,7 +84,7 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
         } else {
             return (
                 <SwiperSlide className={classes.addedPhoto}>
-                    <InsertPhotoIcon sx={{ fontSize: displayWidth(isZoomed), color: 'grey', width: '100%', height: '100%' }} />
+                    <InsertPhotoIcon sx={{ fontSize: displayWidth(), color: 'grey', width: '100%', height: '100%' }} />
                 </SwiperSlide>
             );
         }
@@ -137,7 +122,13 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                     navigation={true}
                     rewind={true}
                 >
-                    {handlePhotoRender(data, true)}
+                    {data?.photos && <div>
+                        {data?.photos?.map((photo: any, index: number) => (
+                            photo !== null && <SwiperSlide key={index} className={classes.photoSlide}>
+                                <FullScreenDisplay file={photo} />
+                            </SwiperSlide>
+                        ))}
+                    </div>}
                 </Swiper>
             </Modal>
         </div>

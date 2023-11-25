@@ -1,6 +1,6 @@
 import { NeedleworkType } from "./Enums"
 import { Notes } from "./Notes";
-import { Photo } from "./Photo";
+import { File } from "./File";
 import { Yarn } from "./Yarn"
 
 export interface Pattern {
@@ -11,8 +11,8 @@ export interface Pattern {
     isAuthorial: boolean;
     category: string;
     notes: Notes[];
-    photos?: Photo[];
-    //Files: File[];
+    photos?: File[];
+    files?: File[];
     userId: string;
     yarns: Yarn[];
     tools?: Tool[];

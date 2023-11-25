@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import classes from './FullScreenDisplay.module.scss';
+import { File } from '../../DTOs/File';
 
 interface FullScreenDisplayProps {
-  src: string;
-  alt: string;
-  type: string;
-  orgWidth: number;
-  orgHeight: number;
+  file: File; //FIXME change to File
 }
 
-const FullScreenDisplay = ({ src, alt, type, orgHeight, orgWidth }: FullScreenDisplayProps) => {
+const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
   const [displaySize, setDisplaySize] = useState<{ width: number; height: number }>({
-    width: orgWidth,
-    height: orgHeight,
+    width: file.width,
+    height: file.height,
   });
 
   useEffect(() => {
@@ -20,9 +17,9 @@ const FullScreenDisplay = ({ src, alt, type, orgHeight, orgWidth }: FullScreenDi
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
 
-      const aspectRatio = orgWidth / orgHeight;
+      const aspectRatio = file.width / file.height;
       let newWidth = screenWidth;
-      let newHeight = screenWidth / aspectRatio;
+      let newHeight = screenWidth * aspectRatio;
 
       if (newHeight > screenHeight) {
         newHeight = screenHeight;
@@ -41,14 +38,14 @@ const FullScreenDisplay = ({ src, alt, type, orgHeight, orgWidth }: FullScreenDi
     return () => {
       window.removeEventListener('resize', updateSize);
     };
-  }, [src]);
+  }, [file]);
 
   const displayDifferentFiles = () => {
-    if (type == 'pdf') {
+    if ( file.type == 'pdf') {
       return (
         <object
-          className={classes.photo}
-          data={src}
+          className={classes.file}
+          data={file.src}
           width={displaySize.width}
           height={displaySize.height}
           style={{ width: displaySize.width, height: displaySize.height, objectFit: 'cover' }}
@@ -59,9 +56,9 @@ const FullScreenDisplay = ({ src, alt, type, orgHeight, orgWidth }: FullScreenDi
     else {
       return (
         <img
-          className={classes.photo}
-          src={src}
-          alt={alt}
+          className={classes.file}
+          src={file.src}
+          alt={file.alt}
           loading="lazy"
           width={displaySize.width}
           height={displaySize.height}
@@ -72,7 +69,7 @@ const FullScreenDisplay = ({ src, alt, type, orgHeight, orgWidth }: FullScreenDi
   }
 
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+    <div className={classes.fullscreenContainer}>
       {displayDifferentFiles()}
     </div>
   );

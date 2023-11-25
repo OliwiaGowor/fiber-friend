@@ -2,7 +2,6 @@
 
 .container {
   width: 100%;
-  margin-top: 50px;
   font-size: 16px;
 
   .form {
@@ -19,23 +18,25 @@
           @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
         }
 
-        .typeToggleContainer {
-          margin: 20px 0;
+        .datePickers {
+          display: block;
 
-          .typeToggle {
-            width: 100%;
+          .dateInput {
+            @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
           }
         }
 
+        .typeToggle {
+          margin: 20px 0;
+        }
+
         .categoriesContainer {
-          width: 100%;
-          margin-top: 20px;
-          margin-bottom: 10px;
+          margin-top: 40px;
+          margin-bottom: 20px;
         }
 
         .toggleButton {
           color: var(--text-color-dark);
-          width: 100%;
 
           &:hover {
             background-color: var(--accent-color-btn);
@@ -50,14 +51,20 @@
 
         .notesField {
           width: 100%;
-          margin-top: 40px;
-          margin-bottom: 40px;
+        }
+
+        .error {
+          color: #d32f2f;
+        }
+
+        .fileInput {
+          margin-bottom: 50px;
         }
       }
     }
 
     .submitBtn {
-      @include root.button($margin-tb: 0px, $margin-lr: 0px);
+      @include root.button($margin-tb: 0, $margin-lr: 0);
     }
   }
 }
@@ -74,23 +81,15 @@
           .datePickers {
             display: grid;
             grid-template-columns: repeat(2, calc(40% - 20px));
-            column-gap: 40px;
-
-            .additionalText {
-              margin: 0;
-            }
+            gap: 40px; 
           }
 
           .notesField {
             width: 80%;
           }
 
-          .toggleButton {
-            width: calc((40% - 20px) / 3);
-          }
-
-          .categoriesContainer {
-            width: calc(40% - 20px);
+          .photoInput {
+            width: 80%;
           }
         }
       }

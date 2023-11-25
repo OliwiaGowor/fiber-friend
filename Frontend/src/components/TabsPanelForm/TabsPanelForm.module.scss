@@ -4,6 +4,7 @@
   .addYarns {
     display: grid;
     grid-template-columns: minmax(calc(80% - 124px), 80%) 124px;
+    align-items: center;
 
   .formInput {
     @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
@@ -15,6 +16,7 @@
 
     justify-self: end;
     margin-right: 0;
+    height: 56px;
   }
 
   .tab {
