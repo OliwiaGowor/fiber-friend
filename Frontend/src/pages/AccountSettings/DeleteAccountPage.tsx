@@ -27,7 +27,7 @@ const ChangePasswordPage = () => {
       }
 
     }).catch((err) => {
-      console.log(err);
+      
     });
 
   };

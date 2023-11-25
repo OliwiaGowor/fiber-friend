@@ -17,20 +17,20 @@ interface ResourceFormProps {
 
 const ResourceForm = ({ resource, method }: ResourceFormProps) => {
     const navigate = useNavigate();
-    const [type, setType] = React.useState(resource.type ?? 'yarn');
-    const [name, setName] = React.useState(resource.name ?? '');
+    const [type, setType] = React.useState(resource?.type ?? 'yarn');
+    const [name, setName] = React.useState(resource?.name ?? '');
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [showQuantityError, setShowQuantityError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [images, setImages] = React.useState<any | null>(null);
-    const [notes, setNotes] = React.useState<any>(resource.notes ?? []);
-    const [toolSize, setToolSize] = React.useState(resource.toolSize ?? '');
-    const [gauge, setGauge] = React.useState(resource.gauge ?? '');
-    const [skeinWeight, setSkeinWeight] = React.useState(resource.skeinWeight ?? '');
-    const [quantity, setQuantity] = React.useState(resource.quantity ?? '');
-    const [skeinLength, setSkeinLength] = React.useState(resource.skeinLength ?? '');
-    const [toolType, setToolType] = React.useState(resource.toolType ?? '');
+    const [notes, setNotes] = React.useState<any>(resource?.notes ?? null);
+    const [toolSize, setToolSize] = React.useState(resource?.toolSize ?? '');
+    const [gauge, setGauge] = React.useState(resource?.gauge ?? '');
+    const [skeinWeight, setSkeinWeight] = React.useState(resource?.skeinWeight ?? '');
+    const [quantity, setQuantity] = React.useState(resource?.quantity ?? '');
+    const [skeinLength, setSkeinLength] = React.useState(resource?.skeinLength ?? '');
+    const [toolType, setToolType] = React.useState(resource?.toolType ?? '');
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
         if (newType !== null) {
@@ -210,7 +210,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Add new resource</h1>
+            <h1 className={classes.header}>{`${method === "POST" ? "Create" : "Edit"} resource`}</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>

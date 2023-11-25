@@ -60,7 +60,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
   const [yarns, setYarns] = React.useState<Yarn[]>(defaultValue ?? []);
   const [yarnName, setYarnName] = React.useState<string | null>('');
   const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
-console.log(fetchedYarns);
+
   const fetchAvailableYarns = useCallback(async () => {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',

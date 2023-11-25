@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
@@ -17,6 +17,7 @@ export default function ResourceDetails() {
     const { resource } = useRouteLoaderData('resource-details') as { resource: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const isMobile = useMediaQuery('(max-width: 760px)');
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -62,26 +63,25 @@ export default function ResourceDetails() {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {resource.category ? resource.toolSize : <br></br>}
+                    {resource.category ?? <br></br>}
 
                     <div className={classes.attributeName}>Gauge: </div>
-                    {resource.startDate ? resource.gauge : <br></br>}
+                    {resource.startDate ?? <br></br>}
 
                     <div className={classes.attributeName}>Skein weight: </div>
-                    {resource.endDate ? resource.weight : <br></br>}
+                    {resource.endDate ?? <br></br>}
 
                     <div className={classes.attributeName}>Meters in skein: </div>
-                    {resource.endDate ? resource.meters : <br></br>}
+                    {resource.endDate ?? <br></br>}
                 </>
             );
         } else if (resource.type === 'tool') {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {resource.category ? resource.toolSize : <br></br>}
-
+                    {resource.category ?? <br></br>}
                     <div className={classes.attributeName}>Tool type: </div>
-                    {resource.startDate ? resource.toolType : <br></br>}
+                    {resource.startDate ?? <br></br>}
 
                 </>
             );
@@ -89,10 +89,10 @@ export default function ResourceDetails() {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {resource.category ? resource.toolSize : <br></br>}
+                    {resource.category ?? <br></br>}
 
                     <div className={classes.attributeName}>Tool type: </div>
-                    {resource.startDate ? resource.toolType : <br></br>}
+                    {resource.startDate ?? <br></br>}
                 </>
             );
         }
@@ -138,7 +138,7 @@ export default function ResourceDetails() {
                         </div>
                         <div className={classes.dividedContainer}>
                             <div className={classes.leftElements}>
-                                <div className={classes.sectionContainer}>
+                                <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.resourceInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
@@ -150,11 +150,9 @@ export default function ResourceDetails() {
                                 </div>
                             </div>
                             <div className={classes.rightElements}>
-                                <div className={classes.sectionContainer}>
-                                    <div className={classes.photosContainer}>
-                                        <h2 className={classes.sectionHeader}>Photos</h2>
+                                <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
+                                {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
                                         <PhotosDisplay data={resource} />
-                                    </div>
                                 </div>
                             </div>
                         </div>

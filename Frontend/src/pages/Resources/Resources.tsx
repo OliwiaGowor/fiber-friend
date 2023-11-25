@@ -10,7 +10,7 @@ export default function Resources() {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>SUPPLIES</h1>
+            <h1 className={classes.header}>RESOURCES</h1>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={resources}>
                     {(loadedProjects) => <Tiles data={loadedProjects} link='new-resource'  addText='New resource'/>}
@@ -24,7 +24,7 @@ async function loadResources() {
     const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
         headers: {
             'Content-Type': 'application/json',
-            Authorization: "Bearer " + tokenLoader(),
+            //Authorization: "Bearer " + tokenLoader(),
         },
     });
 

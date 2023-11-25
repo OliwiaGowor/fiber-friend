@@ -1,6 +1,6 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, useMediaQuery } from "@mui/material";
 import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData, useNavigate, Link } from "react-router-dom";
+import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
 import classes from './PatternDetails.module.scss';
 import TabsPanelDisplay from "../../components/TabsPanelDisplay/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
@@ -13,7 +13,7 @@ import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CounterGroup from "../../components/CounterGroup/CounterGroup";
 import { tokenLoader } from "../../utils/auth";
-import ReactPDF, { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
 import { Pattern } from "../../DTOs/Pattern";
 //TODO: mobile design
@@ -25,6 +25,7 @@ export default function PatternDetails() {
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: Pattern };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const isMobile = useMediaQuery('(max-width: 760px)');
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -126,7 +127,7 @@ export default function PatternDetails() {
                         </div>
                         <div className={classes.dividedContainer}>
                             <div className={classes.leftElements}>
-                                <div className={classes.sectionContainer}>
+                            <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
@@ -143,11 +144,9 @@ export default function PatternDetails() {
                                 </div>
                             </div>
                             <div className={classes.rightElements}>
-                                <div className={classes.sectionContainer}>
-                                    <div className={classes.photosContainer}>
-                                        <h2 className={classes.sectionHeader}>Photos</h2>
-                                        <PhotosDisplay data={pattern} />
-                                    </div>
+                                <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
+                                {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                    <PhotosDisplay data={pattern} />
                                 </div>
                             </div>
                         </div>

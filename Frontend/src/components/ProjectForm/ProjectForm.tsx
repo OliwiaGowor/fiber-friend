@@ -27,23 +27,23 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
     const token = getAuthToken();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate();
-    const [type, setType] = React.useState(project.type ?? 'crochet');
-    const [yarnsInfo, setYarnsInfo] = React.useState<any>(project.yarns ?? []);
-    const [name, setName] = React.useState(project.name ?? '');
-    const [category, setCategory] = React.useState<string | null>(project.category);
+    const [type, setType] = React.useState(project?.type ?? 'crochet');
+    const [yarns, setYarns] = React.useState<any>(project?.yarns ?? []);
+    const [name, setName] = React.useState(project?.name ?? '');
+    const [category, setCategory] = React.useState<string | undefined>(project?.category ?? undefined);
     const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
     const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
     const [dateError, setDateError] = React.useState<any>(null);
-    const [startDate, setStartDate] = React.useState<any>(project.startDate ?? null);
-    const [endDate, setEndDate] = React.useState<any>(project.endDate ?? null);
+    const [startDate, setStartDate] = React.useState<any>(project?.startDate ?? null);
+    const [endDate, setEndDate] = React.useState<any>(project?.endDate ?? null);
     const [requiredError, setRequiredError] = React.useState<any>(false);
-    const [selectedImages, setSelectedImages] = React.useState<File[]>(project.photos ?? []);
-    const [selectedPatternFiles, setSelectedPatternFiles] = React.useState<File[]>(project.patterns ?? []);
-    const [notes, setNotes] = React.useState<any>(project.notes ?? []);
+    const [photos, setPhotos] = React.useState<File[]>(project?.photos ?? []);
+    const [files, setFiles] = React.useState<File[]>(project?.patterns ?? []);
+    const [notes, setNotes] = React.useState<any>(project?.notes ?? null);
     const [patterns, setPatterns] = React.useState<any>([]);
-    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(project.connectedPattern ?? null);
+    const [selectedPattern, setSelectedPattern] = React.useState<any>(project?.connectedPattern ?? undefined);
 
     const fetchAvailablePatterns = React.useCallback(async () => {
         try {
@@ -94,17 +94,17 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
         e.preventDefault();
         if (proceedSubmit) {
             const projectData = {
-                id: project.id,
+                id: project?.id ?? null,
                 name: name,
                 type: type,
                 category: category,
-                yarns: yarnsInfo,
+                yarns: yarns,
                 startDate: startDate,
                 endDate: endDate,
-                photos: selectedImages,
-                patterns: selectedPatternFiles,
+                photos: photos,
+                files: files,
                 notes: notes,
-                connectedPattern: selectedPattern ? selectedPattern : null,
+                connectedPattern: selectedPattern ?? null,
                 finished: endDate !== null ? true : false,
             };
 
@@ -139,7 +139,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
     //Form validation
     const validateForm = () => {
-        if (yarnsInfo.length <= 0) {
+        if (yarns.length <= 0) {
             setShowYarnsError(true);
             setProceedSubmit(false);
         }
@@ -147,11 +147,11 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
             setShowNameError(true);
             setProceedSubmit(false);
         }
-        if (category === undefined) {
+        if (category == undefined) {
             setShowCategoriesError(true);
             setProceedSubmit(false);
         }
-        if (startDate === undefined) {
+        if (startDate == undefined) {
             setRequiredError(true);
             setProceedSubmit(false);
         }
@@ -159,7 +159,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Edit project</h1>
+            <h1 className={classes.header}>{`${method === "POST" ? "Create" : "Edit"} project`}</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
@@ -219,7 +219,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                             <CategoriesMenu
                                 showError={showCategoriesError}
                                 choseCategory={(categ: string) => { setCategory(categ) }}
-                                defaultValue={project.category}
+                                defaultValue={category}
                             />
                         </div>
                         <div className={classes.datePickers}>
@@ -227,6 +227,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                 className={classes.dateInput}
                                 label="Start date *"
                                 onChange={(newValue: any) => { setStartDate(newValue) }}
+                                format="DD-MM-YYYY"
                                 onError={(newError) => {
                                     setDateError(newError);
                                     setRequiredError(false)
@@ -236,15 +237,15 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
-                            //defaultValue={project.startDate}
+                                defaultValue={startDate}
                             />
                             <DatePicker
                                 className={classes.dateInput}
                                 label="End date"
                                 format="DD-MM-YYYY"
-                                //minDate={startDate}
+                                minDate={startDate ?? undefined}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
-                            //defaultValue={project.endDate}
+                                defaultValue={endDate}
                             />
                             <br></br>
                             <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
@@ -259,8 +260,8 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                 onlyImg={true}
                                 addHeader={'Add photo'}
                                 maxFiles={10}
-                                defaultValue={project.photos}
-                                selectedFiles={(images: any) => { setSelectedImages(images) }}
+                                defaultValue={photos}
+                                selectedFiles={(images: any) => { setPhotos(images) }}
                             />
                         </div>
                     </div>
@@ -268,7 +269,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} defaultValue={project.yarns} />
+                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }} defaultValue={yarns} />
                     </div>
 
                     <div className={classes.sectionContainer}>
@@ -294,12 +295,12 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                 onlyImg={false}
                                 addHeader={'Add patterns'}
                                 maxFiles={5}
-                                defaultValue={project.patterns}
-                                selectedFiles={(patterns: any) => { setSelectedPatternFiles(patterns) }}
+                                defaultValue={patterns}
+                                selectedFiles={(patterns: any) => { setFiles(patterns) }}
                             />
                         </div>
                         <div className={classes.notesField}>
-                            <TextEditor defaultValue={project.notes} getValue={(notes: any) => { setNotes(notes) }} />
+                            <TextEditor defaultValue={notes} getValue={(notes: any) => { setNotes(notes) }} />
                         </div>
                     </div>
                 </div>

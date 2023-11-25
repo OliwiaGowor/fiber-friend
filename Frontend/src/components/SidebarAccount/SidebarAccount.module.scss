@@ -18,9 +18,14 @@
   .header {
     margin-top: 0;
 
-    &:hover .link {
+    &:hover {
       color: var(--main-color-dark);
       transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .text {
+      display: inline-block;
     }
   }
 
@@ -42,12 +47,9 @@
 
       &:hover {
         background-color: var(--background-accents);
+        color: var(--main-color-dark);
         transition: 0.2s;
-
-        .link {
-          color: var(--main-color-dark);
-          transition: 0.2s;
-        }
+        cursor: pointer;
       }
     }
 
@@ -60,15 +62,8 @@
     }
   }
 
-  .link {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    .text {
-      padding-left: 10px;
-    }
+  .text {
+    padding-left: 10px;
   }
 }
 

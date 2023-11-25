@@ -172,14 +172,11 @@ export default function ProjectDetails() {
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
-                                        {project.type ? project.type : <br></br>}
-
+                                        {project.type ?? <br></br>}
                                         <div className={classes.attributeName}>Category: </div>
-                                        {project.category ? project.category : <br></br>}
-
+                                        {project.category ?? <br></br>}
                                         <div className={classes.attributeName}>Start date: </div>
                                         {project.startDate?.slice(0, 10) ?? <br></br>}
-
                                         <div className={classes.attributeName}>End date: </div>
                                         {project.endDate?.slice(0, 10) ?? <br></br>}
                                     </div>
@@ -188,7 +185,6 @@ export default function ProjectDetails() {
                                     <h2 className={classes.sectionHeader}>Yarns</h2>
                                     <TabsPanelDisplay yarns={project.yarns ?? []} />
                                 </div>
-
                             </div>
                             <div className={classes.rightElements}>
                                 <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
@@ -212,7 +208,7 @@ export default function ProjectDetails() {
                                 <FilesDisplay files={project.patterns} />
                                 <h3 className={classes.attributeName}>Counters</h3>
                                 <div className={classes.counters}>
-                                    {<CounterGroup defaultValue={project.counters} parentId={project.id}/>}
+                                    {<CounterGroup defaultValue={project.counters} parentId={project.id} />}
                                 </div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}>

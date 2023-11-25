@@ -9,8 +9,7 @@ namespace Application.DTO.CountersGroup
         public Guid Id { get; set; }
         public string Name { get; set; }
         public List<CounterDto> Counters { get; set; }
-        public Guid? ProjectId { get; set; }
-        public Guid? PatternId { get; set; }
+        public Guid? ParentId { get; set; }
 
         public static void Mapping(Profile profile)
         {

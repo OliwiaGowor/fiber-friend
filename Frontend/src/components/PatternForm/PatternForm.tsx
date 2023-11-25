@@ -34,7 +34,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     const [requiredError, setRequiredError] = React.useState<any>(false);
     const [selectedImages, setSelectedImages] = React.useState<any | null>(pattern?.photos ?? "");
     const [selectedFiles, setSelectedFiles] = React.useState<any | null>(pattern?.files ?? "");
-    const [notes, setNotes] = React.useState<any>(pattern?.notes ?? "");
+    const [notes, setNotes] = React.useState<any>(pattern?.notes ?? null);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
@@ -104,7 +104,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>Create new pattern</h1>
+            <h1 className={classes.header}>{`${method === "POST" ? "Create" : "Edit"} pattern`}</h1>
             <form
                 onSubmit={handleSubmit}
                 className={classes.form}
@@ -219,9 +219,9 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                     variant="contained"
                     type="submit"
                     onClick={validateForm}
-                    aria-label="Add new pattern"
+                    aria-label="Submit button"
                 >
-                    Add new pattern
+                    {`${method === "POST" ? "Create" : "Edit"} pattern`}
                 </Button>
             </form>
         </div>

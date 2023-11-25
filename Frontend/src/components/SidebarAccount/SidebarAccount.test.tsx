@@ -47,7 +47,7 @@ describe('SidebarAccount component', () => {
         }, 0);
     });
 
-    test("clicking on clicking on links navigates to the correct route", async () => {
+    test("clicking on elements navigates to the correct route", async () => {
         render(<SidebarAccountWithRouter />);
 
         const projectsLink = screen.getByText('Projects').parentElement as HTMLElement;
