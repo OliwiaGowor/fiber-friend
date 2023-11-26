@@ -1,40 +1,39 @@
-import CircularProgress from "@mui/material/CircularProgress";
-import { Suspense } from "react";
-import { useRouteLoaderData, Await, json, defer } from "react-router-dom";
+import { useState } from "react";
+import {  json } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Projects.module.scss'
 import FiltersBar from "../../components/FiltersBar/FiltersBar";
 import { projectsFilters } from "../../data/FiltersBarData";
+import { tokenLoader } from "../../utils/auth";
 
 function Projects() {
-    const { projects }: any = useRouteLoaderData("projects");
+    const userId = localStorage.getItem("userId");
 
-    return (
-        <div className={classes.container}>
-            <h1 className={classes.header}>PROJECTS</h1>
-            <FiltersBar filters={projectsFilters} />
-            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={projects}>
-                    {(loadedProjects) => {
-                        if (loadedProjects?.status === 500 )
-                            return <>
-                                <Tiles data={null} link='new-project' addText='New project' />
-                            </>
-                        return <Tiles data={loadedProjects} link='new-project' addText='New project' />
-                    }}
-                </Await>
-            </Suspense>
-        </div>
-    );
-}
+    const fetchProjects = async (page: number, pageSize: number, filters: object[]) => {
+        //`${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${userId}/${filters}/page=${page}/pageSize=${pageSize}`
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    //Authorization: "Bearer " + tokenLoader(),
+                },
+            });
 
-export default Projects;
+            if (!response.ok) {
+                localStorage.setItem("error", "Could not fetch projects.");
 
-async function loadProjects() {
-    try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
-
-        if (!response.ok) {
+                return json(
+                    { message: 'Could not fetch projects.' },
+                    {
+                        status: 500,
+                    }
+                );
+            } else {
+                const resData = await response.json();
+                return resData;
+            }
+        } catch (error) {
             localStorage.setItem("error", "Could not fetch projects.");
 
             return json(
@@ -43,24 +42,21 @@ async function loadProjects() {
                     status: 500,
                 }
             );
-        } else {
-            const resData = await response.json();
-            return resData;
         }
-    } catch (error) {
-        localStorage.setItem("error", "Could not fetch projects.");
+    };
 
-        return json(
-            { message: 'Could not fetch projects.' },
-            {
-                status: 500,
-            }
-        );
-    }
+    return (
+        <div className={classes.container}>
+            <h1 className={classes.header}>PROJECTS</h1>
+            <Tiles 
+            link='new-project' 
+            addText='New project' 
+            fetchData={fetchProjects} 
+            addTile={true} 
+            filters={projectsFilters}
+            />
+        </div>
+    );
 }
 
-export async function loader() {
-    return defer({
-        projects: loadProjects(),
-    });
-}
+export default Projects;

@@ -1,11 +1,33 @@
 import { MenuItem, Select } from '@mui/material';
 import classes from './FiltersBar.module.scss';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 interface FiltersBarProps {
     filters: object[];
+    applyFilters: Function;
 }
 
-const FiltersBar = ({ filters }: FiltersBarProps) => {
+const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
+    const [chosenFilters, setChosenFilters] = useState({});
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        setChosenFilters(Object.fromEntries([...searchParams]));
+    }, []);
+
+    useEffect(() => {
+        setSearchParams(chosenFilters);
+    }, [chosenFilters]);
+
+    const getFilterValue = (filterName: string) => {
+        if (filterName in chosenFilters) {
+            return chosenFilters[filterName as keyof typeof chosenFilters];
+        } else {
+            return 'all';
+        }
+    };
 
     return (
         <div className={classes.filtersBar}>
@@ -15,8 +37,9 @@ const FiltersBar = ({ filters }: FiltersBarProps) => {
                     <p>{filter.name}:</p>
                     <Select
                         className={classes.select}
-                        onChange={(e) => filter.setValue(e.target.value)}
+                        onChange={(e) => setChosenFilters({ ...chosenFilters, [filter.name]: e.target.value })}
                         defaultValue="all"
+                        value={getFilterValue(filter.name)}
                         aria-labelledby={`${filter.name}-label`}
                     >
                         <MenuItem value="all">All</MenuItem>
@@ -26,6 +49,11 @@ const FiltersBar = ({ filters }: FiltersBarProps) => {
                     </Select>
                 </div>
             ))}
+            <Button
+                onClick={() => applyFilters(chosenFilters)}
+            >
+                Apply
+            </Button>
         </div>
     );
 };

@@ -35,7 +35,7 @@ describe('FiltersBar component', () => {
     ];
 
     test('renders FiltersBar component with correct structure', () => {
-        render(<FiltersBar filters={sampleFilters} />);
+        render(<FiltersBar filters={sampleFilters} applyFilters={() => {}}  />);
 
         expect(screen.getByText('Filter by')).toBeInTheDocument();
 
@@ -45,7 +45,7 @@ describe('FiltersBar component', () => {
     });
 
     test('calls setValue when selecting an option', () => {
-        const {container} = render(<FiltersBar filters={sampleFilters} />);
+        const {container} = render(<FiltersBar filters={sampleFilters} applyFilters={() => {}} />);
 
         const firstFilterSelect = container.getElementsByClassName('select')[0].querySelector('input') as HTMLElement;
         fireEvent.change(firstFilterSelect, { target: { value: 'active' } });

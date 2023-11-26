@@ -7,56 +7,45 @@ import { tokenLoader } from "../../utils/auth";
 
 function Counters() {
 
-    const { counters }: any = useRouteLoaderData("counters");
+    const fetchCounters = async () => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + tokenLoader(),
+            },
+        });
+
+        if (!response.ok) {
+            // return { isError: true, message: 'Could not fetch events.' };
+            // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+            //   status: 500,
+            // });
+            throw json(
+                { message: 'Could not fetch counters.' },
+                {
+                    status: 500,
+                }
+            );
+        } else {
+            const resData = await response.json();
+
+            return resData;
+        }
+    };
 
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>COUNTERS</h1>
-            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={counters}>
-                    {(loadedCounters) =>
-                        <Tiles
-                            key="counters-tiles"
-                            data={loadedCounters}
-                            link='new-counter'
-                            addText='New counter'
-                        />}
-                </Await>
-            </Suspense>
+            <Tiles
+                key="counters-tiles"
+                link='new-counter'
+                addText='New counter'
+                fetchData={fetchCounters}
+                addTile={true} 
+                           
+                />
         </div>
     );
 }
 
 export default Counters;
-
-async function loadCounters() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: "Bearer " + tokenLoader(),
-        },
-    });
-
-    if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch events.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-        //   status: 500,
-        // });
-        throw json(
-            { message: 'Could not fetch counters.' },
-            {
-                status: 500,
-            }
-        );
-    } else {
-        const resData = await response.json();
-
-        return resData;
-    }
-}
-
-export async function loader() {
-    return defer({
-        counters: loadCounters(),
-    });
-}

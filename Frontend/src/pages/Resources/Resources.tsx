@@ -6,47 +6,35 @@ import classes from './Resources.module.scss'
 import { tokenLoader } from "../../utils/auth";
 
 export default function Resources() {
-    const { resources }: any = useRouteLoaderData("resources");
+    const fetchResources = async () => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                //Authorization: "Bearer " + tokenLoader(),
+            },
+        });
+
+        if (!response.ok) {
+            // return { isError: true, message: 'Could not fetch events.' };
+            // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
+            //   status: 500,
+            // });
+            throw json(
+                { message: 'Could not fetch resources.' },
+                {
+                    status: 500,
+                }
+            );
+        } else {
+            const resData = await response.json();
+            return resData;
+        }
+    };
 
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>RESOURCES</h1>
-            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={resources}>
-                    {(loadedProjects) => <Tiles data={loadedProjects} link='new-resource'  addText='New resource'/>}
-                </Await>
-            </Suspense>
+            <Tiles link='new-resource' addText='New resource' fetchData={fetchResources} addTile={true} />
         </div>
     );
-}
-
-async function loadResources() {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            //Authorization: "Bearer " + tokenLoader(),
-        },
-    });
-
-    if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch events.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-        //   status: 500,
-        // });
-        throw json(
-            { message: 'Could not fetch resources.' },
-            {
-                status: 500,
-            }
-        );
-    } else {
-        const resData = await response.json();
-        return resData;
-    }
-}
-
-export async function loader() {
-    return defer({
-        resources: loadResources(),
-    });
 }

@@ -1,8 +1,55 @@
+import classes from './CommunityPatterns.module.scss';
+import Tiles from '../../components/Tiles/Tiles';
+import { patternsFilters } from '../../data/FiltersBarData';
+import { json } from 'react-router-dom';
+
 
 const CommunityPatterns = () => {
+    const fetchProjects = async (page: number, pageSize: number, filters: object[]) => {
+        //`${process.env.REACT_APP_API_URL}Pattern/GetSharedPatterns/${filters}/page=${page}/pageSize=${pageSize}`
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    //Authorization: "Bearer " + tokenLoader(),
+                },
+            });
+
+            if (!response.ok) {
+                localStorage.setItem("error", "Could not fetch projects.");
+
+                return json(
+                    { message: 'Could not fetch projects.' },
+                    {
+                        status: 500,
+                    }
+                );
+            } else {
+                const resData = await response.json();
+                return resData;
+            }
+        } catch (error) {
+            localStorage.setItem("error", "Could not fetch projects.");
+
+            return json(
+                { message: 'Could not fetch projects.' },
+                {
+                    status: 500,
+                }
+            );
+        }
+    };
+
     return (
-        <div>
-            <h1>Community Patterns</h1>
+        <div className={classes.container}>
+            <h1 className={classes.header}>PATTERNS</h1>
+            <Tiles 
+            link='new-pattern' 
+            addText='New pattern' 
+            fetchData={async () => { return []; } } 
+            addTile={false} 
+            filters={patternsFilters} />
         </div>
     );
 }

@@ -1,3 +1,5 @@
+import { categories } from "./Categories"
+
 export const projectsFilters = [
     {
         name: "Status",
@@ -31,24 +33,7 @@ export const projectsFilters = [
     },
     {
         name: "Category",
-        options: [
-            {
-                name: "Clothes",
-                value: "clothes"
-            },
-            {
-                name: "Toys",
-                value: "toys"
-            },
-            {
-                name: "Decorations",
-                value: "decorations"
-            },
-            {
-                name: "Other",
-                value: "other"
-            }
-        ]
+        options: categories
     },
 ]
 
@@ -70,27 +55,23 @@ export const patternsFilters = [
         name: "Type",
         options: [
             {
-                name: "All",
-                value: "all"
+                name: "Knit",
+                value: "knit"
             },
             {
-                name: "Clothes",
-                value: "clothes"
-            },
-            {
-                name: "Toys",
-                value: "toys"
-            },
-            {
-                name: "Decorations",
-                value: "decorations"
+                name: "Crochet",
+                value: "crochet"
             },
             {
                 name: "Other",
                 value: "other"
-            }
+            },
         ]
-    }
+    },
+    {
+        name: "Category",
+        options: categories
+    },
 ]
 
 export const resourcesFilters = [

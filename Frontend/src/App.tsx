@@ -3,9 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage"
 import Root from "./pages/Root";
 import Account, { loader as dataLoader } from "./pages/Account/Account";
-import Projects, { loader as projectsLoader } from "./pages/Projects/Projects";
+import Projects from "./pages/Projects/Projects";
 import NewProjectPage from "./pages/Projects/NewProjectPage";
-import Patterns, { loader as patternsLoader } from "./pages/Patterns/Patterns";
+import Patterns from "./pages/Patterns/Patterns";
 import PatternsRoot from "./pages/Patterns/PatternsRoot";
 import LoginPage, {action as loginAction} from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
@@ -17,13 +17,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import ProjectsRoot from "./pages/Projects/ProjectsRoot";
 import CountersRoot from "./pages/Counters/CountersRoot";
-import Counters, { loader as countersLoader } from "./pages/Counters/Counters";
+import Counters from "./pages/Counters/Counters";
 import NewCounter from "./pages/Counters/NewCounter";
 import EditProject from "./pages/Projects/EditProject";
 import RecoverPassPage from "./pages/RecoverPassPage/RecoverPassPage";
 import CounterDetails, { loader as counterDetailsLoader } from "./pages/Counters/CounterDetails";
 import EditCounter from "./pages/Counters/EditCounter";
-import Resources, { loader as resourcesLoader } from "./pages/Resources/Resources";
+import Resources from "./pages/Resources/Resources";
 import ResourcesRoot from "./pages/Resources/ResourcesRoot";
 import NewResourcePage from "./pages/Resources/NewResourcePage";
 import ResourceDetails, { loader as resourceDetailsLoader } from "./pages/Resources/ResourceDetails";
@@ -35,6 +35,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ChangePasswordPage from "./pages/AccountSettings/ChangePasswordPage";
 import DeleteAccountPage from "./pages/AccountSettings/DeleteAccountPage";
 import EditPattern from "./pages/Patterns/EditPattern";
+import CommunityPatterns from "./pages/CommunityPatterns/CommunityPatterns";
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,6 @@ const router = createBrowserRouter([
           {
             path: "projects",
             id: "projects",
-            loader: projectsLoader,
             element: <ProjectsRoot />,
             children: [
               {
@@ -109,7 +109,6 @@ const router = createBrowserRouter([
           {
             path: "patterns",
             element: <PatternsRoot />,
-            loader: patternsLoader,
             id: "patterns",
             children: [
               {
@@ -145,7 +144,6 @@ const router = createBrowserRouter([
             path: "counters",
             element: <CountersRoot />,
             id: "counters",
-            loader: countersLoader,
             children: [
               {
                 index: true,
@@ -181,7 +179,6 @@ const router = createBrowserRouter([
           {
             path: "resources",
             id: "resources",
-            loader: resourcesLoader,
             element: <ResourcesRoot />,
             children: [
               {
@@ -243,7 +240,10 @@ const router = createBrowserRouter([
         path: "report-problem",
         element: <ReportProblemPage />
       },
-
+      {
+        path: "community-patterns",
+        element: <CommunityPatterns />
+      },
     ],
   },
   {

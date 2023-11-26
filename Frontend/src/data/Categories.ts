@@ -4,27 +4,51 @@ export const categories = [
         children: [
             { category: 'Top',
                 children: [
-                    {category: 'Blouse'},
-                    {category: 'Sweater'},
-                    {category: 'Bralette'},
+                    {category: 'Blouses'},
+                    {category: 'Sweaters'},
+                    {category: 'Bralettes'},
+                    {category: 'Cargidans'},
+                    {category: 'Tops'},
+                    {category: 'Vests'},
+                    {category: 'Golfs'},
                 ] },
             { category: 'Bottom',
             children: [
                 {category: 'Shorts'},
                 {category: 'Pants'},
-                {category: 'Skirt'},
+                {category: 'Skirts'},
             ] },
+            { category: 'Accesories',
+                children: [
+                    {category: 'Headwear'},
+                    {category: 'Socks & slippers'},
+                    {category: 'Mittens & gloves'},
+                    {category: 'Scarves & shawls'},
+                    {category: 'Jewelry'},
+                ] },
+                { category: 'Dresses'},
+                { category: 'Jumpsuits'},
+                { category: 'Sets'},
         ],
         
     },
     {
         category: 'Toys',
         children: [
-            { category: 'Mascot' },
+            { category: 'Mascots' },
+            { category: 'Accessories' },
+            { category: 'Other' },
         ]
     },
     {
-        category: 'Decorations'
+        category: 'Decorations',
+        children: [
+            { category: 'Blankets' },
+            { category: 'Figurines' },
+            { category: 'Wall decorations' },
+            { category: 'Pillows' },
+            { category: 'Other' },
+        ]
     },
     {
         category: 'Other'
