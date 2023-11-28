@@ -3,7 +3,7 @@
 .sidebarAccount {
   position: fixed;
   bottom: var(--navbar-height);
-  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   min-width: var(--sidebar-width-mobile);

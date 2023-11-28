@@ -36,6 +36,8 @@ import ChangePasswordPage from "./pages/AccountSettings/ChangePasswordPage";
 import DeleteAccountPage from "./pages/AccountSettings/DeleteAccountPage";
 import EditPattern from "./pages/Patterns/EditPattern";
 import CommunityPatterns from "./pages/CommunityPatterns/CommunityPatterns";
+import CommunityPatternDetails, {loader as communityPatternDetailsLoader} from "./pages/CommunityPatterns/CommunityPatternDetails";
+import CommunityPatternsRoot from "./pages/CommunityPatterns/CommunityPatternsRoot";
 
 const router = createBrowserRouter([
   {
@@ -92,8 +94,6 @@ const router = createBrowserRouter([
                   {
                     path: "edit",
                     element: <EditProject />,
-                    //action: manipulateEventAction,
-                    //loader: checkAuthLoader,
                   },
 
                 ],
@@ -101,8 +101,6 @@ const router = createBrowserRouter([
               {
                 path: "new-project",
                 element: <NewProjectPage />,
-                //action: manipulateProjectAction,
-                //loader: checkAuthLoader,
               },
             ]
           },
@@ -128,8 +126,6 @@ const router = createBrowserRouter([
                   {
                     path: "edit",
                     element: <EditPattern />,
-                    //action: manipulateEventAction,
-                    //loader: checkAuthLoader,
                   },
 
                 ],
@@ -152,8 +148,6 @@ const router = createBrowserRouter([
               {
                 path: "new-counter",
                 element: <NewCounter />,
-                //action: manipulateProjectAction,
-                //loader: checkAuthLoader,
               },
               {
                 path: ":counterId",
@@ -163,13 +157,10 @@ const router = createBrowserRouter([
                   {
                     index: true,
                     element: <CounterDetails />,
-                    //action: deleteEventAction,
                   },
                   {
                     path: "edit",
                     element: <EditCounter />,
-                    //action: manipulateEventAction,
-                    //loader: checkAuthLoader,
                   },
 
                 ],
@@ -197,8 +188,6 @@ const router = createBrowserRouter([
                   {
                     path: "edit",
                     element: <EditProject />,
-                    //action: manipulateEventAction,
-                    //loader: checkAuthLoader,
                   },
 
                 ],
@@ -206,8 +195,6 @@ const router = createBrowserRouter([
               {
                 path: "new-resource",
                 element: <NewResourcePage />,
-                //action: manipulateProjectAction,
-                //loader: checkAuthLoader,
               },
             ]
           },
@@ -242,7 +229,24 @@ const router = createBrowserRouter([
       },
       {
         path: "community-patterns",
-        element: <CommunityPatterns />
+        element: <CommunityPatternsRoot />,
+        children: [
+          {
+            index: true,
+            element: <CommunityPatterns />,
+          },
+          {
+            path: ":communityPatternId",
+            id: "community-pattern-details",
+            loader: communityPatternDetailsLoader,
+            children: [
+              {
+                index: true,
+                element: <CommunityPatternDetails />,
+              },
+            ],
+          },
+        ]
       },
     ],
   },

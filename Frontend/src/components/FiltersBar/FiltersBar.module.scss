@@ -1,8 +1,23 @@
-.filtersBar {
-    border-radius: 10px;
-    background-color: var(--background-accents);
+@use "../../root.scss";
 
+.filtersBar {
+  border-radius: 10px;
+  background-color: var(--background-accents);
+  padding: 30px;
+  margin-bottom: 40px;
+
+  .header {
+    margin-top: 0;
+    font-size: 1.5em;
+  }
+
+  .filters {
     .filter {
-        display: inline-flex;
+      display: inline-flex;
+
+      .formInput {
+        @include root.input($margin-lr: 0, $margin-tb: 0, $width: 100%);
+      }
     }
+  }
 }

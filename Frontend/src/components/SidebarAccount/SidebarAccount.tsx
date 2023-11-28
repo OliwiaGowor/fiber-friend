@@ -10,7 +10,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import InsightsIcon from '@mui/icons-material/Insights';
 import classes from './SidebarAccount.module.scss'
-import Groups2Icon from '@mui/icons-material/Groups2';
 
 function SidebarAccount({ open, getOpen }: any) {
     const navigate = useNavigate();
@@ -39,15 +38,11 @@ function SidebarAccount({ open, getOpen }: any) {
     return (
         <ClickAwayListener onClickAway={handleClickAway} touchEvent={'onTouchStart'}>
             <aside className={isOpen ? `${classes.sidebarAccount}` : `${classes.sidebarAccountHidden}`}>
+                <h2 className={classes.header} onClick={() => handleClick('/fiber-friend/account')}>
+                    <AccountCircleIcon />
+                    <div className={classes.text}>My account</div>
+                </h2>
                 <ul className={classes.elements}>
-                    <li className={classes.element} onClick={() => handleClick('/fiber-friend/community-patterns')}>
-                        <Groups2Icon />
-                        <div className={classes.text}>Community patterns</div>
-                    </li>
-                    <h2 className={classes.header} onClick={() => handleClick('/fiber-friend/account')}>
-                        <AccountCircleIcon />
-                        <div className={classes.text}>My library</div>
-                    </h2>
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/projects')}>
                         <GridOnIcon />
                         <div className={classes.text}>Projects</div>

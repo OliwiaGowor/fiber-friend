@@ -2,7 +2,8 @@ import classes from './CommunityPatterns.module.scss';
 import Tiles from '../../components/Tiles/Tiles';
 import { patternsFilters } from '../../data/FiltersBarData';
 import { json } from 'react-router-dom';
-
+import Fab from '@mui/material/Fab';
+import NavigationIcon from '@mui/icons-material/Navigation';
 
 const CommunityPatterns = () => {
     const fetchProjects = async (page: number, pageSize: number, filters: object[]) => {
@@ -41,15 +42,27 @@ const CommunityPatterns = () => {
         }
     };
 
+    const handleGoToTop = () => {
+        window.scrollTo(0, 0);
+    };
+
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>PATTERNS</h1>
-            <Tiles 
-            link='new-pattern' 
-            addText='New pattern' 
-            fetchData={async () => { return []; } } 
-            addTile={false} 
-            filters={patternsFilters} />
+            <Tiles
+                link='new-pattern'
+                addText='New pattern'
+                fetchData={fetchProjects}
+                addTile={false}
+                filters={patternsFilters}
+            />
+            <Fab 
+            className={classes.upFab} 
+            aria-label="add"
+            onClick={handleGoToTop}
+            >
+                <NavigationIcon />
+            </Fab>
         </div>
     );
 }

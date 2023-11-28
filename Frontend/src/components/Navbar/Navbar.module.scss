@@ -1,5 +1,4 @@
-@import url("../../root.scss");
-//TODO: fix on moblie
+@use "../../root.scss";
 
 .navbar {
   z-index: 10000;
@@ -18,9 +17,11 @@
   .navElements {
     display: grid;
     grid-template-columns: repeat(3, minmax(min-content, 1fr));
+    grid-template-rows: 1fr;
     align-items: center;
     justify-items: center;
     width: 100vw;
+    height: inherit;
     padding: 0;
     list-style: none;
 
@@ -43,27 +44,78 @@
       }
     }
 
-    .menuIcon {
-      button {
-        border: none;
-        background-color: inherit;
+    .navElement {
+      width: fit-content;
+      padding: 0 5px;
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+
+      &:nth-of-type(2) {
+        height: inherit;
       }
     }
 
-    .addIcon {
-      button {
-        border: none;
-        background-color: inherit;
+    .communityPatternsBtn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: max-content;
+      border: none;
+      background-color: inherit;
+      font-size: 13px;
 
-        svg {
+      &:hover {
+        cursor: pointer;
+        color: var(--main-color-dark);
+
+        .communityPatternsIcon {
           fill: var(--main-color-dark);
         }
       }
+
+      .btnText {
+        margin-top: 4px;
+      }
+
+      .communityPatternsIcon {
+        width: 32px;
+        margin-right: 7px;
+      }
     }
 
-    .accountIcon {
-      display: inline-block;
+    .addNew {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: inherit;
+      border: none;
+      background-color: inherit;
+
+      &:hover {
+        cursor: pointer;
+
+        svg {
+          fill: var(--accent-color);
+        }
+      }
+
+      svg {
+        fill: var(--main-color-dark);
+      }
+    }
+
+    .accountBtn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       vertical-align: middle;
+      border: none;
+      background-color: inherit;
 
       &:hover {
         svg {
@@ -71,13 +123,6 @@
           transition: 0.2s fill;
           cursor: pointer;
         }
-      }
-
-      button {
-        width: inherit;
-        height: inherit;
-        border: none;
-        background-color: inherit;
       }
     }
   }
@@ -89,6 +134,7 @@
 }
 
 .addMenuPaper {
+  z-index: 10001;
   padding-bottom: 7px;
   background-color: var(--background-color) !important;
 }
@@ -98,17 +144,41 @@
     top: 0;
 
     .navElements {
-      margin-left: var(--sidebar-width);
-      margin-right: var(--margin-right);
+      grid-template-columns: 1fr min-content min-content min-content;
+      margin: 0px var(--margin-right);
 
       .logo {
+        justify-self: start;
         width: max-content;
         margin-right: calc(var(--sidebar-width) - var(--margin-right));
       }
 
-      .accountIcon {
+      .navElement {
+        padding: 0 25px;
+
+        &:last-of-type {
+          padding-right: 5px;
+        }
+      }
+
+      .accountBtn {
         justify-self: end;
+        flex-direction: row;
+      }
+
+      .communityPatternsBtn {
+        flex-direction: row;
+        font-size: 18px;
+      }
+
+      .addNew {
+        flex-direction: row;
+        height: inherit;
       }
     }
+  }
+
+  .addMenuPaper {
+    padding-top: 7px;
   }
 }

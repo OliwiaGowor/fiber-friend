@@ -1,9 +1,10 @@
-@mixin tile ($minWidth, $height) {
+@mixin tile ($minWidth, $height, $width: unset) {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     min-width: $minWidth;
+    width: $width;
     min-height: $height;
     max-height: $height;
     margin: 0px;
@@ -34,8 +35,8 @@
 .container {
   .elements {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    justify-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    justify-items: center;
     align-items: center;
     gap: 2rem;
     margin: 0;
@@ -43,7 +44,7 @@
     list-style: none;
     
     .element {
-      @include tile($minWidth: 200px, $height: 290px);
+      @include tile($minWidth: 180px, $height: 290px, $width: 100%);
       
       max-width: 300px;
     }
@@ -53,10 +54,11 @@
 @media screen and (min-width: 800px) {
   .container {
     .elements {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-items: stretch;
       
       .element {
-        @include tile($minWidth: 300px, $height: 390px);
+        @include tile($minWidth: 280px, $height: 390px);
         
         max-width: 400px;
 

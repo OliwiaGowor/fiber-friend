@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import classes from './Tiles.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
@@ -16,6 +16,7 @@ interface TilesProps {
 
 //`https://api.instantwebtools.net/v1/passenger?page=${currPage}&size=10`
 function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
+  const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 760px)');
   const [loading, setLoading] = useState(false); // setting the loading state
   const [currPage, setCurrPage] = useState(1); // storing current page number
@@ -102,19 +103,16 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       {filters && <FiltersBar filters={filters} applyFilters={setChosenFilters} />}
       <ul className={classes.elements}>
         {addTile &&
-          <Link to={`${link}`}>
-            <li className={classes.element}>
-              <h2 className={classes.name}>{addText}</h2>
-              <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} aria-label="Add project" />
-            </li>
-          </Link>}
+          <li className={classes.element} onClick={() => navigate(`${link}`)}>
+            <h2 className={classes.name}>{addText}</h2>
+            <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} aria-label="Add project" />
+          </li>
+        }
         {elements.map((element: any) => (
-          <Link to={`${element.id}`} key={element.id}>
-            <li className={classes.element}>
-              <h2 className={classes.name}>{element.name}</h2>
-              {handlePhotoRender(element)}
-            </li>
-          </Link>
+          <li className={classes.element} key={element.id} onClick={() => navigate(`${element.id}`)}>
+            <h2 className={classes.name}>{element.name}</h2>
+            {handlePhotoRender(element)}
+          </li>
         ))}
       </ul>
       {loading && <div>Loading...</div>}

@@ -1,9 +1,7 @@
-import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
+import { json } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Patterns.module.scss'
-import { tokenLoader } from "../../utils/auth";
+import { patternsFilters } from "../../data/FiltersBarData";
 
 export default function Patterns() {
     const fetchPatterns = async () => {
@@ -31,7 +29,13 @@ export default function Patterns() {
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>PATTERNS</h1>
-            <Tiles link='new-pattern' addText='New pattern' fetchData={fetchPatterns} addTile={true} />
+            <Tiles
+                link='new-pattern'
+                addText='New pattern'
+                fetchData={fetchPatterns}
+                addTile={true}
+                filters={patternsFilters}
+            />
         </div>
     );
 }

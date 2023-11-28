@@ -7,16 +7,16 @@ import { useMediaQuery } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import logoPicture from '../../photos/yarn-ball.png';
 
 import classes from './Navbar.module.scss';
 import { getAuthToken } from "../../utils/auth";
+import { CommunityPatternsIcon } from "../../svg/NavigationIcons";
 
 export default function Navbar() {
-    const isLoggedIn = getAuthToken() !== null;
+    const isLoggedIn = true;//getAuthToken() !== null; //FIXME: change
     const navigate = useNavigate();
     const [openSidebar, setOpenSidebar] = useState(false);
     const isMobile = useMediaQuery('(max-width: 760px)');
@@ -39,7 +39,7 @@ export default function Navbar() {
     return (
         <nav className={classes.navbar}>
             <ul className={classes.navElements}>
-                {!isMobile && <br className={classes.fillerDesktop}></br>}
+                {!isMobile && !isLoggedIn && <br className={classes.fillerDesktop}></br>}
                 {!isMobile &&
                     <div className={classes.logo}>
                         <Link to={"/fiber-friend"}>
@@ -50,20 +50,20 @@ export default function Navbar() {
                                 width='45px'
                                 height='45px'
                             />
-                            {!smallerLogo && 'Fiber Friend'}
+                            {!smallerLogo && !isLoggedIn && 'Fiber Friend'}
                         </Link>
                     </div>
                 }
-                {isMobile &&
-                    <li className={classes.menuIcon}>
-                        <button onClick={handleClickMenu} aria-label="Toggle Menu">
-                            <MenuIcon sx={{ fontSize: 43 }} />
+                {isLoggedIn && <>
+                    <li className={classes.navElement}>
+                        <button className={classes.communityPatternsBtn} onClick={() => navigate("/fiber-friend/community-patterns")}>
+                            <CommunityPatternsIcon className={classes.communityPatternsIcon} />
+                            <span className={classes.btnText}>Community patterns</span>
                         </button>
                     </li>
-                }
-                {isMobile &&
-                    <li className={classes.addIcon} >
+                    <li className={classes.navElement}>
                         <button
+                            className={classes.addNew}
                             onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClickAdd(e)}
                             aria-label="Add"
                         >
@@ -77,8 +77,8 @@ export default function Navbar() {
                             MenuListProps={{
                                 'aria-labelledby': 'basic-button',
                             }}
-                            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                            transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                            anchorOrigin={{ vertical: `${isMobile ? 'top' : "bottom"}`, horizontal: 'center' }}
+                            transformOrigin={{ vertical: `${isMobile ? 'bottom' : "top"}`, horizontal: 'center' }}
                             PaperProps={{ className: `${classes.addMenuPaper}` }}
                         >
                             <MenuItem onClick={() => {
@@ -111,10 +111,11 @@ export default function Navbar() {
                             </MenuItem>
                         </Menu>
                     </li>
-                }
-                <li className={classes.accountIcon}>
+                </>}
+                <li className={classes.navElement}>
                     <button
-                        onClick={() => { navigate("account") }}
+                        className={classes.accountBtn}
+                        onClick={() => { isMobile ? handleClickMenu() : navigate("account") }}
                         aria-label="Account"
                     >
                         <AccountCircleIcon sx={{ fontSize: 43 }} />
