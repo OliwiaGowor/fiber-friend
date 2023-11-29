@@ -9,12 +9,13 @@ import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
-import CodeIcon from '@mui/icons-material/Code';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import classes from './TextEditor.module.scss';
-//TODO: display only most important buttons on mobile
-//TODO: add if my pattern?
+import useMediaQuery from '@mui/material/useMediaQuery';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -41,8 +42,22 @@ interface TextEditorProps {
 
 export default function TextEditor(props: TextEditorProps) {
   const { defaultValue, getValue, ...other } = props;
+  const isMobile = useMediaQuery('(max-width: 800px)');
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const [value, setValue] = useState(defaultValue ? defaultValue : initialValue);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+
   const renderElement = React.useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = React.useCallback((props: any) => <Leaf {...props} />, []);
 
@@ -73,10 +88,46 @@ export default function TextEditor(props: TextEditorProps) {
           <MarkButton format='italic' icon={<FormatItalicIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
           <MarkButton format='underline' icon={<FormatUnderlinedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
           <BlockButton format="heading-one" icon={<LooksOneIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
-          <BlockButton format="heading-two" icon={<LooksTwoIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
-          <BlockButton format="block-quote" icon={<FormatQuoteIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
-          <BlockButton format="numbered-list" icon={<FormatListNumberedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
-          <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+          {isMobile &&
+            <>
+              <button className={classes.formatButton} onClick={handleClick} ><MoreVertIcon sx={{ fontSize: 27 }}/></button>
+              <div className={classes.optionsMenu}>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                  <MenuItem onClick={() => handleClose()}
+                  >
+                    <BlockButton format="heading-two" icon={<LooksTwoIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose()}
+                  >
+                    <BlockButton format="block-quote" icon={<FormatQuoteIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose()}>
+                    <BlockButton format="numbered-list" icon={<FormatListNumberedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+                  </MenuItem>
+                  <MenuItem onClick={() => handleClose()}>
+                    <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+                  </MenuItem>
+                </Menu>
+              </div>
+            </>
+          }
+          {!isMobile &&
+            <>
+              <BlockButton format="heading-two" icon={<LooksTwoIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+              <BlockButton format="block-quote" icon={<FormatQuoteIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+              <BlockButton format="numbered-list" icon={<FormatListNumberedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+              <BlockButton format="bulleted-list" icon={<FormatListBulletedIcon sx={{ fontSize: 27 }} />} className={classes.formatButton} />
+            </>
+          }
         </div>
         <Editable
           className={classes.textField}

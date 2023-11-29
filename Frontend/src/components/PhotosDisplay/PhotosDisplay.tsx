@@ -11,8 +11,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import classes from './PhotosDisplay.module.scss';
 import FullScreenDisplay from '../FullScreenDisplay/FullScreenDisplay';
 
-//TODO: Moblie design
-//TODO: add on fullscreen to either show original size or fit to screen
 interface PhotosDisplayProps {
     data: any;
     miniatureSize?: string;
@@ -25,6 +23,15 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
     const isMobile = useMediaQuery('(max-width: 760px)');
     const windowWidth = React.useRef(window.innerWidth);
     const windowHeight = React.useRef(window.innerHeight);
+
+    React.useEffect(() => {
+        const swiperWrapper = document.getElementsByClassName('swiper-wrapper')[2] as HTMLElement;
+
+        if (swiperWrapper) {
+            swiperWrapper.style.display = 'flex';
+            swiperWrapper.style.alignItems = 'center';
+        }
+    }, []);
 
     const vw = (percent: number) => {
         var w = Math.max(document.documentElement.clientWidth, windowWidth.current || 0);
@@ -117,7 +124,7 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
             >
                 <Swiper
                     pagination={pagination}
-                    modules={[Pagination, Navigation]}
+                    modules={[Navigation]}
                     className={classes.photos}
                     navigation={true}
                     rewind={true}

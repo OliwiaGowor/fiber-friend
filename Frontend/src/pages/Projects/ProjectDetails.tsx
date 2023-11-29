@@ -15,6 +15,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import CounterGroup from "../../components/CounterGroup/CounterGroup";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function ProjectDetails() {
     const navigate = useNavigate();
@@ -83,6 +84,12 @@ export default function ProjectDetails() {
     }, []);
 
     return (
+        <>
+            {isMobile &&
+                <div className={classes.backButton} onClick={() => navigate("/fiber-friend/account")}>
+                    <ArrowBackIcon sx={{ fontSize: 35 }} />
+                </div>
+            }
         <div className={classes.container}>
             <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                 <Await resolve={project}>
@@ -220,6 +227,7 @@ export default function ProjectDetails() {
                 </Await>
             </Suspense>
         </div>
+        </>
     );
 }
 

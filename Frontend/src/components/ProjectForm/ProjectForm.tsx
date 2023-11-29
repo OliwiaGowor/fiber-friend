@@ -17,6 +17,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextEditor from "../../components/TextEditor/TextEditor";
 import { getAuthToken } from "../../utils/auth";
+import dayjs from "dayjs";
 
 interface ProjectFormProps {
     project?: any;
@@ -25,7 +26,6 @@ interface ProjectFormProps {
 
 export default function ProjectForm({ project, method }: ProjectFormProps) {
     const token = getAuthToken();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const navigate = useNavigate();
     const [type, setType] = React.useState(project?.type ?? 'crochet');
     const [yarns, setYarns] = React.useState<any>(project?.yarns ?? []);
@@ -237,7 +237,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                         helperText: dateErrorMessage,
                                     },
                                 }}
-                                defaultValue={startDate}
+                                value={dayjs(startDate)}
                             />
                             <DatePicker
                                 className={classes.dateInput}
@@ -245,7 +245,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                 format="DD-MM-YYYY"
                                 minDate={startDate ?? undefined}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
-                                defaultValue={endDate}
+                                value={dayjs(endDate)}
                             />
                             <br></br>
                             <p className={classes.additionalText}>Add an end date to mark project as finished!</p>

@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-//TODO: change amount to value
+
 interface CounterMiniatureProps {
     editable: boolean;
     counter: any;
@@ -68,7 +68,7 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
             </div>
             }
             <h1 className={classes.counterName}>{counter.name}</h1>
-            <div className={classes.number}>{counter.amount}</div>
+            <div className={classes.number}>{counter.value}</div>
         </div>
     );
 }

@@ -1,8 +1,21 @@
 .container {
   width: 100%;
 
+  .header {
+    padding-left: 50px;
+    font-size: 2em;
+  }
+}
+
+.backButton {
+  position: absolute;
+  top: 38px;
+}
+
+@media screen and (min-width: 800px) {
+  .container {
     .header {
-      font-size: 42px;
+      font-size: 3em;
     }
   }
-  
+}

@@ -5,7 +5,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import FiltersBar from "../FiltersBar/FiltersBar";
-//TODO: smaller tiles for mobile
+
 interface TilesProps {
   fetchData: Function;
   link?: string;
@@ -17,7 +17,7 @@ interface TilesProps {
 //`https://api.instantwebtools.net/v1/passenger?page=${currPage}&size=10`
 function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   const navigate = useNavigate();
-  const isMobile = useMediaQuery('(max-width: 760px)');
+  const isMobile = useMediaQuery('(max-width: 800px)');
   const [loading, setLoading] = useState(false); // setting the loading state
   const [currPage, setCurrPage] = useState(1); // storing current page number
   const [elements, setElements] = useState<any>([]); // storing list
@@ -54,11 +54,13 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   };
 
   const handleScroll = () => {
-    if (!loading) {
+    if (!loading && document?.documentElement) {
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-      const footerHeight = footer.clientHeight;
+      const footerHeight = footer?.clientHeight ?? 0 + 200;
 
-      if (scrollTop + clientHeight >= scrollHeight - footerHeight - 200) {
+      if (isMobile && scrollTop + clientHeight >= scrollHeight) {
+        handleFetch();
+      } else if (scrollTop + clientHeight >= scrollHeight - footerHeight) {
         handleFetch();
       }
     }

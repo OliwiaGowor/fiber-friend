@@ -26,14 +26,13 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
     }, [chosenFilters]);
 
     const getFilterValue = (filterName: string) => {
-        console.log(filterName)
         if (filterName in chosenFilters) {
             return chosenFilters[filterName as keyof typeof chosenFilters];
         } else {
             return '';
         }
     };
-    console.log(chosenFilters)
+
     const handleChangeFilter = (e: any, filterName: string) => {
         const newFilterValue = e.target.value;
         const tmpFilters = { ...chosenFilters } as { [key: string]: any };

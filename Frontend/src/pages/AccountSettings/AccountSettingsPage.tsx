@@ -6,6 +6,7 @@ import { Button, TextField } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import KeyIcon from '@mui/icons-material/Key';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import InfoIcon from '@mui/icons-material/Info';
 
 const AccountSettingsPage = () => {
   const navigate = useNavigate();
@@ -53,6 +54,36 @@ const AccountSettingsPage = () => {
         >
           <PersonRemoveIcon className={classes.icon} />
           Delete account
+          <ArrowForwardIosIcon className={classes.arrowIcon} />
+        </button>
+      </div>
+      <div className={classes.sectionContainer}>
+        <h2 className={classes.sectionHeader}>Useful links</h2>
+        <button
+          className={classes.settingsButton}
+          onClick={() => navigate("")}
+        >
+          <InfoIcon className={classes.icon} />
+          About
+          <ArrowForwardIosIcon className={classes.arrowIcon} />
+        </button>
+      </div>
+      <div className={classes.sectionContainer}>
+        <h2 className={classes.sectionHeader}>Contact</h2>
+        <button
+          className={classes.settingsButton}
+          onClick={() => navigate("fiber-friend/contact-us")}
+        >
+          <KeyIcon className={classes.icon} />
+          Contact us
+          <ArrowForwardIosIcon className={classes.arrowIcon} />
+        </button>
+        <button
+          className={classes.settingsButton}
+          onClick={() => navigate('/fiber-friend/report-problem')}
+        >
+          <PersonRemoveIcon className={classes.icon} />
+          Report problem
           <ArrowForwardIosIcon className={classes.arrowIcon} />
         </button>
       </div>

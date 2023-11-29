@@ -10,6 +10,7 @@ import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import classes from './ResourceDetails.module.scss';
 import { getAuthToken } from '../../utils/auth';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function ResourceDetails() {
     const token = getAuthToken();
@@ -99,73 +100,80 @@ export default function ResourceDetails() {
     };
 
     return (
-        <div className={classes.container}>
-            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={resource}>
-                    <div className={classes.details}>
-                        <h1 className={classes.header}>
-                            {resource.name}
-                            <Button
-                                id="basic-button"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick}
-                                className={classes.editButton}
-                            >
-                                <EditIcon className={classes.editIcon} />
-                            </Button>
-                        </h1>
-                        <div className={classes.editMenu}>
-                            <Menu
-                                id="basic-menu"
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                }}
-                                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                            >
-                                <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/resources/' + resource.id + '/edit'); }}>
-                                    Edit
-                                </MenuItem>
-                                <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
-                                    Delete counter
-                                </MenuItem>
-                            </Menu>
-                        </div>
-                        <div className={classes.dividedContainer}>
-                            <div className={classes.leftElements}>
-                                <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
-                                    <h2 className={classes.sectionHeader}>Details</h2>
-                                    <div className={classes.resourceInfoContainer}>
-                                        <div className={classes.attributeName}>Type: </div>
-                                        {resource.type ? resource.type : <br></br>}
-                                        {renderInfoElements()}
-                                        <div className={classes.attributeName}>Quantity: </div>
-                                        {resource.quantity ? resource.quantity : <br></br>}
+        <>
+            {isMobile &&
+                <div className={classes.backButton} onClick={() => navigate("/fiber-friend/account")}>
+                    <ArrowBackIcon sx={{ fontSize: 35 }} />
+                </div>
+            }
+            <div className={classes.container}>
+                <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
+                    <Await resolve={resource}>
+                        <div className={classes.details}>
+                            <h1 className={classes.header}>
+                                {resource.name}
+                                <Button
+                                    id="basic-button"
+                                    aria-controls={open ? 'basic-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={handleClick}
+                                    className={classes.editButton}
+                                >
+                                    <EditIcon className={classes.editIcon} />
+                                </Button>
+                            </h1>
+                            <div className={classes.editMenu}>
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                >
+                                    <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/resources/' + resource.id + '/edit'); }}>
+                                        Edit
+                                    </MenuItem>
+                                    <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
+                                        Delete counter
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                            <div className={classes.dividedContainer}>
+                                <div className={classes.leftElements}>
+                                    <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
+                                        <h2 className={classes.sectionHeader}>Details</h2>
+                                        <div className={classes.resourceInfoContainer}>
+                                            <div className={classes.attributeName}>Type: </div>
+                                            {resource.type ? resource.type : <br></br>}
+                                            {renderInfoElements()}
+                                            <div className={classes.attributeName}>Quantity: </div>
+                                            {resource.quantity ? resource.quantity : <br></br>}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={classes.rightElements}>
+                                    <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
+                                        {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                        <PhotosDisplay data={resource} />
                                     </div>
                                 </div>
                             </div>
-                            <div className={classes.rightElements}>
-                                <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
-                                {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
-                                        <PhotosDisplay data={resource} />
+                            <div className={classes.wholeScreenElements}>
+                                <div className={classes.sectionContainer}>
+                                    <h2 className={classes.sectionHeader}>Notes</h2>
+                                    <div className={classes.notes}><TextDisplay defaultValue={resource.notes} /></div>
                                 </div>
                             </div>
                         </div>
-                        <div className={classes.wholeScreenElements}>
-                            <div className={classes.sectionContainer}>
-                                <h2 className={classes.sectionHeader}>Notes</h2>
-                                <div className={classes.notes}><TextDisplay defaultValue={resource.notes} /></div>
-                            </div>
-                        </div>
-                    </div>
-                </Await>
-            </Suspense>
-        </div>
+                    </Await>
+                </Suspense>
+            </div>
+        </>
     );
 }
 

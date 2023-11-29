@@ -46,6 +46,20 @@
   }
 }
 
+.cancelButton {
+  @include root.button($margin-lr: 0, $margin-tb: 0px);
+
+  background-color: var(--background-color);
+}
+
+.enterButton {
+  @include root.button($margin-lr: 0, $margin-tb: 0px);
+}
+
+.counterDialogPaper {
+  bottom: calc(var(--navbar-height) / 2);
+}
+
 @media screen and (min-width: 800px) {
   .container {
     .counters {

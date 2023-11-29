@@ -31,7 +31,7 @@ const PageNotFound = () => {
                         <Button
                             variant="contained"
                             className={classes.button}
-                            onClick={() => navigate('report-problem')}
+                            onClick={() => navigate('/fiber-friend/report-problem')}
                         >
                             Report problem
                         </Button>

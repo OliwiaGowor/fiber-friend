@@ -5,6 +5,6 @@ export default function EditProject() {
     const { project } = useRouteLoaderData("project-details") as { project: any };
     
     return (
-        <ProjectForm project={project} method="POST" />
+        <ProjectForm project={project} method="PUT" />
     );
 }

@@ -1,6 +1,4 @@
 import Button from "@mui/material/Button";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
 import React from "react";
 import classes from './FileInput.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';

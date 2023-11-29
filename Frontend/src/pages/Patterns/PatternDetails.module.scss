@@ -11,6 +11,7 @@
       overflow-wrap: break-word;
       margin-top: 0px;
       margin-bottom: 0px;
+      padding-left: 50px;
       font-size: 2.25rem;
 
       .editButton {
@@ -63,7 +64,7 @@
 
       .leftElements {
         width: 100%;
-        
+
         .yarnDetails {
           display: flex;
           flex-direction: row;
@@ -91,9 +92,18 @@
   }
 }
 
+.backButton {
+  position: absolute;
+  top: 24px;
+}
+
 @media screen and (min-width: 800px) {
   .container {
     .details {
+      .header {
+        padding-left: 0px;
+      }
+      
       .dividedContainer {
         flex-direction: row;
         gap: 30px;

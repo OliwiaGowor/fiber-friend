@@ -64,8 +64,12 @@
   height: 100vh !important;
 
   .photos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: fit-content !important;
-    
+    height: fit-content !important;
+
     .swiper-pagination-bullet {
       width: 20px;
       height: 20px;
@@ -86,7 +90,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100vw !important;
 
       .photo {
         object-fit: cover;

@@ -30,7 +30,7 @@ const ErrorPage = () => {
                         <Button
                             className={classes.button}
                             variant="contained"
-                            onClick={() => navigate('report-problem')}
+                            onClick={() => navigate('/fiber-friend/report-problem')}
                             aria-label="Report problem"
                         >
                             Report problem

@@ -172,7 +172,7 @@ export const PatternPdf = () => {
     };
 
     const photoSrc = photos[0]?.src ?? "";
-    const Photo = () => <Image src={"www.react-pdf.org/test.jpg"} style={styles.photo} />; //FIXME: change src to photoSrc
+    const Photo = () => <Image src={photoSrc} style={styles.photo} />;
 
     return (
         <Document>

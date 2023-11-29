@@ -1,5 +1,6 @@
 .main {
   padding-top: 0px;
+  padding-bottom: var(--navbar-height);
   margin: 0px var(--margin-mobile);
   overflow-x: hidden;
 }
@@ -8,5 +9,6 @@
   .main {
     margin: unset;
     padding-top: var(--navbar-height);
+    padding-bottom: 0;
   }
 }

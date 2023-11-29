@@ -2,24 +2,10 @@ import * as React from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import EditIcon from '@mui/icons-material/Edit';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from "@mui/material/Button";
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import classes from "./BigCounter.module.scss";
-
-//FIXME: style number input
-//FIXME: add auto width function to count input
-//TODO: add count input validation (only numbers)
 
 interface BigCounterProps {
     getCounter: (counter: any) => void;
@@ -32,6 +18,7 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
     const [counterName, setCounterName] = React.useState<string>("");
     const [openDialog, setOpenDialog] = React.useState(false);
     const manualValue = React.useRef<HTMLInputElement | null>(null);
+    const countInputRef = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
         document.body.addEventListener("keydown", handleSpace);
@@ -48,7 +35,6 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
         getCounter(counter);
     }, [count, counterName]);
 
-
     const handleClickOpen = () => {
         setOpenDialog(true);
     };
@@ -57,9 +43,13 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
         setOpenDialog(false);
     };
 
-    const handleSetCounter = (amount: number) => {
-        setCount(amount);
-        setOpenDialog(false);
+    const handleSetCount = (number: string) => {
+        if (number && /^\d+$/.test(number)) {
+            setCount(Number(number));
+            setOpenDialog(false);
+        } else {
+            return;
+        }
     };
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -147,23 +137,24 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
                 <input
                     className={classes.number}
                     id="amount"
-                    type="text"
+                    type="number"
                     value={count}
                     onChange={(e) => { setCount(Number(e.target.value)) }}
                     aria-label="Counter Value"
+                    ref={countInputRef}
                 />
                 <div className={classes.buttons}>
                     <Button variant='contained' className={classes.subBtn} onClick={() => {
                         (count > 0) ? setCount(count - 1) : setCount(count);
                     }}
-                    aria-label="Decrease Counter"
+                        aria-label="Decrease Counter"
                     >
                         <RemoveIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }} ></RemoveIcon>
                     </Button>
                     <Button variant='contained' className={classes.addBtn} onClick={() => {
                         setCount(count + 1);
                     }}
-                    aria-label="Increase Counter"
+                        aria-label="Increase Counter"
                     >
                         <AddIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }}></AddIcon>
                     </Button>

@@ -15,7 +15,7 @@ import { json } from 'react-router';
 import { getAuthToken, tokenLoader } from '../../utils/auth';
 
 //TODO: smaller tiles on mobile and horizontal scroll
-//FIXME: fix dialog on mobile
+//FIXME: style buttons
 
 interface CounterGroupProps {
     defaultValue?: object;
@@ -80,16 +80,21 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
                 open={openDialog}
                 onClose={handleCloseDialog}
                 aria-labelledby="add-counter-dialog-title"
+                PaperProps={{ className: `${classes.counterDialogPaper}` }}
             >
                 <DialogTitle>Add counter</DialogTitle>
                 <DialogContent>
                     <BigCounter getCounter={setTmpCounter} />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog} aria-label="Cancel">
+                    <Button
+                        className={classes.cancelButton}
+                        onClick={handleCloseDialog}
+                        aria-label="Cancel">
                         Cancel
                     </Button>
                     <Button
+                        className={classes.enterButton}
                         onClick={() => {
                             addCounter((tmpCounter));
                             handleCloseDialog();

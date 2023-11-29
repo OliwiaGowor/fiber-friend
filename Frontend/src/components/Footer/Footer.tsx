@@ -3,8 +3,6 @@ import logoPicture from '../../photos/yarn-ball.png';
 import { EmailIcon, FacebookIcon } from '../../svg/MediaIcons';
 import classes from './Footer.module.scss';
 
-//TODO: hide footer in mobile view and move information to account page
-
 const Footer = () => {
     return (
         <footer className={classes.footer}>

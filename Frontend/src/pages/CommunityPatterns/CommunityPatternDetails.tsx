@@ -16,9 +16,7 @@ import { tokenLoader } from "../../utils/auth";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
 import { Pattern } from "../../DTOs/Pattern";
-//TODO: mobile design
 
-//TODO: for generating pdfs ask if attach added pattern files to it
 export default function CommunityPatternDetails() {
     const token = tokenLoader();
     const navigate = useNavigate();

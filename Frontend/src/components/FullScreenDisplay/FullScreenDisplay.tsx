@@ -1,25 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classes from './FullScreenDisplay.module.scss';
 import { File } from '../../DTOs/File';
 
 interface FullScreenDisplayProps {
-  file: File; //FIXME change to File
+  file: File;
 }
 
 const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
   const [displaySize, setDisplaySize] = useState<{ width: number; height: number }>({
-    width: file.width,
-    height: file.height,
+    width: 0,
+    height: 0,
   });
 
   useEffect(() => {
     const updateSize = () => {
+      const img = new Image();
+      img.src = file.src;
+      console.log(img, img.naturalWidth, img.naturalHeight)
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
 
-      const aspectRatio = file.width / file.height;
+      const aspectRatio = img.naturalWidth / img.naturalHeight;
+      console.log(aspectRatio)
       let newWidth = screenWidth;
-      let newHeight = screenWidth * aspectRatio;
+      let newHeight = screenWidth / aspectRatio;
 
       if (newHeight > screenHeight) {
         newHeight = screenHeight;
@@ -48,7 +52,7 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
           data={file.src}
           width={displaySize.width}
           height={displaySize.height}
-          style={{ width: displaySize.width, height: displaySize.height, objectFit: 'cover' }}
+          style={{ width: displaySize.width, height: displaySize.height, objectFit: 'contain' }}
         >
         </object>
       );
@@ -62,7 +66,7 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
           loading="lazy"
           width={displaySize.width}
           height={displaySize.height}
-          style={{ width: displaySize.width, height: displaySize.height, objectFit: 'cover' }}
+          style={{ width: displaySize.width, height: displaySize.height, objectFit: 'contain' }}
         />
       );
     }
