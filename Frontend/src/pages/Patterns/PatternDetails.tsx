@@ -17,6 +17,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
 import { Pattern } from "../../DTOs/Pattern";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ShareIcon from '@mui/icons-material/Share';
 
 //TODO: for generating pdfs ask if attach added pattern files to it
 export default function PatternDetails() {
@@ -58,7 +59,32 @@ export default function PatternDetails() {
         } else {
             return navigate('/fiber-friend/account/projects');
         }
-    }
+    };
+
+    const handleShare = async () => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/Share/${pattern.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authoriaztion: "Bearer " + token,
+            },
+        });
+//TODO: add popup with informatoon about sharing
+        if (!response.ok) {
+            // return { isError: true, message: 'Could not fetch project.' };
+            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
+            //   status: 500,
+            // });
+            throw json(
+                { message: 'Could not fetch project.' },
+                {
+                    status: 500,
+                }
+            );
+        } else {
+            return navigate('/fiber-friend/account/projects');
+        }
+    };
 
     React.useEffect(() => {
         if (pattern) {
@@ -79,6 +105,7 @@ export default function PatternDetails() {
                         <div className={classes.details}>
                             <h1 className={classes.header}>
                                 {pattern.name}
+                                {pattern.isShared && <ShareIcon className={classes.shareIcon} />}
                                 <Button
                                     id="basic-button"
                                     aria-controls={open ? 'basic-menu' : undefined}
@@ -117,6 +144,9 @@ export default function PatternDetails() {
                                     >
                                         Edit
                                     </MenuItem>
+                                    {pattern.isAuthorial && <MenuItem onClick={() => { handleClose(); handleShare(); }}>
+                                        Share pattern
+                                    </MenuItem>}
                                     <MenuItem onClick={() => { handleClose(); handleDelete(); }}>
                                         Delete pattern
                                     </MenuItem>

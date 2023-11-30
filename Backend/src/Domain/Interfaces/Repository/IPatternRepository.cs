@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Common.Helpers;
+﻿using Common.Helpers;
+using Domain.Entities;
 
 namespace Domain.Interfaces.Repository;
 
@@ -11,5 +11,6 @@ public interface IPatternRepository
     Pattern GetPatternById(Guid patternId);
     public IQueryable<Pattern> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
     public IQueryable<Pattern> GetSharedPatterns(FilterModel filters, int page, int pageSize);
+    public IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
     void UpdatePattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies);
 }

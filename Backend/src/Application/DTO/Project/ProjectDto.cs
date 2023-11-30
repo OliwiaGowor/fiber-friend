@@ -1,4 +1,5 @@
-﻿using Application.DTO.Yarn;
+﻿using Application.DTO.Pattern;
+using Application.DTO.Yarn;
 using Application.Mapping;
 using AutoMapper;
 using Common.Enums;
@@ -17,7 +18,8 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
     public string Notes { get; set; }
     //public ??? List<Photo> Photos { get; set; }
     //public ??? List<File> Files { get; set; }
-    public Guid? PatternId { get; set; }
+    public CommunityPatternDto? ConnectedCommPattern { get; set; }
+    public PatternDto? ConnectedPattern { get; set; }
     public List<YarnDto>? Yarns { get; set; }
 
     public static void Mapping(Profile profile)
@@ -31,7 +33,8 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.Finished, opt => opt.MapFrom(s => s.Finished))
             .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
             .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
-            .ForMember(d => d.PatternId, opt => opt.MapFrom(s => s.PatternId))
+            .ForMember(d => d.ConnectedPattern, opt => opt.MapFrom(s => s.ConnectedPattern))
+            .ForMember(d => d.ConnectedCommPattern, opt => opt.MapFrom(s => s.ConnectedCommPattern))
             .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns));
 
         profile.CreateMap<ProjectDto, Domain.Entities.Project>().ReverseMap();

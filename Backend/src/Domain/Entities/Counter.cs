@@ -6,4 +6,5 @@ public class Counter
     public string Name { get; set; }
     public int Value { get; set; }
     public Guid CountersGroupId { get; set; }
+    public CountersGroup CountersGroup { get; set; }
 }

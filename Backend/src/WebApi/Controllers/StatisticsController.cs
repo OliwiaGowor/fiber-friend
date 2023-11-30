@@ -17,7 +17,7 @@ public class StatisticsController : ControllerBase
         _statisticsService = statisticsService;
     }
 
-    [HttpGet("{userId:Guid}/{timePeriodStart:DateTime}/{timePeriodEnd:DateTime}")]
+    [HttpGet("ProjectStatistics/{userId:Guid}/{timePeriodStart:DateTime}/{timePeriodEnd:DateTime}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -25,6 +25,19 @@ public class StatisticsController : ControllerBase
     {
         if (userId.Equals("0") || userId.Equals("")) return BadRequest();
         var service = _statisticsService.GetProjectsStatisticsForUser(userId, timePeriodStart, timePeriodEnd);
+        if (service is null) return NotFound();
+
+        return Ok(service);
+    }
+
+    [HttpGet("/PatternsStatistics/{userId:Guid}/{timePeriodStart:DateTime}/{timePeriodEnd:DateTime}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<ResourceDto> GetPatternsStatisticsForUser(Guid userId, DateTime timePeriodStart, DateTime timePeriodEnd)
+    {
+        if (userId.Equals("0") || userId.Equals("")) return BadRequest();
+        var service = _statisticsService.GetPatternsStatisticsForUser(userId, timePeriodStart, timePeriodEnd);
         if (service is null) return NotFound();
 
         return Ok(service);

@@ -1,6 +1,5 @@
 using Common.Helpers;
 using Domain.Entities;
-using Common.Enums;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
@@ -20,19 +19,19 @@ public class PatternRepository : IPatternRepository
 
         foreach (var yarn in yarns)
         {
-            yarn.ParentId = pattern.Id;
+            yarn.PatternId = pattern.Id;
             _dbContext.Yarns.Add(yarn);
         }
 
         foreach (var tool in tools)
         {
-            tool.ParentId = pattern.Id;
+            tool.PatternId = pattern.Id;
             _dbContext.Tools.Add(tool);
         }
 
         foreach (var otherSupply in otherSupplies)
         {
-            otherSupply.ParentId = pattern.Id;
+            otherSupply.PatternId = pattern.Id;
             _dbContext.OtherSupplies.Add(otherSupply);
         }
 
@@ -52,7 +51,7 @@ public class PatternRepository : IPatternRepository
 
     public IQueryable<Pattern> GetAllPatternsForUser(Guid userId)
     {
-        var patterns = _dbContext.Patterns.Where(y => y.UserId == userId);
+        var patterns = _dbContext.Patterns.Where(y => y.AuthorId == userId);
         return patterns;
     }
 
@@ -81,7 +80,7 @@ public class PatternRepository : IPatternRepository
             query = query.Where(p => p.IsAuthorial == filters.isAuthorial);
         }
 
-        var patterns = query.Where(p => p.UserId == userId)
+        var patterns = query.Where(p => p.AuthorId == userId)
             .Skip((page - 1) * pageSize)
             .Take(pageSize);
 
@@ -114,6 +113,17 @@ public class PatternRepository : IPatternRepository
         return patterns;
     }
 
+    public IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
+    {
+        var patterns = _dbContext.Patterns.Where(
+            y => y.AuthorId == userId &&
+            y.IsAuthorial == true &&
+            y.StartDate >= timePeriodStart &&
+            y.EndDate <= timePeriodEnd
+            );
+        return patterns;
+    }
+
     public void UpdatePattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies)
     {
         _dbContext.Attach(pattern);
@@ -122,7 +132,7 @@ public class PatternRepository : IPatternRepository
         _dbContext.Entry(pattern).Property("Category").IsModified = true;
         _dbContext.Entry(pattern).Property("Notes").IsModified = true;
 
-        var existingYarns = _dbContext.Yarns.Where(y => y.ParentId == pattern.Id);
+        var existingYarns = _dbContext.Yarns.Where(y => y.PatternId == pattern.Id);
         _dbContext.Yarns.RemoveRange(existingYarns);
 
         foreach (var yarn in yarns)
@@ -130,7 +140,7 @@ public class PatternRepository : IPatternRepository
             _dbContext.Yarns.Add(yarn);
         }
 
-        var existingTools = _dbContext.Tools.Where(y => y.ParentId == pattern.Id);
+        var existingTools = _dbContext.Tools.Where(y => y.PatternId == pattern.Id);
         _dbContext.Tools.RemoveRange(existingTools);
 
         foreach (var tool in tools)
@@ -138,7 +148,7 @@ public class PatternRepository : IPatternRepository
             _dbContext.Tools.Add(tool);
         }
 
-        var existingOtherSupplies = _dbContext.OtherSupplies.Where(y => y.ParentId == pattern.Id);
+        var existingOtherSupplies = _dbContext.OtherSupplies.Where(y => y.PatternId == pattern.Id);
         _dbContext.OtherSupplies.RemoveRange(existingOtherSupplies);
 
         foreach (var otherSupply in otherSupplies)

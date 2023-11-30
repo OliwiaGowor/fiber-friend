@@ -28,7 +28,7 @@ public class ResourceController : ControllerBase
         return Ok(list);
     }
 
-        [HttpGet("GetAllYarnsForUser/{userId:Guid}")]
+    [HttpGet("GetAllYarnsForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<IEnumerable<ResourceDto>> GetAllYarnsForUser(Guid userId)
     {

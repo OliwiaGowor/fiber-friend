@@ -18,6 +18,6 @@ public class OtherSupplyDto : IMapFrom<Domain.Entities.OtherSupply>
             .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
             .ForMember(d => d.Quantity, opt => opt.MapFrom(s => s.Quantity))
             .ForMember(d => d.Note, opt => opt.MapFrom(s => s.Note))
-            .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.ParentId));
+            .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.PatternId));
     }
 }

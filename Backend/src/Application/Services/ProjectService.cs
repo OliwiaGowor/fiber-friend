@@ -3,8 +3,8 @@ using Application.DTO.Yarn;
 using Application.Interfaces.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain.Entities;
 using Common.Enums;
+using Domain.Entities;
 using Domain.Interfaces.Repository;
 
 namespace Application.Services;
@@ -79,7 +79,7 @@ internal class ProjectService : IProjectService
         return projects;
     }
 
-        public List<ProjectDto> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
+    public List<ProjectDto> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
         var projects = _projectRepo.GetProjectsByTimePeriodForUser(timePeriodStart, timePeriodEnd, userId)
             .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)

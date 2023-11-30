@@ -1,5 +1,5 @@
-using Domain.Entities;
 using Common.Enums;
+using Domain.Entities;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
@@ -19,7 +19,7 @@ public class ProjectRepository : IProjectRepository
 
         foreach (var yarn in yarns)
         {
-            yarn.ParentId = project.Id;
+            yarn.ProjectId = project.Id;
             _dbContext.Yarns.Add(yarn);
         }
 
@@ -68,7 +68,7 @@ public class ProjectRepository : IProjectRepository
         return projects;
     }
 
-        public IQueryable<Project> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
+    public IQueryable<Project> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
         var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.StartDate >= timePeriodStart && y.EndDate <= timePeriodEnd);
         return projects;
@@ -84,14 +84,13 @@ public class ProjectRepository : IProjectRepository
         _dbContext.Entry(project).Property("Category").IsModified = true;
         _dbContext.Entry(project).Property("Notes").IsModified = true;
 
-        var existingYarns = _dbContext.Yarns.Where(y => y.ParentId == project.Id);
+        var existingYarns = _dbContext.Yarns.Where(y => y.ProjectId == project.Id);
         _dbContext.Yarns.RemoveRange(existingYarns);
 
         foreach (var yarn in yarns)
         {
             _dbContext.Yarns.Add(yarn);
         }
-
 
         _dbContext.SaveChanges();
     }

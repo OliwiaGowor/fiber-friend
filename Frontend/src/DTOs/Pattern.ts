@@ -9,6 +9,9 @@ export interface Pattern {
     type: NeedleworkType;
     author?: string;
     isAuthorial: boolean;
+    startDate?: Date;
+    endDate?: Date;
+    finished?: boolean;
     category: string;
     notes: Notes[];
     photos?: File[];
@@ -17,6 +20,7 @@ export interface Pattern {
     yarns: Yarn[];
     tools?: Tool[];
     otherSupplies?: OtherSupply[];
+    isShared: boolean;
 }
 
 export interface Tool {
@@ -24,7 +28,7 @@ export interface Tool {
     name: string;
     quantity: number;
     size: string;
-    parentId?: string;
+    patternId?: string;
 }
 
 export interface OtherSupply {
@@ -32,5 +36,5 @@ export interface OtherSupply {
     name: string;
     quantity: number;
     note?: string;
-    parentId?: string;
+    patternId?: string;
 }

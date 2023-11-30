@@ -14,6 +14,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { Pattern } from "../../DTOs/Pattern";
 import { NeedleworkType } from "../../DTOs/Enums";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 interface PatternFormProps {
     pattern?: Pattern;
@@ -35,6 +37,10 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     const [selectedImages, setSelectedImages] = React.useState<any | null>(pattern?.photos ?? "");
     const [selectedFiles, setSelectedFiles] = React.useState<any | null>(pattern?.files ?? "");
     const [notes, setNotes] = React.useState<any>(pattern?.notes ?? null);
+    const [dateError, setDateError] = React.useState<any>(null);
+    const [startDate, setStartDate] = React.useState<any>(pattern?.startDate ?? null);
+    const [endDate, setEndDate] = React.useState<any>(pattern?.endDate ?? null);
+    let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
@@ -56,6 +62,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                 //patterns: selectedFiles,
                 notes: notes,
                 userId: localStorage.getItem('userId') ?? "",
+                finished: endDate !== null ? true : false,
             };
             let url = `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
@@ -180,6 +187,36 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                 }
                                 label="This is my pattern!" />
                         </div>
+                        {isAuthorial &&
+                         <div className={classes.datePickers}>
+                         <DatePicker
+                             className={classes.dateInput}
+                             label="Start date *"
+                             onChange={(newValue: any) => { setStartDate(newValue) }}
+                             format="DD-MM-YYYY"
+                             onError={(newError) => {
+                                 setDateError(newError);
+                                 setRequiredError(false)
+                             }}
+                             slotProps={{
+                                 textField: {
+                                     helperText: dateErrorMessage,
+                                 },
+                             }}
+                             value={dayjs(startDate)}
+                         />
+                         <DatePicker
+                             className={classes.dateInput}
+                             label="End date"
+                             format="DD-MM-YYYY"
+                             minDate={startDate ?? undefined}
+                             onChange={(newValue: any) => { setEndDate(newValue) }}
+                             value={dayjs(endDate)}
+                         />
+                         <br></br>
+                         <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
+                     </div>
+                        }
                     </div>
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Photos</h2>

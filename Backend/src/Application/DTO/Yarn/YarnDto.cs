@@ -22,6 +22,6 @@ public class YarnDto : IMapFrom<Domain.Entities.Yarn>
             .ForMember(d => d.Gauge, opt => opt.MapFrom(s => s.Gauge))
             .ForMember(d => d.Stitch, opt => opt.MapFrom(s => s.Stitch))
             .ForMember(d => d.ToolSize, opt => opt.MapFrom(s => s.ToolSize))
-            .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.ParentId));
+            .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.PatternId ?? s.ProjectId));
     }
 }

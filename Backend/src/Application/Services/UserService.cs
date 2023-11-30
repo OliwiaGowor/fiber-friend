@@ -3,7 +3,6 @@ using Application.Interfaces.Services;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Services;
 

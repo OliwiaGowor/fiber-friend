@@ -36,18 +36,18 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-           userDocument.ApplyTo(existingUser);
-    
-                if (string.IsNullOrEmpty(existingUser.Username) ||
-                    string.IsNullOrEmpty(existingUser.Email) ||
-                    string.IsNullOrEmpty(existingUser.HashedPassword))
-                {
-                    return BadRequest();
-                }
-    
-                _userService.UpdateUser(existingUser);
-    
-                return NoContent();
+            userDocument.ApplyTo(existingUser);
+
+            if (string.IsNullOrEmpty(existingUser.Username) ||
+                string.IsNullOrEmpty(existingUser.Email) ||
+                string.IsNullOrEmpty(existingUser.HashedPassword))
+            {
+                return BadRequest();
+            }
+
+            _userService.UpdateUser(existingUser);
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

@@ -49,7 +49,7 @@ internal class ResourceService : IResourceService
         return resources;
     }
 
-        public List<ResourceDto> GetYarnsListForUser(Guid userId)
+    public List<ResourceDto> GetYarnsListForUser(Guid userId)
     {
         var yarns = _resourceRepo.GetAllYarnsForUser(userId)
             .ProjectTo<ResourceDto>(_mapper.ConfigurationProvider)

@@ -1,6 +1,4 @@
 using Application.DTO.User;
-using Domain.Entities;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Interfaces.Services
 {

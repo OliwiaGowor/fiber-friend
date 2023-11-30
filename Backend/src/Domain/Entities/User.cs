@@ -6,7 +6,9 @@ public class User
     public string Username { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string HashedPassword { get; set; } = null!;
-    public List<Pattern> Patterns { get; set; }
-    public List<Project> Projects { get; set; }
-    public List<CountersGroup> CountersGroups { get; set; }
+    public ICollection<Pattern> Patterns { get; set; }
+    public ICollection<Pattern>? SavedCommPatterns { get; set; }
+    public ICollection<Project> Projects { get; set; }
+    public ICollection<CountersGroup> CountersGroups { get; set; }
+    public ICollection<Resource> Resources { get; set; }
 }

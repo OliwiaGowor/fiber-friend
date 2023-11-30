@@ -5,5 +5,6 @@ namespace Application.Interfaces.Services;
 
 public interface IStatisticsService
 {
-    StatisticsDto GetProjectsStatisticsForUser(Guid userId, DateTime timePeriodStart, DateTime timePeriodEnd);
+    ProjectsStatisticsDto GetProjectsStatisticsForUser(Guid userId, DateTime timePeriodStart, DateTime timePeriodEnd);
+    PatternsStatisticsDto GetPatternsStatisticsForUser(Guid userId, DateTime timePeriodStart, DateTime timePeriodEnd);
 }

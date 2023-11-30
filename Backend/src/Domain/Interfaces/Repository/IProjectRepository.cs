@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Common.Enums;
+﻿using Common.Enums;
+using Domain.Entities;
 
 namespace Domain.Interfaces.Repository;
 

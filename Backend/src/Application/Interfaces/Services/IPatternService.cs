@@ -10,6 +10,7 @@ public interface IPatternService
     object GetPatternById(Guid patternId);
     public List<PatternDto> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
     public List<PatternDto> GetSharedPatterns(FilterModel filters, int page, int pageSize);
+    List<PatternDto> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
     object UpdatePattern(NewPatternDto pattern);
     void DeletePattern(Guid id);
 }

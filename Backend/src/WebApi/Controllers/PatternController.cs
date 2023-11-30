@@ -1,10 +1,9 @@
 ﻿using Application.DTO.Pattern;
 using Application.Interfaces.Services;
 using AutoMapper;
-using Common.Enums;
+using Common.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Common.Helpers;
 
 namespace WebApi.Controllers;
 
@@ -47,7 +46,7 @@ public class PatternController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetPatternsForUser([FromQuery] FilterModel filters, Guid userId, [FromQuery]int page = 1, [FromQuery]int pageSize = 10)
+    public ActionResult<PatternDto> GetPatternsForUser([FromQuery] FilterModel filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
         var service = _patternService.GetPatternsForUser(filters, userId, page, pageSize);
@@ -56,21 +55,6 @@ public class PatternController : ControllerBase
 
         return Ok(service);
     }
-
-    [HttpGet("GetSharedPatterns/{filters}/page={page}/pageSize={pageSize}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetSharedPatterns([FromQuery] FilterModel filters, [FromQuery]int page = 1, [FromQuery]int pageSize = 10)
-    {
-        if (page < 0 || pageSize < 0) return BadRequest();
-        var service = _patternService.GetSharedPatterns(filters, page, pageSize);
-
-        if (service is null) return NotFound();
-
-        return Ok(service);
-    }
-
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]

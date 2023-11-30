@@ -6,6 +6,6 @@ public class OtherSupply
     public string Name { get; set; }
     public int Quantity { get; set; }
     public string? Note { get; set; }
-    public Guid ParentId { get; set; }
-    public Project Parent { get; set; }
+    public Guid PatternId { get; set; }
+    public Pattern Pattern { get; set; }
 }

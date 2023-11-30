@@ -2,9 +2,9 @@
 using Application.Interfaces.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
-using Common.Helpers;
 
 namespace Application.Services;
 
@@ -53,7 +53,7 @@ internal class PatternService : IPatternService
         return patterns;
     }
 
-   public List<PatternDto> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize)
+    public List<PatternDto> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize)
     {
         var patterns = _patternRepo.GetPatternsForUser(filters, userId, page, pageSize)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
@@ -65,6 +65,15 @@ internal class PatternService : IPatternService
     public List<PatternDto> GetSharedPatterns(FilterModel filters, int page, int pageSize)
     {
         var patterns = _patternRepo.GetSharedPatterns(filters, page, pageSize)
+            .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return patterns;
+    }
+
+    public List<PatternDto> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
+    {
+        var patterns = _patternRepo.GetPatternsByTimePeriodForUser(timePeriodStart, timePeriodEnd, userId)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
             .ToList();
 

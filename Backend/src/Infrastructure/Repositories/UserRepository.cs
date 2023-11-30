@@ -1,7 +1,5 @@
 using Domain.Entities;
 using Domain.Interfaces.Repository;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories

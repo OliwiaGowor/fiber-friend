@@ -18,6 +18,6 @@ public class ToolDto : IMapFrom<Domain.Entities.Tool>
             .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
             .ForMember(d => d.Quantity, opt => opt.MapFrom(s => s.Quantity))
             .ForMember(d => d.Size, opt => opt.MapFrom(s => s.Size))
-            .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.ParentId));
+            .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.PatternId));
     }
 }

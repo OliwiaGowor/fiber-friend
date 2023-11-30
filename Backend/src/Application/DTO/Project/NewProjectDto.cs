@@ -18,7 +18,7 @@ public class NewProjectDto : IMapFrom<Domain.Entities.Project>
     public string Notes { get; set; } = "";
     //public ??? List<Photo> Photos { get; set; }
     //public ??? List<File> Files { get; set; }
-    public Guid? PatternId { get; set; }
+    public Guid? ConnectedPatternId { get; set; }
     public List<NewYarnDto>? Yarns { get; set; }
 
     public static void Mapping(Profile profile)

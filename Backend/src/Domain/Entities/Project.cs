@@ -14,8 +14,12 @@ public class Project
     public string Notes { get; set; }
     //public ??? List<Photo> Photos { get; set; }
     //public ??? List<File> Files { get; set; }
-    public Guid? PatternId { get; set; }
+    public Guid? ConnectedPatternId { get; set; }
+    public CommunityPattern? ConnectedCommPattern { get; set; }
+    public Pattern? ConnectedPattern { get; set; }
     public Guid UserId { get; set; }
-    public List<Yarn> Yarns { get; set; }
-    public List<Tool>? Tools { get; set; }
+    public ICollection<Yarn> Yarns { get; set; }
+    public ICollection<Tool>? Tools { get; set; }
+    public ICollection<CountersGroup>? Counters { get; set; }
+
 }

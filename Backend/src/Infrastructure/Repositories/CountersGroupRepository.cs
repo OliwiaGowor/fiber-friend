@@ -1,5 +1,4 @@
 using Domain.Entities;
-using Common.Enums;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
@@ -27,7 +26,7 @@ public class CountersGroupRepository : ICountersGroupRepository
 
     public IQueryable<CountersGroup> GetCountersGroupsByProjectId(Guid projectId)
     {
-        var countersGroups = _dbContext.CountersGroups.Where(y => y.ParentId == projectId );
+        var countersGroups = _dbContext.CountersGroups.Where(y => y.ProjectId == projectId);
         return countersGroups;
     }
 

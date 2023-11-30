@@ -1,5 +1,4 @@
 using Domain.Entities;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace Domain.Interfaces.Repository;
 

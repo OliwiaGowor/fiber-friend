@@ -1,6 +1,3 @@
-using Application.DTO.CountersGroup;
-using Application.DTO.Pattern;
-using Application.DTO.Project;
 using Application.Mapping;
 using AutoMapper;
 

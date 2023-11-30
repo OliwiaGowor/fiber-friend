@@ -28,6 +28,7 @@ public class NewYarnDto : IMapFrom<Domain.Entities.Yarn>
             RuleFor(x => x.Gauge).NotEmpty().MaximumLength(20);
             RuleFor(x => x.Stitch).NotEmpty().MaximumLength(50);
             RuleFor(x => x.ToolSize).NotEmpty().MaximumLength(20);
+            RuleFor(x => x.ParentId).NotEmpty();
         }
     }
 }

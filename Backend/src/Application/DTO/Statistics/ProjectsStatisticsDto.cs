@@ -1,7 +1,7 @@
 ﻿
 namespace Application.DTO.Statistics
 {
-    public class StatisticsDto
+    public class ProjectsStatisticsDto
     {
         public int ActiveProjects { get; set; }
         public int FinishedProjects { get; set; }
