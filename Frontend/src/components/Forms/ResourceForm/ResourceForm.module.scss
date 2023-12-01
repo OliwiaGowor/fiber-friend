@@ -1,4 +1,4 @@
-@use "../../root.scss";
+@use "../../../root.scss";
 
 .container {
   width: 100%;
@@ -18,16 +18,20 @@
           @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
         }
 
-        .datePickers {
+        .additionalInfo {
           display: block;
 
-          .dateInput {
+          .formInput {
             @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
           }
         }
 
-        .typeToggle {
+        .typeToggleContainer {
           margin: 20px 0;
+
+          .typeToggle {
+            width: 100%;
+          }
         }
 
         .categoriesContainer {
@@ -36,6 +40,7 @@
         }
 
         .toggleButton {
+          width: calc((40% - 20px) / 3);
           color: var(--text-color-dark);
 
           &:hover {
@@ -51,14 +56,16 @@
 
         .notesField {
           width: 100%;
+          margin-top: 40px;
+          margin-bottom: 40px;
         }
 
         .error {
           color: #d32f2f;
         }
 
-        .fileInput {
-          margin-bottom: 50px;
+        .patternSelect {
+          @include root.input($margin-lr: 0, $margin-tb: 20px, $width: calc(40% - 20px));
         }
       }
     }
@@ -78,10 +85,10 @@
             @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 80%);
           }
 
-          .datePickers {
+          .additionalInfo {
             display: grid;
             grid-template-columns: repeat(2, calc(40% - 20px));
-            gap: 40px; 
+            gap: 40px;
           }
 
           .notesField {

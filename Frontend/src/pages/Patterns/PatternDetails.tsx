@@ -18,10 +18,14 @@ import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
 import { Pattern } from "../../DTOs/Pattern";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShareIcon from '@mui/icons-material/Share';
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 //TODO: for generating pdfs ask if attach added pattern files to it
 export default function PatternDetails() {
     const token = tokenLoader();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: Pattern };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -37,27 +41,17 @@ export default function PatternDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authoriaztion: "Bearer " + token,
-            },
-        });
-
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch project.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch project.' },
-                {
-                    status: 500,
-                }
+        try {
+            await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'DELETE',
+                'Could not delete pattern. Please try again later.',
+                token
             );
-        } else {
             return navigate('/fiber-friend/account/projects');
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     };
 
@@ -69,7 +63,7 @@ export default function PatternDetails() {
                 Authoriaztion: "Bearer " + token,
             },
         });
-//TODO: add popup with informatoon about sharing
+        //TODO: add popup with informatoon about sharing
         if (!response.ok) {
             // return { isError: true, message: 'Could not fetch project.' };
             // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {

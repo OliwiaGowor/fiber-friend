@@ -1,44 +1,28 @@
 import classes from './CommunityPatterns.module.scss';
 import Tiles from '../../components/Tiles/Tiles';
 import { patternsFilters } from '../../data/FiltersBarData';
-import { json } from 'react-router-dom';
 import Fab from '@mui/material/Fab';
 import NavigationIcon from '@mui/icons-material/Navigation';
+import { useAppDispatch } from '../../utils/hooks';
+import { tokenLoader } from '../../utils/auth';
+import { setError } from '../../reducers/errorSlice';
+import { handleRequest } from '../../utils/handleRequestHelper';
 
 const CommunityPatterns = () => {
+    const dispatch = useAppDispatch();
+
     const fetchProjects = async (page: number, pageSize: number, filters: object[]) => {
         //`${process.env.REACT_APP_API_URL}Pattern/GetSharedPatterns/${filters}/page=${page}/pageSize=${pageSize}`
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    //Authorization: "Bearer " + tokenLoader(),
-                },
-            });
-
-            if (!response.ok) {
-                localStorage.setItem("error", "Could not fetch projects.");
-
-                return json(
-                    { message: 'Could not fetch projects.' },
-                    {
-                        status: 500,
-                    }
-                );
-            } else {
-                const resData = await response.json();
-                return resData;
-            }
+            return (
+                await handleRequest(
+                    `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                    "GET",
+                    "Could not fetch patterns. Please try again later.",
+                ));
         } catch (error) {
-            localStorage.setItem("error", "Could not fetch projects.");
-
-            return json(
-                { message: 'Could not fetch projects.' },
-                {
-                    status: 500,
-                }
-            );
+            dispatch(setError(error));
+            return;
         }
     };
 
@@ -56,10 +40,10 @@ const CommunityPatterns = () => {
                 addTile={false}
                 filters={patternsFilters}
             />
-            <Fab 
-            className={classes.upFab} 
-            aria-label="add"
-            onClick={handleGoToTop}
+            <Fab
+                className={classes.upFab}
+                aria-label="add"
+                onClick={handleGoToTop}
             >
                 <NavigationIcon />
             </Fab>

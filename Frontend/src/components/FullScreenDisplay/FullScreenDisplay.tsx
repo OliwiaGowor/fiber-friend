@@ -16,12 +16,11 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
     const updateSize = () => {
       const img = new Image();
       img.src = file.src;
-      console.log(img, img.naturalWidth, img.naturalHeight)
+
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
 
       const aspectRatio = img.naturalWidth / img.naturalHeight;
-      console.log(aspectRatio)
       let newWidth = screenWidth;
       let newHeight = screenWidth / aspectRatio;
 

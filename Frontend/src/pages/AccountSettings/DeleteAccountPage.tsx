@@ -4,6 +4,7 @@ import classes from './DeleteAccountPage.module.scss'
 import { tokenLoader } from "../../utils/auth";
 import { Button, TextField } from "@mui/material";
 import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
+import { useAppDispatch } from '../../utils/hooks';
 
 const ChangePasswordPage = () => {
   const [currPassword, setCurrPassword] = useState("");

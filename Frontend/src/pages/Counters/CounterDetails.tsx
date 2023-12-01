@@ -10,8 +10,12 @@ import MenuItem from '@mui/material/MenuItem';
 import CounterMiniature from "../../components/CounterMiniature/CounterMiniature";
 import { tokenLoader } from "../../utils/auth";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 export default function CounterDetails() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 760px)');
     const { counterGroup } = useRouteLoaderData('counter-details') as { counterGroup: any };
@@ -26,27 +30,17 @@ export default function CounterDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: "Bearer " + tokenLoader(),
-            },
-        });
-
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch counter.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch counter.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch counter.' },
-                {
-                    status: 500,
-                }
+        try {
+            await handleRequest(
+                `${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'DELETE',
+                'Could not delete counter. Please try again later.',
+                tokenLoader()
             );
-        } else {
             return navigate('/fiber-friend/account/counters');
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     }
 

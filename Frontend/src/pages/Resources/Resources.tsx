@@ -3,33 +3,28 @@ import Tiles from "../../components/Tiles/Tiles";
 import classes from './Resources.module.scss'
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { tokenLoader } from "../../utils/auth";
+import { setError } from "../../reducers/errorSlice";
 
 export default function Resources() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
     const fetchResources = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                //Authorization: "Bearer " + tokenLoader(),
-            },
-        });
-
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch events.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch resources.' },
-                {
-                    status: 500,
-                }
+        try {
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                "GET",
+                "Could not fetch resources. Please try again later.",
+                tokenLoader(),
             );
-        } else {
-            const resData = await response.json();
-            return resData;
+            return data;
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     };
 

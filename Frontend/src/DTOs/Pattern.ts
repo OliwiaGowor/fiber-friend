@@ -2,25 +2,33 @@ import { NeedleworkType } from "./Enums"
 import { Notes } from "./Notes";
 import { File } from "./File";
 import { Yarn } from "./Yarn"
+import { User } from "./User";
 
-export interface Pattern {
+interface PatternBase {
     id?: string;
     name: string;
     type: NeedleworkType;
+    authorId: string;
     author?: string;
-    isAuthorial: boolean;
-    startDate?: Date;
-    endDate?: Date;
-    finished?: boolean;
     category: string;
     notes: Notes[];
     photos?: File[];
     files?: File[];
-    userId: string;
     yarns: Yarn[];
-    tools?: Tool[];
+    tools?: Tool[];//TODO: change to obligatory
     otherSupplies?: OtherSupply[];
     isShared: boolean;
+}
+
+export interface Pattern extends PatternBase {
+    isAuthorial: boolean;
+    startDate: Date;
+    endDate?: Date;
+    finished: boolean;
+}
+
+export interface CommunityPattern extends PatternBase {
+    savedByUsers: User[];
 }
 
 export interface Tool {

@@ -5,10 +5,13 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
-import { FileInput } from '../../components/FileInput/FileInput';
-import TextEditor from "../../components/TextEditor/TextEditor";
+import { FileInput } from '../../FileInput/FileInput';
+import TextEditor from "../../TextEditor/TextEditor";
 import classes from './ResourceForm.module.scss';
-import { tokenLoader } from "../../utils/auth";
+import { tokenLoader } from "../../../utils/auth";
+import { useAppDispatch } from '../../../utils/hooks';
+import { handleRequest } from "../../../utils/handleRequestHelper";
+import { setError } from "../../../reducers/errorSlice";
 
 interface ResourceFormProps {
     resource?: any;
@@ -16,6 +19,7 @@ interface ResourceFormProps {
 }
 
 const ResourceForm = ({ resource, method }: ResourceFormProps) => {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [type, setType] = React.useState(resource?.type ?? 'yarn');
     const [name, setName] = React.useState(resource?.name ?? '');
@@ -71,30 +75,23 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
             };
         }
 
-        let url = `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+        let url = method === "POST" ?
+            `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+            `${process.env.REACT_APP_API_URL}Resource/${resource.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
-        if (method === 'PUT') {
-            url = `${process.env.REACT_APP_API_URL}Resource/${resource.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+        try {
+            await handleRequest(
+                url,
+                method,
+                "Could not save resource. Please try again later.",
+                tokenLoader(),
+                resourceData,
+            );
+            return navigate('/fiber-friend/account/resources');
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
-
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: "Bearer " + tokenLoader(),
-            },
-            body: JSON.stringify(resourceData),
-        });
-
-        if (response.status === 422) {
-            return response;
-        }
-
-        if (!response.ok) {
-            throw json({ message: 'Could not save resource.' }, { status: 500 });
-        }
-
-        return navigate('/fiber-friend/account/resources');
     };
 
     //Form validation

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Form, Link, json, redirect, useNavigate, useNavigation } from "react-router-dom";
+import { useAppDispatch } from '../../utils/hooks';
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,6 +12,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import classes from "./LoginPage.module.scss";
+import { handleRequest } from "../../utils/handleRequestHelper";
 
 export default function LoginPage() {
     const navigation = useNavigation();
@@ -146,23 +148,15 @@ export async function action({ request }: { request: Request }) {
     };
 
     try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/Login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(authData),
-        });
-
-        if (!response.ok) {
-            throw json({ message: "Could not authenticate user." }, { status: 500 });
-            return null;
-        }
-
-        const resData = await response.json();
+        const data = await handleRequest(
+            `${process.env.REACT_APP_API_URL}/Login`,
+            "POST",
+            "Could not authenticate user.",
+            authData
+        );
         const expiration = new Date();
-        const token = resData.token;
-        const userId = resData.id;
+        const token = data.token;
+        const userId = data.id;
 
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
@@ -172,7 +166,7 @@ export async function action({ request }: { request: Request }) {
         return redirect("/account");
 
     } catch (error) {
-        localStorage.setItem("error", "Something went wrong, please try again later.");
+        localStorage.setItem("error", "Something went wrong, please try again later."); //TODO: dispatch
 
         return null;
     }

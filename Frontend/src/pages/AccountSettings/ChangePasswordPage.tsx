@@ -4,6 +4,7 @@ import classes from './ChangePasswordPage.module.scss'
 import { tokenLoader } from "../../utils/auth";
 import { Button, TextField } from "@mui/material";
 import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
+import { useAppDispatch } from '../../utils/hooks';
 //TODO: write post funtcion to change password 
 const ChangePasswordPage = () => {
   const [currPassword, setCurrPassword] = useState("");

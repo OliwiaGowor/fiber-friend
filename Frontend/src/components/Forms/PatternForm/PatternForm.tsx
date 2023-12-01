@@ -1,21 +1,24 @@
 import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import React from "react";
+import { useState } from "react";
 import classes from './PatternForm.module.scss';
 import Button from "@mui/material/Button";
-import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
-import { json, useNavigate } from "react-router-dom";
-import { FileInput } from '../../components/FileInput/FileInput';
-import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
-import TextEditor from "../../components/TextEditor/TextEditor";
-import { tokenLoader } from "../../utils/auth";
+import CategoriesMenu from "../../CategoriesMenu/CategoriesMenu";
+import { useNavigate } from "react-router-dom";
+import { FileInput } from '../../FileInput/FileInput';
+import BasicTabsForm from "../../TabsPanelForm/TabsPanelForm";
+import TextEditor from "../../TextEditor/TextEditor";
+import { tokenLoader } from "../../../utils/auth";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { Pattern } from "../../DTOs/Pattern";
-import { NeedleworkType } from "../../DTOs/Enums";
+import { Pattern } from "../../../DTOs/Pattern";
+import { NeedleworkType } from "../../../DTOs/Enums";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { useAppDispatch } from "../../../utils/hooks";
+import { setError } from "../../../reducers/errorSlice";
+import { handleRequest } from "../../../utils/handleRequestHelper";
 
 interface PatternFormProps {
     pattern?: Pattern;
@@ -23,23 +26,26 @@ interface PatternFormProps {
 }
 
 export default function PatternForm({ pattern, method }: PatternFormProps) {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const [type, setType] = React.useState<NeedleworkType>(pattern?.type ?? NeedleworkType.crochet);
-    const [yarnsInfo, setYarnsInfo] = React.useState<any>(pattern?.yarns ?? []);
-    const [name, setName] = React.useState(pattern?.name ?? "");
-    const [category, setCategory] = React.useState<string>(pattern?.category ?? "");
-    const [showYarnsError, setShowYarnsError] = React.useState<boolean>(false);
-    const [showCategoriesError, setShowCategoriesError] = React.useState<boolean>(false);
-    const [showNameError, setShowNameError] = React.useState<boolean>(false);
-    const [proceedSubmit, setProceedSubmit] = React.useState<boolean>(true);
-    const [isAuthorial, setIsAuthorial] = React.useState<boolean>(pattern?.isAuthorial ?? false);
-    const [requiredError, setRequiredError] = React.useState<any>(false);
-    const [selectedImages, setSelectedImages] = React.useState<any | null>(pattern?.photos ?? "");
-    const [selectedFiles, setSelectedFiles] = React.useState<any | null>(pattern?.files ?? "");
-    const [notes, setNotes] = React.useState<any>(pattern?.notes ?? null);
-    const [dateError, setDateError] = React.useState<any>(null);
-    const [startDate, setStartDate] = React.useState<any>(pattern?.startDate ?? null);
-    const [endDate, setEndDate] = React.useState<any>(pattern?.endDate ?? null);
+    const [type, setType] = useState<NeedleworkType>(pattern?.type ?? NeedleworkType.crochet);
+    const [yarnsInfo, setYarnsInfo] = useState<any>(pattern?.yarns ?? []);
+    const [toolsInfo, setToolsInfo] = useState<any>(pattern?.tools ?? []);
+    const [otherSuppliesInfo, setOtherSuppliesInfo] = useState<any>(pattern?.otherSupplies ?? []);
+    const [name, setName] = useState(pattern?.name ?? "");
+    const [category, setCategory] = useState<string>(pattern?.category ?? "");
+    const [showYarnsError, setShowYarnsError] = useState<boolean>(false);
+    const [showCategoriesError, setShowCategoriesError] = useState<boolean>(false);
+    const [showNameError, setShowNameError] = useState<boolean>(false);
+    const [proceedSubmit, setProceedSubmit] = useState<boolean>(true);
+    const [isAuthorial, setIsAuthorial] = useState<boolean>(pattern?.isAuthorial ?? false);
+    const [requiredError, setRequiredError] = useState<any>(false);
+    const [selectedImages, setSelectedImages] = useState<any | null>(pattern?.photos ?? "");
+    const [selectedFiles, setSelectedFiles] = useState<any | null>(pattern?.files ?? "");
+    const [notes, setNotes] = useState<any>(pattern?.notes ?? null);
+    const [dateError, setDateError] = useState<any>(null);
+    const [startDate, setStartDate] = useState<any>(pattern?.startDate ?? null);
+    const [endDate, setEndDate] = useState<any>(pattern?.endDate ?? null);
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
@@ -58,36 +64,35 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                 category: category,
                 isAuthorial: isAuthorial,
                 yarns: yarnsInfo,
+                tools: toolsInfo,
+                otherSupplies: otherSuppliesInfo ?? null,
                 //photos: selectedImages,
                 //patterns: selectedFiles,
                 notes: notes,
-                userId: localStorage.getItem('userId') ?? "",
+                authorId: localStorage.getItem('userId') ?? "",
                 finished: endDate !== null ? true : false,
+                startDate: startDate,
+                isShared: false
             };
-            let url = `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
-            if (method === "PUT") {
-                url = `${process.env.REACT_APP_API_URL}Pattern/${pattern?.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+            let url = (method === "POST") ?
+                `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                `${process.env.REACT_APP_API_URL}Pattern/${pattern?.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+
+            try {
+                await handleRequest(
+                    url,
+                    method,
+                    "Could not post pattern. Please try again later.",
+                    tokenLoader(),
+                    patternData
+                );
+                return navigate('/fiber-friend/account/patterns');
+
+            } catch (error) {
+                dispatch(setError(error));
+                return;
             }
-
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: "Bearer " + tokenLoader(),
-                },
-                body: JSON.stringify(patternData),
-            });
-
-            if (response.status === 422) {
-                return response;
-            }
-
-            if (!response.ok) {
-                throw json({ message: 'Could not save pattern.' }, { status: 500 });
-            }
-            const data = await response.json();
-            return navigate('/fiber-friend/account/patterns');
         } else {
             return;
         }
@@ -188,34 +193,34 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                 label="This is my pattern!" />
                         </div>
                         {isAuthorial &&
-                         <div className={classes.datePickers}>
-                         <DatePicker
-                             className={classes.dateInput}
-                             label="Start date *"
-                             onChange={(newValue: any) => { setStartDate(newValue) }}
-                             format="DD-MM-YYYY"
-                             onError={(newError) => {
-                                 setDateError(newError);
-                                 setRequiredError(false)
-                             }}
-                             slotProps={{
-                                 textField: {
-                                     helperText: dateErrorMessage,
-                                 },
-                             }}
-                             value={dayjs(startDate)}
-                         />
-                         <DatePicker
-                             className={classes.dateInput}
-                             label="End date"
-                             format="DD-MM-YYYY"
-                             minDate={startDate ?? undefined}
-                             onChange={(newValue: any) => { setEndDate(newValue) }}
-                             value={dayjs(endDate)}
-                         />
-                         <br></br>
-                         <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
-                     </div>
+                            <div className={classes.datePickers}>
+                                <DatePicker
+                                    className={classes.dateInput}
+                                    label="Start date *"
+                                    onChange={(newValue: any) => { setStartDate(newValue) }}
+                                    format="DD-MM-YYYY"
+                                    onError={(newError) => {
+                                        setDateError(newError);
+                                        setRequiredError(false)
+                                    }}
+                                    slotProps={{
+                                        textField: {
+                                            helperText: dateErrorMessage,
+                                        },
+                                    }}
+                                    value={dayjs(startDate)}
+                                />
+                                <DatePicker
+                                    className={classes.dateInput}
+                                    label="End date"
+                                    format="DD-MM-YYYY"
+                                    minDate={startDate ?? undefined}
+                                    onChange={(newValue: any) => { setEndDate(newValue) }}
+                                    value={dayjs(endDate)}
+                                />
+                                <br></br>
+                                <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
+                            </div>
                         }
                     </div>
                     <div className={classes.sectionContainer}>
@@ -233,7 +238,23 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }} />
+                        <BasicTabsForm
+                            showError={showYarnsError}
+                            getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }}
+                            type="yarn"
+                        />
+                        <p className={classes.additionalText}>Add tools to see more options</p>
+                        <BasicTabsForm
+                            showError={showYarnsError}
+                            getInfo={(toolsInfo: any) => { setToolsInfo(toolsInfo) }}
+                            type="tool"
+                        />
+                        <p className={classes.additionalText}>Add other supplies to see more options</p>
+                        <BasicTabsForm
+                            showError={showYarnsError}
+                            getInfo={(otherSuppliesInfo: any) => { setOtherSuppliesInfo(otherSuppliesInfo) }}
+                            type="other supply"
+                        />
                     </div>
                     <div className={classes.sectionContainer}>
                         <h2 className={classes.sectionHeader}>Files and notes</h2>

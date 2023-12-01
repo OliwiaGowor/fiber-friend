@@ -1,4 +1,4 @@
-import ResourceForm from "../../components/ResourceForm/ResourceForm";
+import ResourceForm from "../../components/Forms/ResourceForm/ResourceForm";
 
 export default function NewResourcePage() {
 

@@ -2,10 +2,16 @@
   position: absolute;
   z-index: 99999;
   bottom: 100px;
-  right: 100px;
+  left: 100px;
 
   .snackbarContent {
-    background-color: var(--main-color-medium);
+    background-color: var(--accent-color);
     color: var(--text-color-dark);
+
+    .message {
+      .info {
+        color: var(--main-color-dark);
+      }
+    }
   }
 }

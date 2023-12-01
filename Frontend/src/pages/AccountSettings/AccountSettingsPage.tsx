@@ -7,6 +7,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import KeyIcon from '@mui/icons-material/Key';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import InfoIcon from '@mui/icons-material/Info';
+import { useAppDispatch } from '../../utils/hooks';
 
 const AccountSettingsPage = () => {
   const navigate = useNavigate();

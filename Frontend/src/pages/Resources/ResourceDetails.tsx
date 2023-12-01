@@ -11,9 +11,13 @@ import TextDisplay from "../../components/TextEditor/TextDisplay";
 import classes from './ResourceDetails.module.scss';
 import { getAuthToken } from '../../utils/auth';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from '../../utils/handleRequestHelper';
+import { setError } from '../../reducers/errorSlice';
 
 export default function ResourceDetails() {
     const token = getAuthToken();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { resource } = useRouteLoaderData('resource-details') as { resource: any };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -35,27 +39,17 @@ export default function ResourceDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Resource/${resource.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authoriaztion: "Bearer " + token,
-            },
-        });
-
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch project.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch resource.' },
-                {
-                    status: 500,
-                }
+        try {
+            await handleRequest(
+                `${process.env.REACT_APP_API_URL}Resource/${resource.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'DELETE',
+                'Could not delete resource. Please try again later.',
+                token
             );
-        } else {
             return navigate('/fiber-friend/account/projects');
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     };
 

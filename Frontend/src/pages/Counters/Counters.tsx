@@ -6,34 +6,27 @@ import classes from './Counters.module.scss'
 import { tokenLoader } from "../../utils/auth";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 function Counters() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
     const fetchCounters = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: "Bearer " + tokenLoader(),
-            },
-        });
-
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch events.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch counters.' },
-                {
-                    status: 500,
-                }
+        try {
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                "GET",
+                "Could not fetch counters. Please try again later.",
+                tokenLoader(),
             );
-        } else {
-            const resData = await response.json();
-
-            return resData;
+            return data;
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     };
 

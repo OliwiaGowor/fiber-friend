@@ -4,6 +4,7 @@ import classes from "./RecoverPassPage.module.scss";
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { tokenLoader } from "../../utils/auth";
+import { useAppDispatch } from '../../utils/hooks';
 
 export default function RecoverPassPage() {
     const navigation = useNavigation();

@@ -1,5 +1,5 @@
-import { Suspense, useState } from "react";
-import { Await, defer, json } from "react-router-dom";
+import { useState } from "react";
+import { defer, json } from "react-router-dom";
 import classes from './StatisticsPage.module.scss'
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,6 +9,9 @@ import { MenuItem, Select } from "@mui/material";
 import { getAuthToken } from "../../utils/auth";
 import ProjectsStatistics from "../../components/ProjectsStatistics/ProjectsStatistics";
 import PatternsStatistics from "../../components/PatternsStatistics/PatternsStatistics";
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 const statisticsTypes = [
     "patterns", "projects"
@@ -20,7 +23,7 @@ export default function StatisticsPage() {
     const [timePeriod, setTimePeriod] = useState("monthly");
 
     const handleDateChange = async (date: Dayjs | string) => {
-        //format to month and/or year
+        //TODO: format to month and/or year
         let url = '';
 
         const response = await fetch(url, {
@@ -125,34 +128,25 @@ export default function StatisticsPage() {
         </div>
     );
 }
-
-async function loadStatistics() {
-    const response = await fetch('', {
-        method: 'get',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: "Bearer" + getAuthToken(),
-        },
-
-    });
-
-    if (!response.ok) {
-        throw json(
-            { message: 'Could not fetch projects.' },
-            {
-                status: 500,
-            }
+/////TODO ??????????????????????????????????????????????????
+async function loadStatistics(dispatch: ReturnType<typeof useAppDispatch>) {
+    try {
+        const data = await handleRequest(
+            ``, //TODO:Add url
+            "GET",
+            "Could not fetch statistics. Please try again later.",
+            getAuthToken()
         );
-    } else {
-        const resData = await response.json();
-
-        return resData;
+        return data;
+    } catch (error) {
+        dispatch(setError(error));
+        return;
     }
 }
 
-export async function loader() {
+export async function loader(dispatch: ReturnType<typeof useAppDispatch>) {
     const statistics = await Promise.all([
-        loadStatistics()
+        loadStatistics(dispatch)
     ]);
 
     return defer({

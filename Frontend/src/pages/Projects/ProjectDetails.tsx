@@ -16,8 +16,13 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import CounterGroup from "../../components/CounterGroup/CounterGroup";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { tokenLoader } from "../../utils/auth";
+import { setError } from "../../reducers/errorSlice";
 
 export default function ProjectDetails() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { project } = useRouteLoaderData('project-details') as { project: any };
     const isMobile = useMediaQuery('(max-width: 760px)');
@@ -49,37 +54,33 @@ export default function ProjectDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Project/{project.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            throw json(
-                { message: 'Could not fetch project.' },
-                {
-                    status: 500,
-                }
+        try {
+            await handleRequest(
+                `${process.env.REACT_APP_API_URL}Project/${project.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'DELETE',
+                'Could not delete project. Please try again later.',
+                tokenLoader()
             );
-        } else {
             return navigate('/fiber-friend/account/projects');
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     }
 
     const fetchSelectedPattern = React.useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${project.connectedPattern}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
-
-            const data = await response.json();
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern/${project.connectedPattern}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'GET',
+                'Could not fetch pattern. Please try again later.',
+                tokenLoader()
+            );
             setSelectedPattern(data);
 
         } catch (error) {
-            //setError("Something went wrong, try again.");
+            dispatch(setError(error));
+            return;
         }
     }, []);
 
@@ -90,143 +91,143 @@ export default function ProjectDetails() {
                     <ArrowBackIcon sx={{ fontSize: 35 }} />
                 </div>
             }
-        <div className={classes.container}>
-            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={project}>
-                    <div className={classes.details}>
-                        <h1 className={classes.header}>
-                            <div>
-                                <div className={classes.name}>{project.name}</div>
-                                {project.finished &&
-                                    <Typography
-                                        aria-owns={openPopover ? 'mouse-over-popover' : undefined}
-                                        aria-haspopup="true"
-                                        onMouseEnter={handlePopoverOpen}
-                                        onMouseLeave={handlePopoverClose}
-                                        sx={{ display: "inline-block" }}
+            <div className={classes.container}>
+                <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
+                    <Await resolve={project}>
+                        <div className={classes.details}>
+                            <h1 className={classes.header}>
+                                <div>
+                                    <div className={classes.name}>{project.name}</div>
+                                    {project.finished &&
+                                        <Typography
+                                            aria-owns={openPopover ? 'mouse-over-popover' : undefined}
+                                            aria-haspopup="true"
+                                            onMouseEnter={handlePopoverOpen}
+                                            onMouseLeave={handlePopoverClose}
+                                            sx={{ display: "inline-block" }}
+                                        >
+                                            <CheckCircleIcon sx={{ fontSize: 30 }} />
+                                        </Typography>
+                                    }
+                                    <Popover
+                                        id="mouse-over-popover"
+                                        sx={{
+                                            pointerEvents: 'none',
+                                        }}
+                                        open={openPopover}
+                                        anchorEl={anchorElPopover}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'left',
+                                        }}
+                                        onClose={handlePopoverClose}
+                                        disableRestoreFocus
+                                        disableScrollLock={true}
                                     >
-                                        <CheckCircleIcon sx={{ fontSize: 30 }} />
-                                    </Typography>
-                                }
-                                <Popover
-                                    id="mouse-over-popover"
-                                    sx={{
-                                        pointerEvents: 'none',
+                                        <Typography sx={{ p: 2 }}>Project finished</Typography>
+                                    </Popover>
+                                </div>
+                                <Button
+                                    className={classes.editButton}
+                                    aria-label="Edit Project"
+                                    aria-controls={open ? 'basic-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={handleClick}
+                                >
+                                    <EditIcon sx={{ fontSize: 32 }} />
+                                </Button>
+                            </h1>
+                            <div className={classes.editMenu}>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
                                     }}
-                                    open={openPopover}
-                                    anchorEl={anchorElPopover}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'left',
-                                    }}
-                                    onClose={handlePopoverClose}
-                                    disableRestoreFocus
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                                     disableScrollLock={true}
                                 >
-                                    <Typography sx={{ p: 2 }}>Project finished</Typography>
-                                </Popover>
+                                    <MenuItem
+                                        onClick={() => {
+                                            navigate('/fiber-friend/account/projects/' + project.id + '/edit');
+                                            handleClose();
+                                        }}
+                                        disableRipple
+                                    >
+                                        Edit
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleClose();
+                                            handleDelete()
+                                        }}
+                                        disableRipple
+                                    >
+                                        Delete project
+                                    </MenuItem>
+                                </Menu>
                             </div>
-                            <Button
-                                className={classes.editButton}
-                                aria-label="Edit Project"
-                                aria-controls={open ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick}
-                            >
-                                <EditIcon sx={{ fontSize: 32 }} />
-                            </Button>
-                        </h1>
-                        <div className={classes.editMenu}>
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={handleClose}
-                                MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                }}
-                                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                                disableScrollLock={true}
-                            >
-                                <MenuItem
-                                    onClick={() => {
-                                        navigate('/fiber-friend/account/projects/' + project.id + '/edit');
-                                        handleClose();
-                                    }}
-                                    disableRipple
-                                >
-                                    Edit
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={() => {
-                                        handleClose();
-                                        handleDelete()
-                                    }}
-                                    disableRipple
-                                >
-                                    Delete project
-                                </MenuItem>
-                            </Menu>
-                        </div>
-                        <div className={classes.dividedContainer}>
-                            <div className={classes.leftElements}>
-                                <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
-                                    <h2 className={classes.sectionHeader}>Details</h2>
-                                    <div className={classes.projectInfoContainer}>
-                                        <div className={classes.attributeName}>Type: </div>
-                                        {project.type ?? <br></br>}
-                                        <div className={classes.attributeName}>Category: </div>
-                                        {project.category ?? <br></br>}
-                                        <div className={classes.attributeName}>Start date: </div>
-                                        {project.startDate?.slice(0, 10) ?? <br></br>}
-                                        <div className={classes.attributeName}>End date: </div>
-                                        {project.endDate?.slice(0, 10) ?? <br></br>}
+                            <div className={classes.dividedContainer}>
+                                <div className={classes.leftElements}>
+                                    <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
+                                        <h2 className={classes.sectionHeader}>Details</h2>
+                                        <div className={classes.projectInfoContainer}>
+                                            <div className={classes.attributeName}>Type: </div>
+                                            {project.type ?? <br></br>}
+                                            <div className={classes.attributeName}>Category: </div>
+                                            {project.category ?? <br></br>}
+                                            <div className={classes.attributeName}>Start date: </div>
+                                            {project.startDate?.slice(0, 10) ?? <br></br>}
+                                            <div className={classes.attributeName}>End date: </div>
+                                            {project.endDate?.slice(0, 10) ?? <br></br>}
+                                        </div>
+                                    </div>
+                                    <div className={`${classes.sectionContainer} ${classes.formInput}`}>
+                                        <h2 className={classes.sectionHeader}>Yarns</h2>
+                                        <TabsPanelDisplay yarns={project.yarns ?? []} />
                                     </div>
                                 </div>
-                                <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                                    <h2 className={classes.sectionHeader}>Yarns</h2>
-                                    <TabsPanelDisplay yarns={project.yarns ?? []} />
+                                <div className={classes.rightElements}>
+                                    <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
+                                        {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                        <PhotosDisplay data={project} />
+                                    </div>
                                 </div>
                             </div>
-                            <div className={classes.rightElements}>
-                                <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
-                                    {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
-                                    <PhotosDisplay data={project} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.wholeScreenElements}>
-                            <div className={classes.sectionContainer}>
-                                <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                                <h3 className={classes.attributeName}>Patterns</h3>
-                                {selectedPattern &&
-                                    <div>
-                                        <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
-                                            <Button variant="contained">
-                                                {selectedPattern.name}
-                                            </Button>
-                                        </Link>
-                                    </div>}
-                                <FilesDisplay files={project.patterns} />
-                                <h3 className={classes.attributeName}>Counters</h3>
-                                <div className={classes.counters}>
-                                    {<CounterGroup defaultValue={project.counters} parentId={project.id} />}
-                                </div>
-                                <h3 className={classes.attributeName}>Notes</h3>
-                                <div className={classes.notes}>
-                                    <TextDisplay defaultValue={project.notes} />
+                            <div className={classes.wholeScreenElements}>
+                                <div className={classes.sectionContainer}>
+                                    <h2 className={classes.sectionHeader}>Patterns and notes</h2>
+                                    <h3 className={classes.attributeName}>Patterns</h3>
+                                    {selectedPattern &&
+                                        <div>
+                                            <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
+                                                <Button variant="contained">
+                                                    {selectedPattern.name}
+                                                </Button>
+                                            </Link>
+                                        </div>}
+                                    <FilesDisplay files={project.patterns} />
+                                    <h3 className={classes.attributeName}>Counters</h3>
+                                    <div className={classes.counters}>
+                                        {<CounterGroup defaultValue={project.counters} parentId={project.id} />}
+                                    </div>
+                                    <h3 className={classes.attributeName}>Notes</h3>
+                                    <div className={classes.notes}>
+                                        <TextDisplay defaultValue={project.notes} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </Await>
-            </Suspense>
-        </div>
+                    </Await>
+                </Suspense>
+            </div>
         </>
     );
 }

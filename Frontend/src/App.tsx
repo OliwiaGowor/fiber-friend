@@ -7,7 +7,7 @@ import Projects from "./pages/Projects/Projects";
 import NewProjectPage from "./pages/Projects/NewProjectPage";
 import Patterns from "./pages/Patterns/Patterns";
 import PatternsRoot from "./pages/Patterns/PatternsRoot";
-import LoginPage, {action as loginAction} from "./pages/LoginPage/LoginPage";
+import LoginPage, { action as loginAction } from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ProjectDetails, { loader as projectDetailsLoader } from "./pages/Projects/ProjectDetails";
 import PatternDetails, { loader as patternDetailsLoader } from "./pages/Patterns/PatternDetails";
@@ -36,19 +36,19 @@ import ChangePasswordPage from "./pages/AccountSettings/ChangePasswordPage";
 import DeleteAccountPage from "./pages/AccountSettings/DeleteAccountPage";
 import EditPattern from "./pages/Patterns/EditPattern";
 import CommunityPatterns from "./pages/CommunityPatterns/CommunityPatterns";
-import CommunityPatternDetails, {loader as communityPatternDetailsLoader} from "./pages/CommunityPatterns/CommunityPatternDetails";
+import CommunityPatternDetails, { loader as communityPatternDetailsLoader } from "./pages/CommunityPatterns/CommunityPatternDetails";
 import CommunityPatternsRoot from "./pages/CommunityPatterns/CommunityPatternsRoot";
 
 const router = createBrowserRouter([
   {
     path: "/fiber-friend",
     element: <Root />,
-    id: "root",        
+    id: "root",
     //errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <HomePage />,    
+        element: <HomePage />,
       },
       {
         path: "login",
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <Projects />,
-          },
+              },
               {
                 path: ":projectId",
                 id: "project-details",

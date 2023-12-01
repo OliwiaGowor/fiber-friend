@@ -1,15 +1,18 @@
 
 import classes from './CounterForm.module.scss';
 import { json, useNavigate } from "react-router-dom";
-import CounterMiniature from '../../components/CounterMiniature/CounterMiniature';
+import CounterMiniature from '../../CounterMiniature/CounterMiniature';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import BigCounter from '../../components/BigCounter/BigCounter';
-import { tokenLoader } from '../../utils/auth';
+import BigCounter from '../../BigCounter/BigCounter';
+import { tokenLoader } from '../../../utils/auth';
 import FormHelperText from '@mui/material/FormHelperText';
 import { InputLabelProps } from '@mui/material/InputLabel';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useAppDispatch } from '../../../utils/hooks';
+import { setError } from '../../../reducers/errorSlice';
+import { handleRequest } from '../../../utils/handleRequestHelper';
 
 interface CounterFormProps {
     counterGroup?: any;
@@ -17,6 +20,7 @@ interface CounterFormProps {
 }
 
 export default function CounterForm({ counterGroup, method }: CounterFormProps) {
+    const dispatch = useAppDispatch();
     const token = tokenLoader();
     const navigate = useNavigate();
     const [counters, setCounters] = useState<any>(counterGroup?.counters ?? []);
@@ -57,12 +61,13 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
             },
         });
         if (!responseProjects.ok) {
-            throw json(
-                { message: 'Could not fetch projects.' },
-                {
-                    status: 500,
-                }
-            );
+            dispatch(setError({
+                code: responseProjects.status,
+                message: responseProjects.statusText,
+                customMessage: "Could not fetch available projects. Please try again later."
+            }));
+            return;
+
         } else {
             projects = await responseProjects.json();
             projects = Object.values(projects).map((project: any) => {
@@ -77,12 +82,13 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
             },
         });
         if (!responsePatterns.ok) {
-            throw json(
-                { message: 'Could not fetch projects.' },
-                {
-                    status: 500,
-                }
-            );
+            dispatch(setError({
+                code: responseProjects.status,
+                message: responseProjects.statusText,
+                customMessage: "Could not fetch available patterns. Please try again later."
+            }));
+            return;
+
         }
         let patterns = await responsePatterns.json();
         patterns = Object.values(patterns).map((pattern: any) => {
@@ -121,30 +127,23 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                 parentId: chosenParent?.id ?? null,
             };
 
-            let url = `${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+            let url = method === "POST" ?
+                `${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                `${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
-            if (method === 'PUT') {
-                url = `${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+            try {
+                await handleRequest(
+                    url,
+                    method,
+                    "Could not save counters. Please try again later.",
+                    tokenLoader(),
+                    counterData);
+                return navigate('/fiber-friend/account/counters');
+
+            } catch (error) {
+                dispatch(setError(error));
+                return;
             }
-
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: "Bearer " + token,
-                },
-                body: JSON.stringify(counterData),
-            });
-
-            if (response.status === 422) {
-                return response;
-            }
-
-            if (!response.ok) {
-                throw json({ message: 'Could not save counter.' }, { status: 500 });
-            }
-            const data = await response.json();
-            return navigate('/fiber-friend/account/counters');
         } else {
             setShowCounterGroupError(true);
             return;

@@ -4,30 +4,28 @@ import classes from './Patterns.module.scss'
 import { patternsFilters } from "../../data/FiltersBarData";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { setError } from "../../reducers/errorSlice";
+import { useAppDispatch } from "../../utils/hooks";
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { tokenLoader } from "../../utils/auth";
 
 export default function Patterns() {
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
     const fetchPatterns = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                //Authorization: "Bearer " + tokenLoader(),
-            },
-        });
-
-        if (!response.ok) {
-            throw json(
-                { message: 'Could not fetch patterns.' },
-                {
-                    status: 500,
-                }
+        try {
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                "GET",
+                "Could not fetch patterns. Please try again later.",
+                tokenLoader(),
             );
-        } else {
-            const resData = await response.json();
-
-            return resData;
+            return data;
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     };
 

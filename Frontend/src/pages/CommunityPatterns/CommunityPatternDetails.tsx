@@ -16,8 +16,12 @@ import { tokenLoader } from "../../utils/auth";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
 import { Pattern } from "../../DTOs/Pattern";
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 export default function CommunityPatternDetails() {
+    const dispatch = useAppDispatch();
     const token = tokenLoader();
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('community-pattern-details') as { pattern: Pattern };
@@ -41,27 +45,17 @@ export default function CommunityPatternDetails() {
     };
 
     const handleDelete = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                Authoriaztion: "Bearer " + token,
-            },
-        });
-
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch project.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch project.' },
-                {
-                    status: 500,
-                }
+        try {
+            await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'DELETE',
+                'Could not delete pattern. Please try again later.',
+                token
             );
-        } else {
             return navigate('/fiber-friend/account/projects');
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     }
 
@@ -125,7 +119,7 @@ export default function CommunityPatternDetails() {
                         </div>
                         <div className={classes.dividedContainer}>
                             <div className={classes.leftElements}>
-                            <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
+                                <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
                                         <div className={classes.attributeName}>Type: </div>
@@ -143,7 +137,7 @@ export default function CommunityPatternDetails() {
                             </div>
                             <div className={classes.rightElements}>
                                 <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
-                                {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                    {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
                                     <PhotosDisplay data={pattern} />
                                 </div>
                             </div>

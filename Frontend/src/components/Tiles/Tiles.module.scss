@@ -1,35 +1,76 @@
-@mixin tile ($minWidth, $height, $width: unset) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    min-width: $minWidth;
-    width: $width;
-    min-height: $height;
-    max-height: $height;
-    margin: 0px;
-    padding: 20px;
-    -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
-    -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
-    box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+@mixin tile($minWidth, $height, $width: unset) {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  min-width: $minWidth;
+  width: $width;
+  min-height: $height;
+  max-height: $height;
+  margin: 0px;
+  -webkit-box-shadow: 0px 8px 28px -4px rgb(146, 147, 153);
+  -moz-box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+  box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
+  border-radius: 10px;
+  background-color: var(--background-accents);
+
+  .gradient {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 50%;
     border-radius: 10px;
-    background-color: var(--background-accents);
-    
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),
+      rgba(255, 255, 255, 0.7)
+    );
+  }
+
+  .info {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    padding: 30px 20px;
+    border-radius: 0px 0px 10px 10px;
+
     .name {
+      max-height: 2.4em;
       margin-top: 0px;
       margin-bottom: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
       word-break: break-word;
     }
-    
-    .addIcon {
-      margin: 40px;
-      color: var(--main-color-dark);
+
+    .author {
+      bottom: 0px;
+      margin: 20px 0 0 0;
+      word-break: break-word;
     }
-    
-    &:hover {
-      background-color: var(--accent-color-btn);
-      transition: 0.2s;
-    }
+  }
+
+  .addIcon {
+    margin: 40px;
+    color: var(--main-color-dark);
+  }
+
+  .photo {
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .noPhotoIcon {
+    position: relative;
+    bottom: 50px;
+  }
+
+  &:hover {
+    background-color: var(--accent-color-btn);
+    transition: 0.2s;
+  }
 }
 //TODO: center header for mobile
 .container {
@@ -42,10 +83,10 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    
+
     .element {
       @include tile($minWidth: 180px, $height: 290px, $width: 100%);
-      
+
       max-width: 300px;
     }
   }
@@ -54,12 +95,12 @@
 @media screen and (min-width: 800px) {
   .container {
     .elements {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    justify-items: stretch;
-      
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      justify-items: stretch;
+
       .element {
-        @include tile($minWidth: 280px, $height: 390px);
-        
+        @include tile($minWidth: 270px, $height: 390px);
+
         max-width: 400px;
 
         .addIcon {

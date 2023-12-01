@@ -1,5 +1,5 @@
 import { useRouteLoaderData } from "react-router";
-import CounterForm from "../../components/CounterForm/CounterForm";
+import CounterForm from "../../components/Forms/CounterForm/CounterForm";
 
 export default function NewCounter() {
     const {counterGroup} = useRouteLoaderData("counterGroup-detials") as {counterGroup: any};

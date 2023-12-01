@@ -1,4 +1,4 @@
-@use "../../root.scss";
+@use "../../../root.scss";
 
 .container {
   width: 100%;
@@ -22,36 +22,26 @@
           display: block;
 
           .dateInput {
-            @include root.input($margin-lr: 0, $margin-tb: 10px, $width: 100%);
-
-            margin-top: 20px;
+            @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
           }
         }
 
-        .typeToggleContainer {
+        .typeToggle {
           margin: 20px 0;
-          width: 100%;
+        }
 
-          .typeToggle {
-            width: 100%;
-          }
+        .categoriesContainer {
+          margin-top: 40px;
+          margin-bottom: 20px;
         }
 
         .toggleButton {
-          width: 100%;
           color: var(--text-color-dark);
-          font-size: 12px;
 
           &:hover {
             background-color: var(--accent-color-btn);
             transition: 0.5s;
           }
-        }
-
-        .categoriesContainer {
-          width: 100%;
-          margin-top: 40px;
-          margin-bottom: 20px;
         }
 
         .additionalText {
@@ -61,16 +51,14 @@
 
         .notesField {
           width: 100%;
-          margin-top: 40px;
-          margin-bottom: 40px;
         }
 
         .error {
           color: #d32f2f;
         }
 
-        .patternSelect {
-          @include root.input($margin-lr: 0, $margin-tb: 20px, $width: calc(40% - 20px));
+        .fileInput {
+          margin-bottom: 50px;
         }
       }
     }
@@ -93,20 +81,7 @@
           .datePickers {
             display: grid;
             grid-template-columns: repeat(2, calc(40% - 20px));
-            column-gap: 40px;
-
-            .additionalText {
-              margin: 0;
-            }
-          }
-
-          .typeToggleContainer {
-            margin: 20px 0;
-            width: calc(40% - 20px);
-          }
-  
-          .toggleButton {
-            font-size: 14px;
+            gap: 40px; 
           }
 
           .notesField {
@@ -115,10 +90,6 @@
 
           .photoInput {
             width: 80%;
-          }
-
-          .categoriesContainer {
-            width: calc(40% - 20px);
           }
         }
       }

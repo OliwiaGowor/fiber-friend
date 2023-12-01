@@ -6,17 +6,23 @@ import Box from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import { Autocomplete, AutocompleteRenderInputParams, InputLabelProps, TextField } from '@mui/material';
+import { Autocomplete, InputLabelProps, TextField } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { tokenLoader } from '../../utils/auth';
 import classes from './TabsPanelForm.module.scss';
 import { Yarn } from '../../DTOs/Yarn';
-
+import { OtherSupply, Tool } from '../../DTOs/Pattern';
+import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from '../../utils/handleRequestHelper';
+import { setError } from '../../reducers/errorSlice';
+//TODO: fix mobile design
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+type Supply = Yarn | Tool | OtherSupply;
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -48,115 +54,267 @@ interface BasicTabsFormProps {
   getInfo: any;
   showError: boolean;
   defaultValue?: any;
+  type: "yarn" | "tool" | "other supply";
 }
-//TODO: make it also for tools for patterns?
-export default function BasicTabsForm(props: BasicTabsFormProps) {
-  const { getInfo, showError, defaultValue, ...other } = props;
+
+export default function BasicTabsForm({ getInfo, showError, defaultValue, type }: BasicTabsFormProps) {
+  const dispatch = useAppDispatch();
   const [value, setValue] = React.useState(0);
   const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
   const gaugeRef = React.useRef<HTMLInputElement | null>(null);
   const stitchRef = React.useRef<HTMLInputElement | null>(null);
-  const amountRef = React.useRef<HTMLInputElement | null>(null);
-  const [yarns, setYarns] = React.useState<Yarn[]>(defaultValue ?? []);
-  const [yarnName, setYarnName] = React.useState<string | null>('');
-  const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
+  const quantityRef = React.useRef<HTMLInputElement | null>(null);
+  const noteRef = React.useRef<HTMLInputElement | null>(null);
+  const [supplies, setSupplies] = React.useState<Supply[]>(defaultValue ?? []);
+  const [supplyName, setSupplyName] = React.useState<string | null>('');
+  const [fetchedSupplies, setFetchedYarns] = React.useState<any>([]);
 
-  const fetchAvailableYarns = useCallback(async () => {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
-
-    const token = tokenLoader();
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
+  const fetchAvailableSupplies = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "/GetAllYarnsForUser" : ".json"}`, {
-        headers,
-      });
+      const data = await handleRequest(
+        `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? `/GetAll${type.charAt(0).toUpperCase() + type.slice(1)}ForUser` : ".json"}`,
+        "GET",
+        "Could not available supplies. Please try again later.",
+        tokenLoader(),
+      );
 
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      }
-
-      const data = await response.json();
-      const loadedYarns = [];
+      const loadedSupplies = [];
 
       for (const key in data) {
-        loadedYarns.push({
+        loadedSupplies.push({
           id: key,
           name: data[key].name,
         });
       }
-      setFetchedYarns(loadedYarns);
+      setFetchedYarns(loadedSupplies);
 
     } catch (error) {
-      //setError("Something went wrong, try again.");
+      dispatch(setError(error));
+      return;
     }
   }, []);
 
   useEffect(() => {
-    fetchAvailableYarns();
+    fetchAvailableSupplies();
   }, []);
 
-  const handleData = (yarnName: string) => {
-    const tmpYarnsInfo: Yarn[] = yarns?.map((yarn: Yarn) => {
-      if (yarn.name === yarnName) {
+  const handleData = (resourceName: string) => {
+    const tmpResourceInfo: Supply[] = supplies?.map((resource: Supply) => {
+      if (resource.name === resourceName) {
         return ({
-          id: yarn.id ?? "",
-          name: yarn.name ?? "",
+          id: resource.id ?? "",
+          name: resource.name ?? "",
           toolSize: toolSizeRef.current?.value ?? "",
           gauge: gaugeRef.current?.value ?? "",
           stitch: stitchRef.current?.value ?? "",
-          quantity: Number(amountRef.current?.value) ?? "",
+          quantity: Number(quantityRef.current?.value) ?? "",
         });
       } else {
-        return (yarn);
+        return (resource);
       }
     });
-    setYarns(tmpYarnsInfo);
-    getInfo(yarns);
+    setSupplies(tmpResourceInfo);
+    getInfo(supplies);
   }
 
   const handleAddTab = () => {
-    setYarns([...yarns, {
-      id: String(yarns.length),
-      name: yarnName ?? "",
+    if (supplyName === null || supplyName === '') {
+      return;
+    }
+
+    setSupplies([...supplies, {
+      id: String(supplies.length),
+      name: supplyName,
       toolSize: '',
       gauge: '',
       stitch: '',
       quantity: 1,
     }])
-    setYarnName('');
-    setValue(yarns.length);
+    setSupplyName('');
+    setValue(supplies.length);
   };
 
-  const handleDeleteTab = (yarn: any) => {
-    let tmpArray = yarns?.filter((y: any) =>
-      y.id !== yarn.id);
+  const handleDeleteTab = (resource: Supply) => {
+    const tmpArray = supplies?.filter((y) => y.id !== resource.id) || [];
 
     for (let i = 0; i < tmpArray.length; i++) {
       tmpArray[i].id = String(i);
     }
-    setYarns(tmpArray);
+    setSupplies(tmpArray);
   };
+
+  const handleRenderFields = (supply: Supply, index: number) => {
+    switch (type) {
+      case "yarn": {
+        const yarnSupply = supply as Yarn;
+        return (
+          <div className={classes.inputs}>
+            <TextField
+              id={`tool-${index}`}
+              aria-describedby="tool-helper-text"
+              aria-label="Tool size"
+              inputProps={{
+                'aria-labelledby': `tool-label-${index}`,
+              }}
+              label="Tool size"
+              className={classes.formInput}
+              name='tool'
+              inputRef={toolSizeRef}
+              onChange={() => { handleData(yarnSupply.name) }}
+              defaultValue={yarnSupply.toolSize}
+              required
+            />
+            <TextField
+              id={`gauge-${index}`}
+              aria-describedby="gauge-helper-text"
+              aria-label="Gauge"
+              inputProps={{
+                'aria-labelledby': `gauge-label-${index}`,
+              }}
+              label="Gauge"
+              className={classes.formInput}
+              name='gauge'
+              onChange={() => { handleData(yarnSupply.name) }}
+              inputRef={gaugeRef}
+              defaultValue={yarnSupply.gauge}
+              required
+            />
+            <br></br>
+            <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
+            <TextField
+              id={`stitch-${index}`}
+              aria-describedby="stitch-helper-text"
+              aria-label="Stitch"
+              inputProps={{
+                'aria-labelledby': `stitch-label-${index}`,
+              }}
+              label="Stitch"
+              className={classes.formInput}
+              name='stitch'
+              onChange={() => { handleData(yarnSupply.name) }}
+              inputRef={stitchRef}
+              defaultValue={yarnSupply.stitch}
+              required
+            />
+            <TextField
+              className={classes.formInput}
+              id={`amount-${index}`}
+              type='number'
+              aria-describedby="amount-helper-text"
+              aria-label="Amount of skeins"
+              inputProps={{
+                'aria-labelledby': `amount-of-skeins-label-${index}`,
+              }}
+              label="Amount of skeins"
+              name='amount'
+              onChange={() => { handleData(yarnSupply.name) }}
+              inputRef={quantityRef}
+              defaultValue={yarnSupply.quantity}
+              required
+            />
+          </div>
+        )
+      }
+      case "tool": {
+        const toolSupply = supply as Tool;
+        return (
+          <div className={classes.inputs}>
+            <TextField
+              id={`tool-${index}`}
+              aria-describedby="tool-helper-text"
+              aria-label="Tool size"
+              inputProps={{
+                'aria-labelledby': `tool-label-${index}`,
+              }}
+              label="Tool size"
+              className={classes.formInput}
+              name='tool'
+              inputRef={toolSizeRef}
+              onChange={() => { handleData(toolSupply.name) }}
+              defaultValue={toolSupply.size}
+              required
+            />
+            <TextField
+              className={classes.formInput}
+              id={`amount-${index}`}
+              type='number'
+              aria-describedby="amount-helper-text"
+              aria-label="Amount of skeins"
+              inputProps={{
+                'aria-labelledby': `amount-of-skeins-label-${index}`,
+              }}
+              label="Quantity"
+              name='amount'
+              onChange={() => { handleData(toolSupply.name) }}
+              inputRef={quantityRef}
+              defaultValue={toolSupply.quantity}
+              required
+            />
+          </div>
+        )
+      }
+      case "other supply": {
+        const otherSupply = supply as OtherSupply;
+        return (
+          <div className={classes.inputs}>
+            <TextField
+              className={classes.formInput}
+              id={`other-supply-quantity-${index}`}
+              type='number'
+              aria-describedby="other-supply-quantity-helper-text"
+              aria-label="Other supply quantity"
+              inputProps={{
+                'aria-labelledby': `other-supply-quantity-label-${index}`,
+              }}
+              label="Quantity"
+              name='other-supply-quantity'
+              onChange={() => { handleData(otherSupply.name) }}
+              inputRef={quantityRef}
+              defaultValue={otherSupply.quantity}
+              required
+            />
+            <TextField
+              id={`tool-${index}`}
+              aria-label="Tool size"
+              inputProps={{
+                'aria-labelledby': `other-supply-quantity-label-${index}`,
+              }}
+              label="Notes"
+              className={classes.formInput}
+              name='tool'
+              inputRef={noteRef}
+              onChange={() => { handleData(otherSupply.name) }}
+              defaultValue={otherSupply.note}
+              multiline
+              rows={2}
+            />
+          </div>
+        )
+      }
+    }
+  }
 
   return (
     <div className={classes.container}>
       <div className={classes.addYarns}>
-        {fetchedYarns.length > 0 &&
+        {fetchedSupplies.length > 0 &&
           <Autocomplete
             id="yarn-input"
             freeSolo
             size="medium"
             className={classes.formInput}
-            options={fetchedYarns?.map((option: any) => option.name)}
-            renderInput={(params) => <TextField {...params} variant='outlined' label="Add new yarn" InputLabelProps= {{ children: '' } as Partial<InputLabelProps>} />}
-            onChange={(event: React.SyntheticEvent, newValue: string | null) => { setYarnName(newValue) }}
-            value={yarnName}
+            options={fetchedSupplies?.map((option: any) => option.name)}
+            renderInput={(params) =>
+              <TextField {...params}
+                variant='outlined'
+                label={`Add new ${type}`}
+                InputLabelProps={{ children: '' } as Partial<InputLabelProps>}
+              />}
+            onChange={(event: React.SyntheticEvent, newValue: string | null) => { setSupplyName(newValue) }}
+            value={supplyName}
+            autoSelect
           />}
-        {fetchedYarns.length === 0 &&
+        {fetchedSupplies.length === 0 &&
           <TextField
             id="yarn-input"
             inputProps={{
@@ -166,8 +324,8 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
             size="medium"
             className={classes.formInput}
             name='name'
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setYarnName(event.target.value) }}
-            value={yarnName}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setSupplyName(event.target.value) }}
+            value={supplyName}
             error={showError}
             helperText={showError ? 'You must add at least one yarn!' : ''}
           />}
@@ -190,7 +348,7 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
                 backgroundColor: "var(--main-color-dark)"
               }
             }}>
-            {yarns?.map((yarn: any, index: number) => {
+            {supplies?.map((yarn: any, index: number) => {
               return (
                 <Tab key={index}
                   className={classes.tab}
@@ -209,76 +367,9 @@ export default function BasicTabsForm(props: BasicTabsFormProps) {
             })}
           </Tabs>
         </Box>
-        {yarns?.map((yarn: any, index: number) => {
+        {supplies?.map((supply: any, index: number) => {
           return (<TabPanel key={index} value={value} index={index} >
-            <div className={classes.yarnInputs}>
-              <TextField
-                id={`tool-${index}`}
-                aria-describedby="tool-helper-text"
-                aria-label="Tool size"
-                inputProps={{
-                  'aria-labelledby': `tool-label-${index}`,
-                }}
-                label="Tool size"
-                className={classes.formInput}
-                name='tool'
-                inputRef={toolSizeRef}
-                onChange={() => { handleData(yarn.name) }}
-                defaultValue={yarn.toolSize}
-                required
-              />
-
-              <TextField
-                id={`gauge-${index}`}
-                aria-describedby="gauge-helper-text"
-                aria-label="Gauge"
-                inputProps={{
-                  'aria-labelledby': `gauge-label-${index}`,
-                }}
-                label="Gauge"
-                className={classes.formInput}
-                name='gauge'
-                onChange={() => { handleData(yarn.name) }}
-                inputRef={gaugeRef}
-                defaultValue={yarn.gauge}
-                required
-              />
-              <br></br>
-              <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
-
-              <TextField
-                id={`stitch-${index}`}
-                aria-describedby="stitch-helper-text"
-                aria-label="Stitch"
-                inputProps={{
-                  'aria-labelledby': `stitch-label-${index}`,
-                }}
-                label="Stitch"
-                className={classes.formInput}
-                name='stitch'
-                onChange={() => { handleData(yarn.name) }}
-                inputRef={stitchRef}
-                defaultValue={yarn.stitch}
-                required
-              />
-
-              <TextField
-                className={classes.formInput}
-                id={`amount-${index}`}
-                type='number'
-                aria-describedby="amount-helper-text"
-                aria-label="Amount of skeins"
-                inputProps={{
-                  'aria-labelledby': `amount-of-skeins-label-${index}`,
-                }}
-                label="Amount of skeins"
-                name='amount'
-                onChange={() => { handleData(yarn.name) }}
-                inputRef={amountRef}
-                defaultValue={yarn.amount}
-                required
-              />
-            </div>
+            {handleRenderFields(supply, index)}
           </TabPanel>)
         })}
       </Box>

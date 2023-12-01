@@ -11,8 +11,10 @@ import CounterMiniature from '../CounterMiniature/CounterMiniature';
 import { UnsavedPrompt } from '../UnsavedPrompt/UnsavedPrompt';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
-import { json } from 'react-router';
 import { getAuthToken, tokenLoader } from '../../utils/auth';
+import { useAppDispatch } from '../../utils/hooks';
+import { setError } from '../../reducers/errorSlice';
+import { handleRequest } from '../../utils/handleRequestHelper';
 
 //TODO: smaller tiles on mobile and horizontal scroll
 //FIXME: style buttons
@@ -23,6 +25,7 @@ interface CounterGroupProps {
 }
 
 const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
+    const dispatch = useAppDispatch();
     const [tmpCounter, setTmpCounter] = React.useState();
     const [counters, setCounters] = React.useState<any>(defaultValue ?? []);
     const [openDialog, setOpenDialog] = React.useState(false);
@@ -52,25 +55,19 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
 
     const handleSaveChanges = async () => {
         const method = defaultValue ? 'PATCH' : 'POST';
+        try {
+            await handleRequest(
+                `${process.env.REACT_APP_API_URL}Project/${parentId}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                method,
+                "Could not fetch patterns. Please try again later.",
+                tokenLoader(),
+                counters);
+            setEditingCounters(false);
 
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${parentId}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                body: JSON.stringify(counters),
-                Authorization: "Bearer " + tokenLoader(),
-            },
-        });
-
-        if (!response.ok) {
-            throw json(
-                { message: 'Could not fetch project.' },
-                {
-                    status: 500,
-                }
-            );
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
-        setEditingCounters(false);
     }
 
     return (

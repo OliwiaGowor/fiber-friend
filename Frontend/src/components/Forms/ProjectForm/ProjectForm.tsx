@@ -1,4 +1,4 @@
-import { json, useRouteLoaderData, useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import classes from './ProjectForm.module.scss';
 import "swiper/css";
 import "swiper/css/pagination";
@@ -9,15 +9,18 @@ import TextField from "@mui/material/TextField";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import CategoriesMenu from "../../components/CategoriesMenu/CategoriesMenu";
-import { FileInput } from "../../components/FileInput/FileInput";
-import BasicTabsForm from "../../components/TabsPanelForm/TabsPanelForm";
+import CategoriesMenu from "../../CategoriesMenu/CategoriesMenu";
+import { FileInput } from "../../FileInput/FileInput";
+import BasicTabsForm from "../../TabsPanelForm/TabsPanelForm";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import TextEditor from "../../components/TextEditor/TextEditor";
-import { getAuthToken } from "../../utils/auth";
+import TextEditor from "../../TextEditor/TextEditor";
+import { getAuthToken } from "../../../utils/auth";
 import dayjs from "dayjs";
+import { useAppDispatch } from '../../../utils/hooks';
+import { handleRequest } from "../../../utils/handleRequestHelper";
+import { setError } from "../../../reducers/errorSlice";
 
 interface ProjectFormProps {
     project?: any;
@@ -25,6 +28,7 @@ interface ProjectFormProps {
 }
 
 export default function ProjectForm({ project, method }: ProjectFormProps) {
+    const dispatch = useAppDispatch();
     const token = getAuthToken();
     const navigate = useNavigate();
     const [type, setType] = React.useState(project?.type ?? 'crochet');
@@ -47,17 +51,13 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
     const fetchAvailablePatterns = React.useCallback(async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: "Bearer " + token,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'GET',
+                "Could not fetch available patterns. Please try again later.",
+                token
+            );
 
-            const data = await response.json();
             const loadedPatterns = [];
 
             for (const key in data) {
@@ -69,7 +69,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
             setPatterns(loadedPatterns);
 
         } catch (error) {
-            //setError("Something went wrong, try again.");
+            dispatch(setError(error));
         }
     }, []);
 
@@ -108,30 +108,24 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                 finished: endDate !== null ? true : false,
             };
 
-            let url = `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+            let url = method === "POST" ?
+                `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                `${process.env.REACT_APP_API_URL}Project/${project.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
-            if (method === "PUT") {
-                url = `${process.env.REACT_APP_API_URL}Project/${project.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+            try {
+                await handleRequest(
+                    url,
+                    method,
+                    "Could not save project. Please try again later.",
+                    token,
+                    projectData
+                );
+                return navigate('/fiber-friend/account/projects');
+
+            } catch (error) {
+                dispatch(setError(error));
+                return;
             }
-
-            const response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authoriaztion: "Bearer " + token,
-                },
-                body: JSON.stringify(projectData),
-            });
-
-            if (response.status === 422) {
-                return response;
-            }
-
-            if (!response.ok) {
-                throw json({ message: 'Could not save project.' }, { status: 500 });
-            }
-            const data = await response.json();
-            return navigate('/fiber-friend/account/projects');
         } else {
             return;
         }
@@ -269,7 +263,11 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                         <h2 className={classes.sectionHeader}>Yarns and tools</h2>
                         <p className={classes.additionalText}>Add yarns to see more options</p>
-                        <BasicTabsForm showError={showYarnsError} getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }} defaultValue={yarns} />
+                        <BasicTabsForm
+                            showError={showYarnsError}
+                            getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }} defaultValue={yarns}
+                            type="yarn"
+                        />
                     </div>
 
                     <div className={classes.sectionContainer}>

@@ -4,6 +4,7 @@ import classes from "./SignUpPage.module.scss"
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
+import { useAppDispatch } from '../../utils/hooks';
 
 export default function SignUpPage() {
     const navigation = useNavigation();
