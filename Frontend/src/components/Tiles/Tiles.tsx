@@ -36,10 +36,13 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       setLoading(true);
       const data = await fetchData(currPage + 1, pageSize, chosenFilters);
       if (data) {
-        console.log(data)
+
         //TODO: delete later
-        const dataArray = Object.values(data).map((e: any) => {
+        const ids = Object.keys(data).map((e: any) => {
           return e;
+        });
+        const dataArray = Object.values(data).map((e: any, index: number) => {
+          return { ...e, id: ids[index] };
         });
 
         if (!dataArray.length) {
@@ -50,11 +53,10 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
 
         setElements([...elements, ...dataArray]);
         setLoading(false);
-        
       } else {
         setWasLastList(true);
-          setLoading(false);
-          return;
+        setLoading(false);
+        return;
       }
     };
   }
@@ -121,8 +123,8 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       {filters && <FiltersBar filters={filters} applyFilters={setChosenFilters} />}
       <ul className={classes.elements}>
         {addTile &&
-          <li className={classes.element} onClick={() => navigate(`${link}`)}>
-            <h2 className={classes.name}>{addText}</h2>
+          <li className={`${classes.element} ${classes.addTile}`} onClick={() => navigate(`${link}`)}>
+            <h2 className={classes.info}>{addText}</h2>
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} aria-label="Add project" />
           </li>
         }
@@ -134,7 +136,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
             ref={tileRef}
           >
             {handlePhotoRender(element)}
-            <span className={classes.gradient}></span>
+            <span className={classes.gradient} />
             <div className={classes.info} >
               <h2 className={classes.name}>{element.name}</h2>
               {element.authorId !== userId &&

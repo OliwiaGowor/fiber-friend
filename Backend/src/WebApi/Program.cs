@@ -1,14 +1,9 @@
 using Application;
-using Application.Interfaces.Authentication;
 using Domain.Interfaces.Services;
 using FluentValidation.AspNetCore;
 using Infrastructure;
-using Infrastructure.Authentication;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 public class Program
 {
@@ -23,27 +18,6 @@ public class Program
             options.UseSqlServer(connectionString));
 
         builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-
-        // Configure JwtSettings
-        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-        builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                var _jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = _jwtSettings.Issuer,
-                    ValidAudience = _jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret))
-                };
-            });
 
         builder.Services.AddApplication();
         builder.Services.AddInfrastructure(builder.Configuration);

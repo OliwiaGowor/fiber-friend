@@ -6,7 +6,7 @@ using Domain.Interfaces.Repository;
 
 namespace Application.Interfaces.Services;
 
-public class CountersGroupService
+public class CountersGroupService : ICountersGroupService
 {
     private readonly IMapper _mapper;
     private readonly ICountersGroupRepository _countersGroupRepo;

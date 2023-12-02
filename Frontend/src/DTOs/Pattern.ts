@@ -9,7 +9,7 @@ interface PatternBase {
     name: string;
     type: NeedleworkType;
     authorId: string;
-    author?: string;
+    author?: User;
     category: string;
     notes: Notes[];
     photos?: File[];

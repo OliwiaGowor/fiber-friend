@@ -42,7 +42,6 @@ export default function SignUpPage() {
             await action({
                 request: new Request("/fiber-friend/signUp", {
                     method: "POST",
-
                     body: new FormData(event.currentTarget),
                 })
             });
@@ -116,26 +115,29 @@ export default function SignUpPage() {
 
 export async function action({ request }: { request: Request }) {
     const data = await request.formData();
-
-    const authData = {
+console.log(data);
+console.log(data.get("username"));
+const authData = {
         username: data.get("username"),
         email: data.get("email"),
         password: data.get("password"),
     };
-
+console.log(JSON.stringify(authData));
     try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}`, { //FIXME: fill the url
+        const response = await fetch(`${process.env.REACT_APP_API_URL}auth/Register`, { //FIXME: fill the url
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(authData),
         });
-
-        if (!response.ok) {
+console.log(response)
+       /* if (!response.ok) {
             localStorage.setItem("error", "Something went wrong, please try again later.");
-        }
+            console.log("error1")
+        }*/
         const resData = await response.json();
+        console.log(resData);
         const token = resData.token;
         const userId = resData.id;
 
@@ -149,5 +151,6 @@ export async function action({ request }: { request: Request }) {
 
     } catch (error) {
         localStorage.setItem("error", "Something went wrong, please try again later.");
+        console.log(error)
     }
 }

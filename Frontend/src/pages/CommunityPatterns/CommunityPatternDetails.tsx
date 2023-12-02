@@ -122,17 +122,13 @@ export default function CommunityPatternDetails() {
                                 <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                     <h2 className={classes.sectionHeader}>Details</h2>
                                     <div className={classes.projectInfoContainer}>
+                                        <div className={classes.attributeName}>Author: </div>
+                                        {pattern?.author?.username ?? <br></br>}
                                         <div className={classes.attributeName}>Type: </div>
                                         {pattern.type ?? <br></br>}
                                         <div className={classes.attributeName}>Category: </div>
                                         {pattern.category ?? <br></br>}
-                                        <div className={classes.attributeName}>Start date: </div>
-                                        {pattern.isAuthorial ?? <br></br>}
                                     </div>
-                                </div>
-                                <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                                    <h2 className={classes.sectionHeader}>Yarns</h2>
-                                    <TabsPanelDisplay yarns={pattern.yarns ? pattern.yarns : null} />
                                 </div>
                             </div>
                             <div className={classes.rightElements}>
@@ -143,6 +139,18 @@ export default function CommunityPatternDetails() {
                             </div>
                         </div>
                         <div className={classes.wholeScreenElements}>
+                            <div className={`${classes.sectionContainer}`}>
+                                <h2 className={classes.sectionHeader}>Yarns</h2>
+                                <TabsPanelDisplay supplies={pattern.yarns ?? []} type={"yarn"} />
+                            </div>
+                            <div className={`${classes.sectionContainer}`}>
+                                <h2 className={classes.sectionHeader}>Tools</h2>
+                                <TabsPanelDisplay supplies={pattern.tools ?? []} type={"tool"} />
+                            </div>
+                            <div className={`${classes.sectionContainer}`}>
+                                <h2 className={classes.sectionHeader}>Other supplies</h2>
+                                <TabsPanelDisplay supplies={pattern.otherSupplies ?? []} type={"other supply"} />
+                            </div>
                             <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Files and notes</h2>
                                 <h3 className={classes.attributeName}>Files</h3>

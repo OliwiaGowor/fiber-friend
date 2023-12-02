@@ -1,6 +1,5 @@
 @use '../../root';
 .container {
-
   .addYarns {
     display: grid;
     grid-template-columns: minmax(calc(80% - 124px), 80%) 124px;
@@ -26,13 +25,36 @@
   }
 
   .inputs {
-    display: grid;
-    grid-template-columns: repeat(2, 37%);
-    gap: 0px 5.5%;
+    display: flex;
+    flex-direction: column;
     margin-top: 16px;
 
     .formInput {
       width: 100%;
+      margin-top: 20px;
+    }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .container {
+    .addButton {
+      @include root.button($margin-tb: 12px, $margin-lr: 40px);
+  
+      justify-self: end;
+      margin-right: 0;
+      height: 56px;
+    }
+
+    .inputs {
+      display: grid;
+      grid-template-columns: repeat(2, 37%);
+      gap: 0px 5.5%;
+      margin-top: 16px;
+  
+      .formInput {
+        width: 100%;
+      }
     }
   }
 }

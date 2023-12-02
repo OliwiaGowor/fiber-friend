@@ -1,7 +1,7 @@
 @mixin tile($minWidth, $height, $width: unset) {
   position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   min-width: $minWidth;
@@ -14,7 +14,7 @@
   box-shadow: 0px 8px 28px -4px rgba(146, 147, 153);
   border-radius: 10px;
   background-color: var(--background-accents);
-
+  
   .gradient {
     position: absolute;
     bottom: 0px;
@@ -53,7 +53,8 @@
   }
 
   .addIcon {
-    margin: 40px;
+    position: relative;
+    bottom: 25px;
     color: var(--main-color-dark);
   }
 
@@ -64,7 +65,7 @@
 
   .noPhotoIcon {
     position: relative;
-    bottom: 50px;
+    bottom: 30px;
   }
 
   &:hover {

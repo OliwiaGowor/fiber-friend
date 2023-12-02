@@ -5,16 +5,16 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import classes from './TabsPanelDisplay.module.scss';
 import FormHelperText from '@mui/material/FormHelperText';
-
-const availableYarns = [
-  { name: 'yarn' },
-];
+import { Yarn } from '../../DTOs/Yarn';
+import { OtherSupply, Tool } from '../../DTOs/Pattern';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+type Supply = Yarn | Tool | OtherSupply;
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -44,15 +44,68 @@ function a11yProps(index: number) {
 }
 
 interface BasicTabsDisplayProps {
-  yarns: any;
+  supplies: Supply[];
+  type: "yarn" | "tool" | "other supply";
 }
 
-export default function BasicTabsDisplay({ yarns }: BasicTabsDisplayProps) {
+export default function BasicTabsDisplay({ supplies, type }: BasicTabsDisplayProps) {
   const [value, setValue] = React.useState(0);
 
   const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const handleRenderInfo = (supply: Supply, index: number) => {
+    switch (type) {
+      case "yarn": {
+        const yarnSupply = supply as Yarn;
+        return (
+          <div className={classes.infoContainer}>
+            <div className={classes.attributeName}>Tool size: </div>
+            {yarnSupply.toolSize ?? <br />}
+
+            <div className={classes.attributeName}>Stitch: </div>
+            {yarnSupply.stitch ?? <br />}
+
+            <div className={classes.attributeName}>
+              Gauge
+              <FormHelperText style={{ display: "inline" }}>
+                (10cm x 10cm)
+              </FormHelperText>:
+            </div>
+            {yarnSupply.gauge ?? <br />}
+
+            <div className={classes.attributeName}>Amount: </div>
+            {yarnSupply.quantity ?? <br />}
+          </div>
+        )
+      }
+      case "tool": {
+        const toolSupply = supply as Tool;
+        return (
+          <div className={classes.infoContainer}>
+            <div className={classes.attributeName}>Tool size: </div>
+            {toolSupply.size ?? <br />}
+
+            <div className={classes.attributeName}>Quantity: </div>
+            {toolSupply.quantity ?? <br />}
+          </div>
+        )
+      }
+      case "other supply": {
+        const otherSupply = supply as OtherSupply;
+        return (
+          <div className={classes.infoContainer}>
+            <div className={classes.attributeName}>Quantity: </div>
+            {otherSupply.quantity ?? <br />}
+
+            <div className={classes.attributeName}>Notes: </div>
+            {otherSupply.note ?? <br />}
+          </div>
+        )
+      }
+    }
+  }
 
   return (
     <div className={classes.container}>
@@ -68,11 +121,11 @@ export default function BasicTabsDisplay({ yarns }: BasicTabsDisplayProps) {
                 backgroundColor: "var(--main-color-dark)"
               }
             }}>
-            {yarns?.map((yarn: any, index: number) => {
+            {supplies?.map((supply: any, index: number) => {
               return (
                 <Tab key={index}
                   className={classes.tab}
-                  label={yarn.yarn}
+                  label={supply.name}
                   {...a11yProps(index)}
                   disableRipple
                   iconPosition='end'
@@ -86,26 +139,9 @@ export default function BasicTabsDisplay({ yarns }: BasicTabsDisplayProps) {
             })}
           </Tabs>
         </Box>
-        {yarns?.map((yarn: any, index: number) => {
-          return (<TabPanel key={yarn.id || index} value={value} index={index}>
-            <div className={classes.yarnInfoContainer}>
-              <div className={classes.attributeName}>Tool size: </div>
-              {yarn.toolSize ?? <br />}
-
-              <div className={classes.attributeName}>Stitch: </div>
-              {yarn.stitch ?? <br />}
-
-              <div className={classes.attributeName}>
-                Gauge
-                <FormHelperText style={{ display: "inline" }}>
-                  (10cm x 10cm)
-                </FormHelperText>:
-              </div>
-              {yarn.gauge ?? <br />}
-
-              <div className={classes.attributeName}>Amount: </div>
-              {yarn.amount ?? <br />}
-            </div>
+        {supplies?.map((supply: Supply, index: number) => {
+          return (<TabPanel key={supply.id || index} value={value} index={index}>
+            {handleRenderInfo(supply, index)}
           </TabPanel>)
         })}
       </Box>

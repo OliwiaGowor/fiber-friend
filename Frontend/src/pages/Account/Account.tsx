@@ -12,17 +12,26 @@ import { tokenLoader } from "../../utils/auth";
 const tiles = [
   {
     title: "Counters",
-    icon: <CalculateIcon />,
+    icon: <CalculateIcon
+      className={classes.icon}
+      sx={{ fontSize: 75 }}
+    />,
     link: 'counters',
   },
   {
     title: "Resources",
-    icon: <ShoppingBasketIcon />,
+    icon: <ShoppingBasketIcon
+      className={classes.icon}
+      sx={{ fontSize: 75 }}
+    />,
     link: 'resources',
   },
   {
     title: "Statistics",
-    icon: <InsightsIcon />,
+    icon: <InsightsIcon
+      className={classes.icon}
+      sx={{ fontSize: 75 }}
+    />,
     link: 'statistics',
   },
 ];
@@ -40,7 +49,8 @@ export default function Account() {
           </Link>
         </h1>
         <Await resolve={projects}>
-          {(loadedProjects) => <MiniaturesList data={loadedProjects} link={'projects/new-project'} />}
+          {(loadedProjects) =>
+            <MiniaturesList data={loadedProjects} link={'projects/new-project'} />}
         </Await>
       </Suspense>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
@@ -50,7 +60,8 @@ export default function Account() {
           </Link>
         </h1>
         <Await resolve={patterns}>
-          {(loadedPatterns) => <MiniaturesList data={loadedPatterns} link={'patterns/new-pattern'} />}
+          {(loadedPatterns) =>
+            <MiniaturesList data={loadedPatterns} link={'patterns/new-pattern'} />}
         </Await>
       </Suspense>
       <div className={classes.container} >
@@ -59,7 +70,7 @@ export default function Account() {
           {tiles.map((tile: any) =>
             <Link to={tile.link} key={tile.title}>
               <div className={classes.tile}>
-                <h2 className={classes.name}>{tile.title}</h2>
+              <h2 className={classes.name}>{tile.title}</h2>
                 {tile.icon}
               </div>
             </Link>

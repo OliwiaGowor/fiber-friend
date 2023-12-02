@@ -1,4 +1,4 @@
-import { CircularProgress, useMediaQuery } from "@mui/material";
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from "@mui/material";
 import { Suspense } from "react";
 import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
 import classes from './PatternDetails.module.scss';
@@ -29,6 +29,7 @@ export default function PatternDetails() {
     const navigate = useNavigate();
     const { pattern } = useRouteLoaderData('pattern-details') as { pattern: Pattern };
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [shareOpen, setShareOpen] = React.useState(false);
     const open = Boolean(anchorEl);
     const isMobile = useMediaQuery('(max-width: 760px)');
 
@@ -86,6 +87,14 @@ export default function PatternDetails() {
         };
     }, [pattern]);
 
+    const handleClickShareOpen = () => {
+        setShareOpen(true);
+    };
+
+    const handleShareClose = () => {
+        setShareOpen(false);
+    };
+
     return (
         <>
             {isMobile &&
@@ -94,6 +103,28 @@ export default function PatternDetails() {
                 </div>
             }
             <div className={classes.container}>
+                <Dialog
+                    open={shareOpen}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {"Share your pattern"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Do you want to share this pattern with other users?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose} autoFocus>
+                            Share
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
                 <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                     <Await resolve={pattern}>
                         <div className={classes.details}>
@@ -151,18 +182,23 @@ export default function PatternDetails() {
                                     <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                         <h2 className={classes.sectionHeader}>Details</h2>
                                         <div className={classes.projectInfoContainer}>
+                                            <div className={classes.attributeName}>Author: </div>
+                                            {pattern?.author?.username ?? <br></br>}
                                             <div className={classes.attributeName}>Type: </div>
                                             {pattern.type ?? <br></br>}
                                             <div className={classes.attributeName}>Category: </div>
                                             {pattern.category ?? <br></br>}
-                                            <div className={classes.attributeName}>Start date: </div>
-                                            {pattern.isAuthorial ?? <br></br>}
+                                            {pattern.isAuthorial &&
+                                                <>
+                                                    <div className={classes.attributeName}>Start date: </div>
+                                                    {pattern.startDate ?? <br></br>}
+                                                    <div className={classes.attributeName}>End date: </div>
+                                                    {pattern.endDate ?? <br></br>}
+                                                </>
+                                            }
                                         </div>
                                     </div>
-                                    <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                                        <h2 className={classes.sectionHeader}>Yarns</h2>
-                                        <TabsPanelDisplay yarns={pattern.yarns ? pattern.yarns : null} />
-                                    </div>
+
                                 </div>
                                 <div className={classes.rightElements}>
                                     <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
@@ -172,6 +208,18 @@ export default function PatternDetails() {
                                 </div>
                             </div>
                             <div className={classes.wholeScreenElements}>
+                                <div className={`${classes.sectionContainer}`}>
+                                    <h2 className={classes.sectionHeader}>Yarns</h2>
+                                    <TabsPanelDisplay supplies={pattern.yarns ?? []} type={"yarn"} />
+                                </div>
+                                <div className={`${classes.sectionContainer}`}>
+                                    <h2 className={classes.sectionHeader}>Tools</h2>
+                                    <TabsPanelDisplay supplies={pattern.tools ?? []} type={"tool"} />
+                                </div>
+                                <div className={`${classes.sectionContainer}`}>
+                                    <h2 className={classes.sectionHeader}>Other supplies</h2>
+                                    <TabsPanelDisplay supplies={pattern.otherSupplies ?? []} type={"other supply"} />
+                                </div>
                                 <div className={classes.sectionContainer}>
                                     <h2 className={classes.sectionHeader}>Files and notes</h2>
                                     <h3 className={classes.attributeName}>Files</h3>

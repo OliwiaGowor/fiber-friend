@@ -10,8 +10,6 @@ import Collapse from "@mui/material/Collapse";
 //TODO: smaller miniatures, for mobile add scroll - only one row
 //TODO: add info that the first photo would be main one
 
-//TODO: fix defaultValue
-
 interface FileInputProps {
   onlyImg: boolean;
   addHeader: string;
@@ -39,8 +37,8 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
       }
       for (let i = 0; i < event.target.files.length && i < maxFiles; i++) {
         setAddedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
+        selectedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
       }
-      selectedFiles(addedFiles);
     }
   };
 

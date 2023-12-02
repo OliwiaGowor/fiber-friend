@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import { Autocomplete, InputLabelProps, TextField } from '@mui/material';
+import { Autocomplete, InputLabelProps, TextField, useMediaQuery } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { tokenLoader } from '../../utils/auth';
 import classes from './TabsPanelForm.module.scss';
@@ -15,7 +15,7 @@ import { OtherSupply, Tool } from '../../DTOs/Pattern';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from '../../utils/handleRequestHelper';
 import { setError } from '../../reducers/errorSlice';
-//TODO: fix mobile design
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -58,6 +58,7 @@ interface BasicTabsFormProps {
 }
 
 export default function BasicTabsForm({ getInfo, showError, defaultValue, type }: BasicTabsFormProps) {
+  const isMobile = useMediaQuery('(max-width: 800px)');
   const dispatch = useAppDispatch();
   const [value, setValue] = React.useState(0);
   const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
@@ -179,7 +180,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               defaultValue={yarnSupply.gauge}
               required
             />
-            <br></br>
+            {!isMobile && <br></br>}
             <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
             <TextField
               id={`stitch-${index}`}
@@ -292,7 +293,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
         )
       }
     }
-  }
+  };
 
   return (
     <div className={classes.container}>

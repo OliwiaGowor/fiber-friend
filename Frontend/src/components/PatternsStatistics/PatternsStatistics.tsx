@@ -40,7 +40,7 @@ interface PatternsStatisticsDto {
 
 const PatternsStatistics = () => {
     const [data, setData] = useState<PatternsStatisticsDto | null>(null);
-    
+
     const fetchStatistics = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
             method: 'GET',
@@ -55,55 +55,57 @@ const PatternsStatistics = () => {
 
     useEffect(() => {
         fetchStatistics();
-    },[]);
+    }, []);
 
     return (
         <div className={classes.container}>
             <div className={classes.info}>The statistics are for your authorial patterns.</div>
-            <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
-                <Await resolve={null}>
-                    <div className={classes.dataTile}>
-                        <p className={classes.dataTileHeader}>Number of added patterns</p>
-                        <p className={classes.dataTileData}>{data?.totalPatterns}</p>
-                    </div>
-                    <div className={classes.dataTile}>
-                        <p className={classes.dataTileHeader}>Number of finished patterns</p>
-                        <p className={classes.dataTileData}>{data?.finishedPatterns}</p>
-                    </div>
-                    <div className={classes.dataTile}>
-                        <p className={classes.dataTileHeader}>Most frequently used hook/needle size</p>
-                        <p className={classes.dataTileData}>{data?.mostUsedTool}</p>
-                    </div>
-                    <div className={classes.dataTile}>
-                        <p className={classes.dataTileHeader}>Mostly used stitch</p>
-                        <p className={classes.dataTileData}>{data?.mostUsedStitch}</p>
-                    </div>
-                    <div className={classes.dataTile}>
-                        <p className={classes.dataTileHeader}>Most common category</p>
-                        <p className={classes.dataTileData}>{data?.mostCommonCategory}</p>
-                    </div>
-                    <div className={`${classes.dataTile} ${classes.chart}`}>
-                        <p className={classes.dataTileHeader}>Type of patterns</p>
-                        <PieChart
-                            series={[
-                                {
-                                    data: data?.typeOfPatterns ?? [],
-                                },
-                            ]}
-                            width={400}
-                            height={200}
-                            slotProps={{
-                                legend: {
-                                    direction: 'row',
-                                    position: { vertical: 'bottom', horizontal: 'middle' },
-                                    padding: 0,
-                                },
-                            }}
-                            margin={{ bottom: 60 }}
-                        />
-                    </div>
-                </Await>
-            </Suspense>
+            <div className={classes.tiles}>
+                <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
+                    <Await resolve={null}>
+                        <div className={classes.dataTile}>
+                            <p className={classes.dataTileHeader}>Number of added patterns</p>
+                            <p className={classes.dataTileData}>{data?.totalPatterns}</p>
+                        </div>
+                        <div className={classes.dataTile}>
+                            <p className={classes.dataTileHeader}>Number of finished patterns</p>
+                            <p className={classes.dataTileData}>{data?.finishedPatterns}</p>
+                        </div>
+                        <div className={classes.dataTile}>
+                            <p className={classes.dataTileHeader}>Most frequently used hook/needle size</p>
+                            <p className={classes.dataTileData}>{data?.mostUsedTool}</p>
+                        </div>
+                        <div className={classes.dataTile}>
+                            <p className={classes.dataTileHeader}>Mostly used stitch</p>
+                            <p className={classes.dataTileData}>{data?.mostUsedStitch}</p>
+                        </div>
+                        <div className={classes.dataTile}>
+                            <p className={classes.dataTileHeader}>Most common category</p>
+                            <p className={classes.dataTileData}>{data?.mostCommonCategory}</p>
+                        </div>
+                        <div className={`${classes.dataTile} ${classes.chart}`}>
+                            <p className={classes.dataTileHeader}>Type of patterns</p>
+                            <PieChart
+                                series={[
+                                    {
+                                        data: data?.typeOfPatterns ?? [],
+                                    },
+                                ]}
+                                width={400}
+                                height={200}
+                                slotProps={{
+                                    legend: {
+                                        direction: 'row',
+                                        position: { vertical: 'bottom', horizontal: 'middle' },
+                                        padding: 0,
+                                    },
+                                }}
+                                margin={{ bottom: 60 }}
+                            />
+                        </div>
+                    </Await>
+                </Suspense>
+            </div>
         </div>
     );
 }

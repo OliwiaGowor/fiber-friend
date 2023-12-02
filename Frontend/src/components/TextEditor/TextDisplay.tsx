@@ -26,6 +26,7 @@ export default function TextEditor(props: TextEditorProps) {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         readOnly={true}
+        rows={50}
         />
       </Slate>}
       {Object.prototype.toString.call(formattedValue) !== '[object Array]' && 

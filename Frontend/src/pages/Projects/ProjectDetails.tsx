@@ -191,7 +191,7 @@ export default function ProjectDetails() {
                                     </div>
                                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
                                         <h2 className={classes.sectionHeader}>Yarns</h2>
-                                        <TabsPanelDisplay yarns={project.yarns ?? []} />
+                                        <TabsPanelDisplay supplies={project.yarns ?? []} type="yarn" />
                                     </div>
                                 </div>
                                 <div className={classes.rightElements}>
