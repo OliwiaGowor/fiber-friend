@@ -13,7 +13,9 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<PatternBase> PatternBases { get; set; }
     public DbSet<Pattern> Patterns { get; set; }
+    public DbSet<CommunityPattern> CommunityPatterns { get; set; }
     public DbSet<Resource> Resources { get; set; }
     public DbSet<Counter> Counters { get; set; }
     public DbSet<CountersGroup> CountersGroups { get; set; }
@@ -24,6 +26,54 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        //PATTERN BASE
+        builder.Entity<PatternBase>()
+          .HasKey(p => p.Id);
+
+        builder.Entity<PatternBase>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Entity<PatternBase>()
+            .Property(p => p.Name)
+            .IsRequired();
+
+        builder.Entity<PatternBase>()
+                .HasDiscriminator<string>("discriminator")
+                .HasValue<Pattern>("pattern")
+                .HasValue<CommunityPattern>("pommunity_pattern");
+
+        builder.Entity<PatternBase>()
+            .HasOne(u => u.Author)
+            .WithMany()
+            .HasForeignKey(p => p.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<PatternBase>()
+            .HasMany(p => p.Yarns)
+            .WithOne()
+            .HasForeignKey(y => y.PatternId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<PatternBase>()
+            .HasMany(p => p.Tools)
+            .WithOne()
+            .HasForeignKey(y => y.PatternId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<PatternBase>()
+            .HasMany(p => p.OtherSupplies)
+            .WithOne()
+            .HasForeignKey(y => y.PatternId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Pattern>()
+                       .HasBaseType<PatternBase>();
+
+
+        builder.Entity<CommunityPattern>()
+            .HasBaseType<PatternBase>();
 
         //USER
         builder.Entity<User>()
@@ -46,22 +96,17 @@ public class ApplicationDbContext : DbContext
             .IsRequired();
 
         builder.Entity<User>()
-            .HasMany(u => u.Patterns)
-            .WithOne(p => p.Author)
-            .HasForeignKey(p => p.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(u => u.Patterns)
+                .WithOne(p => p.Author)
+                .HasForeignKey(p => p.AuthorId);
 
-        builder.Entity<User>()
-            .HasMany(u => u.Projects)
-            .WithOne()
-            .HasForeignKey(p => p.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            // Configure the many-to-many relationship between User and CommunityPattern (SavedCommPatterns)
+            builder.Entity<User>()
+                .HasMany(u => u.SavedCommPatterns)
+                .WithMany(cp => cp.SavedByUsers)
+                .UsingEntity(j => j.ToTable("SavedCommunityPatterns"));
 
-        builder.Entity<User>()
-            .HasMany(u => u.CountersGroups)
-            .WithOne()
-            .HasForeignKey(cg => cg.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        /////????? PATTERN
 
         builder.Entity<User>()
             .HasMany(u => u.Resources)
@@ -70,46 +115,6 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
 
-        //PATTERN BASE
-        builder.Entity<PatternBase>()
-          .HasKey(p => p.Id);
-
-        builder.Entity<PatternBase>()
-            .Property(p => p.Id)
-            .ValueGeneratedOnAdd();
-
-        builder.Entity<PatternBase>()
-            .Property(p => p.Name)
-            .IsRequired();
-
-        builder.Entity<PatternBase>()
-                .HasDiscriminator<string>("Discriminator")
-                .HasValue<Pattern>("Pattern")
-                .HasValue<CommunityPattern>("Community");
-
-        builder.Entity<PatternBase>()
-            .HasOne(u => u.Author)
-            .WithMany(p => p.Patterns)
-            .HasForeignKey(p => p.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<PatternBase>()
-            .HasMany(p => p.Yarns)
-            .WithOne()
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<PatternBase>()
-            .HasMany(p => p.Tools)
-            .WithOne()
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<PatternBase>()
-            .HasMany(p => p.OtherSupplies)
-            .WithOne()
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
 
 
         //PROJECT
