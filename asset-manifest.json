@@ -1,17 +1,19 @@
 {
   "files": {
-    "main.css": "/fiber-friend/static/css/main.8329307c.css",
-    "main.js": "/fiber-friend/static/js/main.41e3a59c.js",
+    "main.css": "/fiber-friend/static/css/main.6fc5a8f1.css",
+    "main.js": "/fiber-friend/static/js/main.e2d22a46.js",
     "static/media/pexels-miriam-alonso-75852911.jpg": "/fiber-friend/static/media/pexels-miriam-alonso-75852911.96be87a3af8d6efef6dd.jpg",
     "static/media/mel-poole-vJgD2A1CPjE-unsplash.jpg": "/fiber-friend/static/media/mel-poole-vJgD2A1CPjE-unsplash.ac3c5232f9166c7f1434.jpg",
     "static/media/tanaphong-toochinda-WddCult7llk-unsplash.jpg": "/fiber-friend/static/media/tanaphong-toochinda-WddCult7llk-unsplash.1b4589123196e3443839.jpg",
+    "static/media/yarn-ball-pink.png": "/fiber-friend/static/media/yarn-ball-pink.be2dd907f5ce9742e3e4.png",
     "static/media/yarn-ball.png": "/fiber-friend/static/media/yarn-ball.6880a1b1cbd16ac2161f.png",
     "index.html": "/fiber-friend/index.html",
-    "main.8329307c.css.map": "/fiber-friend/static/css/main.8329307c.css.map",
-    "main.41e3a59c.js.map": "/fiber-friend/static/js/main.41e3a59c.js.map"
+    "static/media/getFetch.cjs": "/fiber-friend/static/media/getFetch.40f37ddea2378391108f.cjs",
+    "main.6fc5a8f1.css.map": "/fiber-friend/static/css/main.6fc5a8f1.css.map",
+    "main.e2d22a46.js.map": "/fiber-friend/static/js/main.e2d22a46.js.map"
   },
   "entrypoints": [
-    "static/css/main.8329307c.css",
-    "static/js/main.41e3a59c.js"
+    "static/css/main.6fc5a8f1.css",
+    "static/js/main.e2d22a46.js"
   ]
 }
