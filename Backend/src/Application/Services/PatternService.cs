@@ -62,15 +62,6 @@ internal class PatternService : IPatternService
         return patterns;
     }
 
-    public List<PatternDto> GetSharedPatterns(FilterModel filters, int page, int pageSize)
-    {
-        var patterns = _patternRepo.GetSharedPatterns(filters, page, pageSize)
-            .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)
-            .ToList();
-
-        return patterns;
-    }
-
     public List<PatternDto> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
         var patterns = _patternRepo.GetPatternsByTimePeriodForUser(timePeriodStart, timePeriodEnd, userId)

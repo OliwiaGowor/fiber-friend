@@ -5,6 +5,7 @@ public class CountersGroup
     public Guid Id { get; set; }
     public string Name { get; set; }
     public Guid UserId { get; set; }
+    public User User { get; set; }
     public ICollection<Counter> Counters { get; set; }
     public Guid? PatternId { get; set; }
     public Pattern? Pattern { get; set; }

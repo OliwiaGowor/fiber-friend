@@ -1,5 +1,5 @@
-import { Suspense } from "react";
-import { Await, defer, json, Link, useRouteLoaderData } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { Await, defer, json, Link, redirect, useLocation, useRouteLoaderData } from "react-router-dom";
 import MiniaturesList from "../../components/MiniaturesList/MiniaturesList";
 import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -40,6 +40,7 @@ export default function Account() {
   const { projects, patterns }: any = useRouteLoaderData('account');
   const pages = ['account', 'projects', 'patterns'];
 
+  
   return (
     <div className={classes.container}>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
@@ -80,33 +81,48 @@ export default function Account() {
     </div>
   );
 }
-
+//TODO: move up, because it loads everytime
 async function fetchData(url: string) {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
 
   const token = tokenLoader();
+
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
 
   const response = await fetch(url, {
+    method: 'GET',
     headers,
   });
 
-  return response.json();
+  const resData = await response.json();
+
+  return resData;
 }
 
 async function loadProjects() {
-  return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+  const url = process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+  `${process.env.REACT_APP_API_URL}Project/GetAllProjectsForUser/${localStorage.getItem("userId")}`;
+  return fetchData(url);
 }
 
 async function loadPatterns() {
-  return fetchData(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+  const url = process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+  `${process.env.REACT_APP_API_URL}Pattern/GetAllPatternsForUser/${localStorage.getItem("userId")}`;
+  return fetchData(url);
 }
 
 export async function loader() {
+  const token = tokenLoader();
+
+      if (!token ) {
+          return redirect("/fiber-friend/login");
+      }
+
+
   const [projects, patterns] = await Promise.all([
     loadProjects(),
     loadPatterns(),

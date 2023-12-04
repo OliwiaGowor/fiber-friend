@@ -13,6 +13,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ICountersGroupService, CountersGroupService>();
         services.AddScoped<IPatternService, PatternService>();
+        services.AddScoped<ICommunityPatternService, CommunityPatternService>();
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<IResourceService, ResourceService>();
         services.AddScoped<IStatisticsService, StatisticsService>();

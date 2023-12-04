@@ -22,7 +22,5 @@ public class ResourceDto : IMapFrom<Domain.Entities.Resource>
             .ForMember(d => d.Quantity, opt => opt.MapFrom(s => s.Quantity))
             .ForMember(d => d.Gauge, opt => opt.MapFrom(s => s.Gauge))
             .ForMember(d => d.ToolSize, opt => opt.MapFrom(s => s.ToolSize));
-
-        profile.CreateMap<ResourceDto, Domain.Entities.Resource>().ReverseMap();
     }
 }

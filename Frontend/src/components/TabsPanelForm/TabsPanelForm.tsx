@@ -56,7 +56,7 @@ interface BasicTabsFormProps {
   defaultValue?: any;
   type: "yarn" | "tool" | "other supply";
 }
-
+//TODO: sending data to parent component
 export default function BasicTabsForm({ getInfo, showError, defaultValue, type }: BasicTabsFormProps) {
   const isMobile = useMediaQuery('(max-width: 800px)');
   const dispatch = useAppDispatch();
@@ -102,14 +102,31 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
   const handleData = (resourceName: string) => {
     const tmpResourceInfo: Supply[] = supplies?.map((resource: Supply) => {
       if (resource.name === resourceName) {
-        return ({
-          id: resource.id ?? "",
-          name: resource.name ?? "",
-          toolSize: toolSizeRef.current?.value ?? "",
-          gauge: gaugeRef.current?.value ?? "",
-          stitch: stitchRef.current?.value ?? "",
-          quantity: Number(quantityRef.current?.value) ?? "",
-        });
+        switch (type) {
+          case "yarn": {
+            return ({
+              name: resource.name ?? "",
+              toolSize: toolSizeRef.current?.value ?? "",
+              gauge: gaugeRef.current?.value ?? "",
+              stitch: stitchRef.current?.value ?? "",
+              quantity: Number(quantityRef.current?.value) ?? "",
+            });
+          }
+          case "tool": {
+            return ({
+              name: resource.name ?? "",
+              size: toolSizeRef.current?.value ?? "",
+              quantity: Number(quantityRef.current?.value) ?? "",
+            });
+          }
+          case "other supply": {
+            return ({
+              name: resource.name ?? "",
+              quantity: Number(quantityRef.current?.value) ?? "",
+              note: noteRef.current?.value ?? "",
+            });
+          }
+        }
       } else {
         return (resource);
       }
@@ -123,14 +140,34 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
       return;
     }
 
-    setSupplies([...supplies, {
-      id: String(supplies.length),
-      name: supplyName,
-      toolSize: '',
-      gauge: '',
-      stitch: '',
-      quantity: 1,
-    }])
+    switch (type) {
+      case "yarn": {
+        setSupplies([...supplies, {
+          name: supplyName,
+          toolSize: '',
+          gauge: '',
+          stitch: '',
+          quantity: 1,
+        }])
+        break;
+      }
+      case "tool": {
+        setSupplies([...supplies, {
+          name: supplyName,
+          size: '',
+          quantity: 1,
+        }])
+        break;
+      }
+      case "other supply": {
+        setSupplies([...supplies, {
+          name: supplyName,
+          quantity: 1,
+          note: '',
+        }])
+        break;
+      }
+    }
     setSupplyName('');
     setValue(supplies.length);
   };

@@ -21,7 +21,7 @@ public class ProjectController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("/GetAllProjectsForUser/{userId:Guid}")]
+    [HttpGet("GetAllProjectsForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

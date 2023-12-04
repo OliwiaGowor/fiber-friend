@@ -1,7 +1,9 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, redirect, useLocation } from 'react-router-dom';
 import classes from './AccountRoot.module.scss';
 import SidebarAccount from '../../components/SidebarAccount/SidebarAccount';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { tokenLoader } from '../../utils/auth';
+import { useEffect } from 'react';
 
 export default function AccountRoot() {
   const isMobile = useMediaQuery('(max-width: 800px)');

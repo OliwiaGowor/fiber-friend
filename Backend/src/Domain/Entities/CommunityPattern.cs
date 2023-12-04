@@ -1,7 +1,10 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities
 {
+    [Table("Patterns")]
     public class CommunityPattern : PatternBase
     {
-        public ICollection<User> SavedByUsers { get; set; }
+        public ICollection<UserSavedCommunityPattern> SavedByUsers { get; set; }
     }
 }

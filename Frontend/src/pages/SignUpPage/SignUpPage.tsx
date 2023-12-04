@@ -1,12 +1,15 @@
 import Button from "@mui/material/Button";
-import { Form, useNavigation, useNavigate, json, redirect } from "react-router-dom";
+import { Form, useNavigation, useNavigate, redirect } from "react-router-dom";
 import classes from "./SignUpPage.module.scss"
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
 import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 export default function SignUpPage() {
+    const dispatch = useAppDispatch();
     const navigation = useNavigation();
     const navigate = useNavigate();
     const isSubmitting = navigation.state === "submitting";
@@ -38,15 +41,32 @@ export default function SignUpPage() {
             return;
         }
 
+        const authData = {
+            username: username,
+            email: email,
+            password: password,
+        };
+
         try {
-            await action({
-                request: new Request("/fiber-friend/signUp", {
-                    method: "POST",
-                    body: new FormData(event.currentTarget),
-                })
-            });
+            const resData = await handleRequest(
+                `${process.env.REACT_APP_API_URL}auth/Register`,
+                "POST",
+                "Something went wrong, please try again later.",
+                null,
+                authData
+            );
+            const token = resData.token;
+            const userId = resData.id;
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("userId", userId);
+            const expiration = new Date();
+            expiration.setHours(expiration.getHours() + 1);
+            localStorage.setItem("expiration", expiration.toISOString());
+
+            return navigate("/fiber-friend/account");
         } catch (error) {
-            localStorage.setItem("error", "Something went wrong, please try again later.");
+            dispatch(setError(error));
         }
     };
 
@@ -111,46 +131,4 @@ export default function SignUpPage() {
             </div>
         </div>
     );
-}
-
-export async function action({ request }: { request: Request }) {
-    const data = await request.formData();
-console.log(data);
-console.log(data.get("username"));
-const authData = {
-        username: data.get("username"),
-        email: data.get("email"),
-        password: data.get("password"),
-    };
-console.log(JSON.stringify(authData));
-    try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}auth/Register`, { //FIXME: fill the url
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(authData),
-        });
-console.log(response)
-       /* if (!response.ok) {
-            localStorage.setItem("error", "Something went wrong, please try again later.");
-            console.log("error1")
-        }*/
-        const resData = await response.json();
-        console.log(resData);
-        const token = resData.token;
-        const userId = resData.id;
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
-        const expiration = new Date();
-        expiration.setHours(expiration.getHours() + 1);
-        localStorage.setItem("expiration", expiration.toISOString());
-
-        return redirect("/account");
-
-    } catch (error) {
-        localStorage.setItem("error", "Something went wrong, please try again later.");
-        console.log(error)
-    }
 }

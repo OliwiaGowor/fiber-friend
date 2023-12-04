@@ -27,7 +27,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("Allow Origin",
+            options.AddPolicy("AllowOrigin",
                 builder =>
                 {
                     builder
@@ -42,17 +42,18 @@ public class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
-        app.UseExceptionHandler("/error");
         app.UseHttpsRedirection();
 
-        app.UseCors("Allow Origin");
+        app.UseCors("AllowOrigin");
+
+        app.UseExceptionHandler("/error");
+
         app.UseAuthentication();
         app.UseAuthorization();
 

@@ -149,9 +149,10 @@ export async function action({ request }: { request: Request }) {
 
     try {
         const data = await handleRequest(
-            `${process.env.REACT_APP_API_URL}/Login`,
+            `${process.env.REACT_APP_API_URL}auth/Login`,
             "POST",
             "Could not authenticate user.",
+            null,
             authData
         );
         const expiration = new Date();
@@ -163,7 +164,7 @@ export async function action({ request }: { request: Request }) {
         expiration.setTime(expiration.getTime() + 1 * 60 * 60 * 1000);
         localStorage.setItem("expiration", expiration.toISOString());
 
-        return redirect("/account");
+        return redirect("/fiber-friend/account");
 
     } catch (error) {
         localStorage.setItem("error", "Something went wrong, please try again later."); //TODO: dispatch

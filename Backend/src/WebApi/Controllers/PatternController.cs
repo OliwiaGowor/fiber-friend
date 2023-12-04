@@ -62,12 +62,13 @@ public class PatternController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult Create([FromBody] NewPatternDto newPattern)
     {
+        Console.WriteLine(newPattern.AuthorId);
         if (!ModelState.IsValid) return BadRequest();
 
         var patternId = _patternService.AddPattern(newPattern);
         newPattern.Id = patternId;
 
-        return CreatedAtRoute("GetPattern", new { id = patternId }, newPattern);
+        return Ok(patternId);
     }
 
     [HttpDelete("{id:Guid}")]

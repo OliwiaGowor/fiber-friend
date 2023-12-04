@@ -16,7 +16,7 @@ const CommunityPatterns = () => {
         try {
             return (
                 await handleRequest(
-                    `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                    `${process.env.REACT_APP_API_URL}CommunityPattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
                     "GET",
                     "Could not fetch patterns. Please try again later.",
                 ));

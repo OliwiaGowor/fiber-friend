@@ -24,7 +24,7 @@ namespace Application.DTO.Pattern
         public List<NewYarnDto> Yarns { get; set; }
         public List<NewToolDto> Tools { get; set; }
         public List<NewOtherSupplyDto>? OtherSupplies { get; set; }
-        public Guid UserId { get; set; }
+        public string AuthorId { get; set; }
         public bool IsShared { get; set; }
 
         public static void Mapping(Profile profile)
@@ -41,7 +41,7 @@ namespace Application.DTO.Pattern
             RuleFor(x => x.Type).NotEmpty();
             RuleFor(x => x.IsAuthorial).NotEmpty();
             RuleFor(x => x.Category).NotEmpty().MaximumLength(100);
-            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.AuthorId).NotEmpty();
             RuleFor(x => x.IsShared).NotEmpty();
         }
     }

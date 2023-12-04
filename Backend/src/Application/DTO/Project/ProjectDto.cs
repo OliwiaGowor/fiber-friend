@@ -36,7 +36,5 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.ConnectedPattern, opt => opt.MapFrom(s => s.ConnectedPattern))
             .ForMember(d => d.ConnectedCommPattern, opt => opt.MapFrom(s => s.ConnectedCommPattern))
             .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns));
-
-        profile.CreateMap<ProjectDto, Domain.Entities.Project>().ReverseMap();
     }
 }

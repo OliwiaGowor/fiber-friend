@@ -9,8 +9,7 @@ public interface IPatternRepository
     Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies);
     IQueryable<Pattern> GetAllPatternsForUser(Guid userId);
     Pattern GetPatternById(Guid patternId);
-    public IQueryable<Pattern> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
-    public IQueryable<Pattern> GetSharedPatterns(FilterModel filters, int page, int pageSize);
-    public IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
+    IQueryable<Pattern> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
+    IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
     void UpdatePattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies);
 }

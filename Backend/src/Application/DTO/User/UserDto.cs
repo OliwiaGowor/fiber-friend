@@ -2,6 +2,7 @@ using Application.DTO.CountersGroup;
 using Application.DTO.Pattern;
 using Application.DTO.Project;
 using Application.DTO.Resource;
+using Application.DTO.UserSavedCommunityPattern;
 using Application.Mapping;
 using AutoMapper;
 
@@ -13,8 +14,8 @@ public class UserDto : IMapFrom<Domain.Entities.User>
     public string Username { get; set; } = null!;
     public string Email { get; set; } = null!;
     public string HashedPassword { get; set; } = null!;
-     public List<PatternDto>? Patterns { get; set; }
-    public List<CommunityPatternDto>? SavedCommPatterns { get; set; }
+    public List<PatternDto>? Patterns { get; set; }
+    public List<UserSavedCommunityPatternDto>? SavedCommPatterns { get; set; }
     public List<ProjectDto>? Projects { get; set; }
     public List<CountersGroupDto>? CountersGroups { get; set; }
     public List<ResourceDto>? Resources { get; set; }

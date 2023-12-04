@@ -1,8 +1,4 @@
-﻿using Application.DTO.OtherSupply;
-using Application.DTO.Tool;
-using Application.DTO.User;
-using Application.DTO.Yarn;
-using Application.Mapping;
+﻿using Application.Mapping;
 using AutoMapper;
 using Domain.Entities;
 
@@ -14,13 +10,6 @@ namespace Application.DTO.Pattern
         public DateTime? EndDate { get; set; }
         public bool IsFinished { get; set; } = false;
         public bool IsAuthorial { get; set; }
-        //public ??? List<Photo> Photos { get; set; }
-        //public ??? List<File> Files { get; set; }
-        public List<YarnDto> Yarns { get; set; }
-        public List<ToolDto> Tools { get; set; }
-        public List<OtherSupplyDto>? OtherSupplies { get; set; }
-        public UserDto Author { get; set; }
-        public bool IsShared { get; set; }
 
         public static void Mapping(Profile profile)
         {
@@ -38,8 +27,6 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.OtherSupplies, opt => opt.MapFrom(s => s.OtherSupplies))
                 .ForMember(d => d.Author, opt => opt.MapFrom(s => s.Author))
                 .ForMember(d => d.IsShared, opt => opt.MapFrom(s => s.IsShared));
-
-            profile.CreateMap<PatternDto, Domain.Entities.Pattern>().ReverseMap();
         }
     }
 }

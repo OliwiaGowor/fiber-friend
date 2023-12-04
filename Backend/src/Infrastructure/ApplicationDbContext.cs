@@ -1,21 +1,18 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace Infrastructure;
-//TODO: do onModelCreating
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options)
         : base(options)
     {
     }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Project> Projects { get; set; }
-    public DbSet<PatternBase> PatternBases { get; set; }
     public DbSet<Pattern> Patterns { get; set; }
     public DbSet<CommunityPattern> CommunityPatterns { get; set; }
+    public DbSet<UserSavedCommunityPattern> UserSavedCommunityPatterns { get; set; }
     public DbSet<Resource> Resources { get; set; }
     public DbSet<Counter> Counters { get; set; }
     public DbSet<CountersGroup> CountersGroups { get; set; }
@@ -29,51 +26,8 @@ public class ApplicationDbContext : DbContext
 
         //PATTERN BASE
         builder.Entity<PatternBase>()
-          .HasKey(p => p.Id);
+            .ToTable("Patterns");
 
-        builder.Entity<PatternBase>()
-            .Property(p => p.Id)
-            .ValueGeneratedOnAdd();
-
-        builder.Entity<PatternBase>()
-            .Property(p => p.Name)
-            .IsRequired();
-
-        builder.Entity<PatternBase>()
-                .HasDiscriminator<string>("discriminator")
-                .HasValue<Pattern>("pattern")
-                .HasValue<CommunityPattern>("pommunity_pattern");
-
-        builder.Entity<PatternBase>()
-            .HasOne(u => u.Author)
-            .WithMany()
-            .HasForeignKey(p => p.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<PatternBase>()
-            .HasMany(p => p.Yarns)
-            .WithOne()
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<PatternBase>()
-            .HasMany(p => p.Tools)
-            .WithOne()
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<PatternBase>()
-            .HasMany(p => p.OtherSupplies)
-            .WithOne()
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<Pattern>()
-                       .HasBaseType<PatternBase>();
-
-
-        builder.Entity<CommunityPattern>()
-            .HasBaseType<PatternBase>();
 
         //USER
         builder.Entity<User>()
@@ -84,29 +38,11 @@ public class ApplicationDbContext : DbContext
            .ValueGeneratedOnAdd();
 
         builder.Entity<User>()
-            .Property(u => u.Username)
-            .IsRequired();
-
-        builder.Entity<User>()
-            .Property(u => u.Email)
-            .IsRequired();
-
-        builder.Entity<User>()
-            .Property(u => u.HashedPassword)
-            .IsRequired();
-
-        builder.Entity<User>()
                 .HasMany(u => u.Patterns)
                 .WithOne(p => p.Author)
-                .HasForeignKey(p => p.AuthorId);
+                .HasForeignKey(p => p.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure the many-to-many relationship between User and CommunityPattern (SavedCommPatterns)
-            builder.Entity<User>()
-                .HasMany(u => u.SavedCommPatterns)
-                .WithMany(cp => cp.SavedByUsers)
-                .UsingEntity(j => j.ToTable("SavedCommunityPatterns"));
-
-        /////????? PATTERN
 
         builder.Entity<User>()
             .HasMany(u => u.Resources)
@@ -114,160 +50,164 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(cg => cg.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Entity<User>()
+            .HasMany(u => u.CountersGroups)
+            .WithOne(cg => cg.User)
+            .HasForeignKey(cg => cg.UserId)
+            .OnDelete(DeleteBehavior.NoAction);
 
+        builder.Entity<User>()
+            .HasMany(u => u.Projects)
+            .WithOne(p => p.User)
+            .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<UserSavedCommunityPattern>()
+            .HasKey(ucp => new { ucp.UserId, ucp.CommunityPatternId });
+
+        builder.Entity<UserSavedCommunityPattern>()
+            .HasOne(ucp => ucp.User)
+            .WithMany(u => u.SavedCommPatterns)
+            .HasForeignKey(ucp => ucp.UserId)
+            .OnDelete(DeleteBehavior.NoAction); // Cascade delete when a user is deleted //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111
+
+        builder.Entity<UserSavedCommunityPattern>()
+            .HasOne(ucp => ucp.CommunityPattern)
+            .WithMany(cp => cp.SavedByUsers)
+            .HasForeignKey(ucp => ucp.CommunityPatternId)
+            .OnDelete(DeleteBehavior.Cascade); // Cascade delete when a pattern is deleted
 
 
         //PROJECT
         builder.Entity<Project>()
-            .HasKey(p => p.Id);
+                .HasKey(p => p.Id);
 
         builder.Entity<Project>()
-            .Property(p => p.Id)
-            .ValueGeneratedOnAdd();
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
 
         builder.Entity<Project>()
-            .Property(p => p.Name)
-            .IsRequired();
+                .HasOne(p => p.User)
+                .WithMany(u => u.Projects)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Project>()
-            .Property(p => p.StartDate)
-            .IsRequired();
+                .HasOne(p => p.ConnectedPattern)
+                .WithMany()
+                .HasForeignKey(p => p.ConnectedPatternId)
+                .OnDelete(DeleteBehavior.SetNull);
 
         builder.Entity<Project>()
-            .HasOne(p => p.ConnectedPattern)
-            .WithMany()
-            .HasForeignKey(p => p.ConnectedPatternId)
-            .OnDelete(DeleteBehavior.SetNull);
+                .HasMany(p => p.Yarns)
+                .WithOne(y => y.Project)
+                .HasForeignKey(y => y.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Project>()
-            .HasMany(p => p.Yarns)
-            .WithOne(y => y.Project)
-            .HasForeignKey(y => y.ProjectId)
-            .OnDelete(DeleteBehavior.Cascade);
 
         //RESOURCE
         builder.Entity<Resource>()
-        .HasKey(r => r.Id);
+            .HasKey(r => r.Id);
 
         builder.Entity<Resource>()
-            .Property(r => r.Id)
-            .ValueGeneratedOnAdd();
+                .Property(r => r.Id)
+                .ValueGeneratedOnAdd();
 
         builder.Entity<Resource>()
-            .Property(r => r.Name)
-        .IsRequired();
-
-        builder.Entity<Resource>()
-            .Property(r => r.Type)
-        .IsRequired();
-
-        builder.Entity<Resource>()
-            .Property(r => r.ToolSize)
-            .IsRequired();
-
-        builder.Entity<Resource>()
-            .HasOne(r => r.User)
-            .WithMany(u => u.Resources)
-            .HasForeignKey(r => r.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(r => r.User)
+                .WithMany(u => u.Resources)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         //COUNTER 
         builder.Entity<Counter>()
-             .Property(c => c.Id)
-             .ValueGeneratedOnAdd();
+                 .Property(c => c.Id)
+                 .ValueGeneratedOnAdd();
 
         builder.Entity<Counter>()
-            .Property(c => c.Name)
-            .IsRequired();
-
-        builder.Entity<Counter>()
-            .HasOne(c => c.CountersGroup)
-            .WithMany(cg => cg.Counters)
-            .HasForeignKey(c => c.CountersGroupId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(c => c.CountersGroup)
+                .WithMany(cg => cg.Counters)
+                .HasForeignKey(c => c.CountersGroupId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         //COUNTERS GROUP
         builder.Entity<CountersGroup>()
-        .HasKey(cg => cg.Id);
+            .HasKey(cg => cg.Id);
 
         builder.Entity<CountersGroup>()
-            .Property(cg => cg.Id)
-            .ValueGeneratedOnAdd();
+                .Property(cg => cg.Id)
+                .ValueGeneratedOnAdd();
 
         builder.Entity<CountersGroup>()
-            .Property(cg => cg.Name)
-        .IsRequired();
+                .HasMany(cg => cg.Counters)
+                .WithOne(c => c.CountersGroup)
+                .HasForeignKey(c => c.CountersGroupId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<CountersGroup>()
-            .HasMany(cg => cg.Counters)
-            .WithOne()
-            .HasForeignKey(c => c.CountersGroupId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(cg => cg.Pattern)
+                .WithMany()
+                .HasForeignKey(cg => cg.PatternId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<CountersGroup>()
-            .HasOne(cg => cg.Pattern)
-            .WithMany()
-            .HasForeignKey(cg => cg.PatternId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        builder.Entity<CountersGroup>()
-            .HasOne(cg => cg.Project)
-            .WithMany()
-            .HasForeignKey(cg => cg.ProjectId)
-            .OnDelete(DeleteBehavior.NoAction);
+                .HasOne(cg => cg.Project)
+                .WithMany()
+                .HasForeignKey(cg => cg.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         // YARN
         builder.Entity<Yarn>()
-            .HasKey(y => y.Id);
+                .HasKey(y => y.Id);
 
         builder.Entity<Yarn>()
-            .Property(y => y.Id)
-            .ValueGeneratedOnAdd();
+                .Property(y => y.Id)
+                .ValueGeneratedOnAdd();
 
         builder.Entity<Yarn>()
-            .HasOne(y => y.Pattern)
-            .WithMany(p => p.Yarns)
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(y => y.Pattern)
+                .WithMany(p => p.Yarns)
+                .HasForeignKey(y => y.PatternId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Yarn>()
-            .HasOne(y => y.Project)
-            .WithMany(p => p.Yarns)
-            .HasForeignKey(y => y.ProjectId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(y => y.Project)
+                .WithMany(p => p.Yarns)
+                .HasForeignKey(y => y.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         // TOOL
         builder.Entity<Tool>()
-            .HasKey(y => y.Id);
+                .HasKey(y => y.Id);
 
         builder.Entity<Tool>()
-            .Property(y => y.Id)
-            .ValueGeneratedOnAdd();
+                .Property(y => y.Id)
+                .ValueGeneratedOnAdd();
 
         builder.Entity<Tool>()
-            .HasOne(y => y.Pattern)
-            .WithMany(p => p.Tools)
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(y => y.Pattern)
+                .WithMany(p => p.Tools)
+                .HasForeignKey(y => y.PatternId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
         // OTHER SUPPLY
         builder.Entity<OtherSupply>()
-            .HasKey(y => y.Id);
+                .HasKey(y => y.Id);
 
         builder.Entity<OtherSupply>()
-            .Property(y => y.Id)
-            .ValueGeneratedOnAdd();
+                .Property(y => y.Id)
+                .ValueGeneratedOnAdd();
 
         builder.Entity<OtherSupply>()
-            .HasOne(y => y.Pattern)
-            .WithMany(p => p.OtherSupplies)
-            .HasForeignKey(y => y.PatternId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(y => y.Pattern)
+                .WithMany(p => p.OtherSupplies)
+                .HasForeignKey(y => y.PatternId)
+                .OnDelete(DeleteBehavior.Cascade);
 
     }
 }

@@ -19,6 +19,7 @@ public class Project
     public CommunityPattern? ConnectedCommPattern { get; set; }
     public Pattern? ConnectedPattern { get; set; }
     public Guid UserId { get; set; }
+    public User User { get; set; }
     public ICollection<Yarn> Yarns { get; set; }
     public ICollection<CountersGroup>? Counters { get; set; }
 

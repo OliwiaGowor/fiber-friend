@@ -3,7 +3,6 @@ using Domain.Entities;
 using Domain.Interfaces.Repository;
 
 namespace Infrastructure.Repositories;
-//TODO: implement
 public class PatternRepository : IPatternRepository
 {
     private readonly ApplicationDbContext _dbContext;
@@ -15,7 +14,11 @@ public class PatternRepository : IPatternRepository
 
     public Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies)
     {
+        Console.WriteLine(pattern.AuthorId.ToString());
+        if (!_dbContext.Users.Any(u => u.Id == pattern.AuthorId)) throw new Exception("User not found");
+
         _dbContext.Patterns.Add(pattern);
+
 
         foreach (var yarn in yarns)
         {
@@ -86,33 +89,6 @@ public class PatternRepository : IPatternRepository
 
         return patterns;
     }
-
-    public IQueryable<Pattern> GetSharedPatterns(FilterModel filters, int page, int pageSize)
-    {
-        var query = _dbContext.Patterns.AsQueryable();
-
-        if (filters.Type is not null)
-        {
-            query = query.Where(p => p.Type == filters.Type);
-        }
-
-        if (filters.category is not null)
-        {
-            query = query.Where(p => p.Category == filters.category);
-        }
-
-        if (filters.isAuthorial is not null)
-        {
-            query = query.Where(p => p.IsAuthorial == filters.isAuthorial);
-        }
-
-        var patterns = query.Where(p => p.IsShared == true)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize);
-
-        return patterns;
-    }
-
     public IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
         var patterns = _dbContext.Patterns.Where(

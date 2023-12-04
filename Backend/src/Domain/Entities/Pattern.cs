@@ -1,5 +1,8 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities
 {
+    [Table("Patterns")]
     public class Pattern : PatternBase
     {
         public bool IsAuthorial { get; set; }

@@ -1,9 +1,10 @@
 using Application.DTO.Counter;
+using Application.Mapping;
 using AutoMapper;
 
 namespace Application.DTO.CountersGroup
 {
-    public class CountersGroupDto
+    public class CountersGroupDto : IMapFrom<Domain.Entities.CountersGroup>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -19,8 +20,6 @@ namespace Application.DTO.CountersGroup
                 .ForMember(d => d.Counters, opt => opt.MapFrom(s => s.Counters))
                 .ForMember(d => d.PatternId, opt => opt.MapFrom(s => s.PatternId))
                 .ForMember(d => d.ProjectId, opt => opt.MapFrom(s => s.ProjectId));
-
-            profile.CreateMap<CountersGroupDto, Domain.Entities.CountersGroup>().ReverseMap();
         }
     }
 }

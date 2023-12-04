@@ -45,11 +45,14 @@ internal class ProjectService : IProjectService
 
     public List<ProjectDto> GetProjectsListForUser(Guid userId)
     {
-        var projects = _projectRepo.GetAllProjectsForUser(userId)
-            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
-            .ToList();
+        var projects = _projectRepo.GetAllProjectsForUser(userId);
+        var mappedProjects = new List<ProjectDto>();
+        foreach (var project in projects)
+        {
+            mappedProjects.Add(_mapper.Map<ProjectDto>(project));
+        }
 
-        return projects;
+        return mappedProjects;
     }
 
     public List<ProjectDto> GetProjectsByCategoryForUser(string category, Guid userId)

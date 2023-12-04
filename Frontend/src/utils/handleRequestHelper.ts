@@ -15,13 +15,10 @@ export const handleRequest = async (
             headers.Authorization = `Bearer ${token}`;
         }
 
-        if(data) {
-            headers.body = JSON.stringify(data);
-        }
-
         const response = await fetch(url, {
             method: method,
             headers,
+            body: data ? JSON.stringify(data) : null
         });
 
         if (!response.ok) {

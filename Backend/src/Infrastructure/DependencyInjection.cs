@@ -1,4 +1,3 @@
-using System.Text;
 using Application.Interfaces.Authentication;
 using Domain.Interfaces.Repository;
 using Infrastructure.Authentication;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Infrastructure;
 
@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddAuth(configuration);
         services.AddScoped<ICountersGroupRepository, CountersGroupRepository>();
         services.AddScoped<IPatternRepository, PatternRepository>();
+        services.AddScoped<ICommunityPatternRepository, CommunityPatternRepository>();
         services.AddScoped<IResourceRepository, ResourceRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
@@ -28,9 +29,9 @@ public static class DependencyInjection
         return services;
     }
 
-     public static IServiceCollection AddAuth(
-        this IServiceCollection services,
-        ConfigurationManager configuration)
+    public static IServiceCollection AddAuth(
+       this IServiceCollection services,
+       ConfigurationManager configuration)
     {
         var jwtSettings = new JwtSettings();
         configuration.Bind(JwtSettings.SectionName, jwtSettings);

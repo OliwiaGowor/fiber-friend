@@ -1,4 +1,5 @@
 ﻿using Application.DTO.User;
+using Application.DTO.UserSavedCommunityPattern;
 using Application.Mapping;
 using AutoMapper;
 using Domain.Entities;
@@ -7,7 +8,7 @@ namespace Application.DTO.Pattern
 {
     public class CommunityPatternDto : PatternBaseDto, IMapFrom<Domain.Entities.CommunityPattern>
     {
-        public List<UserDto> SavedByUsers { get; set; }
+        public List<UserSavedCommunityPatternDto> SavedByUsers { get; set; }
 
         public static void Mapping(Profile profile)
         {
@@ -23,8 +24,6 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.Author, opt => opt.MapFrom(s => s.Author))
                 .ForMember(d => d.IsShared, opt => opt.MapFrom(s => s.IsShared))
                 .ForMember(d => d.SavedByUsers, opt => opt.MapFrom(s => s.SavedByUsers));
-
-            profile.CreateMap<CommunityPatternDto, Domain.Entities.CommunityPattern>().ReverseMap();
         }
     }
 }
