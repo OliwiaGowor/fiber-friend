@@ -21,6 +21,8 @@ import dayjs from "dayjs";
 import { useAppDispatch } from '../../../utils/hooks';
 import { handleRequest } from "../../../utils/handleRequestHelper";
 import { setError } from "../../../reducers/errorSlice";
+import { NeedleworkType } from "../../../DTOs/Enums";
+import { Project } from "../../../DTOs/Project";
 
 interface ProjectFormProps {
     project?: any;
@@ -31,7 +33,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
     const dispatch = useAppDispatch();
     const token = getAuthToken();
     const navigate = useNavigate();
-    const [type, setType] = React.useState(project?.type ?? 'crochet');
+    const [type, setType] = React.useState(project?.type ?? NeedleworkType.crochet);
     const [yarns, setYarns] = React.useState<any>(project?.yarns ?? []);
     const [name, setName] = React.useState(project?.name ?? '');
     const [category, setCategory] = React.useState<string | undefined>(project?.category ?? undefined);
@@ -77,7 +79,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
         fetchAvailablePatterns();
     }, [fetchAvailablePatterns]);
 
-    const handleType = (event: React.MouseEvent<HTMLElement>, newType: string | null,) => {
+    const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
             setType(newType);
         }
@@ -92,20 +94,21 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(proceedSubmit)
         if (proceedSubmit) {
-            const projectData = {
-                id: project?.id ?? null,
+            const projectData: Project = {
                 name: name,
                 type: type,
-                category: category,
+                category: category ?? "Other",
                 yarns: yarns,
                 startDate: startDate,
                 endDate: endDate,
-                photos: photos,
-                files: files,
+                //photos: photos,
+                //files: files,
                 notes: notes,
                 connectedPattern: selectedPattern ?? null,
                 finished: endDate !== null ? true : false,
+                userId: localStorage.getItem('userId') ?? "",
             };
 
             let url = method === "POST" ?
@@ -141,14 +144,13 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
             setShowNameError(true);
             setProceedSubmit(false);
         }
-        if (category == undefined) {
-            setShowCategoriesError(true);
-            setProceedSubmit(false);
-        }
+
         if (startDate == undefined) {
             setRequiredError(true);
             setProceedSubmit(false);
         }
+
+        setProceedSubmit(true);
     };
 
     return (
@@ -180,7 +182,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                 id="types"
                                 className={classes.typeToggle}
                             >
-                                <ToggleButton value="crochet" className={classes.toggleButton} aria-label="crochet" disableRipple
+                                <ToggleButton value={NeedleworkType.crochet} className={classes.toggleButton} aria-label="crochet" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -189,7 +191,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                     }}>
                                     Crochet
                                 </ToggleButton>
-                                <ToggleButton value="knitting" className={classes.toggleButton} aria-label="knitting" disableRipple
+                                <ToggleButton value={NeedleworkType.knitting} className={classes.toggleButton} aria-label="knitting" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -198,7 +200,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                                     }}>
                                     Knitting
                                 </ToggleButton>
-                                <ToggleButton value="other" className={classes.toggleButton} aria-label="other" disableRipple
+                                <ToggleButton value={NeedleworkType.other} className={classes.toggleButton} aria-label="other" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {

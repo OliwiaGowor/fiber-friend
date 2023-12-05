@@ -13,10 +13,12 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import classes from "./LoginPage.module.scss";
 import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 export default function LoginPage() {
     const navigation = useNavigation();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const isSubmitting = navigation.state === 'submitting';
     const [showPassword, setShowPassword] = useState(false);
     const [showEmailError, setShowEmailError] = useState<boolean>(false);
@@ -42,16 +44,32 @@ export default function LoginPage() {
             return;
         }
 
-        try {
-            await action({
-                request: new Request("/fiber-friend/login", {
-                    method: "POST",
+        const authData = {
+            email: email,
+            password: password,
+        };
 
-                    body: new FormData(event.currentTarget),
-                })
-            });
+        try {
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}auth/Login`,
+                "POST",
+                "Could not authenticate user.",
+                null,
+                authData
+            );
+            const expiration = new Date();
+            const token = data.token;
+            const userId = data.id;
+    
+            localStorage.setItem("token", token);
+            localStorage.setItem("userId", userId);
+            expiration.setTime(expiration.getTime() + 1 * 60 * 60 * 1000);
+            localStorage.setItem("expiration", expiration.toISOString());
+    
+            return navigate("/fiber-friend/account");
+    
         } catch (error) {
-            localStorage.setItem("error", "Something went wrong, please try again later.");
+            dispatch(setError(error));
         }
     };
 
@@ -137,38 +155,4 @@ export default function LoginPage() {
             </div>
         </div>
     );
-}
-
-export async function action({ request }: { request: Request }) {
-    const data = await request.formData();
-
-    const authData = {
-        email: data.get("email"),
-        password: data.get("password"),
-    };
-
-    try {
-        const data = await handleRequest(
-            `${process.env.REACT_APP_API_URL}auth/Login`,
-            "POST",
-            "Could not authenticate user.",
-            null,
-            authData
-        );
-        const expiration = new Date();
-        const token = data.token;
-        const userId = data.id;
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("userId", userId);
-        expiration.setTime(expiration.getTime() + 1 * 60 * 60 * 1000);
-        localStorage.setItem("expiration", expiration.toISOString());
-
-        return redirect("/fiber-friend/account");
-
-    } catch (error) {
-        localStorage.setItem("error", "Something went wrong, please try again later."); //TODO: dispatch
-
-        return null;
-    }
 }

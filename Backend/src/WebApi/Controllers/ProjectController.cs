@@ -1,9 +1,14 @@
-﻿using Application.DTO.Project;
+﻿using Application.DTO.Pattern;
+using Application.DTO.Project;
 using Application.Interfaces.Services;
 using AutoMapper;
 using Common.Enums;
+using Common.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers;
 
@@ -32,6 +37,37 @@ public class ProjectController : ControllerBase
         return Ok(list);
     }
 
+    [HttpGet("GetProjectsForUser/{userId:Guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<ProjectDto> GetProjectsForUser([FromQuery] string? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
+
+        FilterModel filterModel = null;
+
+        if (!string.IsNullOrEmpty(filters))
+        {
+            try
+            {
+                // Deserialize the JSON string into FilterModel
+                filterModel = JsonConvert.DeserializeObject<FilterModel>(filters);
+            }
+            catch (JsonException)
+            {
+                // Handle JSON deserialization error
+                return BadRequest("Invalid JSON format for filters.");
+            }
+        }
+
+        var service = _projectService.GetProjectsForUser(filterModel, userId, page, pageSize);
+
+        if (service is null) return NotFound();
+
+        return Ok(service);
+    }
+
     [HttpGet("{id:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -45,47 +81,6 @@ public class ProjectController : ControllerBase
         return Ok(service);
     }
 
-    [HttpGet("GetProjectsByTypeForUser/{type}/{userId:Guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByTypeForUser(NeedleworkType type, Guid userId)
-    {
-        if (!Enum.IsDefined(typeof(NeedleworkType), type) || type.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectsByTypeForUser(type, userId);
-
-        if (service is null) return NotFound();
-
-        return Ok(service);
-    }
-
-    [HttpGet("GetProjectsByStatusForUser/{finished:bool}/{userId:Guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByStatusForUser(bool finished, Guid userId)
-    {
-        var service = _projectService.GetProjectsByStatusForUser(finished, userId);
-
-        if (service is null) return NotFound();
-
-        return Ok(service);
-    }
-
-    [HttpGet("GetProjectsByCategoryForUser/{category}/{userId:Guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ProjectDto> GetProjectsByCategoryForUser(string category, Guid userId)
-    {
-        if (category.Equals("")) return BadRequest();
-        var service = _projectService.GetProjectsByCategoryForUser(category, userId);
-
-        if (service is null) return NotFound();
-
-        return Ok(service);
-    }
-
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -94,20 +89,10 @@ public class ProjectController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest();
 
-        var onlyProject = new NewProjectDto
-        {
-            Type = newProject.Type,
-            StartDate = newProject.StartDate,
-            EndDate = newProject.EndDate,
-            Finished = newProject.Finished,
-            Category = newProject.Category,
-            Notes = newProject.Notes
-        };
-
-        var projectId = _projectService.AddProject(onlyProject, newProject.Yarns);
+        var projectId = _projectService.AddProject(newProject);
         newProject.Id = projectId;
 
-        return CreatedAtRoute("GetProject", new { id = projectId }, newProject);
+        return Ok(projectId);
     }
 
     [HttpDelete("{id:Guid}")]

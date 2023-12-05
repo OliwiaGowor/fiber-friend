@@ -1,6 +1,8 @@
 using Common.Enums;
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Infrastructure.Repositories;
 //TODO: implement 
@@ -15,6 +17,8 @@ public class ProjectRepository : IProjectRepository
 
     public Guid AddProject(Project project, List<Yarn> yarns)
     {
+        if (!_dbContext.Users.Any(u => u.Id == project.UserId)) throw new Exception("User not found");
+
         _dbContext.Projects.Add(project);
 
         foreach (var yarn in yarns)
@@ -22,7 +26,6 @@ public class ProjectRepository : IProjectRepository
             yarn.ProjectId = project.Id;
             _dbContext.Yarns.Add(yarn);
         }
-
 
         _dbContext.SaveChanges();
         return project.Id;
@@ -50,21 +53,32 @@ public class ProjectRepository : IProjectRepository
         return project;
     }
 
-    public IQueryable<Project> GetProjectsByTypeForUser(NeedleworkType type, Guid userId)
+    public IQueryable<Project> GetProjectsForUser(FilterModel filters, Guid userId, int page, int pageSize)
     {
-        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.Type == type);
-        return projects;
-    }
+        var query = _dbContext.Projects.AsQueryable();
 
-    public IQueryable<Project> GetProjectsByCategoryForUser(string category, Guid userId)
-    {
-        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.Category == category);
-        return projects;
-    }
+        if (filters != null)
+        {
+            if (filters.Type is not null)
+            {
+                query = query.Where(p => p.Type == filters.Type);
+            }
 
-    public IQueryable<Project> GetProjectsByStatusForUser(bool finished, Guid userId)
-    {
-        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.Finished == finished);
+            if (filters.category is not null)
+            {
+                query = query.Where(p => p.Category == filters.category);
+            }
+
+            if (filters.isFinished is not null)
+            {
+                query = query.Where(p => p.Finished == true);
+            }
+        }
+
+        var projects = query.Where(p => p.UserId == userId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+
         return projects;
     }
 

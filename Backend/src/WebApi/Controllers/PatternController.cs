@@ -42,11 +42,11 @@ public class PatternController : ControllerBase
         return Ok(service);
     }
 
-    [HttpGet("GetPatternsForUser/{userId:Guid}/{filters}/page={page}/pageSize={pageSize}")]
+    [HttpGet("GetPatternsForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetPatternsForUser([FromQuery] FilterModel filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public ActionResult<PatternDto> GetPatternsForUser([FromQuery] FilterModel? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
         var service = _patternService.GetPatternsForUser(filters, userId, page, pageSize);

@@ -2,12 +2,12 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage"
 import Root from "./pages/Root";
-import Account, { loader as dataLoader } from "./pages/Account/Account";
+import Account from "./pages/Account/Account";
 import Projects from "./pages/Projects/Projects";
 import NewProjectPage from "./pages/Projects/NewProjectPage";
 import Patterns from "./pages/Patterns/Patterns";
 import PatternsRoot from "./pages/Patterns/PatternsRoot";
-import LoginPage, { action as loginAction } from "./pages/LoginPage/LoginPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ProjectDetails, { loader as projectDetailsLoader } from "./pages/Projects/ProjectDetails";
 import PatternDetails, { loader as patternDetailsLoader } from "./pages/Patterns/PatternDetails";
@@ -38,6 +38,7 @@ import EditPattern from "./pages/Patterns/EditPattern";
 import CommunityPatterns from "./pages/CommunityPatterns/CommunityPatterns";
 import CommunityPatternDetails, { loader as communityPatternDetailsLoader } from "./pages/CommunityPatterns/CommunityPatternDetails";
 import CommunityPatternsRoot from "./pages/CommunityPatterns/CommunityPatternsRoot";
+import {action as logoutAction} from "./utils/logout";
 
 const router = createBrowserRouter([
   {
@@ -53,11 +54,14 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
-        action: loginAction,
       },
       {
         path: "signUp",
         element: <SignUpPage />
+      },
+      {
+        path: "logout",
+        action: logoutAction,
       },
       {
         path: "recover-password",
@@ -65,7 +69,6 @@ const router = createBrowserRouter([
       },
       {
         path: "account",
-        loader: dataLoader,
         id: "account",
         element: <AccountRoot />,
         children: [

@@ -241,7 +241,7 @@ async function loadPatternDetails(id: string) {
     const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
         headers: {
             'Content-Type': 'application/json',
-            //Authorization: "Bearer " + tokenLoader(),
+            Authorization: "Bearer " + tokenLoader(),
         },
     });
 

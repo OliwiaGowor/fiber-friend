@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Pattern;
+using Application.DTO.User;
 using Application.DTO.Yarn;
 using Application.Mapping;
 using AutoMapper;
@@ -21,6 +22,7 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
     public CommunityPatternDto? ConnectedCommPattern { get; set; }
     public PatternDto? ConnectedPattern { get; set; }
     public List<YarnDto>? Yarns { get; set; }
+    public UserDto User { get; set; }
 
     public static void Mapping(Profile profile)
     {
@@ -35,6 +37,7 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
             .ForMember(d => d.ConnectedPattern, opt => opt.MapFrom(s => s.ConnectedPattern))
             .ForMember(d => d.ConnectedCommPattern, opt => opt.MapFrom(s => s.ConnectedCommPattern))
-            .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns));
+            .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))
+            .ForMember(d => d.User, opt => opt.MapFrom(s => s.User));
     }
 }

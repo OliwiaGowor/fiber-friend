@@ -14,10 +14,11 @@ export default function Patterns() {
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
-    const fetchPatterns = async () => {
+    const fetchPatterns = async (filters: string, page: number, pageSize: number) => {
         try {
             const data = await handleRequest(
-                `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                `${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
                 "Could not fetch patterns. Please try again later.",
                 tokenLoader(),

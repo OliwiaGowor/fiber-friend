@@ -71,6 +71,14 @@
         transition: 0.2s;
         cursor: pointer;
       }
+
+      .logoutBtn {
+        display: flex;
+        align-items: center;
+        border: none;
+        background-color: inherit;
+        font-size: inherit;
+      }
     }
 
     .divider {

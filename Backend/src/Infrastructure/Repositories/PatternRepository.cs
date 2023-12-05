@@ -14,11 +14,9 @@ public class PatternRepository : IPatternRepository
 
     public Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies)
     {
-        Console.WriteLine(pattern.AuthorId.ToString());
         if (!_dbContext.Users.Any(u => u.Id == pattern.AuthorId)) throw new Exception("User not found");
 
         _dbContext.Patterns.Add(pattern);
-
 
         foreach (var yarn in yarns)
         {

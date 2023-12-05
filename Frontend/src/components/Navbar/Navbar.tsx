@@ -16,7 +16,7 @@ import { getAuthToken } from "../../utils/auth";
 import { CommunityPatternsIcon } from "../../svg/NavigationIcons";
 
 export default function Navbar() {
-    const isLoggedIn = true;//getAuthToken() !== null; //FIXME: change
+    const isLoggedIn = getAuthToken() !== null;
     const navigate = useNavigate();
     const [openSidebar, setOpenSidebar] = useState(false);
     const isMobile = useMediaQuery('(max-width: 760px)');
@@ -115,7 +115,11 @@ export default function Navbar() {
                 <li className={classes.navElement}>
                     <button
                         className={classes.accountBtn}
-                        onClick={() => { isMobile ? handleClickMenu() : navigate("account") }}
+                        onClick={() => {
+                            isLoggedIn ?
+                                (isMobile ? handleClickMenu() : navigate("/fiber-friend/account")) :
+                                navigate("/fiber-friend/login")
+                        }}
                         aria-label="Account"
                     >
                         <AccountCircleIcon sx={{ fontSize: 43 }} />

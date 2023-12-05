@@ -16,7 +16,6 @@ interface TilesProps {
   filters?: object[];
 }
 
-//`https://api.instantwebtools.net/v1/passenger?page=${currPage}&size=10`
 function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 800px)');
@@ -25,34 +24,61 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   const [currPage, setCurrPage] = useState(1); // storing current page number
   const [elements, setElements] = useState<Pattern[] | CommunityPattern[]>([]); // storing list
   const [wasLastList, setWasLastList] = useState(false); // setting a flag to know the last list
-  const [chosenFilters, setChosenFilters] = useState(filters);
+  const [chosenFilters, setChosenFilters] = useState({});
   const tileRef = React.useRef<HTMLLIElement | null>(null);
   const footer = document.getElementsByTagName('footer')[0];
   const pageSize = 2;
 
+  //FIXME: infinite scroll is infiniting
+  const filtersToString = () => {
+    let filtersString = '';
 
-  const handleFetch = async () => {
+    if (chosenFilters) {
+      Object.keys(chosenFilters).forEach((key: string, index: number) => {
+        filtersString += (index === 0 ? "" : ",") + '"' + String(key) + '"' + ":" + '"' + String(chosenFilters[key as keyof typeof chosenFilters]) + '"';
+      })
+    }
+    filtersString = "{" + filtersString + "}";
+    return filtersString;
+  };
+
+  const handleFetch = async (changedFilters: boolean = false, page: number = currPage) => {
     if (!wasLastList) {
       setLoading(true);
-      const data = await fetchData(currPage + 1, pageSize, chosenFilters);
+      let data = await fetchData(filtersToString(), page, pageSize);
+      
+      if (changedFilters) {
+        setElements([...data ?? []]);
+
+        if (!data || !data.length) {
+          setWasLastList(true);
+          setLoading(false);
+          return;
+        }
+        setLoading(false);
+      }
+
       if (data) {
 
         //TODO: delete later
-        const ids = Object.keys(data).map((e: any) => {
-          return e;
-        });
-        const dataArray = Object.values(data).map((e: any, index: number) => {
-          return { ...e, id: ids[index] };
-        });
+        if (process.env.REACT_APP_API_URL === "prod") {
+          const ids = Object.keys(data).map((e: any) => {
+            return e;
+          });
+          data = Object.values(data).map((e: any, index: number) => {
+            return { ...e, id: ids[index] };
+          });
+        }
 
-        if (!dataArray.length) {
+        if (!data.length) {
           setWasLastList(true);
           setLoading(false);
           return;
         }
 
-        setElements([...elements, ...dataArray]);
+        setElements([...elements, ...data]);
         setLoading(false);
+        setCurrPage(currPage + 1);
       } else {
         setWasLastList(true);
         setLoading(false);
@@ -87,7 +113,8 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   }, []);
 
   useEffect(() => {
-    fetchData(currPage, pageSize, chosenFilters);
+    setCurrPage(1);
+    handleFetch(true, 1);
   }, [chosenFilters]);
 
   const handlePhotoRender = (element: any) => {

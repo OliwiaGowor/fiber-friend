@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -12,6 +12,7 @@ import InsightsIcon from '@mui/icons-material/Insights';
 import classes from './SidebarAccount.module.scss'
 import logoPicture from '../../photos/yarn-ball-pink.png';
 import { EmailIcon, FacebookIcon } from '../../svg/MediaIcons';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function SidebarAccount({ open, getOpen }: any) {
     const navigate = useNavigate();
@@ -41,16 +42,16 @@ function SidebarAccount({ open, getOpen }: any) {
         <ClickAwayListener onClickAway={handleClickAway} touchEvent={'onTouchStart'}>
             <aside className={isOpen ? `${classes.sidebarAccount}` : `${classes.sidebarAccountHidden}`}>
                 {isMobile &&
-                        <Link to={"/fiber-friend"} className={classes.logo}>
-                            <img
-                                className={classes.logoPicture}
-                                src={logoPicture}
-                                alt="Fiber Friend Logo"
-                                width='45px'
-                                height='45px'
-                            />
-                            {'Fiber Friend'}
-                        </Link>
+                    <Link to={"/fiber-friend"} className={classes.logo}>
+                        <img
+                            className={classes.logoPicture}
+                            src={logoPicture}
+                            alt="Fiber Friend Logo"
+                            width='45px'
+                            height='45px'
+                        />
+                        {'Fiber Friend'}
+                    </Link>
                 }
                 <h2 className={classes.header} onClick={() => handleClick('/fiber-friend/account')}>
                     <AccountCircleIcon />
@@ -82,19 +83,33 @@ function SidebarAccount({ open, getOpen }: any) {
                         <SettingsIcon />
                         <div className={classes.text}>Settings</div>
                     </li>
+                    <span className={classes.divider} />
+                    <li className={classes.element} onClick={() => {
+                        if (isMobile) {
+                            setIsOpen(false);
+                            getOpen((prev: boolean) => !prev);
+                        }
+                    }}>
+                        <Form action="/fiber-friend/logout" method="post">
+                            <button className={classes.logoutBtn}>
+                            <LogoutIcon />
+                            <div className={classes.text}>Log out</div>
+                            </button>
+                        </Form>
+                    </li>
                 </ul>
-                {isMobile && 
-                <div className={classes.bottom}>
-                    <div className={classes.mediaIcons}>
-                        <span className={`${classes.mediaIcon} ${classes.facebook}`}>
-                            {FacebookIcon()}
-                        </span>
-                        <span className={classes.mediaIcon}>
-                            {EmailIcon()}
-                        </span>
+                {isMobile &&
+                    <div className={classes.bottom}>
+                        <div className={classes.mediaIcons}>
+                            <span className={`${classes.mediaIcon} ${classes.facebook}`}>
+                                {FacebookIcon()}
+                            </span>
+                            <span className={classes.mediaIcon}>
+                                {EmailIcon()}
+                            </span>
+                        </div>
+                        <p>© 2023 Fiber Friend</p>
                     </div>
-                    <p>© 2023 Fiber Friend</p>
-                </div>
                 }
             </aside>
         </ClickAwayListener>

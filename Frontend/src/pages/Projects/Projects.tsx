@@ -17,11 +17,11 @@ function Projects() {
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
-    const fetchProjects = async (page: number, pageSize: number, filters: object[]) => {
-        //TODO: `${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${userId}/${filters}/page=${page}/pageSize=${pageSize}`
+    const fetchProjects = async (filters: string, page: number, pageSize: number ) => {
         try {
             const data = await handleRequest(
-                `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
                 "Could not fetch projects. Please try again later.",
                 tokenLoader(),

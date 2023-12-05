@@ -53,7 +53,7 @@ internal class PatternService : IPatternService
         return patterns;
     }
 
-    public List<PatternDto> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize)
+    public List<PatternDto> GetPatternsForUser(FilterModel? filters, Guid userId, int page, int pageSize)
     {
         var patterns = _patternRepo.GetPatternsForUser(filters, userId, page, pageSize)
             .ProjectTo<PatternDto>(_mapper.ConfigurationProvider)

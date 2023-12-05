@@ -20,6 +20,7 @@ public class NewProjectDto : IMapFrom<Domain.Entities.Project>
     //public ??? List<File> Files { get; set; }
     public Guid? ConnectedPatternId { get; set; }
     public List<NewYarnDto>? Yarns { get; set; }
+    public string UserId { get; set; }
 
     public static void Mapping(Profile profile)
     {
@@ -36,5 +37,6 @@ public class NewProjectValidation : AbstractValidator<NewProjectDto>
         RuleFor(x => x.StartDate).NotEmpty();
         RuleFor(x => x.Finished).NotEmpty();
         RuleFor(x => x.Category).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

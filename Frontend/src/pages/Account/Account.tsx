@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Await, defer, json, Link, redirect, useLocation, useRouteLoaderData } from "react-router-dom";
 import MiniaturesList from "../../components/MiniaturesList/MiniaturesList";
 import classes from './Account.module.scss'
@@ -8,6 +8,12 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import InsightsIcon from '@mui/icons-material/Insights';
 import { tokenLoader } from "../../utils/auth";
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { Project } from "../../DTOs/Project";
+import { Pattern } from "../../DTOs/Pattern";
+import { useAppDispatch } from "../../utils/hooks";
+import { setError } from "../../reducers/errorSlice";
+import { use } from "i18next";
 
 const tiles = [
   {
@@ -37,10 +43,44 @@ const tiles = [
 ];
 
 export default function Account() {
-  const { projects, patterns }: any = useRouteLoaderData('account');
-  const pages = ['account', 'projects', 'patterns'];
+  const dispatch = useAppDispatch();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [patterns, setPatterns] = useState<Pattern[]>([]);
 
-  
+  const handleLoadData = async () => {
+    try {
+      const patternData = await handleRequest(
+        process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+          `${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
+        'GET',
+        "Could not load patterns. Please try again later.",
+        tokenLoader()
+      );
+
+      setPatterns(patternData);
+    } catch (error) {
+      dispatch(setError(error));
+    }
+
+    try {
+      const projectData = await handleRequest(
+        process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+          `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
+        'GET',
+        "Could not load projects. Please try again later.",
+        tokenLoader()
+      );
+
+      setProjects(projectData);
+    } catch (error) {
+      dispatch(setError(error));
+    }
+  };
+
+  useEffect(() => {
+    handleLoadData();
+  }, []);
+
   return (
     <div className={classes.container}>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
@@ -71,7 +111,7 @@ export default function Account() {
           {tiles.map((tile: any) =>
             <Link to={tile.link} key={tile.title}>
               <div className={classes.tile}>
-              <h2 className={classes.name}>{tile.title}</h2>
+                <h2 className={classes.name}>{tile.title}</h2>
                 {tile.icon}
               </div>
             </Link>
@@ -80,56 +120,4 @@ export default function Account() {
       </div>
     </div>
   );
-}
-//TODO: move up, because it loads everytime
-async function fetchData(url: string) {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
-
-  const token = tokenLoader();
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(url, {
-    method: 'GET',
-    headers,
-  });
-
-  const resData = await response.json();
-
-  return resData;
-}
-
-async function loadProjects() {
-  const url = process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
-  `${process.env.REACT_APP_API_URL}Project/GetAllProjectsForUser/${localStorage.getItem("userId")}`;
-  return fetchData(url);
-}
-
-async function loadPatterns() {
-  const url = process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
-  `${process.env.REACT_APP_API_URL}Pattern/GetAllPatternsForUser/${localStorage.getItem("userId")}`;
-  return fetchData(url);
-}
-
-export async function loader() {
-  const token = tokenLoader();
-
-      if (!token ) {
-          return redirect("/fiber-friend/login");
-      }
-
-
-  const [projects, patterns] = await Promise.all([
-    loadProjects(),
-    loadPatterns(),
-  ]);
-
-  return defer({
-    projects,
-    patterns,
-  });
 }

@@ -3,15 +3,18 @@ using Common.Enums;
 namespace Common.Helpers;
 public class FilterModel
 {
-    public NeedleworkType? Type { get; set; }
-    public string? category { get; set; }
-    public bool? isFinished { get; set; }
-    public bool? isAuthorial { get; set; }
+    public NeedleworkType? Type { get; set; } = null;
+    public string? category { get; set; } = null;
+    public bool? isFinished { get; set; } = null;
+    public bool? isAuthorial { get; set; } = null;
 
-    public FilterModel(NeedleworkType? type, string? category, bool? isFinisged)
+
+    public FilterModel() { }
+    public FilterModel(NeedleworkType? type, string? category, bool? isFinished, bool? isAuthorial)
     {
-        Type = type;
-        this.category = category;
-        this.isFinished = isFinisged;
+        Type = type ?? null;
+        this.category = category ?? null;
+        this.isFinished = isFinished ?? null;
+        this.isAuthorial = isAuthorial ?? null;
     }
 }

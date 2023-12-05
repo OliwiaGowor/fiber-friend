@@ -1,9 +1,11 @@
-﻿using Application.DTO.Project;
+﻿using Application.DTO.Pattern;
+using Application.DTO.Project;
 using Application.DTO.Yarn;
 using Application.Interfaces.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Enums;
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 
@@ -20,10 +22,10 @@ internal class ProjectService : IProjectService
         _mapper = mapper;
     }
 
-    public Guid AddProject(NewProjectDto project, List<NewYarnDto> yarns)
+    public Guid AddProject(NewProjectDto project)
     {
         var projectEnity = _mapper.Map<Project>(project);
-        var yarnsEntity = _mapper.Map<List<Yarn>>(yarns);
+        var yarnsEntity = _mapper.Map<List<Yarn>>(project.Yarns);
 
         var id = _projectRepo.AddProject(projectEnity, yarnsEntity);
 
@@ -45,7 +47,7 @@ internal class ProjectService : IProjectService
 
     public List<ProjectDto> GetProjectsListForUser(Guid userId)
     {
-        var projects = _projectRepo.GetAllProjectsForUser(userId);
+        var projects = _projectRepo.GetAllProjectsForUser(userId).ToList();
         var mappedProjects = new List<ProjectDto>();
         foreach (var project in projects)
         {
@@ -54,34 +56,17 @@ internal class ProjectService : IProjectService
 
         return mappedProjects;
     }
-
-    public List<ProjectDto> GetProjectsByCategoryForUser(string category, Guid userId)
+    public List<ProjectDto> GetProjectsForUser(FilterModel? filters, Guid userId, int page, int pageSize)
     {
-        var projects = _projectRepo.GetProjectsByCategoryForUser(category, userId)
-            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
-            .ToList();
+        var projects = _projectRepo.GetProjectsForUser(filters, userId, page, pageSize).ToList();
+        var mappedProjects = new List<ProjectDto>();
+        foreach (var project in projects)
+        {
+            mappedProjects.Add(_mapper.Map<ProjectDto>(project));
+        }
 
-        return projects;
+        return mappedProjects;
     }
-
-    public List<ProjectDto> GetProjectsByStatusForUser(bool finished, Guid userId)
-    {
-        var projects = _projectRepo.GetProjectsByStatusForUser(finished, userId)
-            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
-            .ToList();
-
-        return projects;
-    }
-
-    public List<ProjectDto> GetProjectsByTypeForUser(NeedleworkType type, Guid userId)
-    {
-        var projects = _projectRepo.GetProjectsByTypeForUser(type, userId)
-            .ProjectTo<ProjectDto>(_mapper.ConfigurationProvider)
-            .ToList();
-
-        return projects;
-    }
-
     public List<ProjectDto> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
         var projects = _projectRepo.GetProjectsByTimePeriodForUser(timePeriodStart, timePeriodEnd, userId)

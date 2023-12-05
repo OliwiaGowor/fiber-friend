@@ -18,8 +18,8 @@ export const projectsFilters = [
         name: "Type",
         options: [
             {
-                name: "Knit",
-                value: "knit"
+                name: "Knitting",
+                value: "knitting"
             },
             {
                 name: "Crochet",
@@ -55,8 +55,8 @@ export const patternsFilters = [
         name: "Type",
         options: [
             {
-                name: "Knit",
-                value: "knit"
+                name: "Knitting",
+                value: "knitting"
             },
             {
                 name: "Crochet",
