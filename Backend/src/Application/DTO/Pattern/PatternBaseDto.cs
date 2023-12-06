@@ -1,4 +1,6 @@
-﻿using Application.DTO.OtherSupply;
+﻿using Application.DTO.File;
+using Application.DTO.OtherSupply;
+using Application.DTO.Photo;
 using Application.DTO.Tool;
 using Application.DTO.User;
 using Application.DTO.Yarn;
@@ -14,8 +16,7 @@ namespace Domain.Entities
         public NeedleworkType Type { get; set; }
         public string Category { get; set; } = "";
         public string Notes { get; set; }
-        //public ??? List<Photo> Photos { get; set; }
-        //public ??? List<File> Files { get; set; }
+        public List<PhotoDto>? Photos { get; set; }
         public List<YarnDto> Yarns { get; set; }
         public List<ToolDto> Tools { get; set; }
         public List<OtherSupplyDto>? OtherSupplies { get; set; }
@@ -30,6 +31,7 @@ namespace Domain.Entities
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
                 .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
+                .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos))
                 .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))
                 .ForMember(d => d.Tools, opt => opt.MapFrom(s => s.Tools))
                 .ForMember(d => d.OtherSupplies, opt => opt.MapFrom(s => s.OtherSupplies))

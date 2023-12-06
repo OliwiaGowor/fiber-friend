@@ -1,4 +1,6 @@
+using Application.DTO.File;
 using Application.DTO.OtherSupply;
+using Application.DTO.Photo;
 using Application.DTO.Tool;
 using Application.DTO.Yarn;
 using Application.Mapping;
@@ -19,8 +21,8 @@ namespace Application.DTO.Pattern
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? Finished { get; set; }
-        //public ??? List<Photo> Photos { get; set; }
-        //public ??? List<File> Files { get; set; }
+        public List<NewPhotoDto>? Photos { get; set; }
+        public List<NewMyFileDto>? Files { get; set; }
         public List<NewYarnDto> Yarns { get; set; }
         public List<NewToolDto> Tools { get; set; }
         public List<NewOtherSupplyDto>? OtherSupplies { get; set; }

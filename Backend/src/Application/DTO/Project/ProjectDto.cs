@@ -1,4 +1,6 @@
-﻿using Application.DTO.Pattern;
+﻿using Application.DTO.File;
+using Application.DTO.Pattern;
+using Application.DTO.Photo;
 using Application.DTO.User;
 using Application.DTO.Yarn;
 using Application.Mapping;
@@ -17,8 +19,8 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
     public bool Finished { get; set; } = false;
     public string Category { get; set; } = "";
     public string Notes { get; set; }
-    //public ??? List<Photo> Photos { get; set; }
-    //public ??? List<File> Files { get; set; }
+    public List<PhotoDto>? Photos { get; set; }
+    public List<MyFileDto>? Files { get; set; }
     public CommunityPatternDto? ConnectedCommPattern { get; set; }
     public PatternDto? ConnectedPattern { get; set; }
     public List<YarnDto>? Yarns { get; set; }
@@ -35,6 +37,8 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.Finished, opt => opt.MapFrom(s => s.Finished))
             .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
             .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
+            .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos))
+            .ForMember(d => d.Files, opt => opt.MapFrom(s => s.Files))
             .ForMember(d => d.ConnectedPattern, opt => opt.MapFrom(s => s.ConnectedPattern))
             .ForMember(d => d.ConnectedCommPattern, opt => opt.MapFrom(s => s.ConnectedCommPattern))
             .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))

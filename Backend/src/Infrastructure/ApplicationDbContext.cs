@@ -19,6 +19,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Yarn> Yarns { get; set; }
     public DbSet<Tool> Tools { get; set; }
     public DbSet<OtherSupply> OtherSupplies { get; set; }
+    public DbSet<MyFile> Files { get; set; }
+    public DbSet<Photo> Photos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

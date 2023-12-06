@@ -91,10 +91,33 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
+    /* 
+     const handlePostFiles = async (files: any[]) => {
+         const formData = files;
+         console.log(JSON.stringify(formData))
+         try {
+             const response = await fetch(`https://script.google.com/macros/s/AKfycby4W88pstrQMukeGvI1bdotbo7Ez7I9Jjx6OPME1vxD9liCaPWnau5Ef_meNBhJI92g1A/exec`, {
+                 method: "POST",
+                 body: JSON.stringify(formData),
+             });
+ 
+             if (response.ok) {
+                 const result = await response.text();
+                 console.log('Upload successful:', result);
+             } else {
+                 // Handle error response
+                 console.error('Upload failed. Status:', response.status);
+             }
+         } catch (error) {
+             console.error('Error during upload:', error);
+         }
+     }
+     */
+
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(proceedSubmit)
+
         if (proceedSubmit) {
             const projectData: Project = {
                 name: name,
@@ -150,7 +173,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
             setProceedSubmit(false);
         }
 
-        setProceedSubmit(true);
+        setProceedSubmit(true); //TODO: change to return
     };
 
     return (

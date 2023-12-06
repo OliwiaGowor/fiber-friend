@@ -19,29 +19,53 @@ interface FileInputProps {
 }
 
 export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selectedFiles }: FileInputProps) => {
-  let loadedFiles = [];
-  for (const key in defaultValue) {
-    loadedFiles.push({
-      id: parseInt(defaultValue[key]?.id),
-      name: defaultValue[key]?.name,
-      url: defaultValue[key]?.url,
-    });
-  }
-  const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ? loadedFiles : []);
+  const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ?? []);
   const [open, setOpen] = React.useState(false);
 
-  const handleAddingFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  function fileToBase64(file: File): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        if (event.target) {
+          const base64String = event.target.result as string;
+          resolve(base64String.split(',')[1]); // Extract base64 data from the result
+        } else {
+          reject(new Error('Error reading file'));
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  const handleAddingFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       if (event.target.files.length > 10) {
         setOpen(true);
       }
       for (let i = 0; i < event.target.files.length && i < maxFiles; i++) {
-        setAddedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
-        selectedFiles((files: any) => [...files, { id: files.length, name: event.target.files![i].name, url: URL.createObjectURL(event.target.files![i]), }]);
+        const base64Content = await fileToBase64(event.target.files![i]);
+
+        setAddedFiles((files: any) => [...files, {
+          id: files.length,
+          name: event.target.files![i].name,
+          content: base64Content,
+          type: event.target.files![i].type,
+          url: URL.createObjectURL(event.target.files![i]),
+        }]);
+
+        selectedFiles((files: any) => [...files, {
+          id: files.length,
+          name: event.target.files![i].name,
+          content: base64Content,
+          type: event.target.files![i].type,
+          url: URL.createObjectURL(event.target.files![i]),
+        }]);
       }
     }
   };
-
+  console.log(defaultValue)
   const handleDeleteFile = (index: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (addedFiles.length > 0) {
@@ -49,10 +73,11 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
         file?.id !== index)
       for (let i = 0; i < tmp.length; i++) {
         tmp[i].id = i
+
       }
       setAddedFiles(tmp);
+      selectedFiles(tmp);
     }
-    selectedFiles(addedFiles);
   };
 
   const displayDifferentFiles = (file: any) => {
@@ -103,34 +128,38 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
             <input
               hidden
               accept={onlyImg ? "image/*" : 'image/*,application/pdf,.doc,.docx,.txt'}
-              multiple 
+              multiple
               type="file"
               onChange={handleAddingFile}
             />
           </Button>
         </div>
-        {addedFiles && addedFiles.map((file: any, index: number) => (
-          <div key={index} className={classes.addedPhoto}>
-            <button
-              className={classes.btnDeletePhoto}
-              onClick={(e) => { handleDeleteFile(index, e) }}
-            >
-              <DeleteIcon>
-                Remove
-              </DeleteIcon>
-            </button>
-            {onlyImg &&
-              <img
-                className={classes.photo}
-                src={`${file?.url}`}
-                srcSet={`${file?.url}`}
-                alt="not found"
-                loading="lazy"
-                width="150px"
-                height="175px"
-              />}
-            {!onlyImg && displayDifferentFiles(file)}
-          </div>
+        {addedFiles && addedFiles?.map((file: any, index: number) => (
+          <>
+            {file.url &&
+              <div key={index} className={classes.addedPhoto}>
+                <button
+                  className={classes.btnDeletePhoto}
+                  onClick={(e) => { handleDeleteFile(index, e) }}
+                >
+                  <DeleteIcon>
+                    Remove
+                  </DeleteIcon>
+                </button>
+                {onlyImg &&
+                  <img
+                    className={classes.photo}
+                    src={`${file?.url}`}
+                    srcSet={`${file?.url}`}
+                    alt="not found"
+                    loading="lazy"
+                    width="150px"
+                    height="175px"
+                  />}
+                {!onlyImg && displayDifferentFiles(file)}
+              </div>
+            }
+          </>
         ))}
       </div>
       <Collapse in={open}>

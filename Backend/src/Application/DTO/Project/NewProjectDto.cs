@@ -1,3 +1,5 @@
+using Application.DTO.File;
+using Application.DTO.Photo;
 using Application.DTO.Yarn;
 using Application.Mapping;
 using AutoMapper;
@@ -16,8 +18,8 @@ public class NewProjectDto : IMapFrom<Domain.Entities.Project>
     public bool Finished { get; set; } = false;
     public string Category { get; set; } = "";
     public string Notes { get; set; } = "";
-    //public ??? List<Photo> Photos { get; set; }
-    //public ??? List<File> Files { get; set; }
+    public List<NewPhotoDto>? Photos { get; set; }
+    public List<NewMyFileDto>? Files { get; set; }
     public Guid? ConnectedPatternId { get; set; }
     public List<NewYarnDto>? Yarns { get; set; }
     public string UserId { get; set; }

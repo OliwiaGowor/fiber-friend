@@ -9,6 +9,7 @@ namespace Domain.Entities
         public bool IsPlanned { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public ICollection<MyFile>? Files { get; set; }
         public bool IsFinished { get; set; }
     }
 }

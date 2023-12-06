@@ -12,7 +12,7 @@ public class PatternRepository : IPatternRepository
         _dbContext = dbContext;
     }
 
-    public Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies)
+    public Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies, List<MyFile> files, List<Photo> photos)
     {
         if (!_dbContext.Users.Any(u => u.Id == pattern.AuthorId)) throw new Exception("User not found");
 
@@ -34,6 +34,18 @@ public class PatternRepository : IPatternRepository
         {
             otherSupply.PatternId = pattern.Id;
             _dbContext.OtherSupplies.Add(otherSupply);
+        }
+
+        foreach (var file in files)
+        {
+            file.ParentId = pattern.Id;
+            _dbContext.Files.Add(file);
+        }
+
+        foreach (var photo in photos)
+        {
+            photo.ParentId = pattern.Id;
+            _dbContext.Photos.Add(photo);
         }
 
         _dbContext.SaveChanges();

@@ -18,6 +18,7 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
                 .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
+                .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos))
                 .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))
                 .ForMember(d => d.Tools, opt => opt.MapFrom(s => s.Tools))
                 .ForMember(d => d.OtherSupplies, opt => opt.MapFrom(s => s.OtherSupplies))

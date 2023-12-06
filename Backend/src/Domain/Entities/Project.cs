@@ -13,8 +13,8 @@ public class Project
     public bool Finished { get; set; }
     public string Category { get; set; }
     public string Notes { get; set; }
-    //public ??? List<Photo> Photos { get; set; }
-    //public ??? List<File> Files { get; set; }
+    public ICollection<Photo>? Photos { get; set; }
+    public ICollection<MyFile>? Files { get; set; }
     public Guid? ConnectedPatternId { get; set; }
     public CommunityPattern? ConnectedCommPattern { get; set; }
     public Pattern? ConnectedPattern { get; set; }

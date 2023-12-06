@@ -9,8 +9,7 @@ namespace Domain.Entities
         public NeedleworkType Type { get; set; }
         public string Category { get; set; }
         public string Notes { get; set; }
-        //public ??? List<Photo> Photos { get; set; }
-        //public ??? List<File> Files { get; set; }
+        public ICollection<Photo>? Photos { get; set; }
         public Guid AuthorId { get; set; }
         public User Author { get; set; }
         public ICollection<Yarn>? Yarns { get; set; }

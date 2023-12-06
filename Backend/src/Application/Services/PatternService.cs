@@ -25,8 +25,10 @@ internal class PatternService : IPatternService
         var yarnsEntity = _mapper.Map<List<Yarn>>(pattern.Yarns);
         var toolsEntity = _mapper.Map<List<Tool>>(pattern.Tools);
         var otherSuppliesEntity = _mapper.Map<List<OtherSupply>>(pattern.OtherSupplies);
+        var filesEntity = _mapper.Map<List<MyFile>>(pattern.Photos);
+        var photosEntity = _mapper.Map<List<Photo>>(pattern.Files);
 
-        var id = _patternRepo.AddPattern(patternEnity, yarnsEntity, toolsEntity, otherSuppliesEntity);
+        var id = _patternRepo.AddPattern(patternEnity, yarnsEntity, toolsEntity, otherSuppliesEntity, filesEntity, photosEntity);
 
         return id;
     }

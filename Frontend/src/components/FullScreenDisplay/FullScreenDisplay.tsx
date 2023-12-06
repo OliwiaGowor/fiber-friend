@@ -61,7 +61,7 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
         <img
           className={classes.file}
           src={file.src}
-          alt={file.alt}
+          alt={file.name}
           loading="lazy"
           width={displaySize.width}
           height={displaySize.height}

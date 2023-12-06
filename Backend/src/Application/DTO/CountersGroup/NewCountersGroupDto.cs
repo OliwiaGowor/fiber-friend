@@ -1,10 +1,11 @@
 using Application.DTO.Counter;
+using Application.Mapping;
 using AutoMapper;
 using FluentValidation;
 
 namespace Application.DTO.CountersGroup
 {
-    public class NewCountersGroupDto
+    public class NewCountersGroupDto : IMapFrom<Domain.Entities.CountersGroup>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

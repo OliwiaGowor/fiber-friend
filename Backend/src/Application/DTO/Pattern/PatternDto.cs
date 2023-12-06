@@ -1,4 +1,5 @@
-﻿using Application.Mapping;
+﻿using Application.DTO.File;
+using Application.Mapping;
 using AutoMapper;
 using Domain.Entities;
 
@@ -8,6 +9,7 @@ namespace Application.DTO.Pattern
     {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public List<MyFileDto>? Files { get; set; }
         public bool IsFinished { get; set; } = false;
         public bool IsAuthorial { get; set; }
 
@@ -20,6 +22,8 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.IsAuthorial, opt => opt.MapFrom(s => s.IsAuthorial))
                 .ForMember(d => d.Category, opt => opt.MapFrom(s => s.Category))
                 .ForMember(d => d.Notes, opt => opt.MapFrom(s => s.Notes))
+                .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos))
+                .ForMember(d => d.Files, opt => opt.MapFrom(s => s.Files))
                 .ForMember(d => d.StartDate, opt => opt.MapFrom(s => s.StartDate))
                 .ForMember(d => d.EndDate, opt => opt.MapFrom(s => s.EndDate))
                 .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))
