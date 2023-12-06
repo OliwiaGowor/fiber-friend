@@ -51,12 +51,10 @@ public class ProjectController : ControllerBase
         {
             try
             {
-                // Deserialize the JSON string into FilterModel
                 filterModel = JsonConvert.DeserializeObject<FilterModel>(filters);
             }
             catch (JsonException)
             {
-                // Handle JSON deserialization error
                 return BadRequest("Invalid JSON format for filters.");
             }
         }

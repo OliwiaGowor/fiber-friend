@@ -27,8 +27,20 @@ namespace WebApi.Controllers
             return Ok(user);
         }
 
-        [HttpPatch("{id}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] JsonPatchDocument userDocument)
+        [HttpGet("UserData/{id}")]
+        public ActionResult<UserDataDto> GetUserDataById(Guid id)
+        {
+            var user = _userService.GetUserDataById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPatch("UserData/{id}")]
+        public ActionResult UpdateUserData(Guid id, [FromBody] UserDataDto userData)
         {
             var existingUser = _userService.GetUserById(id);
             if (existingUser == null)
@@ -36,18 +48,9 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            userDocument.ApplyTo(existingUser);
+            var newData = _userService.UpdateUserData(userData);
 
-            if (string.IsNullOrEmpty(existingUser.Username) ||
-                string.IsNullOrEmpty(existingUser.Email) ||
-                string.IsNullOrEmpty(existingUser.HashedPassword))
-            {
-                return BadRequest();
-            }
-
-            _userService.UpdateUser(existingUser);
-
-            return NoContent();
+            return Ok(newData);
         }
 
         [HttpDelete("{id}")]

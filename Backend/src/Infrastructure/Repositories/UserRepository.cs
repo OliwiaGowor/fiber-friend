@@ -48,5 +48,38 @@ namespace Infrastructure.Repositories
             _dbContext.Entry(user).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
+        public User UpdateUserData(User user)
+        {
+            var dbUser = _dbContext.Users.FirstOrDefault(y => y.Id == user.Id);
+
+            if (dbUser != null)
+            {
+                dbUser.Username = user.Username;
+                dbUser.Email = user.Email;
+                _dbContext.SaveChanges();
+
+                return dbUser;
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
+        }
+
+        public void ChangeUserPassword(Guid userId, string password)
+        {
+            var user = _dbContext.Users.FirstOrDefault(y => y.Id == userId);
+
+            if (user != null)
+            {
+                user.HashedPassword = password;
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("User not found");
+            }
+        }
     }
 }

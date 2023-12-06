@@ -52,12 +52,21 @@ public class AuthenticationController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost(nameof(CheckPassword))]
+    [HttpPost("CheckPassword/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult CheckPassword(string password, Guid userId)
+    public IActionResult CheckPassword([FromBody] string password, Guid userId)
     {
         var isPasswordCorrect = _authenticationService.CheckPassword(password, userId);
 
         return Ok(isPasswordCorrect);
+    }
+
+    [HttpPatch("ChangeUserPassword/{userId:Guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public IActionResult ChangeUserPassword([FromBody] string password, Guid userId)
+    {
+        _authenticationService.ChangeUserPassword(userId, password);
+
+        return NoContent();
     }
 }

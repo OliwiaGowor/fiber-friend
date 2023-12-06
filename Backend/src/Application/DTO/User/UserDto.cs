@@ -19,6 +19,7 @@ public class UserDto : IMapFrom<Domain.Entities.User>
     public List<ProjectDto>? Projects { get; set; }
     public List<CountersGroupDto>? CountersGroups { get; set; }
     public List<ResourceDto>? Resources { get; set; }
+
     public static void Mapping(Profile profile)
     {
         profile.CreateMap<Domain.Entities.User, UserDto>()

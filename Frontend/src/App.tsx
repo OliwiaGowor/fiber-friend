@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ProjectDetails, { loader as projectDetailsLoader } from "./pages/Projects/ProjectDetails";
 import PatternDetails, { loader as patternDetailsLoader } from "./pages/Patterns/PatternDetails";
-import AccountRoot from "./pages/Account/AccountRoot";
+import AccountRoot, {loader as userDataLoader} from "./pages/Account/AccountRoot";
 import NewPatternPage from "./pages/Patterns/NewPatternPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
@@ -70,6 +70,7 @@ const router = createBrowserRouter([
       {
         path: "account",
         id: "account",
+        loader: userDataLoader,
         element: <AccountRoot />,
         children: [
           {

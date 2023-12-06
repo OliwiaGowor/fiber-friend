@@ -56,7 +56,7 @@ interface BasicTabsFormProps {
   defaultValue?: any;
   type: "yarn" | "tool" | "other supply";
 }
-//TODO: sending data to parent component
+
 export default function BasicTabsForm({ getInfo, showError, defaultValue, type }: BasicTabsFormProps) {
   const isMobile = useMediaQuery('(max-width: 800px)');
   const dispatch = useAppDispatch();

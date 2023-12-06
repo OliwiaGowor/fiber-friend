@@ -58,4 +58,10 @@ public class AuthenticationService : IAuthenticationService
         var isPasswordCorrect = PasswordHasher.Verify(password, user.HashedPassword);
         return isPasswordCorrect;
     }
+
+    public void ChangeUserPassword(Guid userId, string newPassword)
+    {
+        var hashedPassword = PasswordHasher.Hash(newPassword);
+        _userRepository.ChangeUserPassword(userId, hashedPassword);
+    }
 }

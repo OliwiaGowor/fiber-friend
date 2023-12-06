@@ -8,12 +8,36 @@ import KeyIcon from '@mui/icons-material/Key';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import InfoIcon from '@mui/icons-material/Info';
 import { useAppDispatch } from '../../utils/hooks';
+import { handleRequest } from "../../utils/handleRequestHelper";
+import { setError } from "../../reducers/errorSlice";
 
 const AccountSettingsPage = () => {
   const navigate = useNavigate();
-  const { userData }: any = { username: "", email: "" }//useRouteLoaderData('account');
+  const dispatch = useAppDispatch();
+  const { userData } = useRouteLoaderData('account') as { userData: { username: string; email: string } };
   const [username, setUsername] = useState(userData?.username ?? "");
   const [email, setEmail] = useState(userData?.email ?? "");
+
+  const handleSave = async () => {
+    const data = {
+      id: localStorage.getItem("userId"),
+      username: username,
+      email: email,
+    };
+    try {
+      await handleRequest(
+        `${process.env.REACT_APP_API_URL}User/UserData/${localStorage.getItem("userId")}`,
+        "PATCH",
+        "Could not update user data. Please try again later.",
+        tokenLoader(),
+        data,
+      );
+      
+      window.location.reload();
+    } catch (error) {
+      dispatch(setError(error));
+    }
+  };
 
   return (
     <div className={classes.container}>
@@ -34,10 +58,17 @@ const AccountSettingsPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        <Button
+          className={classes.saveButton}
+          variant="contained"
+          onClick={handleSave}
+        >
+          Save
+        </Button>
       </div>
       <div className={classes.sectionContainer}>
         <h2 className={classes.sectionHeader}>Language</h2>
-        
+
       </div>
       <div className={classes.sectionContainer}>
         <h2 className={classes.sectionHeader}>Access</h2>
@@ -93,35 +124,3 @@ const AccountSettingsPage = () => {
 }
 
 export default AccountSettingsPage;
-
-async function loadUserData() {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}User${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: "Bearer " + tokenLoader(),
-    },
-  });
-
-  if (!response.ok) {
-    throw json(
-      { message: 'Could not fetch user data.' },
-      {
-        status: 500,
-      }
-    );
-  } else {
-    const resData = await response.json();
-
-    return resData;
-  }
-}
-
-export async function loader() {
-  const [userData] = await Promise.all([
-    loadUserData(),
-  ]);
-
-  return defer({
-    userData: userData,
-  });
-}

@@ -15,7 +15,7 @@ interface PatternBase {
     photos?: File[];
     files?: File[];
     yarns: Yarn[];
-    tools?: Tool[];//TODO: change to obligatory
+    tools: Tool[];
     otherSupplies?: OtherSupply[];
     isShared: boolean;
 }

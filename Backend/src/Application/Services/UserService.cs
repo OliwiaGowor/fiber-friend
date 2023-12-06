@@ -30,11 +30,29 @@ internal class UserService : IUserService
         return userDto;
     }
 
+    public UserDataDto GetUserDataById(Guid userId)
+    {
+        var user = _userRepo.GetUserById(userId);
+        var userDataDto = _mapper.Map<UserDataDto>(user);
+
+        return userDataDto;
+    }
+
     public void UpdateUser(UserDto user)
     {
         var mappedUser = _mapper.Map<User>(user);
 
         _userRepo.UpdateUser(mappedUser);
 
+    }
+
+    public UserDataDto UpdateUserData(UserDataDto userData)
+    {
+        var mappedUser = _mapper.Map<User>(userData);
+
+        var newData = _userRepo.UpdateUserData(mappedUser);
+        var newDataDto = _mapper.Map<UserDataDto>(newData);
+
+        return newDataDto;
     }
 }
