@@ -1,3 +1,4 @@
+using Application.DTO.CountersGroup;
 using Application.DTO.File;
 using Application.DTO.Photo;
 using Application.DTO.Yarn;
@@ -23,6 +24,7 @@ public class NewProjectDto : IMapFrom<Domain.Entities.Project>
     public Guid? ConnectedPatternId { get; set; }
     public List<NewYarnDto>? Yarns { get; set; }
     public string UserId { get; set; }
+    public List<NewCountersGroupDto>? Counters { get; set; }
 
     public static void Mapping(Profile profile)
     {

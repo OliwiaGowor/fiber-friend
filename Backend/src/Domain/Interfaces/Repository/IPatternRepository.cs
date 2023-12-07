@@ -11,5 +11,5 @@ public interface IPatternRepository
     Pattern GetPatternById(Guid patternId);
     IQueryable<Pattern> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
     IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
-    void UpdatePattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies);
+    Pattern UpdatePattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies, List<CountersGroup> counters, List<MyFile> files, List<Photo> photos);
 }

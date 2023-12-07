@@ -75,12 +75,15 @@ internal class PatternService : IPatternService
 
     public object UpdatePattern(NewPatternDto newPattern)
     {
-        var pattern = _mapper.Map<Pattern>(newPattern);
+        var patternEntity = _mapper.Map<Pattern>(newPattern);
         var yarnsEntity = _mapper.Map<List<Yarn>>(newPattern.Yarns);
         var toolsEntity = _mapper.Map<List<Tool>>(newPattern.Tools);
         var otherSuppliesEntity = _mapper.Map<List<OtherSupply>>(newPattern.OtherSupplies);
+        var countersEntity = _mapper.Map<List<CountersGroup>>(newPattern.Counters);
+        var filesEntitiy = _mapper.Map<List<MyFile>>(newPattern.Files);
+        var photosEntitiy = _mapper.Map<List<Photo>>(newPattern.Photos);
 
-        _patternRepo.UpdatePattern(pattern, yarnsEntity, toolsEntity, otherSuppliesEntity);
+        var pattern = _patternRepo.UpdatePattern(patternEntity, yarnsEntity, toolsEntity, otherSuppliesEntity, countersEntity, filesEntitiy, photosEntitiy);
 
         return pattern;
     }

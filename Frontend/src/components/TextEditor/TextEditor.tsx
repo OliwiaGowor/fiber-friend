@@ -44,7 +44,7 @@ export default function TextEditor(props: TextEditorProps) {
   const { defaultValue, getValue, ...other } = props;
   const isMobile = useMediaQuery('(max-width: 800px)');
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [value, setValue] = useState(defaultValue ? defaultValue : initialValue);
+  const [value, setValue] = useState(defaultValue ? JSON.parse(defaultValue) : initialValue);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

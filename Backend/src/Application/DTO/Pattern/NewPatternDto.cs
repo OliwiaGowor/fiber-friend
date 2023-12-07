@@ -1,3 +1,4 @@
+using Application.DTO.CountersGroup;
 using Application.DTO.File;
 using Application.DTO.OtherSupply;
 using Application.DTO.Photo;
@@ -28,6 +29,7 @@ namespace Application.DTO.Pattern
         public List<NewOtherSupplyDto>? OtherSupplies { get; set; }
         public string AuthorId { get; set; }
         public bool IsShared { get; set; }
+        public List<NewCountersGroupDto>? Counters { get; set; }
 
         public static void Mapping(Profile profile)
         {

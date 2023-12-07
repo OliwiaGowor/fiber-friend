@@ -38,8 +38,7 @@ export default function Navbar() {
 
     return (
         <nav className={classes.navbar}>
-            <ul className={classes.navElements}>
-                {!isMobile && !isLoggedIn && <br className={classes.fillerDesktop}></br>}
+            <ul className={`${classes.navElements} ${!isLoggedIn ? classes.loggedOut : ""}`}>
                 {!isMobile &&
                     <div className={classes.logo}>
                         <Link to={"/fiber-friend"}>
@@ -112,7 +111,7 @@ export default function Navbar() {
                         </Menu>
                     </li>
                 </>}
-                <li className={classes.navElement}>
+                <li className={`${classes.navElement} ${classes.account}`}>
                     <button
                         className={classes.accountBtn}
                         onClick={() => {

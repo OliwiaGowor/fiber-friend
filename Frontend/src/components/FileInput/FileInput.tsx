@@ -65,7 +65,7 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
       }
     }
   };
-  console.log(defaultValue)
+  
   const handleDeleteFile = (index: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (addedFiles.length > 0) {

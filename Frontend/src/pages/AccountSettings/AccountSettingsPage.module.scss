@@ -28,6 +28,10 @@
       @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
     }
 
+    .saveButton {
+      @include root.button($margin-lr: 0, $margin-tb: 20px);
+    }
+
     .settingsButton {
       display: grid;
       grid-template-columns: max-content 1fr max-content;

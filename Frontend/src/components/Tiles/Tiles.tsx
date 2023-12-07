@@ -7,6 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import FiltersBar from "../FiltersBar/FiltersBar";
 import { CommunityPattern, Pattern } from "../../DTOs/Pattern";
 import React from "react";
+import { Project } from "../../DTOs/Project";
 
 interface TilesProps {
   fetchData: Function;
@@ -16,13 +17,15 @@ interface TilesProps {
   filters?: object[];
 }
 
+type TileElement = Pattern | CommunityPattern | Project;
+
 function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 800px)');
   const userId = localStorage.getItem('userId');
   const [loading, setLoading] = useState(false); // setting the loading state
   const [currPage, setCurrPage] = useState(1); // storing current page number
-  const [elements, setElements] = useState<Pattern[] | CommunityPattern[]>([]); // storing list
+  const [elements, setElements] = useState<TileElement[]>([]); // storing list
   const [wasLastList, setWasLastList] = useState(false); // setting a flag to know the last list
   const [chosenFilters, setChosenFilters] = useState({});
   const tileRef = React.useRef<HTMLLIElement | null>(null);
@@ -43,7 +46,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   };
 
   const handleFetch = async (changedFilters: boolean = false, page: number = currPage) => {
-    if (!wasLastList) {
+    if (!wasLastList || changedFilters) {
       setLoading(true);
       let data = await fetchData(filtersToString(), page, pageSize);
       
@@ -99,7 +102,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       }
     }
   };
-
+console.log(chosenFilters)
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
 
@@ -113,23 +116,23 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   }, []);
 
   useEffect(() => {
+    console.log("useEffect")
     setCurrPage(1);
+    setWasLastList(false);
     handleFetch(true, 1);
   }, [chosenFilters]);
 
   const handlePhotoRender = (element: any) => {
     if (element.photos && tileRef.current) {
       const mainPhoto = element?.photos[0] ? element?.photos[0] : element?.photos[1]
-      const img = new Image();
-      img.src = mainPhoto.src;
-
+console.log(mainPhoto)
       let newWidth = tileRef.current.clientWidth;
       let newHeight = tileRef.current.clientHeight;
 
       return (
         <img
           className={classes.photo}
-          src={mainPhoto.src}
+          src={`data:${mainPhoto?.type};base64,${mainPhoto?.content}`}
           alt={element.name}
           height={`${newHeight}px`}
           width={`${newWidth + 1}px`}
@@ -144,7 +147,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       );
     }
   };
-
+//FIXME: ujednolicic do author
   return (
     <div className={classes.container}>
       {filters && <FiltersBar filters={filters} applyFilters={setChosenFilters} />}
@@ -166,7 +169,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
             <span className={classes.gradient} />
             <div className={classes.info} >
               <h2 className={classes.name}>{element.name}</h2>
-              {element.authorId !== userId &&
+              {element.author?.id !== userId || element.user?.id !== userId &&
                 <h3 className={classes.author}>{element?.author?.username}</h3>
               }
             </div>

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import _ from 'lodash';
+import CategoriesMenu from '../CategoriesMenu/CategoriesMenu';
 
 interface FiltersBarProps {
     filters: object[];
@@ -33,8 +34,7 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
         }
     };
 
-    const handleChangeFilter = (e: any, filterName: string) => {
-        const newFilterValue = e.target.value;
+    const handleChangeFilter = (newFilterValue: string, filterName: string) => {
         const tmpFilters = { ...chosenFilters } as { [key: string]: any };
 
         if (newFilterValue === '') {
@@ -46,19 +46,21 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
         setChosenFilters(tmpFilters);
     };
 
-
     return (
         <div className={classes.filtersBar}>
             <h1 className={classes.header}>Filter by:</h1>
             <div className={classes.filters}>
                 {filters.map((filter: any) => (
                     <div className={classes.filter} key={filter.name}>
+                        {filter.name === "Category" ?
+                        <CategoriesMenu choseCategory={(value: string) => handleChangeFilter(value, "Category")} showError={false} />
+                        :
                         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                             <InputLabel id="select-label">{filter.name}</InputLabel>
                             <Select
                                 labelId="select-label"
                                 className={classes.formInput}
-                                onChange={(e) => handleChangeFilter(e, filter.name)}
+                                onChange={(e) => handleChangeFilter(e.target.value, filter.name)}
                                 value={getFilterValue(filter.name)}
                                 aria-labelledby={`${filter.name}-label`}
                             >
@@ -68,6 +70,7 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
                                 ))}
                             </Select>
                         </FormControl>
+                        }
                     </div>
                 ))}
             </div>

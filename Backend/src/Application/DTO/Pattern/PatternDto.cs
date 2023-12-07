@@ -1,4 +1,5 @@
-﻿using Application.DTO.File;
+﻿using Application.DTO.CountersGroup;
+using Application.DTO.File;
 using Application.Mapping;
 using AutoMapper;
 using Domain.Entities;
@@ -12,6 +13,7 @@ namespace Application.DTO.Pattern
         public List<MyFileDto>? Files { get; set; }
         public bool IsFinished { get; set; } = false;
         public bool IsAuthorial { get; set; }
+        public List<CountersGroupDto>? Counters { get; set; }
 
         public static void Mapping(Profile profile)
         {
@@ -30,7 +32,8 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.Tools, opt => opt.MapFrom(s => s.Tools))
                 .ForMember(d => d.OtherSupplies, opt => opt.MapFrom(s => s.OtherSupplies))
                 .ForMember(d => d.Author, opt => opt.MapFrom(s => s.Author))
-                .ForMember(d => d.IsShared, opt => opt.MapFrom(s => s.IsShared));
+                .ForMember(d => d.IsShared, opt => opt.MapFrom(s => s.IsShared))
+                .ForMember(d => d.Counters, opt => opt.MapFrom(s => s.Counters));
         }
     }
 }

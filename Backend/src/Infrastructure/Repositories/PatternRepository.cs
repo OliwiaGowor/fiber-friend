@@ -1,6 +1,8 @@
 using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
+using Infrastructure.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 public class PatternRepository : IPatternRepository
@@ -38,13 +40,13 @@ public class PatternRepository : IPatternRepository
 
         foreach (var file in files)
         {
-            file.ParentId = pattern.Id;
+            file.PatternId = pattern.Id;
             _dbContext.Files.Add(file);
         }
 
         foreach (var photo in photos)
         {
-            photo.ParentId = pattern.Id;
+            photo.PatternId = pattern.Id;
             _dbContext.Photos.Add(photo);
         }
 
@@ -70,7 +72,12 @@ public class PatternRepository : IPatternRepository
 
     public Pattern GetPatternById(Guid patternId)
     {
-        var pattern = _dbContext.Patterns.FirstOrDefault(i => i.Id == patternId);
+        var pattern = _dbContext.Patterns.Include(p => p.Yarns)
+            .Include(p => p.Tools)
+            .Include(p => p.OtherSupplies)
+            .Include(p => p.Photos)
+            .Include(p => p.Files)
+            .FirstOrDefault(i => i.Id == patternId);
         return pattern;
     }
 
@@ -93,7 +100,12 @@ public class PatternRepository : IPatternRepository
             query = query.Where(p => p.IsAuthorial == filters.isAuthorial);
         }
 
-        var patterns = query.Where(p => p.AuthorId == userId)
+        var patterns = query.Include(p => p.Yarns)
+            .Include(p => p.Tools)
+            .Include(p => p.OtherSupplies)
+            .Include(p => p.Photos)
+            .Include(p => p.Files)
+            .Where(p => p.AuthorId == userId)
             .Skip((page - 1) * pageSize)
             .Take(pageSize);
 
@@ -110,39 +122,43 @@ public class PatternRepository : IPatternRepository
         return patterns;
     }
 
-    public void UpdatePattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies)
+    public Pattern UpdatePattern(
+        Pattern pattern,
+        List<Yarn> yarns,
+        List<Tool> tools,
+        List<OtherSupply> otherSupplies,
+        List<CountersGroup> counters,
+        List<MyFile> files,
+        List<Photo> photos
+        )
     {
-        _dbContext.Attach(pattern);
-        _dbContext.Entry(pattern).Property("PatternType").IsModified = true;
-        _dbContext.Entry(pattern).Property("IsAuthorial").IsModified = true;
-        _dbContext.Entry(pattern).Property("Category").IsModified = true;
-        _dbContext.Entry(pattern).Property("Notes").IsModified = true;
+        var dbPattern = _dbContext.Patterns
+         .Include(p => p.Yarns)
+         .Include(p => p.Tools)
+         .Include(p => p.OtherSupplies)
+         .Include(p => p.Counters)
+         .Include(p => p.Files)
+         .Include(p => p.Photos)
+         .FirstOrDefault(y => y.Id == pattern.Id);
 
-        var existingYarns = _dbContext.Yarns.Where(y => y.PatternId == pattern.Id);
-        _dbContext.Yarns.RemoveRange(existingYarns);
-
-        foreach (var yarn in yarns)
+        if (dbPattern != null)
         {
-            _dbContext.Yarns.Add(yarn);
+            _dbContext.Entry(dbPattern).CurrentValues.SetValues(pattern);
+
+            RepositoryHelper.UpdateCollection(_dbContext.Yarns, dbPattern.Yarns, yarns);
+            RepositoryHelper.UpdateCollection(_dbContext.Tools, dbPattern.Tools, tools);
+            RepositoryHelper.UpdateCollection(_dbContext.OtherSupplies, dbPattern.OtherSupplies, otherSupplies);
+            RepositoryHelper.UpdateCollection(_dbContext.CountersGroups, dbPattern.Counters, counters);
+            RepositoryHelper.UpdateCollection(_dbContext.Files, dbPattern.Files, files);
+            RepositoryHelper.UpdateCollection(_dbContext.Photos, dbPattern.Photos, photos);
+
+            _dbContext.SaveChanges();
+
+            return dbPattern;
         }
-
-        var existingTools = _dbContext.Tools.Where(y => y.PatternId == pattern.Id);
-        _dbContext.Tools.RemoveRange(existingTools);
-
-        foreach (var tool in tools)
+        else
         {
-            _dbContext.Tools.Add(tool);
+            throw new Exception("Pattern not found");
         }
-
-        var existingOtherSupplies = _dbContext.OtherSupplies.Where(y => y.PatternId == pattern.Id);
-        _dbContext.OtherSupplies.RemoveRange(existingOtherSupplies);
-
-        foreach (var otherSupply in otherSupplies)
-        {
-            _dbContext.OtherSupplies.Add(otherSupply);
-        }
-
-
-        _dbContext.SaveChanges();
     }
 }

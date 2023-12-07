@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UserSavedCommunityPattern : Migration
+    public partial class databasecleanup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -154,17 +154,11 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CommunityPatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tools", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tools_Patterns_CommunityPatternId",
-                        column: x => x.CommunityPatternId,
-                        principalTable: "Patterns",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tools_Patterns_PatternId",
                         column: x => x.PatternId,
@@ -205,9 +199,7 @@ namespace Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CommunityPatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    PatternId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ProjectId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    CommunityPatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -224,25 +216,73 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CountersGroups_Patterns_PatternId1",
-                        column: x => x.PatternId1,
-                        principalTable: "Patterns",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_CountersGroups_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CountersGroups_Projects_ProjectId1",
-                        column: x => x.ProjectId1,
-                        principalTable: "Projects",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_CountersGroups_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Files_Patterns_PatternId",
+                        column: x => x.PatternId,
+                        principalTable: "Patterns",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Files_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CommunityPatternId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_Patterns_CommunityPatternId",
+                        column: x => x.CommunityPatternId,
+                        principalTable: "Patterns",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_Patterns_PatternId",
+                        column: x => x.PatternId,
+                        principalTable: "Patterns",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id");
                 });
 
@@ -318,24 +358,24 @@ namespace Infrastructure.Migrations
                 column: "PatternId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CountersGroups_PatternId1",
-                table: "CountersGroups",
-                column: "PatternId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CountersGroups_ProjectId",
                 table: "CountersGroups",
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CountersGroups_ProjectId1",
-                table: "CountersGroups",
-                column: "ProjectId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CountersGroups_UserId",
                 table: "CountersGroups",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_PatternId",
+                table: "Files",
+                column: "PatternId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_ProjectId",
+                table: "Files",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OtherSupplies_CommunityPatternId",
@@ -351,6 +391,21 @@ namespace Infrastructure.Migrations
                 name: "IX_Patterns_AuthorId",
                 table: "Patterns",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_CommunityPatternId",
+                table: "Photos",
+                column: "CommunityPatternId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_PatternId",
+                table: "Photos",
+                column: "PatternId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_ProjectId",
+                table: "Photos",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_ConnectedCommPatternId",
@@ -371,11 +426,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Resources_UserId",
                 table: "Resources",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tools_CommunityPatternId",
-                table: "Tools",
-                column: "CommunityPatternId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tools_PatternId",
@@ -410,7 +460,13 @@ namespace Infrastructure.Migrations
                 name: "Counters");
 
             migrationBuilder.DropTable(
+                name: "Files");
+
+            migrationBuilder.DropTable(
                 name: "OtherSupplies");
+
+            migrationBuilder.DropTable(
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Resources");

@@ -12,5 +12,5 @@ public interface IProjectRepository
     Project GetProjectById(Guid projectId);
     IQueryable<Project> GetProjectsForUser(FilterModel filters, Guid userId, int page, int pageSize);
     IQueryable<Project> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
-    void UpdateProject(Project project, List<Yarn> yarns);
+    Project UpdateProject(Project project, List<Yarn> yarns, List<CountersGroup> counters, List<MyFile> files, List<Photo> photos);
 }

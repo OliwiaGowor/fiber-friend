@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import { useAppDispatch } from "../../../utils/hooks";
 import { setError } from "../../../reducers/errorSlice";
 import { handleRequest } from "../../../utils/handleRequestHelper";
+import { Notes } from "../../../DTOs/Notes";
 
 interface PatternFormProps {
     pattern?: Pattern;
@@ -47,7 +48,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     const [startDate, setStartDate] = useState<any>(pattern?.startDate ?? null);
     const [endDate, setEndDate] = useState<any>(pattern?.endDate ?? null);
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-
+console.log(notes)
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
             setType(newType);
@@ -66,8 +67,8 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                 yarns: yarnsInfo,
                 tools: toolsInfo,
                 otherSupplies: otherSuppliesInfo ?? null,
-                //photos: selectedImages,
-                //patterns: selectedFiles,
+                photos: selectedImages,
+                files: selectedFiles,
                 notes: notes,
                 authorId: localStorage.getItem('userId') ?? "",
                 finished: endDate !== null ? true : false,
@@ -214,7 +215,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                     className={classes.dateInput}
                                     label="End date"
                                     format="DD-MM-YYYY"
-                                    minDate={startDate ?? undefined}
+                                    //minDate={startDate ?? undefined}
                                     onChange={(newValue: any) => { setEndDate(newValue) }}
                                     value={dayjs(endDate)}
                                 />
@@ -231,6 +232,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                 onlyImg={true}
                                 addHeader={'Add photo'}
                                 maxFiles={10}
+                                defaultValue={selectedImages}
                                 selectedFiles={(images: any) => { setSelectedImages(images) }}
                             />
                         </div>
@@ -242,18 +244,21 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                             showError={showYarnsError}
                             getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }}
                             type="yarn"
+                            defaultValue={yarnsInfo}
                         />
                         <p className={classes.additionalText}>Add tools to see more options</p>
                         <BasicTabsForm
                             showError={showYarnsError}
                             getInfo={(toolsInfo: any) => { setToolsInfo(toolsInfo) }}
                             type="tool"
+                            defaultValue={toolsInfo}
                         />
                         <p className={classes.additionalText}>Add other supplies to see more options</p>
                         <BasicTabsForm
                             showError={showYarnsError}
                             getInfo={(otherSuppliesInfo: any) => { setOtherSuppliesInfo(otherSuppliesInfo) }}
                             type="other supply"
+                            defaultValue={otherSuppliesInfo}
                         />
                     </div>
                     <div className={classes.sectionContainer}>
@@ -264,11 +269,12 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                 onlyImg={false}
                                 addHeader={'Add patterns'}
                                 maxFiles={5}
+                                defaultValue={selectedFiles}
                                 selectedFiles={(patterns: any) => { setSelectedFiles(patterns) }}
                             />
                         </div>
                         <div className={classes.notesField}>
-                            <TextEditor getValue={(notes: any) => { setNotes(notes) }} />
+                            <TextEditor defaultValue={notes} getValue={(notes: any) => { setNotes(notes) }} />
                         </div>
                     </div>
                 </div>

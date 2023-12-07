@@ -23,6 +23,7 @@ import { handleRequest } from "../../../utils/handleRequestHelper";
 import { setError } from "../../../reducers/errorSlice";
 import { NeedleworkType } from "../../../DTOs/Enums";
 import { Project } from "../../../DTOs/Project";
+import { MyFile } from "../../../DTOs/MyFile";
 
 interface ProjectFormProps {
     project?: any;
@@ -45,8 +46,8 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
     const [startDate, setStartDate] = React.useState<any>(project?.startDate ?? null);
     const [endDate, setEndDate] = React.useState<any>(project?.endDate ?? null);
     const [requiredError, setRequiredError] = React.useState<any>(false);
-    const [photos, setPhotos] = React.useState<File[]>(project?.photos ?? []);
-    const [files, setFiles] = React.useState<File[]>(project?.patterns ?? []);
+    const [photos, setPhotos] = React.useState<MyFile[]>(project?.photos ?? []);
+    const [files, setFiles] = React.useState<MyFile[]>(project?.patterns ?? []);
     const [notes, setNotes] = React.useState<any>(project?.notes ?? null);
     const [patterns, setPatterns] = React.useState<any>([]);
     const [selectedPattern, setSelectedPattern] = React.useState<any>(project?.connectedPattern ?? undefined);
@@ -118,6 +119,22 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const formPhotos = photos.map((photo: any) => {
+            return {
+                name: photo.name,
+                content: photo.content,
+                type: photo.type,
+            }
+        });
+
+        const formFiles = files.map((file: any) => {
+            return {
+                name: file.name,
+                content: file.content,
+                type: file.type,
+            }
+        });
+
         if (proceedSubmit) {
             const projectData: Project = {
                 name: name,
@@ -126,8 +143,8 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                 yarns: yarns,
                 startDate: startDate,
                 endDate: endDate,
-                //photos: photos,
-                //files: files,
+                photos: formPhotos,
+                files: formFiles,
                 notes: notes,
                 connectedPattern: selectedPattern ?? null,
                 finished: endDate !== null ? true : false,
@@ -290,7 +307,8 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                         <p className={classes.additionalText}>Add yarns to see more options</p>
                         <BasicTabsForm
                             showError={showYarnsError}
-                            getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }} defaultValue={yarns}
+                            getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }} 
+                            defaultValue={yarns}
                             type="yarn"
                         />
                     </div>

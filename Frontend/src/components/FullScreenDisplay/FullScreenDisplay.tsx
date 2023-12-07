@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import classes from './FullScreenDisplay.module.scss';
-import { File } from '../../DTOs/File';
+import { MyFile } from '../../DTOs/MyFile';
 
 interface FullScreenDisplayProps {
-  file: File;
+  file: MyFile;
 }
 
 const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
@@ -15,7 +15,7 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
   useEffect(() => {
     const updateSize = () => {
       const img = new Image();
-      img.src = file.src;
+      img.src = `data:${file.type};base64,${file.content}`;
 
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
@@ -48,7 +48,7 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
       return (
         <object
           className={classes.file}
-          data={file.src}
+          data={`data:${file.type};base64,${file.content}`}
           width={displaySize.width}
           height={displaySize.height}
           style={{ width: displaySize.width, height: displaySize.height, objectFit: 'contain' }}
@@ -60,7 +60,7 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
       return (
         <img
           className={classes.file}
-          src={file.src}
+          src={`data:${file.type};base64,${file.content}`}
           alt={file.name}
           loading="lazy"
           width={displaySize.width}

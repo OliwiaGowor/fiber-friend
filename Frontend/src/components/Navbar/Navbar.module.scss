@@ -147,6 +147,21 @@
       grid-template-columns: 1fr min-content min-content min-content;
       margin: 0px var(--margin-right);
 
+      &.loggedOut {
+        grid-template-columns: 1fr min-content;
+  
+        .navElement {
+          &.account {
+            justify-self: flex-end;
+          }
+        }
+  
+        .logo {
+          justify-self: center;
+          margin-right: 0;
+        }
+      }
+
       .logo {
         justify-self: start;
         width: max-content;

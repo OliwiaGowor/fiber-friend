@@ -12,6 +12,6 @@ public interface IProjectService
     object GetProjectById(Guid projectId);
     List<ProjectDto> GetProjectsForUser(FilterModel? filters, Guid userId, int page, int pageSize);
     List<ProjectDto> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);
-    object UpdateProject(NewProjectDto project, List<NewYarnDto> yarns);
+    object UpdateProject(NewProjectDto project);
     void DeleteProject(Guid id);
 }

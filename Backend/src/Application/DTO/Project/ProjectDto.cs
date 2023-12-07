@@ -1,4 +1,5 @@
-﻿using Application.DTO.File;
+﻿using Application.DTO.CountersGroup;
+using Application.DTO.File;
 using Application.DTO.Pattern;
 using Application.DTO.Photo;
 using Application.DTO.User;
@@ -25,6 +26,7 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
     public PatternDto? ConnectedPattern { get; set; }
     public List<YarnDto>? Yarns { get; set; }
     public UserDto User { get; set; }
+    public List<CountersGroupDto>? Counters { get; set; }
 
     public static void Mapping(Profile profile)
     {
@@ -42,6 +44,7 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.ConnectedPattern, opt => opt.MapFrom(s => s.ConnectedPattern))
             .ForMember(d => d.ConnectedCommPattern, opt => opt.MapFrom(s => s.ConnectedCommPattern))
             .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))
-            .ForMember(d => d.User, opt => opt.MapFrom(s => s.User));
+            .ForMember(d => d.User, opt => opt.MapFrom(s => s.User))
+            .ForMember(d => d.Counters, opt => opt.MapFrom(s => s.Counters));
     }
 }

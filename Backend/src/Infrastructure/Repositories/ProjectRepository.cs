@@ -2,6 +2,8 @@ using Common.Enums;
 using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
+using Infrastructure.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Infrastructure.Repositories;
@@ -49,7 +51,10 @@ public class ProjectRepository : IProjectRepository
 
     public Project GetProjectById(Guid projectId)
     {
-        var project = _dbContext.Projects.FirstOrDefault(i => i.Id == projectId);
+        var project = _dbContext.Projects.Include(p => p.Yarns)
+            .Include(p => p.Photos)
+            .Include(p => p.Files)
+            .FirstOrDefault(i => i.Id == projectId);
         return project;
     }
 
@@ -75,7 +80,10 @@ public class ProjectRepository : IProjectRepository
             }
         }
 
-        var projects = query.Where(p => p.UserId == userId)
+        var projects = query.Include(p => p.Yarns)
+            .Include(p => p.Photos)
+            .Include(p => p.Files)
+            .Where(p => p.UserId == userId)
             .Skip((page - 1) * pageSize)
             .Take(pageSize);
 
@@ -88,24 +96,37 @@ public class ProjectRepository : IProjectRepository
         return projects;
     }
 
-    public void UpdateProject(Project project, List<Yarn> yarns)
+    public Project UpdateProject(
+         Project project,
+         List<Yarn> yarns,
+         List<CountersGroup> counters,
+         List<MyFile> files,
+         List<Photo> photos
+         )
     {
-        _dbContext.Attach(project);
-        _dbContext.Entry(project).Property("ProjectType").IsModified = true;
-        _dbContext.Entry(project).Property("StartDate").IsModified = true;
-        _dbContext.Entry(project).Property("EndDate").IsModified = true;
-        _dbContext.Entry(project).Property("Finished").IsModified = true;
-        _dbContext.Entry(project).Property("Category").IsModified = true;
-        _dbContext.Entry(project).Property("Notes").IsModified = true;
+        var dbProject = _dbContext.Projects
+         .Include(p => p.Yarns)
+         .Include(p => p.Counters)
+         .Include(p => p.Files)
+         .Include(p => p.Photos)
+         .FirstOrDefault(y => y.Id == project.Id);
 
-        var existingYarns = _dbContext.Yarns.Where(y => y.ProjectId == project.Id);
-        _dbContext.Yarns.RemoveRange(existingYarns);
-
-        foreach (var yarn in yarns)
+        if (dbProject != null)
         {
-            _dbContext.Yarns.Add(yarn);
-        }
+            _dbContext.Entry(dbProject).CurrentValues.SetValues(project);
 
-        _dbContext.SaveChanges();
+            RepositoryHelper.UpdateCollection(_dbContext.Yarns, dbProject.Yarns, yarns);
+            RepositoryHelper.UpdateCollection(_dbContext.CountersGroups, dbProject.Counters, counters);
+            RepositoryHelper.UpdateCollection(_dbContext.Files, dbProject.Files, files);
+            RepositoryHelper.UpdateCollection(_dbContext.Photos, dbProject.Photos, photos);
+
+            _dbContext.SaveChanges();
+
+            return dbProject;
+        }
+        else
+        {
+            throw new Exception("Project not found");
+        }
     }
 }

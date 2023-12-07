@@ -38,7 +38,7 @@ export default function MiniaturesList({ data, link }: any) {
       return (
         <img
           className={classes.photo}
-          src={mainPhoto.src}
+          src={`data:${mainPhoto?.type};base64,${mainPhoto?.content}`}
           alt={element.name}
           height={`${height}px`}
           width={`${width + 1}px`}

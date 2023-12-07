@@ -150,13 +150,13 @@ public class ApplicationDbContext : DbContext
 
         builder.Entity<CountersGroup>()
                 .HasOne(cg => cg.Pattern)
-                .WithMany()
+                .WithMany(p => p.Counters)
                 .HasForeignKey(cg => cg.PatternId)
                 .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<CountersGroup>()
                 .HasOne(cg => cg.Project)
-                .WithMany()
+                .WithMany(p => p.Counters)
                 .HasForeignKey(cg => cg.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -191,10 +191,10 @@ public class ApplicationDbContext : DbContext
                 .ValueGeneratedOnAdd();
 
         builder.Entity<Tool>()
-                .HasOne(y => y.Pattern)
-                .WithMany(p => p.Tools)
-                .HasForeignKey(y => y.PatternId)
-                .OnDelete(DeleteBehavior.Cascade);
+               .HasOne(y => y.Pattern)
+               .WithMany(pb => pb.Tools)
+               .HasForeignKey(y => y.PatternId)
+               .OnDelete(DeleteBehavior.Cascade);
 
 
         // OTHER SUPPLY

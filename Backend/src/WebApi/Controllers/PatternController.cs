@@ -83,13 +83,13 @@ public class PatternController : ControllerBase
     }
 
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult Update([FromBody] NewPatternDto newPattern)
     {
         if (!this.ModelState.IsValid) return BadRequest();
 
-        _patternService.UpdatePattern(newPattern);
-        return NoContent();
+        var pattern = _patternService.UpdatePattern(newPattern);
+        return Ok(pattern);
     }
 }

@@ -1,6 +1,6 @@
 import { NeedleworkType } from "./Enums"
 import { Notes } from "./Notes";
-import { File } from "./File";
+import { MyFile } from "./MyFile";
 import { Yarn } from "./Yarn"
 import { User } from "./User";
 
@@ -12,8 +12,8 @@ interface PatternBase {
     author?: User;
     category: string;
     notes: Notes[];
-    photos?: File[];
-    files?: File[];
+    photos?: MyFile[];
+    files?: MyFile[];
     yarns: Yarn[];
     tools: Tool[];
     otherSupplies?: OtherSupply[];

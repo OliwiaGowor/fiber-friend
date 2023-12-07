@@ -13,7 +13,7 @@ import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import CounterGroup from "../../components/CounterGroup/CounterGroup";
 import { tokenLoader } from "../../utils/auth";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink, View } from "@react-pdf/renderer";
 import { PatternPdf } from "../../components/PatternPdf/PatternPdf";
 import { Pattern } from "../../DTOs/Pattern";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -57,27 +57,21 @@ export default function PatternDetails() {
     };
 
     const handleShare = async () => {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/Share/${pattern.id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authoriaztion: "Bearer " + token,
-            },
-        });
         //TODO: add popup with informatoon about sharing
-        if (!response.ok) {
-            // return { isError: true, message: 'Could not fetch project.' };
-            // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-            //   status: 500,
-            // });
-            throw json(
-                { message: 'Could not fetch project.' },
-                {
-                    status: 500,
-                }
+        const shareData = {...pattern, isShared: true,};
+        try {
+            const data = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'PUT',
+                'Could not share pattern. Please try again later.',
+                token,
+                shareData,
             );
-        } else {
-            return navigate('/fiber-friend/account/projects');
+
+            window.location.reload();
+        } catch (error) {
+            dispatch(setError(error));
+            return;
         }
     };
 

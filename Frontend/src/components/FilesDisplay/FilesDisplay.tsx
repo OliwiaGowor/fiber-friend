@@ -17,7 +17,7 @@ export const FilesDisplay = ({files}: FilesDisplayProps) => {
         } else if (file.name.slice(-3) == 'pdf') {
             return (
                 <object
-                    data={file.url}
+                    data={`data:${file.type};base64,${file.content}`}
                     width="200px"
                     height="250px"
                     className={classes.photo}
@@ -29,8 +29,8 @@ export const FilesDisplay = ({files}: FilesDisplayProps) => {
             return (
                 <img
                     className={classes.photo}
-                    src={`${file.url}`}
-                    srcSet={`${file.url}`}
+                    src={`data:${file.type};base64,${file.content}`}
+                    srcSet={`data:${file.type};base64,${file.content}`}
                     alt={`File: ${file.name}`}
                     loading="lazy"
                     width="200px"

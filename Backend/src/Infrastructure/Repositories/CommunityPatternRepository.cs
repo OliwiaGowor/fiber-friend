@@ -33,7 +33,11 @@ namespace Infrastructure.Repositories
                 query = query.Where(p => p.Category == filters.category);
             }
 
-            var communityPatterns = query.Where(p => p.AuthorId == userId)
+            var communityPatterns = query.Include(p => p.Yarns)
+                .Include(p => p.Tools)
+                .Include(p => p.OtherSupplies)
+                .Include(p => p.Photos)
+                .Where(p => p.AuthorId == userId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
 
@@ -42,9 +46,9 @@ namespace Infrastructure.Repositories
         public IQueryable<CommunityPattern> GetAllCommunityPatternsForUser(Guid userId)
         {
             var userPatterns = _dbContext.UserSavedCommunityPatterns
-       .Where(ucp => ucp.UserId == userId)
-       .Include(ucp => ucp.CommunityPattern)
-       .Select(ucp => ucp.CommunityPattern);
+                .Where(ucp => ucp.UserId == userId)
+                .Include(ucp => ucp.CommunityPattern)
+                .Select(ucp => ucp.CommunityPattern);
 
             return userPatterns.AsQueryable();
         }

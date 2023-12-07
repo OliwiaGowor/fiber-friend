@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231204211101_UserSavedCommunityPattern")]
-    partial class UserSavedCommunityPattern
+    [Migration("20231206232904_database-cleanup")]
+    partial class databasecleanup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,13 +64,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("PatternId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PatternId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ProjectId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -82,15 +76,44 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PatternId");
 
-                    b.HasIndex("PatternId1");
-
                     b.HasIndex("ProjectId");
-
-                    b.HasIndex("ProjectId1");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("CountersGroups");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MyFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PatternId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatternId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Domain.Entities.OtherSupply", b =>
@@ -162,6 +185,44 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("PatternBase");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CommunityPatternId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PatternId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommunityPatternId");
+
+                    b.HasIndex("PatternId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
@@ -268,9 +329,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CommunityPatternId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -285,8 +343,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CommunityPatternId");
 
                     b.HasIndex("PatternId");
 
@@ -431,22 +487,14 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CommunityPatternId");
 
                     b.HasOne("Domain.Entities.Pattern", "Pattern")
-                        .WithMany()
+                        .WithMany("Counters")
                         .HasForeignKey("PatternId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Domain.Entities.Pattern", null)
-                        .WithMany("Counters")
-                        .HasForeignKey("PatternId1");
-
                     b.HasOne("Domain.Entities.Project", "Project")
-                        .WithMany()
+                        .WithMany("Counters")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Entities.Project", null)
-                        .WithMany("Counters")
-                        .HasForeignKey("ProjectId1");
 
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("CountersGroups")
@@ -459,6 +507,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MyFile", b =>
+                {
+                    b.HasOne("Domain.Entities.Pattern", "Pattern")
+                        .WithMany("Files")
+                        .HasForeignKey("PatternId");
+
+                    b.HasOne("Domain.Entities.Project", "Project")
+                        .WithMany("Files")
+                        .HasForeignKey("ProjectId");
+
+                    b.Navigation("Pattern");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Domain.Entities.OtherSupply", b =>
@@ -474,6 +537,25 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Pattern");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Photo", b =>
+                {
+                    b.HasOne("Domain.Entities.CommunityPattern", null)
+                        .WithMany("Photos")
+                        .HasForeignKey("CommunityPatternId");
+
+                    b.HasOne("Domain.Entities.Pattern", "Pattern")
+                        .WithMany("Photos")
+                        .HasForeignKey("PatternId");
+
+                    b.HasOne("Domain.Entities.Project", "Project")
+                        .WithMany("Photos")
+                        .HasForeignKey("ProjectId");
+
+                    b.Navigation("Pattern");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
@@ -513,11 +595,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Tool", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", null)
-                        .WithMany("Tools")
-                        .HasForeignKey("CommunityPatternId");
-
-                    b.HasOne("Domain.Entities.Pattern", "Pattern")
+                    b.HasOne("Domain.Entities.PatternBase", "Pattern")
                         .WithMany("Tools")
                         .HasForeignKey("PatternId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -593,9 +671,18 @@ namespace Infrastructure.Migrations
                     b.Navigation("Counters");
                 });
 
+            modelBuilder.Entity("Domain.Entities.PatternBase", b =>
+                {
+                    b.Navigation("Tools");
+                });
+
             modelBuilder.Entity("Domain.Entities.Project", b =>
                 {
                     b.Navigation("Counters");
+
+                    b.Navigation("Files");
+
+                    b.Navigation("Photos");
 
                     b.Navigation("Yarns");
                 });
@@ -619,9 +706,9 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("OtherSupplies");
 
-                    b.Navigation("SavedByUsers");
+                    b.Navigation("Photos");
 
-                    b.Navigation("Tools");
+                    b.Navigation("SavedByUsers");
 
                     b.Navigation("Yarns");
                 });
@@ -630,9 +717,11 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("Counters");
 
+                    b.Navigation("Files");
+
                     b.Navigation("OtherSupplies");
 
-                    b.Navigation("Tools");
+                    b.Navigation("Photos");
 
                     b.Navigation("Yarns");
                 });

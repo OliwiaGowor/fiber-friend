@@ -7,5 +7,5 @@ public class Tool
     public int Quantity { get; set; }
     public string? Size { get; set; }
     public Guid PatternId { get; set; }
-    public Pattern Pattern { get; set; }
+    public PatternBase Pattern { get; set; }
 }

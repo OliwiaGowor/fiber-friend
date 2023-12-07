@@ -76,12 +76,15 @@ internal class ProjectService : IProjectService
         return projects;
     }
 
-    public object UpdateProject(NewProjectDto newProject, List<NewYarnDto> yarns)
+    public object UpdateProject(NewProjectDto newProject)
     {
-        var project = _mapper.Map<Project>(newProject);
-        var yarnsEntity = _mapper.Map<List<Yarn>>(yarns);
+        var projectEntitiy = _mapper.Map<Project>(newProject);
+        var yarnsEntity = _mapper.Map<List<Yarn>>(newProject.Yarns);
+        var countersEntity = _mapper.Map<List<CountersGroup>>(newProject.Counters);
+        var filesEntitiy = _mapper.Map<List<MyFile>>(newProject.Files);
+        var photosEntitiy = _mapper.Map<List<Photo>>(newProject.Photos);
 
-        _projectRepo.UpdateProject(project, yarnsEntity);
+        var project = _projectRepo.UpdateProject(projectEntitiy, yarnsEntity, countersEntity, filesEntitiy, photosEntitiy);
 
         return project;
     }

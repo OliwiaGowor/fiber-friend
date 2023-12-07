@@ -1,8 +1,9 @@
 import { NeedleworkType } from "./Enums"
 import { Notes } from "./Notes";
-import { File } from "./File";
+import { MyFile } from "./MyFile";
 import { Yarn } from "./Yarn"
 import { Pattern } from "./Pattern";
+import { User } from "./User";
 
 export interface Project {
     id?: string;
@@ -13,9 +14,10 @@ export interface Project {
     finished?: boolean;
     category: string;
     notes: Notes[];
-    photos?: File[];
-    files?: File[];
+    photos?: MyFile[];
+    files?: MyFile[];
     userId: string;
+    user?: User;
     yarns: Yarn[];
     connectedPattern?: Pattern;
 }

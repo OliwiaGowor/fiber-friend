@@ -5,7 +5,8 @@ import { OtherSupply, Pattern, Tool } from '../../DTOs/Pattern';
 
 export const PatternPdf = () => {
     const fetchedData = JSON.parse(sessionStorage.getItem("patternData") ?? "");
-    const { name, type, category, author, notes, photos, yarns, tools } = fetchedData; // destructure data
+    const { name, type, category, author, notes, photos, yarns, tools, otherSupplies } = fetchedData; // destructure data
+    const notesArr = (new Function("return " + notes + ";")());
 
     const renderNode = (node: any, index: number, listType: string = '') => {
         if (listType && node.text) {
@@ -111,7 +112,7 @@ export const PatternPdf = () => {
     }
 
     const renderNotes = () => {
-        const renderedNotes = notes.map((node: any) => handleBlockType(node));
+        const renderedNotes = notesArr.map((node: any) => handleBlockType(node));
 
         return <Text>{renderedNotes}</Text>
     };
@@ -139,7 +140,7 @@ export const PatternPdf = () => {
         }
 
         if (pattern.tools) {
-            supplies.push(yarns.map((tool: Tool) => (
+            supplies.push(tools.map((tool: Tool) => (
                 <View>
                     <Text id="sectionHeader" style={styles.smallheader}>Yarns</Text>
                     <Text style={styles.bold}>{`\u2022 ${tool.name}`}</Text>
@@ -154,7 +155,7 @@ export const PatternPdf = () => {
         }
 
         if (pattern.otherSupplies) {
-            supplies.push(yarns.map((otherSupply: OtherSupply) => (
+            supplies.push(otherSupplies.map((otherSupply: OtherSupply) => (
                 <View>
                     <Text id="sectionHeader" style={styles.smallheader}>Yarns</Text>
                     <Text style={styles.bold}>{`\u2022 ${otherSupply.name}`}</Text>
@@ -171,8 +172,8 @@ export const PatternPdf = () => {
         return supplies;
     };
 
-    const photoSrc = photos[0]?.src ?? "";
-    const Photo = () => <Image src={photoSrc} style={styles.photo} />;
+    //FIXME: fix url
+    const Photo = () => <Image src={`data:${photos[0]?.type};base64,${photos[0]?.content}`} style={styles.photo} />;
 
     return (
         <Document>
@@ -183,7 +184,7 @@ export const PatternPdf = () => {
                         <View id="leftElements">
                             <View id="sectionContainer" style={styles.sectionContainer}>
                                 <View id="photosContainer">
-                                    <Photo />
+                                    {/*<Photo />*/}
                                 </View>
                             </View>
                         </View>

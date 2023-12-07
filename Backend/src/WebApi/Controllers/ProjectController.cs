@@ -105,23 +105,13 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult Update([FromBody] NewProjectDto newProject)
     {
         if (!this.ModelState.IsValid) return BadRequest();
 
-        var onlyProject = new NewProjectDto
-        {
-            Type = newProject.Type,
-            StartDate = newProject.StartDate,
-            EndDate = newProject.EndDate,
-            Finished = newProject.Finished,
-            Category = newProject.Category,
-            Notes = newProject.Notes
-        };
-
-        _projectService.UpdateProject(onlyProject, newProject.Yarns);
-        return NoContent();
+        var project = _projectService.UpdateProject(newProject);
+        return Ok(project);
     }
 }
