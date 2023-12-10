@@ -106,6 +106,7 @@ export default function PatternDetails() {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">
+                        {t('shareDialogTitle')}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
