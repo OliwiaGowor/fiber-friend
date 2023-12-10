@@ -3,8 +3,10 @@ import Button from '@mui/material/Button';
 import classes from './PageNotFound.module.scss';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import { useTranslation } from 'react-i18next';
 
 const PageNotFound = () => {
+    const { t } = useTranslation("PageNotFound");
     const navigate = useNavigate();
 
     return (
@@ -14,10 +16,9 @@ const PageNotFound = () => {
                 <div className={classes.background}>
                     <div className={classes.textContainer}>
                         <h1 className={classes.firstHeader}>404</h1>
-                        <h1 className={classes.secondHeader}>Ops! Page not found</h1>
+                        <h1 className={classes.secondHeader}>{t('header')}</h1>
                         <p className={classes.text}>
-                            Sorry the page you're looking for doesn't exist.
-                            If you think something is broken, report a problem.
+                            {t('message')}
                         </p>
                     </div>
                     <div className={classes.buttons}>
@@ -26,14 +27,14 @@ const PageNotFound = () => {
                             className={classes.button}
                             onClick={() => navigate(-1)}
                         >
-                            Return back
+                            {t('returnBack')}
                         </Button>
                         <Button
                             variant="contained"
                             className={classes.button}
                             onClick={() => navigate('/fiber-friend/report-problem')}
                         >
-                            Report problem
+                            {t('reportProblem')}
                         </Button>
                     </div>
                 </div>

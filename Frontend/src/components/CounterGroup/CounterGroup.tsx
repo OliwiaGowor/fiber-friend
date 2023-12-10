@@ -15,6 +15,7 @@ import { getAuthToken, tokenLoader } from '../../utils/auth';
 import { useAppDispatch } from '../../utils/hooks';
 import { setError } from '../../reducers/errorSlice';
 import { handleRequest } from '../../utils/handleRequestHelper';
+import { useTranslation } from 'react-i18next';
 
 //TODO: smaller tiles on mobile and horizontal scroll
 //FIXME: style buttons
@@ -25,6 +26,7 @@ interface CounterGroupProps {
 }
 
 const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
+    const { t } = useTranslation("CounterGroup");
     const dispatch = useAppDispatch();
     const [tmpCounter, setTmpCounter] = React.useState();
     const [counters, setCounters] = React.useState<any>(defaultValue ?? []);
@@ -79,7 +81,7 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
                 aria-labelledby="add-counter-dialog-title"
                 PaperProps={{ className: `${classes.counterDialogPaper}` }}
             >
-                <DialogTitle>Add counter</DialogTitle>
+                <DialogTitle>{t('addCounter')}</DialogTitle>
                 <DialogContent>
                     <BigCounter getCounter={setTmpCounter} />
                 </DialogContent>
@@ -88,7 +90,7 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
                         className={classes.cancelButton}
                         onClick={handleCloseDialog}
                         aria-label="Cancel">
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button
                         className={classes.enterButton}
@@ -98,7 +100,7 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
                         }}
                         aria-label="Enter"
                     >
-                        Enter
+                        {t('enter')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -132,7 +134,7 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
                             setEditingCounters(true);
                         }}
                     >
-                        <h2 className={classes.name}>Add counter</h2>
+                        <h2 className={classes.name}>{t('addCounter')}</h2>
                         <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 80 }} />
                     </Button>
                 </SwiperSlide>
@@ -154,7 +156,7 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
                     className={classes.saveChangesButton}
                     variant='contained'
                     onClick={() => { handleSaveChanges() }}>
-                    Save changes
+                    {t('saveChanges')}
                 </Button>
             }
         </div>

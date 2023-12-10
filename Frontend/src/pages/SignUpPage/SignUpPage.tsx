@@ -7,8 +7,10 @@ import PasswordValidation from "../../components/PasswordVaildation/PasswordVail
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 export default function SignUpPage() {
+    const { t } = useTranslation('SignUpPage');
     const dispatch = useAppDispatch();
     const navigation = useNavigation();
     const navigate = useNavigate();
@@ -51,7 +53,7 @@ export default function SignUpPage() {
             const resData = await handleRequest(
                 `${process.env.REACT_APP_API_URL}auth/Register`,
                 "POST",
-                "Something went wrong, please try again later.",
+                t('somethingWentWrong'),
                 null,
                 authData
             );
@@ -73,15 +75,15 @@ export default function SignUpPage() {
     return (
         <div className={classes.container}>
             <div className={classes.sidePanel}>
-                <h1 className={classes.panelHeader}>Welcome back!</h1>
-                <p className={classes.panelText}>Already have an account?</p>
+                <h1 className={classes.panelHeader}>{t('welcome')}</h1>
+                <p className={classes.panelText}>{t('alreadyHaveAccount')}</p>
                 <Button className={classes.btnSignin} onClick={() => navigate('/fiber-friend/login')}>
-                    Sign In
+                    {t('signIn')}
                 </Button>
             </div>
             <div className={classes.signUpForm}>
                 <Form className={classes.form} method="post" onSubmit={handleSubmit}>
-                    <h1 className={classes.header}>Sign Up</h1>
+                    <h1 className={classes.header}>{t('signUp')}</h1>
                     <div className={classes.signUpFormContainer}>
                         <div className={classes.formSection}>
                             <TextField
@@ -93,7 +95,7 @@ export default function SignUpPage() {
                                 className={classes.formInput}
                                 name='email'
                                 error={showEmailError}
-                                helperText={showEmailError ? 'Enter e-mail!' : ''}
+                                helperText={showEmailError ? t('enterEmail') : ''}
                                 onChange={(e) => {
                                     setShowEmailError(false);
                                     setEmail(e.target.value)
@@ -106,12 +108,12 @@ export default function SignUpPage() {
                                 inputProps={{
                                     'aria-label': 'username',
                                 }}
-                                label="Username"
+                                label={t('username')}
                                 className={classes.formInput}
                                 name='username'
                                 autoComplete="none"
                                 error={showUsernameError}
-                                helperText={showUsernameError ? 'Enter username!' : ''}
+                                helperText={showUsernameError ? t('enterUsername') : ''}
                                 onChange={(e) => {
                                     setShowUsernameError(false);
                                     setUsername(e.target.value)
@@ -124,7 +126,7 @@ export default function SignUpPage() {
                     </div>
                     <div className={classes.btnContainer}>
                         <Button className={classes.btnSubmit} disabled={isSubmitting} type="submit">
-                            {isSubmitting ? "Registering..." : "Register"}
+                            {isSubmitting ? t('registering') : t('register')}
                         </Button>
                     </div>
                 </Form>

@@ -10,8 +10,25 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useAppDispatch } from "../../utils/hooks";
 import { setError } from "../../reducers/errorSlice";
 import { handleRequest } from "../../utils/handleRequestHelper";
+import { useTranslation } from "react-i18next";
+
+export const projectsTranslations = {
+    en: {
+        backButtonLabel: 'Back',
+        header: 'PROJECTS',
+        couldNotFetchProjects: 'Could not fetch projects. Please try again later.',
+        newProject: 'New project',
+      },
+      pl: {
+        backButtonLabel: 'Powrót',
+        header: 'PROJEKTY',
+        couldNotFetchProjects: 'Nie udało się pobrać projektów. Spróbuj ponownie później.',
+        newProject: 'Nowy projekt',
+      }
+}
 
 function Projects() {
+    const { t } = useTranslation("Projects");
     const dispatch = useAppDispatch();
     const userId = localStorage.getItem("userId");
     const navigate = useNavigate();
@@ -23,7 +40,7 @@ function Projects() {
                 process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
                 `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
-                "Could not fetch projects. Please try again later.",
+                t('couldNotFetchProjects'),
                 tokenLoader(),
             );
             return data;
@@ -41,10 +58,10 @@ function Projects() {
                 </div>
             }
             <div className={classes.container}>
-                <h1 className={classes.header}>PROJECTS</h1>
+                <h1 className={classes.header}>{t('header')}</h1>
                 <Tiles
                     link='new-project'
-                    addText='New project'
+                    addText={t('newProject')}
                     fetchData={fetchProjects}
                     addTile={true}
                     filters={projectsFilters}

@@ -20,8 +20,10 @@ import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { tokenLoader } from "../../utils/auth";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 export default function ProjectDetails() {
+    const { t } = useTranslation("ProjectDetails");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { project } = useRouteLoaderData('project-details') as { project: any };
@@ -58,7 +60,7 @@ export default function ProjectDetails() {
             await handleRequest(
                 `${process.env.REACT_APP_API_URL}Project/${project.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
                 'DELETE',
-                'Could not delete project. Please try again later.',
+                t('couldNotDeleteProject'),
                 tokenLoader()
             );
             return navigate('/fiber-friend/account/projects');
@@ -73,7 +75,7 @@ export default function ProjectDetails() {
             const data = await handleRequest(
                 `${process.env.REACT_APP_API_URL}Pattern/${project.connectedPattern}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
                 'GET',
-                'Could not fetch pattern. Please try again later.',
+                t('couldNotFetchPattern'),
                 tokenLoader()
             );
             setSelectedPattern(data);
@@ -128,7 +130,7 @@ export default function ProjectDetails() {
                                         disableRestoreFocus
                                         disableScrollLock={true}
                                     >
-                                        <Typography sx={{ p: 2 }}>Project finished</Typography>
+                                        <Typography sx={{ p: 2 }}>{t('projectFinished')}</Typography>
                                     </Popover>
                                 </div>
                                 <Button
@@ -161,7 +163,7 @@ export default function ProjectDetails() {
                                         }}
                                         disableRipple
                                     >
-                                        Edit
+                                        {t('edit')}
                                     </MenuItem>
                                     <MenuItem
                                         onClick={() => {
@@ -170,41 +172,41 @@ export default function ProjectDetails() {
                                         }}
                                         disableRipple
                                     >
-                                        Delete project
+                                        {t('deleteProject')}
                                     </MenuItem>
                                 </Menu>
                             </div>
                             <div className={classes.dividedContainer}>
                                 <div className={classes.leftElements}>
                                     <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
-                                        <h2 className={classes.sectionHeader}>Details</h2>
+                                        <h2 className={classes.sectionHeader}>{t('detailsSectionHeader')}</h2>
                                         <div className={classes.projectInfoContainer}>
-                                            <div className={classes.attributeName}>Type: </div>
+                                            <div className={classes.attributeName}>{t('type')} </div>
                                             {project.type ?? <br></br>}
-                                            <div className={classes.attributeName}>Category: </div>
+                                            <div className={classes.attributeName}>{t('category')} </div>
                                             {project.category ?? <br></br>}
-                                            <div className={classes.attributeName}>Start date: </div>
+                                            <div className={classes.attributeName}>{t('startDate')} </div>
                                             {project.startDate?.slice(0, 10) ?? <br></br>}
-                                            <div className={classes.attributeName}>End date: </div>
+                                            <div className={classes.attributeName}>{t('endDate')} </div>
                                             {project.endDate?.slice(0, 10) ?? <br></br>}
                                         </div>
                                     </div>
                                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                                        <h2 className={classes.sectionHeader}>Yarns</h2>
+                                        <h2 className={classes.sectionHeader}>{t('yarns')}</h2>
                                         <TabsPanelDisplay supplies={project.yarns ?? []} type="yarn" />
                                     </div>
                                 </div>
                                 <div className={classes.rightElements}>
                                     <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
-                                        {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                        {!isMobile && <h2 className={classes.sectionHeader}>{t('photos')}</h2>}
                                         <PhotosDisplay data={project} />
                                     </div>
                                 </div>
                             </div>
                             <div className={classes.wholeScreenElements}>
                                 <div className={classes.sectionContainer}>
-                                    <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                                    <h3 className={classes.attributeName}>Patterns</h3>
+                                    <h2 className={classes.sectionHeader}>{t('patternsAndNotes')}</h2>
+                                    <h3 className={classes.attributeName}>{t('patterns')}</h3>
                                     {selectedPattern &&
                                         <div>
                                             <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
@@ -214,11 +216,11 @@ export default function ProjectDetails() {
                                             </Link>
                                         </div>}
                                     <FilesDisplay files={project.patterns} />
-                                    <h3 className={classes.attributeName}>Counters</h3>
+                                    <h3 className={classes.attributeName}>{t('counters')}</h3>
                                     <div className={classes.counters}>
                                         {<CounterGroup defaultValue={project.counters} parentId={project.id} />}
                                     </div>
-                                    <h3 className={classes.attributeName}>Notes</h3>
+                                    <h3 className={classes.attributeName}>{t('notes')}</h3>
                                     <div className={classes.notes}>
                                         <TextDisplay defaultValue={project.notes} />
                                     </div>

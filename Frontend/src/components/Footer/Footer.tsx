@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom';
 import logoPicture from '../../photos/yarn-ball.png';
 import { EmailIcon, FacebookIcon } from '../../svg/MediaIcons';
 import classes from './Footer.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+    const { t } = useTranslation("Footer");
     return (
         <footer className={classes.footer}>
             <div className={classes.main}>
@@ -23,18 +25,18 @@ const Footer = () => {
                 </div>
                 <div className={classes.links}>
                     <div className={classes.section}>
-                        <h2 className={classes.sectionHeader}>Useful links</h2>
+                        <h2 className={classes.sectionHeader}>{t('usefulLinks')}</h2>
                         <ul>
-                            <li>About</li>
+                            <li>{t('about')}</li>
                             <li>
                                 <Link to={"account"}>
-                                    Your account
+                                    {t('yourAccount')}
                                 </Link>
                             </li>
                         </ul>
                     </div>
                     <div className={classes.section}>
-                        <h2 className={classes.sectionHeader}>Contact</h2>
+                        <h2 className={classes.sectionHeader}>{t('contact')}</h2>
                         <ul>
                             {/*<li>
                             <span className={classes.elementIcon}>{EmailIcon()}</span>
@@ -42,12 +44,12 @@ const Footer = () => {
                         </li>*/}
                             <li>
                                 <Link to={"/contact"}>
-                                    Contact us
+                                    {t('contactUs')}
                                 </Link>
                             </li>
                             <li>
                                 <Link to={"/report-problem"}>
-                                    Report problem
+                                    {t('reportProblem')}
                                 </Link>
                             </li>
                         </ul>

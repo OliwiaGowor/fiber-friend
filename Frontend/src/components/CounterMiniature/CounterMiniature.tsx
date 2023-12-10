@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useTranslation } from 'react-i18next';
 
 interface CounterMiniatureProps {
     editable: boolean;
@@ -15,6 +16,7 @@ interface CounterMiniatureProps {
 
 export default function CounterMiniature(props: CounterMiniatureProps) {
     const { editable, counter, deleteCounter, backgroundColor, boxShadow = true, ...other } = props;
+    const { t } = useTranslation('CounterMiniature');
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -59,9 +61,9 @@ export default function CounterMiniature(props: CounterMiniatureProps) {
                         <button
                             className={classes.menuElemBtn}
                             onClick={deleteCounter}
-                            aria-label="Delete counter"
+                            aria-label={t('deleteCounter')}
                         >
-                            Delete counter
+                            {t('deleteCounter')}
                         </button>
                     </MenuItem>
                 </Menu>

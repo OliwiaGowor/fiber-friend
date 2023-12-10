@@ -20,6 +20,7 @@ import { useAppDispatch } from "../../../utils/hooks";
 import { setError } from "../../../reducers/errorSlice";
 import { handleRequest } from "../../../utils/handleRequestHelper";
 import { Notes } from "../../../DTOs/Notes";
+import { useTranslation } from "react-i18next";
 
 interface PatternFormProps {
     pattern?: Pattern;
@@ -27,6 +28,7 @@ interface PatternFormProps {
 }
 
 export default function PatternForm({ pattern, method }: PatternFormProps) {
+    const { t } = useTranslation("pattern");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [type, setType] = useState<NeedleworkType>(pattern?.type ?? NeedleworkType.crochet);
@@ -117,7 +119,7 @@ console.log(notes)
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>{`${method === "POST" ? "Create" : "Edit"} pattern`}</h1>
+            <h1 className={classes.header}>{t(method === "POST" ? "createPattern" : "editPattern")}</h1>
             <form
                 onSubmit={handleSubmit}
                 className={classes.form}

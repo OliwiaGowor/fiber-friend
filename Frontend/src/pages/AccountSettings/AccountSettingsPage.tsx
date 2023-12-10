@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { defer, json, useNavigate, useRouteLoaderData } from "react-router-dom";
+import { useNavigate, useRouteLoaderData } from "react-router-dom";
 import classes from './AccountSettingsPage.module.scss'
 import { tokenLoader } from "../../utils/auth";
-import { Button, TextField } from "@mui/material";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import KeyIcon from '@mui/icons-material/Key';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
@@ -10,8 +10,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 const AccountSettingsPage = () => {
+  const {t, i18n} = useTranslation("AccountSettingsPage");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { userData } = useRouteLoaderData('account') as { userData: { username: string; email: string } };
@@ -41,20 +43,20 @@ const AccountSettingsPage = () => {
 
   return (
     <div className={classes.container}>
-      <h1 className={classes.header}>Account settings</h1>
+      <h1 className={classes.header}>{t('header')}</h1>
       <div className={classes.sectionContainer}>
-        <h2 className={classes.sectionHeader}>General</h2>
+        <h2 className={classes.sectionHeader}>{t('generalSection')}</h2>
         <TextField
           className={classes.formInput}
           type="text"
-          label="Username"
+          label={t('usernameLabel')}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
           className={classes.formInput}
           type="text"
-          label="E-mail"
+          label={t('emailLabel')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -63,21 +65,28 @@ const AccountSettingsPage = () => {
           variant="contained"
           onClick={handleSave}
         >
-          Save
+           {t('saveButton')}
         </Button>
       </div>
       <div className={classes.sectionContainer}>
-        <h2 className={classes.sectionHeader}>Language</h2>
-
+        <h2 className={classes.sectionHeader}>{t('languageSection')}</h2>
+        <Select
+          className={classes.languageSelect}
+          value={i18n.language}
+          onChange={(e) => i18n.changeLanguage(e.target.value as string)}
+        >
+          <MenuItem value="en">English</MenuItem>
+          <MenuItem value="pl">Polski</MenuItem>
+        </Select>
       </div>
       <div className={classes.sectionContainer}>
-        <h2 className={classes.sectionHeader}>Access</h2>
+        <h2 className={classes.sectionHeader}>{t('accessSection')}</h2>
         <button
           className={classes.settingsButton}
           onClick={() => navigate("change-password")}
         >
           <KeyIcon className={classes.icon} />
-          Change your password
+          {t('changePasswordButton')}
           <ArrowForwardIosIcon className={classes.arrowIcon} />
         </button>
         <button
@@ -85,7 +94,7 @@ const AccountSettingsPage = () => {
           onClick={() => navigate("delete-account")}
         >
           <PersonRemoveIcon className={classes.icon} />
-          Delete account
+          {t('deleteAccountButton')}
           <ArrowForwardIosIcon className={classes.arrowIcon} />
         </button>
       </div>
@@ -96,7 +105,7 @@ const AccountSettingsPage = () => {
           onClick={() => navigate("")}
         >
           <InfoIcon className={classes.icon} />
-          About
+          {t('aboutButton')}
           <ArrowForwardIosIcon className={classes.arrowIcon} />
         </button>
       </div>
@@ -107,7 +116,7 @@ const AccountSettingsPage = () => {
           onClick={() => navigate("fiber-friend/contact-us")}
         >
           <KeyIcon className={classes.icon} />
-          Contact us
+          {t('contactUsButton')}
           <ArrowForwardIosIcon className={classes.arrowIcon} />
         </button>
         <button
@@ -115,7 +124,7 @@ const AccountSettingsPage = () => {
           onClick={() => navigate('/fiber-friend/report-problem')}
         >
           <PersonRemoveIcon className={classes.icon} />
-          Report problem
+          {t('reportProblemButton')}
           <ArrowForwardIosIcon className={classes.arrowIcon} />
         </button>
       </div>

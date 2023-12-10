@@ -7,6 +7,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { categories } from '../../data/Categories';
 import classes from './CategoriesMenu.module.scss'
+import { useTranslation } from 'react-i18next';
 
 interface CategoriesMenuProps {
     choseCategory: (category: string) => void;
@@ -15,6 +16,7 @@ interface CategoriesMenuProps {
 }
 
 export default function CategoriesMenu({choseCategory, showError, defaultValue}: CategoriesMenuProps) {
+    const {t} = useTranslation("CategoriesMenu");
     const [currentCategory, setCurrentCategory] = React.useState(categories); //represents the currently displayed category in the menu
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); //represents the anchor element where the menu will be positioned
     const [categHistory, setCategHistory] = React.useState<any>([]); //represents the category history - the stack of previous categories selected
@@ -62,7 +64,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
     const generateBtnWithChildren = (category: any) => {
         return (
             <button className={classes.btnCategory} onClick={() => handleSubcategory(category)}>
-                {category.category}
+                {t(category.category.toString().toLowerCase())}
                 <KeyboardArrowRightIcon sx={{ fontSize: '16px' }} />
             </button>
         );
@@ -72,7 +74,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
     const generateBtnCategoryChoice = (category: any) => {
         return (
             <button className={classes.btnCategory} onClick={() => handleChoseCategory(category)}>
-                {category.category}
+                {t(category.category.toString().toLowerCase())}
             </button>
         );
     };
@@ -121,7 +123,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
                 }}
                 color={showError ? 'error' : 'primary'}
             >
-                {chosenCategory ? chosenCategory : "Choose category"}
+                {chosenCategory ? chosenCategory : t('chooseCategory')}
             </Button>
             <Menu
                 id="categories-menu"

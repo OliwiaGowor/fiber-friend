@@ -13,8 +13,6 @@ import { Project } from "../../DTOs/Project";
 import { Pattern } from "../../DTOs/Pattern";
 import { useAppDispatch } from "../../utils/hooks";
 import { setError } from "../../reducers/errorSlice";
-import { use } from "i18next";
-
 const tiles = [
   {
     title: "Counters",

@@ -3,8 +3,10 @@ import Button from '@mui/material/Button';
 import landingPhoto from '../../photos/pexels-miriam-alonso-75852911.jpg'
 import { Wave } from '../../svg/Wave';
 import classes from './HomePage.module.scss';
+import { useTranslation } from 'react-i18next';
 
 function HomePage() {
+    const { t } = useTranslation("HomePage");
     const navigate = useNavigate();
 
     return (
@@ -17,15 +19,14 @@ function HomePage() {
                     alt="Knitting project"
                 />
                 <div className={classes.landingTextContainer}>
-                    <h1 className={classes.landingHeader}>Organize your knitting projects with ease </h1>
-                    <p className={classes.landingText}> Stay on top of your progress and track details.
-                        Perfect for beginners and pros alike. Try it now and take your knitting to the next level!</p>
+                    <h1 className={classes.landingHeader}>{t('landingHeader')}</h1>
+                    <p className={classes.landingText}> {t('landingText')}</p>
                     <Button
                         variant="contained"
                         className={classes.landingButton}
                         onClick={() => navigate('login')}
                     >
-                        TRY NOW!
+                        {t('landingButtonText')}
                     </Button>
                 </div>
             </div>

@@ -12,12 +12,14 @@ import PatternsStatistics from "../../components/PatternsStatistics/PatternsStat
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 const statisticsTypes = [
     "patterns", "projects"
 ]
 
 export default function StatisticsPage() {
+    const { t } = useTranslation("StatisticsPage");
     const today = new Date();
     const [type, setType] = useState(statisticsTypes[0]);
     const [timePeriod, setTimePeriod] = useState("monthly");
@@ -61,14 +63,14 @@ export default function StatisticsPage() {
     return (
         <div className={classes.container}>
             <h1 className={classes.header}>
-                STATISTICS
+                {t('statistics')}
             </h1>
             <div className={classes.splitContainer}>
                 <div className={classes.leftContainer}>
                     {handleRenderStatistics()}
                 </div>
                 <div className={classes.rightContainer}>
-                    <h2>Choose statistics type</h2>
+                    <h2>{t('chooseStatisticsType')}</h2>
                     <Select
                         id="type-select"
                         value={type}
@@ -82,7 +84,7 @@ export default function StatisticsPage() {
                             <MenuItem value={type}>{type}</MenuItem>
                         ))}
                     </Select>
-                    <h2>Choose time peroid</h2>
+                    <h2>{t('chooseTimePeriod')}</h2>
                     <Select
                         id="time-period-select"
                         value={timePeriod}
@@ -93,9 +95,9 @@ export default function StatisticsPage() {
                         }}
                         className={classes.timePeriodSelect}
                     >
-                        <MenuItem value={"monthly"}>monthly</MenuItem>
-                        <MenuItem value={"yearly"}>yearly</MenuItem>
-                        <MenuItem value={"all"}>all</MenuItem>
+                        <MenuItem value={"monthly"}>{t('monthly')}</MenuItem>
+                        <MenuItem value={"yearly"}>{t('yearly')}</MenuItem>
+                        <MenuItem value={"all"}>{t('all')}</MenuItem>
                     </Select>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {timePeriod === "monthly" &&

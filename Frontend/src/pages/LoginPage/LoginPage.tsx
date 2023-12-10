@@ -14,8 +14,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import classes from "./LoginPage.module.scss";
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 export default function LoginPage() {
+    const { t } = useTranslation('LoginPage');
     const navigation = useNavigation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -76,15 +78,15 @@ export default function LoginPage() {
     return (
         <div className={classes.container}>
             <div className={classes.sidePanel}>
-                <h1 className={classes.panelHeader}>Welcome back!</h1>
-                <p className={classes.panelText}>Don't have an account?</p>
+                <h1 className={classes.panelHeader}>{t('welcomeBack')}</h1>
+                <p className={classes.panelText}>{t('dontHaveAccount')}</p>
                 <Button className={classes.btnSignup} onClick={() => navigate('/fiber-friend/signUp')}>
-                    Sign up
+                    {t('signUp')}
                 </Button>
             </div>
             <div className={classes.loginForm}>
                 <Form className={classes.form} method="post" onSubmit={handleSubmit}>
-                    <h1>Log in</h1>
+                    <h1>{t('logIn')}</h1>
                     <div className={classes.loginFormContainer}>
                         <div className={classes.formSection}>
                             <TextField
@@ -110,7 +112,7 @@ export default function LoginPage() {
                                 inputProps={{
                                     'aria-label': 'password',
                                 }}
-                                label="Password"
+                                label={t('password')}
                                 className={classes.formInput}
                                 name='password'
                                 error={showPasswordError}
@@ -143,11 +145,11 @@ export default function LoginPage() {
                             disabled={isSubmitting}
                             type="submit"
                         >
-                            {isSubmitting ? "Logging in..." : "Log in"}
+                            {isSubmitting ? t('loggingIn') : t('logIn')}
                         </Button>
                         <Link to='/fiber-friend/recover-password'>
                             <div className={classes.forgotPassword}>
-                                Forgot password?
+                                {t('forgotPassword')}
                             </div>
                         </Link>
                     </div>

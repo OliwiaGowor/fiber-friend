@@ -11,7 +11,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ProjectDetails, { loader as projectDetailsLoader } from "./pages/Projects/ProjectDetails";
 import PatternDetails, { loader as patternDetailsLoader } from "./pages/Patterns/PatternDetails";
-import AccountRoot, {loader as userDataLoader} from "./pages/Account/AccountRoot";
+import AccountRoot, { loader as userDataLoader } from "./pages/Account/AccountRoot";
 import NewPatternPage from "./pages/Patterns/NewPatternPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
@@ -38,7 +38,8 @@ import EditPattern from "./pages/Patterns/EditPattern";
 import CommunityPatterns from "./pages/CommunityPatterns/CommunityPatterns";
 import CommunityPatternDetails, { loader as communityPatternDetailsLoader } from "./pages/CommunityPatterns/CommunityPatternDetails";
 import CommunityPatternsRoot from "./pages/CommunityPatterns/CommunityPatternsRoot";
-import {action as logoutAction} from "./utils/logout";
+import { action as logoutAction } from "./utils/logout";
+import IncDecCounter from "./pages/IncDecCounter/IncDecCounter";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "stitch-counter",
+        element: <IncDecCounter />,
       },
       {
         path: "login",
@@ -225,6 +230,7 @@ const router = createBrowserRouter([
             //loader: statisticsLoader,
             element: <StatisticsPage />,
           },
+         
         ]
       },
       {

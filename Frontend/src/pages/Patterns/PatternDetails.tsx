@@ -21,9 +21,11 @@ import ShareIcon from '@mui/icons-material/Share';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 //TODO: for generating pdfs ask if attach added pattern files to it
 export default function PatternDetails() {
+    const { t } = useTranslation("PatternDetails");
     const token = tokenLoader();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -104,17 +106,16 @@ export default function PatternDetails() {
                     aria-describedby="alert-dialog-description"
                 >
                     <DialogTitle id="alert-dialog-title">
-                        {"Share your pattern"}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Do you want to share this pattern with other users?
+                            {t('shareDialogContent')}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
                         <Button onClick={handleClose} autoFocus>
-                            Share
+                            {t('sharePattern')}
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -153,7 +154,7 @@ export default function PatternDetails() {
                                     }}
                                     >
                                         <PDFDownloadLink document={<PatternPdf />} fileName={`${pattern.name}.pdf`}>
-                                            Generate PDF
+                                            {t('generatePdf')}
                                         </PDFDownloadLink>
                                     </MenuItem>
                                     <MenuItem onClick={() => {
@@ -161,13 +162,13 @@ export default function PatternDetails() {
                                         return navigate('/fiber-friend/account/patterns/' + pattern.id + '/edit');
                                     }}
                                     >
-                                        Edit
+                                        {t('edit')}
                                     </MenuItem>
                                     {pattern.isAuthorial && <MenuItem onClick={() => { handleClose(); handleShare(); }}>
-                                        Share pattern
+                                        {t('sharePattern')}
                                     </MenuItem>}
                                     <MenuItem onClick={() => { handleClose(); handleDelete(); }}>
-                                        Delete pattern
+                                        {t('deletePattern')}
                                     </MenuItem>
                                 </Menu>
                             </div>
@@ -176,17 +177,17 @@ export default function PatternDetails() {
                                     <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
                                         <h2 className={classes.sectionHeader}>Details</h2>
                                         <div className={classes.projectInfoContainer}>
-                                            <div className={classes.attributeName}>Author: </div>
+                                            <div className={classes.attributeName}>{t('author')} </div>
                                             {pattern?.author?.username ?? <br></br>}
-                                            <div className={classes.attributeName}>Type: </div>
+                                            <div className={classes.attributeName}>{t('type')} </div>
                                             {pattern.type ?? <br></br>}
-                                            <div className={classes.attributeName}>Category: </div>
+                                            <div className={classes.attributeName}>{t('category')} </div>
                                             {pattern.category ?? <br></br>}
                                             {pattern.isAuthorial &&
                                                 <>
-                                                    <div className={classes.attributeName}>Start date: </div>
+                                                    <div className={classes.attributeName}>{t('startDate')} </div>
                                                     {pattern.startDate ?? <br></br>}
-                                                    <div className={classes.attributeName}>End date: </div>
+                                                    <div className={classes.attributeName}>{t('endDate')} </div>
                                                     {pattern.endDate ?? <br></br>}
                                                 </>
                                             }
@@ -196,31 +197,31 @@ export default function PatternDetails() {
                                 </div>
                                 <div className={classes.rightElements}>
                                     <div className={`${classes.sectionContainer} ${classes.photosSection}`}>
-                                        {!isMobile && <h2 className={classes.sectionHeader}>Photos</h2>}
+                                        {!isMobile && <h2 className={classes.sectionHeader}>{t('photos')}</h2>}
                                         <PhotosDisplay data={pattern} />
                                     </div>
                                 </div>
                             </div>
                             <div className={classes.wholeScreenElements}>
                                 <div className={`${classes.sectionContainer}`}>
-                                    <h2 className={classes.sectionHeader}>Yarns</h2>
+                                    <h2 className={classes.sectionHeader}>{t('yarns')}</h2>
                                     <TabsPanelDisplay supplies={pattern.yarns ?? []} type={"yarn"} />
                                 </div>
                                 <div className={`${classes.sectionContainer}`}>
-                                    <h2 className={classes.sectionHeader}>Tools</h2>
+                                    <h2 className={classes.sectionHeader}>{t('tools')}</h2>
                                     <TabsPanelDisplay supplies={pattern.tools ?? []} type={"tool"} />
                                 </div>
                                 <div className={`${classes.sectionContainer}`}>
-                                    <h2 className={classes.sectionHeader}>Other supplies</h2>
+                                    <h2 className={classes.sectionHeader}>{t('otherSupplies')}</h2>
                                     <TabsPanelDisplay supplies={pattern.otherSupplies ?? []} type={"other supply"} />
                                 </div>
                                 <div className={classes.sectionContainer}>
-                                    <h2 className={classes.sectionHeader}>Files and notes</h2>
-                                    <h3 className={classes.attributeName}>Files</h3>
+                                    <h2 className={classes.sectionHeader}>{t('filesAndNotes')}</h2>
+                                    <h3 className={classes.attributeName}>{t('files')}</h3>
                                     <FilesDisplay files={pattern.files} />
-                                    <h3 className={classes.attributeName}>Counters</h3>
+                                    <h3 className={classes.attributeName}>{t('counters')}</h3>
                                     <div className={classes.counters}><CounterGroup parentId={pattern.id ?? ''} /></div>
-                                    <h3 className={classes.attributeName}>Notes</h3>
+                                    <h3 className={classes.attributeName}>{t('notes')}</h3>
                                     <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                                 </div>
                             </div>

@@ -6,12 +6,14 @@ import Button from "@mui/material/Button";
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
 import classes from "./BigCounter.module.scss";
+import { useTranslation } from 'react-i18next';
 
 interface BigCounterProps {
     getCounter: (counter: any) => void;
 }
 
 export default function BigCounter({ getCounter }: BigCounterProps) {
+    const {t} = useTranslation("BigCounter");
     const [count, setCount] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openSetting = Boolean(anchorEl);
@@ -125,12 +127,12 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
                 <Input
                     className={classes.counterName}
                     id="counter-name"
-                    placeholder={'Untitled counter'}
+                    placeholder={t('counterTitle')}
                     value={counterName}
                     onChange={(e) => { setCounterName(e.target.value) }}
                     endAdornment={
                         <InputAdornment position="end">
-                            <EditIcon aria-label="Edit Counter Name"></EditIcon>
+                            <EditIcon aria-label={t('editCounterName')}></EditIcon>
                         </InputAdornment>
                     }
                 />
@@ -147,20 +149,20 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
                     <Button variant='contained' className={classes.subBtn} onClick={() => {
                         (count > 0) ? setCount(count - 1) : setCount(count);
                     }}
-                        aria-label="Decrease Counter"
+                        aria-label={t("decreaseCounter")}
                     >
                         <RemoveIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }} ></RemoveIcon>
                     </Button>
                     <Button variant='contained' className={classes.addBtn} onClick={() => {
                         setCount(count + 1);
                     }}
-                        aria-label="Increase Counter"
+                        aria-label={t("increaseCounter")}
                     >
                         <AddIcon sx={{ color: 'rgba(0, 0, 0, 0.54)', fontSize: '5em' }}></AddIcon>
                     </Button>
                 </div>
             </div>
-            <p className={classes.additionalText}>Press space bar to increase the counter!</p>
+            <p className={classes.additionalText}>{t("pressSpace")} </p>
         </div>
     );
 }

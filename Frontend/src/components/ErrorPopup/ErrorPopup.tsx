@@ -6,7 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { clearError, errorSelector, setError } from '../../reducers/errorSlice';
-import { use } from 'i18next';
 
 const ErrorPopup = () => {
     const error = useAppSelector(errorSelector);
