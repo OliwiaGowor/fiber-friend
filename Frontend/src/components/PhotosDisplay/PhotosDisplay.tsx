@@ -10,7 +10,7 @@ import Modal from '@mui/material/Modal';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import classes from './PhotosDisplay.module.scss';
 import FullScreenDisplay from '../FullScreenDisplay/FullScreenDisplay';
-
+//TODO: fix handling base64
 interface PhotosDisplayProps {
     data: any;
     miniatureSize?: string;
@@ -32,6 +32,18 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
             swiperWrapper.style.alignItems = 'center';
         }
     }, []);
+
+    const fileFromBase64 = (base64String: string, filename: string, mimeType: string) => {
+        const byteString = atob(base64String);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeType });
+        return URL.createObjectURL(blob);
+    }
 
     const vw = (percent: number) => {
         var w = Math.max(document.documentElement.clientWidth, windowWidth.current || 0);

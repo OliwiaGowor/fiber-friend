@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import React from "react";
+import React, { useEffect } from "react";
 import classes from './FileInput.module.scss';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,7 +22,7 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
   const [addedFiles, setAddedFiles] = React.useState<any>(defaultValue ?? []);
   const [open, setOpen] = React.useState(false);
 
-  function fileToBase64(file: File): Promise<string> {
+  const fileToBase64 = (file: File) => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
@@ -38,6 +38,30 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
       reader.readAsDataURL(file);
     });
   }
+
+  const fileFromBase64 = (base64String: string, filename: string, mimeType: string) => {
+    const byteString = atob(base64String);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ab], { type: mimeType });
+    return URL.createObjectURL(blob);
+  }
+
+  useEffect(() => {
+    if (defaultValue) {
+      setAddedFiles(defaultValue.map((file: any, index: number) => ({
+        id: index,
+        name: file.name,
+        content: file.content,
+        type: file.type,
+        url: fileFromBase64(file.content, file.name, file.type),
+      })));
+    }
+  }, []);
 
   const handleAddingFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -56,7 +80,6 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
         }]);
 
         selectedFiles((files: any) => [...files, {
-          id: files.length,
           name: event.target.files![i].name,
           content: base64Content,
           type: event.target.files![i].type,
@@ -65,7 +88,7 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
       }
     }
   };
-  
+
   const handleDeleteFile = (index: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (addedFiles.length > 0) {
@@ -76,7 +99,12 @@ export const FileInput = ({ onlyImg, addHeader, maxFiles, defaultValue, selected
 
       }
       setAddedFiles(tmp);
-      selectedFiles(tmp);
+      selectedFiles(tmp.map((file: any) => ({
+        name: file.name,
+        content: file.content,
+        type: file.type,
+        url: file.url,
+      })));
     }
   };
 

@@ -10,15 +10,16 @@ namespace Application.DTO.File
         public string Name { get; set; }
         public string Content { get; set; }
         public string Type { get; set; }
-        public Guid ParentId { get; set; }
+        public Guid? PatternId { get; set; }
+        public Guid? ProjectId { get; set; }
 
-         public static void Mapping(Profile profile)
+        public static void Mapping(Profile profile)
         {
             profile.CreateMap<NewMyFileDto, Domain.Entities.MyFile>().ReverseMap();
         }
     }
 
-      public class NewMyFileValidation : AbstractValidator<NewMyFileDto>
+    public class NewMyFileValidation : AbstractValidator<NewMyFileDto>
     {
         public NewMyFileValidation()
         {

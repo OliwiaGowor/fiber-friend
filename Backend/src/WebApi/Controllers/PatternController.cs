@@ -82,7 +82,7 @@ public class PatternController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut]
+    [HttpPut("{id:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult Update([FromBody] NewPatternDto newPattern)

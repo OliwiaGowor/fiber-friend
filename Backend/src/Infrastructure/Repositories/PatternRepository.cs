@@ -14,7 +14,7 @@ public class PatternRepository : IPatternRepository
         _dbContext = dbContext;
     }
 
-    public Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies, List<MyFile> files, List<Photo> photos)
+    public Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies, List<CountersGroup> counters, List<MyFile> files, List<Photo> photos)
     {
         if (!_dbContext.Users.Any(u => u.Id == pattern.AuthorId)) throw new Exception("User not found");
 
@@ -36,6 +36,12 @@ public class PatternRepository : IPatternRepository
         {
             otherSupply.PatternId = pattern.Id;
             _dbContext.OtherSupplies.Add(otherSupply);
+        }
+
+        foreach (var counter in counters)
+        {
+            counter.PatternId = pattern.Id;
+            _dbContext.CountersGroups.Add(counter);
         }
 
         foreach (var file in files)
@@ -77,6 +83,7 @@ public class PatternRepository : IPatternRepository
             .Include(p => p.OtherSupplies)
             .Include(p => p.Photos)
             .Include(p => p.Files)
+            .Include(p => p.Author)
             .FirstOrDefault(i => i.Id == patternId);
         return pattern;
     }
@@ -105,6 +112,7 @@ public class PatternRepository : IPatternRepository
             .Include(p => p.OtherSupplies)
             .Include(p => p.Photos)
             .Include(p => p.Files)
+            .Include(p => p.Author)
             .Where(p => p.AuthorId == userId)
             .Skip((page - 1) * pageSize)
             .Take(pageSize);
@@ -145,12 +153,37 @@ public class PatternRepository : IPatternRepository
         {
             _dbContext.Entry(dbPattern).CurrentValues.SetValues(pattern);
 
-            RepositoryHelper.UpdateCollection(_dbContext.Yarns, dbPattern.Yarns, yarns);
-            RepositoryHelper.UpdateCollection(_dbContext.Tools, dbPattern.Tools, tools);
-            RepositoryHelper.UpdateCollection(_dbContext.OtherSupplies, dbPattern.OtherSupplies, otherSupplies);
-            RepositoryHelper.UpdateCollection(_dbContext.CountersGroups, dbPattern.Counters, counters);
-            RepositoryHelper.UpdateCollection(_dbContext.Files, dbPattern.Files, files);
-            RepositoryHelper.UpdateCollection(_dbContext.Photos, dbPattern.Photos, photos);
+            foreach (var yarn in yarns)
+            {
+                yarn.PatternId = pattern.Id;
+            }
+
+            foreach (var tool in tools)
+            {
+                tool.PatternId = pattern.Id;
+            }
+
+            foreach (var otherSupply in otherSupplies)
+            {
+                otherSupply.PatternId = pattern.Id;
+            }
+
+            foreach (var file in files)
+            {
+                file.PatternId = pattern.Id;
+            }
+
+            foreach (var photo in photos)
+            {
+                photo.PatternId = pattern.Id;
+            }
+
+            RepositoryHelper.UpdateCollection(_dbContext.Yarns, dbPattern.Yarns, yarns, yarn => yarn.Id);
+            RepositoryHelper.UpdateCollection(_dbContext.Tools, dbPattern.Tools, tools, tool => tool.Id);
+            RepositoryHelper.UpdateCollection(_dbContext.OtherSupplies, dbPattern.OtherSupplies, otherSupplies, otherSupply => otherSupply.Id);
+            RepositoryHelper.UpdateCollection(_dbContext.CountersGroups, dbPattern.Counters, counters, counter => counter.Id);
+            RepositoryHelper.UpdateCollection(_dbContext.Files, dbPattern.Files, files, file => file.Id);
+            RepositoryHelper.UpdateCollection(_dbContext.Photos, dbPattern.Photos, photos, photo => photo.Id);
 
             _dbContext.SaveChanges();
 

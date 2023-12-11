@@ -34,10 +34,6 @@ export default function ProjectDetails() {
     const open = Boolean(anchorEl);
     const openPopover = Boolean(anchorElPopover);
 
-    React.useEffect(() => {
-        fetchSelectedPattern();
-    }, []);
-
     const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
         setAnchorElPopover(event.currentTarget);
@@ -69,22 +65,6 @@ export default function ProjectDetails() {
             return;
         }
     }
-
-    const fetchSelectedPattern = React.useCallback(async () => {
-        try {
-            const data = await handleRequest(
-                `${process.env.REACT_APP_API_URL}Pattern/${project.connectedPattern}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
-                'GET',
-                t('couldNotFetchPattern'),
-                tokenLoader()
-            );
-            setSelectedPattern(data);
-
-        } catch (error) {
-            dispatch(setError(error));
-            return;
-        }
-    }, []);
 
     return (
         <>
@@ -235,7 +215,13 @@ export default function ProjectDetails() {
 }
 
 async function loadProjectDetails(id: string) {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}Project/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + tokenLoader(),
+        },
+    }
+    );
 
     if (!response.ok) {
         throw json(

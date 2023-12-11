@@ -10,7 +10,7 @@ public class NewOtherSupplyDto : IMapFrom<Domain.Entities.OtherSupply>
     public string Name { get; set; }
     public int Quantity { get; set; }
     public string Note { get; set; }
-    public Guid ParentId { get; set; }
+    public Guid PatternId { get; set; }
 
     public static void Mapping(Profile profile)
     {

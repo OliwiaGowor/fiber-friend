@@ -137,10 +137,11 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
         if (proceedSubmit) {
             const projectData: Project = {
+                id: project?.id ?? undefined,
                 name: name,
                 type: type,
                 category: category ?? "Other",
-                yarns: yarns,
+                yarns: {...yarns, projectId: project.id ?? null},
                 startDate: startDate,
                 endDate: endDate,
                 photos: formPhotos,

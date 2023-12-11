@@ -60,7 +60,26 @@ export default function PatternDetails() {
 
     const handleShare = async () => {
         //TODO: add popup with informatoon about sharing
-        const shareData = {...pattern, isShared: true,};
+        const shareData = {
+            id: pattern.id,
+            name: pattern.name,
+            isShared: true,
+            isAuthorial: pattern.isAuthorial,
+            type: pattern.type,
+            category: pattern.category,
+            startDate: pattern.startDate,
+            endDate: pattern.endDate,
+            notes: pattern.notes,
+            files: pattern.files,
+            yarns: pattern.yarns,
+            tools: pattern.tools,
+            otherSupplies: pattern.otherSupplies,
+            photos: pattern.photos,
+            counters: pattern.counters,
+            finished: pattern.finished,
+            authorId: pattern.author?.id,
+
+        };
         try {
             const data = await handleRequest(
                 `${process.env.REACT_APP_API_URL}Pattern/${pattern.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
@@ -120,7 +139,6 @@ export default function PatternDetails() {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
                 <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                     <Await resolve={pattern}>
                         <div className={classes.details}>
@@ -221,9 +239,13 @@ export default function PatternDetails() {
                                     <h3 className={classes.attributeName}>{t('files')}</h3>
                                     <FilesDisplay files={pattern.files} />
                                     <h3 className={classes.attributeName}>{t('counters')}</h3>
-                                    <div className={classes.counters}><CounterGroup parentId={pattern.id ?? ''} /></div>
+                                    <div className={classes.counters}>
+                                        <CounterGroup parentId={pattern.id ?? ''} />
+                                    </div>
                                     <h3 className={classes.attributeName}>{t('notes')}</h3>
-                                    <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
+                                    <div className={classes.notes}>
+                                        <TextDisplay defaultValue={pattern.notes} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -242,10 +264,6 @@ async function loadPatternDetails(id: string) {
     });
 
     if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch pattern.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch pattern.' }), {
-        //   status: 500,
-        // });
         throw json(
             { message: 'Could not fetch pattern.' },
             {

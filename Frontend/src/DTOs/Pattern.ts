@@ -3,6 +3,7 @@ import { Notes } from "./Notes";
 import { MyFile } from "./MyFile";
 import { Yarn } from "./Yarn"
 import { User } from "./User";
+import { CountersGroup } from "./Counter";
 
 interface PatternBase {
     id?: string;
@@ -16,6 +17,7 @@ interface PatternBase {
     files?: MyFile[];
     yarns: Yarn[];
     tools: Tool[];
+    counters?: CountersGroup[];
     otherSupplies?: OtherSupply[];
     isShared: boolean;
 }

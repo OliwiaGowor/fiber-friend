@@ -9,8 +9,6 @@ namespace Application.DTO.Counter
         public string Name { get; set; }
         public int Value { get; set; }
         public Guid CountersGroupId { get; set; }
-        public Guid? ProjectId { get; set; }
-        public Guid? PatternId { get; set; }
 
         public static void Mapping(Profile profile)
         {

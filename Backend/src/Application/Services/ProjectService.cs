@@ -26,8 +26,11 @@ internal class ProjectService : IProjectService
     {
         var projectEnity = _mapper.Map<Project>(project);
         var yarnsEntity = _mapper.Map<List<Yarn>>(project.Yarns);
+        var countersEntity = _mapper.Map<List<CountersGroup>>(project.Counters);
+        var filesEntity = _mapper.Map<List<MyFile>>(project.Files);
+        var photosEntity = _mapper.Map<List<Photo>>(project.Photos);
 
-        var id = _projectRepo.AddProject(projectEnity, yarnsEntity);
+        var id = _projectRepo.AddProject(projectEnity, yarnsEntity, countersEntity, filesEntity, photosEntity);
 
         return id;
     }

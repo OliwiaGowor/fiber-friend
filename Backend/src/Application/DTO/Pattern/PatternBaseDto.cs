@@ -20,7 +20,7 @@ namespace Domain.Entities
         public List<YarnDto> Yarns { get; set; }
         public List<ToolDto> Tools { get; set; }
         public List<OtherSupplyDto>? OtherSupplies { get; set; }
-        public UserDto Author { get; set; }
+        public UserDataDto Author { get; set; }
         public bool IsShared { get; set; }
 
         public static void Mapping(Profile profile)

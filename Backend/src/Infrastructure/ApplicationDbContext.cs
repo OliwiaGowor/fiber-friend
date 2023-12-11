@@ -106,6 +106,12 @@ public class ApplicationDbContext : DbContext
                 .HasForeignKey(y => y.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Entity<Project>()
+            .HasMany(p => p.Counters)
+            .WithOne(c => c.Project)
+            .HasForeignKey(c => c.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
         //RESOURCE
         builder.Entity<Resource>()

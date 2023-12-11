@@ -6,7 +6,7 @@ namespace Domain.Interfaces.Repository;
 public interface IPatternRepository
 {
     void DeletePattern(Guid patternId);
-    Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies, List<MyFile> files, List<Photo> photos);
+    Guid AddPattern(Pattern pattern, List<Yarn> yarns, List<Tool> tools, List<OtherSupply> otherSupplies, List<CountersGroup> counters, List<MyFile> files, List<Photo> photos);
     IQueryable<Pattern> GetAllPatternsForUser(Guid userId);
     Pattern GetPatternById(Guid patternId);
     IQueryable<Pattern> GetPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);

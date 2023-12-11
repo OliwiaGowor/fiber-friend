@@ -102,7 +102,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       }
     }
   };
-console.log(chosenFilters)
+
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
 
@@ -116,7 +116,6 @@ console.log(chosenFilters)
   }, []);
 
   useEffect(() => {
-    console.log("useEffect")
     setCurrPage(1);
     setWasLastList(false);
     handleFetch(true, 1);
@@ -125,7 +124,7 @@ console.log(chosenFilters)
   const handlePhotoRender = (element: any) => {
     if (element.photos && tileRef.current) {
       const mainPhoto = element?.photos[0] ? element?.photos[0] : element?.photos[1]
-console.log(mainPhoto)
+
       let newWidth = tileRef.current.clientWidth;
       let newHeight = tileRef.current.clientHeight;
 

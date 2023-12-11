@@ -50,7 +50,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     const [startDate, setStartDate] = useState<any>(pattern?.startDate ?? null);
     const [endDate, setEndDate] = useState<any>(pattern?.endDate ?? null);
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
-console.log(notes)
+
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
             setType(newType);
@@ -62,6 +62,7 @@ console.log(notes)
         e.preventDefault();
         if (proceedSubmit) {
             const patternData: Pattern = {
+                id: pattern?.id ?? undefined,
                 name: name,
                 type: type,
                 category: category,
@@ -75,7 +76,7 @@ console.log(notes)
                 authorId: localStorage.getItem('userId') ?? "",
                 finished: endDate !== null ? true : false,
                 startDate: startDate,
-                isShared: false
+                isShared: pattern?.isShared ?? false,
             };
 
             let url = (method === "POST") ?

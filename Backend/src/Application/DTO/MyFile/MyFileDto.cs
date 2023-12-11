@@ -9,7 +9,8 @@ namespace Application.DTO.File
         public string Name { get; set; }
         public string Content { get; set; }
         public string Type { get; set; }
-        public Guid ParentId { get; set; }
+        public Guid? PatternId { get; set; }
+        public Guid? ProjectId { get; set; }
 
         public static void Mapping(Profile profile)
         {
@@ -18,7 +19,8 @@ namespace Application.DTO.File
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.Content, opt => opt.MapFrom(s => s.Content))
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))
-                .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.PatternId ?? s.ProjectId));
+                .ForMember(d => d.ProjectId, opt => opt.MapFrom(s => s.ProjectId))
+                .ForMember(d => d.PatternId, opt => opt.MapFrom(s => s.PatternId));
         }
     }
 }

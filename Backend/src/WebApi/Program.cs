@@ -4,6 +4,7 @@ using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 public class Program
 {

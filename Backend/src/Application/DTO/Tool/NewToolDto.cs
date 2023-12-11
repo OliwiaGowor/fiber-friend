@@ -10,7 +10,8 @@ public class NewToolDto : IMapFrom<Domain.Entities.Tool>
     public string Name { get; set; }
     public int Quantity { get; set; }
     public string Size { get; set; }
-    public Guid ParentId { get; set; }
+    public Guid? PatternId { get; set; }
+    public Guid? ProjectId { get; set; }
 
     public static void Mapping(Profile profile)
     {

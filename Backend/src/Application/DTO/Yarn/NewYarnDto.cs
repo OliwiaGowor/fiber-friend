@@ -12,7 +12,8 @@ public class NewYarnDto : IMapFrom<Domain.Entities.Yarn>
     public string Gauge { get; set; } = "";
     public string Stitch { get; set; } = "";
     public string ToolSize { get; set; } = "";
-    public Guid ParentId { get; set; }
+    public Guid? PatternId { get; set; }
+    public Guid? ProjectId { get; set; }
 
     public static void Mapping(Profile profile)
     {
@@ -28,7 +29,6 @@ public class NewYarnDto : IMapFrom<Domain.Entities.Yarn>
             RuleFor(x => x.Gauge).NotEmpty().MaximumLength(20);
             RuleFor(x => x.Stitch).NotEmpty().MaximumLength(50);
             RuleFor(x => x.ToolSize).NotEmpty().MaximumLength(20);
-            RuleFor(x => x.ParentId).NotEmpty();
         }
     }
 }
