@@ -18,13 +18,13 @@ export const projectsTranslations = {
         header: 'PROJECTS',
         couldNotFetchProjects: 'Could not fetch projects. Please try again later.',
         newProject: 'New project',
-      },
-      pl: {
+    },
+    pl: {
         backButtonLabel: 'Powrót',
         header: 'PROJEKTY',
         couldNotFetchProjects: 'Nie udało się pobrać projektów. Spróbuj ponownie później.',
         newProject: 'Nowy projekt',
-      }
+    }
 }
 
 function Projects() {
@@ -34,11 +34,11 @@ function Projects() {
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
-    const fetchProjects = async (filters: string, page: number, pageSize: number ) => {
+    const fetchProjects = async (filters: string, page: number, pageSize: number) => {
         try {
             const data = await handleRequest(
                 process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
-                `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
+                    `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
                 t('couldNotFetchProjects'),
                 tokenLoader(),

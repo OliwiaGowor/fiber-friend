@@ -13,6 +13,7 @@ import { Project } from "../../DTOs/Project";
 import { Pattern } from "../../DTOs/Pattern";
 import { useAppDispatch } from "../../utils/hooks";
 import { setError } from "../../reducers/errorSlice";
+
 const tiles = [
   {
     title: "Counters",
@@ -89,7 +90,12 @@ export default function Account() {
         </h1>
         <Await resolve={projects}>
           {(loadedProjects) =>
-            <MiniaturesList data={loadedProjects} link={'projects/new-project'} />}
+            <MiniaturesList
+              data={loadedProjects}
+              link={'projects/new-project'}
+              elementsType={"projects"}
+            />
+          }
         </Await>
       </Suspense>
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
@@ -100,7 +106,12 @@ export default function Account() {
         </h1>
         <Await resolve={patterns}>
           {(loadedPatterns) =>
-            <MiniaturesList data={loadedPatterns} link={'patterns/new-pattern'} />}
+            <MiniaturesList
+              data={loadedPatterns}
+              link={'patterns/new-pattern'}
+              elementsType={"patterns"}
+            />
+          }
         </Await>
       </Suspense>
       <div className={classes.container} >

@@ -7,16 +7,19 @@ import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { tokenLoader } from "../../utils/auth";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
+import { resourcesFilters } from "../../data/FiltersBarData";
 
 export default function Resources() {
+    const { t } = useTranslation("Resources");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 800px)');
 
-    const fetchResources = async () => {
+    const fetchResources = async (filters: string, page: number, pageSize: number ) => {
         try {
             const data = await handleRequest(
-                `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                `${process.env.REACT_APP_API_URL}Resource/GetResourcesForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
                 "Could not fetch resources. Please try again later.",
                 tokenLoader(),
@@ -36,14 +39,30 @@ export default function Resources() {
                 </div>
             }
             <div className={classes.container}>
-                <h1 className={classes.header}>RESOURCES</h1>
+                <h1 className={classes.header}>{t("header")}</h1>
                 <Tiles
                     link='new-resource'
-                    addText='New resource'
+                    addText={t("newResource")}
                     fetchData={fetchResources}
                     addTile={true}
+                    filters={resourcesFilters}
                 />
             </div>
         </>
     );
+}
+
+export const resourcesTranslations = {
+    en: {
+        backButtonLabel: 'Back',
+        header: 'RESOURCES',
+        couldNotFetchResources: 'Could not fetch reosurces. Please try again later.',
+        newResource: 'New resource',
+    },
+    pl: {
+        backButtonLabel: 'Powrót',
+        header: 'ZASOBY',
+        couldNotFetchResourcess: 'Nie udało się pobrać zasobów. Spróbuj ponownie później.',
+        newResource: 'Nowy zasób',
+    }
 }

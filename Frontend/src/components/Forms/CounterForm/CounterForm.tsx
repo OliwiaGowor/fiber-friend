@@ -102,7 +102,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
         setCounters([...counters, {
             id: counters.length,
             name: counter.name,
-            amount: counter.amount,
+            value: counter.value,
         }]);
     };
 

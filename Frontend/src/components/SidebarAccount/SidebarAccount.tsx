@@ -13,8 +13,10 @@ import classes from './SidebarAccount.module.scss'
 import logoPicture from '../../photos/yarn-ball-pink.png';
 import { EmailIcon, FacebookIcon } from '../../svg/MediaIcons';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useTranslation } from 'react-i18next';
 
 function SidebarAccount({ open, getOpen }: any) {
+    const { t } = useTranslation("SidebarAccount");
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = React.useState<boolean>(true);
     const isMobile = useMediaQuery('(max-width: 800px)');
@@ -55,33 +57,33 @@ function SidebarAccount({ open, getOpen }: any) {
                 }
                 <h2 className={classes.header} onClick={() => handleClick('/fiber-friend/account')}>
                     <AccountCircleIcon />
-                    <div className={classes.text}>My account</div>
+                    <div className={classes.text}>{t("myAccount")}</div>
                 </h2>
                 <ul className={classes.elements}>
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/projects')}>
                         <GridOnIcon />
-                        <div className={classes.text}>Projects</div>
+                        <div className={classes.text}>{t("projects")}</div>
                     </li>
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/patterns')}>
                         <BrushIcon />
-                        <div className={classes.text}>Patterns</div>
+                        <div className={classes.text}>{t("patterns")}</div>
                     </li>
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/counters')}>
                         <CalculateIcon />
-                        <div className={classes.text}>Counters</div>
+                        <div className={classes.text}>{t("counters")}</div>
                     </li>
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/resources')}>
                         <ShoppingBasketIcon />
-                        <div className={classes.text}>Resources</div>
+                        <div className={classes.text}>{t("resources")}</div>
                     </li>
                     <li className={classes.element} onClick={() => handleClick('statistics')}>
                         <InsightsIcon />
-                        <div className={classes.text}>Statistics</div>
+                        <div className={classes.text}>{t("statistics")}</div>
                     </li>
                     <span className={classes.divider} />
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/settings')}>
                         <SettingsIcon />
-                        <div className={classes.text}>Settings</div>
+                        <div className={classes.text}>{t("settings")}</div>
                     </li>
                     <span className={classes.divider} />
                     <li className={classes.element} onClick={() => {
@@ -93,7 +95,7 @@ function SidebarAccount({ open, getOpen }: any) {
                         <Form action="/fiber-friend/logout" method="post">
                             <button className={classes.logoutBtn}>
                             <LogoutIcon />
-                            <div className={classes.text}>Log out</div>
+                            <div className={classes.text}>{t("logOut")}</div>
                             </button>
                         </Form>
                     </li>

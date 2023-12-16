@@ -8,7 +8,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import React, { useEffect } from "react";
 
-export default function MiniaturesList({ data, link }: any) {
+export default function MiniaturesList({ data, link, elementsType }: any) {
   const loadedElements = [];
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ export default function MiniaturesList({ data, link }: any) {
           >
             <div
               className={classes.element}
-              onClick={() => navigate(`projects/${element.id}`)}
+              onClick={() => navigate(`${elementsType}/${element.id}`)}
               ref={tileRef}
             >
               {handlePhotoRender(element)}

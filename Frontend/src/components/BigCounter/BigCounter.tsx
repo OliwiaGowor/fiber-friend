@@ -32,7 +32,7 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
     React.useEffect(() => {
         const counter = {
             name: counterName,
-            amount: count,
+            value: count,
         };
         getCounter(counter);
     }, [count, counterName]);

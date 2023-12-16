@@ -19,6 +19,9 @@ import { pageNotFoundTranslations } from './pages/PageNotFound/PageNotFound.i18n
 import { counterMiniatureTranslations } from './components/CounterMiniature/CounterMiniature.i18n';
 import { signUpPageTranslations } from './pages/SignUpPage/SignUpPage.i18n';
 import { loginPageTranslations } from './pages/LoginPage/LoginPage.i18n';
+import { resourcesTranslations } from './pages/Resources/Resources';
+import { countersTranslations } from './pages/Counters/Counters';
+import { sidebarAccountTranslations } from './components/SidebarAccount/SidebarAccount.i18n';
 
 const resources = {
   en: {
@@ -39,6 +42,9 @@ const resources = {
     CounterMiniature: counterMiniatureTranslations.en,
     SignUpPage: signUpPageTranslations.en,
     LoginPage: loginPageTranslations.en,
+    Resources: resourcesTranslations.en,
+    Counters: countersTranslations.en,
+    SidebarAccount: sidebarAccountTranslations.en,
   },
   pl: {
     HomePage: homePageTranslations.pl,
@@ -58,6 +64,9 @@ const resources = {
     CounterMiniature: counterMiniatureTranslations.pl,
     SignUpPage: signUpPageTranslations.pl,
     LoginPage: loginPageTranslations.pl,
+    Resources: resourcesTranslations.pl,
+    Counters: countersTranslations.pl,
+    SidebarAccount: sidebarAccountTranslations.pl,
   },
 };
 

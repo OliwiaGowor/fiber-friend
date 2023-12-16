@@ -79,10 +79,6 @@ export const resourcesFilters = [
         name: "Type",
         options: [
             {
-                name: "All",
-                value: "all"
-            },
-            {
                 name: "Yarns",
                 value: "yarns"
             },
