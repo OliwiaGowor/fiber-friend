@@ -42,7 +42,6 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
             .ForMember(d => d.Photos, opt => opt.MapFrom(s => s.Photos))
             .ForMember(d => d.Files, opt => opt.MapFrom(s => s.Files))
             .ForMember(d => d.ConnectedPattern, opt => opt.MapFrom(s => s.ConnectedPattern))
-            .ForMember(d => d.ConnectedCommPattern, opt => opt.MapFrom(s => s.ConnectedCommPattern))
             .ForMember(d => d.Yarns, opt => opt.MapFrom(s => s.Yarns))
             .ForMember(d => d.User, opt => opt.MapFrom(s => s.User))
             .ForMember(d => d.Counters, opt => opt.MapFrom(s => s.Counters));

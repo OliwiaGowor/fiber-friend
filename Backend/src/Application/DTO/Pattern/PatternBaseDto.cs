@@ -25,7 +25,7 @@ namespace Domain.Entities
 
         public static void Mapping(Profile profile)
         {
-            profile.CreateMap<Domain.Entities.PatternBase, PatternBaseDto>()
+            profile.CreateMap<Domain.Entities.Pattern, PatternBaseDto>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))

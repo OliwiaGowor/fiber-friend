@@ -6,13 +6,13 @@ using Domain.Entities;
 
 namespace Application.DTO.Pattern
 {
-    public class CommunityPatternDto : PatternBaseDto, IMapFrom<Domain.Entities.CommunityPattern>
+    public class CommunityPatternDto : PatternBaseDto, IMapFrom<Domain.Entities.Pattern>
     {
         public List<UserSavedCommunityPatternDto> SavedByUsers { get; set; }
 
         public static void Mapping(Profile profile)
         {
-            profile.CreateMap<Domain.Entities.CommunityPattern, CommunityPatternDto>()
+            profile.CreateMap<Domain.Entities.Pattern, CommunityPatternDto>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))

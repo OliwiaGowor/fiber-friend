@@ -16,7 +16,6 @@ public class Project
     public ICollection<Photo>? Photos { get; set; }
     public ICollection<MyFile>? Files { get; set; }
     public Guid? ConnectedPatternId { get; set; }
-    public CommunityPattern? ConnectedCommPattern { get; set; }
     public Pattern? ConnectedPattern { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; }

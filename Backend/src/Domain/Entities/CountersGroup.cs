@@ -8,7 +8,7 @@ public class CountersGroup
     public User User { get; set; }
     public ICollection<Counter> Counters { get; set; }
     public Guid? PatternId { get; set; }
-    public PatternBase? Pattern { get; set; }
+    public Pattern? Pattern { get; set; }
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; }
 }

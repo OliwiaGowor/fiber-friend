@@ -10,7 +10,7 @@ public class Yarn
     public string ToolSize { get; set; }
     // Foreign key to Pattern
     public Guid? PatternId { get; set; }
-    public PatternBase? Pattern { get; set; }
+    public Pattern? Pattern { get; set; }
 
     // Foreign key to Project
     public Guid? ProjectId { get; set; }

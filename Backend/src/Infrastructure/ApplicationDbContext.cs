@@ -11,7 +11,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<Pattern> Patterns { get; set; }
-    public DbSet<CommunityPattern> CommunityPatterns { get; set; }
     public DbSet<UserSavedCommunityPattern> UserSavedCommunityPatterns { get; set; }
     public DbSet<Resource> Resources { get; set; }
     public DbSet<Counter> Counters { get; set; }
@@ -25,11 +24,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        //PATTERN BASE
-        builder.Entity<PatternBase>()
-            .ToTable("Patterns");
-
 
         //USER
         builder.Entity<User>()
