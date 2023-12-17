@@ -7,7 +7,7 @@ public class Photo
     public string Content { get; set; }
     public string Type { get; set; }
     public Guid? PatternId { get; set; }
-    public PatternBase? Pattern { get; set; }
+    public Pattern? Pattern { get; set; }
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; }
 }

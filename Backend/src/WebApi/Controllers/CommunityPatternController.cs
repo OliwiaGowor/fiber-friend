@@ -20,7 +20,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllCommunityPatterns")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<CommunityPatternDto>> GetAllCommunityPatterns(Guid userId)
         {
@@ -28,15 +28,14 @@ namespace WebApi.Controllers
             return Ok(list);
         }
 
-        [HttpGet("{filters}/page={page}/pageSize={pageSize}")]
+        [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<CommunityPatternDto> GetCommunityPatterns([FromQuery] FilterModel filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public ActionResult<CommunityPatternDto> GetCommunityPatterns([FromQuery] FilterModel filters, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
-            var service = _communityPatternService.GetCommunityPatterns(filters, userId, page, pageSize);
+            var service = _communityPatternService.GetCommunityPatterns(filters, page, pageSize);
 
             if (service is null) return NotFound();
 

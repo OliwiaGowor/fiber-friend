@@ -14,14 +14,15 @@ namespace Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public IQueryable<CommunityPattern> GetAllCommunityPatterns()
+        public IQueryable<Pattern> GetAllCommunityPatterns()
         {
-            var communityPatterns = _dbContext.CommunityPatterns.AsQueryable();
+            var communityPatterns = _dbContext.Patterns.AsQueryable();
             return communityPatterns;
         }
-        public IQueryable<CommunityPattern> GetCommunityPatterns(FilterModel filters, Guid userId, int page, int pageSize)
+
+        public IQueryable<Pattern> GetCommunityPatterns(FilterModel filters, int page, int pageSize)
         {
-            var query = _dbContext.CommunityPatterns.AsQueryable();
+            var query = _dbContext.Patterns.AsQueryable();
 
             if (filters.Type is not null)
             {
@@ -37,13 +38,12 @@ namespace Infrastructure.Repositories
                 .Include(p => p.Tools)
                 .Include(p => p.OtherSupplies)
                 .Include(p => p.Photos)
-                .Where(p => p.AuthorId == userId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
 
             return communityPatterns;
         }
-        public IQueryable<CommunityPattern> GetAllCommunityPatternsForUser(Guid userId)
+        public IQueryable<Pattern> GetAllCommunityPatternsForUser(Guid userId)
         {
             var userPatterns = _dbContext.UserSavedCommunityPatterns
                 .Where(ucp => ucp.UserId == userId)
@@ -52,9 +52,9 @@ namespace Infrastructure.Repositories
 
             return userPatterns.AsQueryable();
         }
-        public IQueryable<CommunityPattern> GetCommunityPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize)
+        public IQueryable<Pattern> GetCommunityPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize)
         {
-            var query = _dbContext.CommunityPatterns
+            var query = _dbContext.Patterns
                 .Where(p => p.SavedByUsers.Any(u => u.UserId == userId))
                 .AsQueryable();
 
@@ -74,9 +74,9 @@ namespace Infrastructure.Repositories
 
             return communityPatterns;
         }
-        public CommunityPattern GetCommunityPatternById(Guid patternId)
+        public Pattern GetCommunityPatternById(Guid patternId)
         {
-            var communityPattern = _dbContext.CommunityPatterns.FirstOrDefault(i => i.Id == patternId);
+            var communityPattern = _dbContext.Patterns.FirstOrDefault(i => i.Id == patternId);
             return communityPattern;
         }
     }

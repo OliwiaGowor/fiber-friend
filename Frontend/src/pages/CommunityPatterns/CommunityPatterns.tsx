@@ -7,19 +7,22 @@ import { useAppDispatch } from '../../utils/hooks';
 import { tokenLoader } from '../../utils/auth';
 import { setError } from '../../reducers/errorSlice';
 import { handleRequest } from '../../utils/handleRequestHelper';
+import { useTranslation } from 'react-i18next';
 
 const CommunityPatterns = () => {
+    const { t } = useTranslation("CommunityPatterns");
     const dispatch = useAppDispatch();
 
-    const fetchProjects = async (page: number, pageSize: number, filters: object[]) => {
-        //`${process.env.REACT_APP_API_URL}Pattern/GetSharedPatterns/${filters}/page=${page}/pageSize=${pageSize}`
+    const fetchCommunityPatterns = async (filters: string, page: number, pageSize: number) => {
         try {
-            return (
-                await handleRequest(
-                    `${process.env.REACT_APP_API_URL}CommunityPattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
-                    "GET",
-                    "Could not fetch patterns. Please try again later.",
-                ));
+            const data = await handleRequest(
+                process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}CommunityPattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                    `${process.env.REACT_APP_API_URL}CommunityPattern?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
+                "GET",
+                t("couldNotFetchPatterns"),
+                tokenLoader(),
+            );
+            return data;
         } catch (error) {
             dispatch(setError(error));
             return;
@@ -36,7 +39,7 @@ const CommunityPatterns = () => {
             <Tiles
                 link='new-pattern'
                 addText='New pattern'
-                fetchData={fetchProjects}
+                fetchData={fetchCommunityPatterns}
                 addTile={false}
                 filters={patternsFilters}
             />

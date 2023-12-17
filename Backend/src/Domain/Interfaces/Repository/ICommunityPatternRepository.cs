@@ -5,10 +5,10 @@ namespace Domain.Interfaces.Repository
 {
     public interface ICommunityPatternRepository
     {
-        IQueryable<CommunityPattern> GetAllCommunityPatterns();
-        IQueryable<CommunityPattern> GetCommunityPatterns(FilterModel filters, Guid userId, int page, int pageSize);
-        IQueryable<CommunityPattern> GetAllCommunityPatternsForUser(Guid userId);
-        IQueryable<CommunityPattern> GetCommunityPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
-        CommunityPattern GetCommunityPatternById(Guid patternId);
+        IQueryable<Pattern> GetAllCommunityPatterns();
+        IQueryable<Pattern> GetCommunityPatterns(FilterModel filters, int page, int pageSize);
+        IQueryable<Pattern> GetAllCommunityPatternsForUser(Guid userId);
+        IQueryable<Pattern> GetCommunityPatternsForUser(FilterModel filters, Guid userId, int page, int pageSize);
+        Pattern GetCommunityPatternById(Guid patternId);
     }
 }

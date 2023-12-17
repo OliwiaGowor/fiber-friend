@@ -28,9 +28,9 @@ internal class CommunityPatternService : ICommunityPatternService
         return communityPatternDtos;
     }
 
-    public List<CommunityPatternDto> GetCommunityPatterns(FilterModel filters, Guid userId, int page, int pageSize)
+    public List<CommunityPatternDto> GetCommunityPatterns(FilterModel filters, int page, int pageSize)
     {
-        var communityPatterns = _communityPatternRepo.GetCommunityPatterns(filters, userId, page, pageSize)
+        var communityPatterns = _communityPatternRepo.GetCommunityPatterns(filters, page, pageSize)
             .ProjectTo<CommunityPatternDto>(_mapper.ConfigurationProvider)
             .ToList();
 
