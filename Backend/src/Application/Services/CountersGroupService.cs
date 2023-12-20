@@ -1,6 +1,9 @@
+using Application.DTO.Counter;
 using Application.DTO.CountersGroup;
+using Application.DTO.Pattern;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 
@@ -19,7 +22,9 @@ public class CountersGroupService : ICountersGroupService
 
     public Guid AddCountersGroup(NewCountersGroupDto countersGroup)
     {
+        var countersEntity = _mapper.Map<List<Counter>>(countersGroup.Counters);
         var countersGroupEnity = _mapper.Map<CountersGroup>(countersGroup);
+        countersGroupEnity.Counters = countersEntity;
 
         var id = _countersGroupRepo.AddCountersGroup(countersGroupEnity);
 
@@ -33,6 +38,15 @@ public class CountersGroupService : ICountersGroupService
                     .ToList();
 
         return countersGroup;
+    }
+
+    public List<CountersGroupDto> GetCountersGroupsForUser(FilterModel? filters, Guid userId, int page, int pageSize)
+    {
+        var countersGroups = _countersGroupRepo.GetCountersGroupsForUser(filters, userId, page, pageSize)
+            .ProjectTo<CountersGroupDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return countersGroups;
     }
 
     public object GetCountersGroupById(Guid countersGroupId)

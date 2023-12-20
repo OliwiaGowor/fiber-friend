@@ -63,7 +63,7 @@ export default function BigCounter({ getCounter }: BigCounterProps) {
     };
 
     const handleSpace = (e: KeyboardEvent) => {
-        if (e.key === ' ') {
+        if ( document.activeElement?.tagName !== "INPUT" && e.key === ' ') {
             e.preventDefault();
             setCount(count + 1);
         }

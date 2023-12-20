@@ -100,7 +100,6 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
 
     const addCounter = (counter: any) => {
         setCounters([...counters, {
-            id: counters.length,
             name: counter.name,
             value: counter.value,
         }]);
@@ -124,12 +123,14 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
             const counterData = {
                 name: counterGroupName,
                 counters: counters,
-                parentId: chosenParent?.id ?? null,
+                userId: localStorage.getItem("userId"),
+                patternId: chosenParent?.id ?? null,
+                projectId: chosenParent?.id ?? null,
             };
 
             let url = method === "POST" ?
-                `${process.env.REACT_APP_API_URL}CounterGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
-                `${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
+                `${process.env.REACT_APP_API_URL}CountersGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                `${process.env.REACT_APP_API_URL}CountersGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
             try {
                 await handleRequest(

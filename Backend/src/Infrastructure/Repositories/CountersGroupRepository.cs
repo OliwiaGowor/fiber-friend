@@ -1,5 +1,7 @@
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -24,6 +26,18 @@ public class CountersGroupRepository : ICountersGroupRepository
         return countersGroups;
     }
 
+    public IQueryable<CountersGroup> GetCountersGroupsForUser(FilterModel filters, Guid userId, int page, int pageSize)
+    {
+        var query = _dbContext.CountersGroups.AsQueryable();
+
+        var countersGroups = query.Include(p => p.Counters)
+            .Where(p => p.UserId == userId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+
+        return countersGroups;
+    }
+
     public IQueryable<CountersGroup> GetCountersGroupsByProjectId(Guid projectId)
     {
         var countersGroups = _dbContext.CountersGroups.Where(y => y.ProjectId == projectId);
@@ -33,6 +47,12 @@ public class CountersGroupRepository : ICountersGroupRepository
     public Guid AddCountersGroup(CountersGroup countersGroup)
     {
         _dbContext.CountersGroups.Add(countersGroup);
+
+        foreach (var counter in countersGroup.Counters)
+        {
+            counter.CountersGroupId = countersGroup.Id;
+            _dbContext.Counters.Add(counter);
+        }
         _dbContext.SaveChanges();
         return countersGroup.Id;
     }

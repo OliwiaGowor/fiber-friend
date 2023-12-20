@@ -9,12 +9,14 @@ namespace Application.DTO.CountersGroup
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<CounterDto> Counters { get; set; }
-        public Guid? ParentId { get; set; }
+        public List<NewCounterDto> Counters { get; set; }
+        public Guid UserId { get; set; }
+        public Guid? PatternId { get; set; }
+        public Guid? ProjectId { get; set; }
 
         public static void Mapping(Profile profile)
         {
-            profile.CreateMap<CountersGroupDto, Domain.Entities.CountersGroup>().ReverseMap();
+            profile.CreateMap<NewCountersGroupDto, Domain.Entities.CountersGroup>().ReverseMap();
         }
     }
 
@@ -23,6 +25,7 @@ namespace Application.DTO.CountersGroup
         public NewCountersGroupValidation()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Counters).NotEmpty();
         }
     }

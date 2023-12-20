@@ -248,7 +248,7 @@ const router = createBrowserRouter([
           {
             path: ":communityPatternId",
             id: "community-pattern-details",
-            loader: communityPatternDetailsLoader,
+            //loader: communityPatternDetailsLoader,
             children: [
               {
                 index: true,

@@ -1,9 +1,10 @@
+using Application.Mapping;
 using AutoMapper;
 using FluentValidation;
 
 namespace Application.DTO.Counter
 {
-    public class NewCounterDto
+    public class NewCounterDto : IMapFrom<Domain.Entities.Counter>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -12,7 +13,7 @@ namespace Application.DTO.Counter
 
         public static void Mapping(Profile profile)
         {
-            profile.CreateMap<CounterDto, Domain.Entities.Counter>().ReverseMap();
+            profile.CreateMap<NewCounterDto, Domain.Entities.Counter>().ReverseMap();
         }
     }
 

@@ -148,11 +148,15 @@
       margin: 0px var(--margin-right);
 
       &.loggedOut {
-        grid-template-columns: 1fr min-content;
+        grid-template-columns: 1fr min-content min-content min-content;
   
         .navElement {
-          &.account {
+          &:last-of-type {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             justify-self: flex-end;
+            align-self: center;
           }
         }
   

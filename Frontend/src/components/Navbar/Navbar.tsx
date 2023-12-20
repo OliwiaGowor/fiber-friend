@@ -38,8 +38,7 @@ export default function Navbar() {
 
     return (
         <nav className={classes.navbar}>
-            <ul className={classes.navElements}>
-                {!isMobile && !isLoggedIn && <br className={classes.fillerDesktop}></br>}
+            <ul className={`${classes.navElements} ${isLoggedIn ? "" : classes.loggedOut}`}>     
                 {((isMobile && !isLoggedIn) || !isMobile) &&
                     <div className={classes.logo}>
                         <Link to={"/fiber-friend"}>
@@ -54,13 +53,13 @@ export default function Navbar() {
                         </Link>
                     </div>
                 }
+                <li className={classes.navElement}>
+                    <button className={classes.communityPatternsBtn} onClick={() => navigate("/fiber-friend/community-patterns")}>
+                        <CommunityPatternsIcon className={classes.communityPatternsIcon} />
+                        <span className={classes.btnText}>Community patterns</span>
+                    </button>
+                </li>
                 {isLoggedIn && <>
-                    <li className={classes.navElement}>
-                        <button className={classes.communityPatternsBtn} onClick={() => navigate("/fiber-friend/community-patterns")}>
-                            <CommunityPatternsIcon className={classes.communityPatternsIcon} />
-                            <span className={classes.btnText}>Community patterns</span>
-                        </button>
-                    </li>
                     <li className={classes.navElement}>
                         <button
                             className={classes.addNew}
@@ -113,7 +112,7 @@ export default function Navbar() {
                     </li>
                 </>}
                 {isMobile && !isLoggedIn && <span className={classes.mobileFiller} />}
-                <li className={classes.navElement}>     
+                <li className={classes.navElement}>
                     <button
                         className={classes.accountBtn}
                         onClick={() => {

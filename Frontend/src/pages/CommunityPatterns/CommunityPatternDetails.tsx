@@ -1,6 +1,6 @@
 import { CircularProgress, useMediaQuery } from "@mui/material";
 import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData, useNavigate } from "react-router-dom";
+import { Await, json, defer, useRouteLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 import classes from './CommunityPatternDetails.module.scss';
 import TabsPanelDisplay from "../../components/TabsPanelDisplay/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,10 +24,41 @@ export default function CommunityPatternDetails() {
     const dispatch = useAppDispatch();
     const token = tokenLoader();
     const navigate = useNavigate();
-    const { pattern } = useRouteLoaderData('community-pattern-details') as { pattern: Pattern };
+    const [searchParams] = useSearchParams();
+    const patternId = searchParams.get('communityPatternId') ?? '';
+    //const { pattern } = useRouteLoaderData('community-pattern-details') as { pattern: Pattern };
+    const [pattern, setPattern] = React.useState<Pattern>({} as Pattern);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const isMobile = useMediaQuery('(max-width: 760px)');
+
+    const fetchPattern = async (id: string) => {
+        try {
+            const patternData = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                'GET',
+                'Could not fetch pattern. Please try again later.',
+                token
+            );
+            setPattern(patternData);
+        } catch (error) {
+            dispatch(setError(error));
+            return;
+        }
+    };
+
+    React.useEffect(() => {
+        if (patternId) {
+            fetchPattern(patternId);
+        }
+    }
+        , []);
+
+    React.useEffect(() => {
+        if (!token) {
+            navigate('/fiber-friend/login');
+        }
+    }, [token]);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -62,7 +93,6 @@ export default function CommunityPatternDetails() {
     React.useEffect(() => {
         if (pattern) {
             // store your data in a session or local storage
-            // Why don't we use "state" and pass it down as props?
             sessionStorage.setItem('patternData', JSON.stringify(pattern));
         };
     }, [pattern]);
@@ -167,29 +197,20 @@ export default function CommunityPatternDetails() {
         </div>
     );
 }
-async function loadCommunityPatternDetails(id: string) {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            //Authorization: "Bearer " + tokenLoader(),
-        },
-    });
 
-    if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch pattern.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch pattern.' }), {
-        //   status: 500,
-        // });
-        throw json(
-            { message: 'Could not fetch pattern.' },
-            {
-                status: 500,
-            }
+async function loadCommunityPatternDetails(id: string) {
+    try {
+        const pattern = await handleRequest(
+            `${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+            "GET",
+            "Could not fetch pattern.",
+            tokenLoader(),
         );
-    } else {
-        const resData = await response.json();
-        resData.id = id;
-        return resData;
+
+        pattern.id = id;
+        return pattern;
+    } catch (error) {
+        throw error;
     }
 }
 

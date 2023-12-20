@@ -20,7 +20,7 @@ function Counters() {
     const fetchCounters = async (filters: string, page: number, pageSize: number ) => {
         try {
             const data = await handleRequest(
-                `${process.env.REACT_APP_API_URL}CounterGroup/GetCounterGroupsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
+                `${process.env.REACT_APP_API_URL}CountersGroup/GetCountersGroupsForUser/${localStorage.getItem("userId")}?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
                 "Could not fetch counters. Please try again later.",
                 tokenLoader(),
