@@ -22,6 +22,9 @@ import { loginPageTranslations } from './pages/LoginPage/LoginPage.i18n';
 import { resourcesTranslations } from './pages/Resources/Resources';
 import { countersTranslations } from './pages/Counters/Counters';
 import { sidebarAccountTranslations } from './components/SidebarAccount/SidebarAccount.i18n';
+import { passwordValidationTranslations } from './components/PasswordVaildation/PasswordValidation.i18n';
+import { navbarTranslations } from './components/Navbar/Navbar';
+import { filtersBarTranslations } from './components/FiltersBar/FiltersBar';
 
 const resources = {
   en: {
@@ -45,6 +48,9 @@ const resources = {
     Resources: resourcesTranslations.en,
     Counters: countersTranslations.en,
     SidebarAccount: sidebarAccountTranslations.en,
+    PasswordValidation: passwordValidationTranslations.en,
+    Navbar: navbarTranslations.en,
+    FiltersBar: filtersBarTranslations.en,
   },
   pl: {
     HomePage: homePageTranslations.pl,
@@ -67,6 +73,9 @@ const resources = {
     Resources: resourcesTranslations.pl,
     Counters: countersTranslations.pl,
     SidebarAccount: sidebarAccountTranslations.pl,
+    PasswordValidation: passwordValidationTranslations.pl,
+    Navbar: navbarTranslations.pl,
+    FiltersBar: filtersBarTranslations.pl,
   },
 };
 

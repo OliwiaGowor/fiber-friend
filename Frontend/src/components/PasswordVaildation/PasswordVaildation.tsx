@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 import { get } from 'http';
+import { useTranslation } from 'react-i18next';
 
 interface PasswordValidationProps {
     getPassword: (password: string) => void;
@@ -14,6 +15,7 @@ interface PasswordValidationProps {
 
 const PasswordValidation = ({ getPassword, showError }: PasswordValidationProps
 ) => {
+    const { t } = useTranslation('PasswordValidation');
     const [password, setPassword] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [showPasswordError, setShowPasswordError] = useState<boolean>(showError);
@@ -74,11 +76,11 @@ const PasswordValidation = ({ getPassword, showError }: PasswordValidationProps
                 inputProps={{
                     'aria-label': 'password',
                 }}
-                label="Password"
+                label={t("password")}
                 className={classes.formInput}
                 name='password'
                 error={showPasswordError}
-                helperText={showPasswordError ? 'Enter valid password!' : ''}
+                helperText={showPasswordError ? t("passwordError") : ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setShowPasswordError(false);
                     handlePasswordChange(e);
@@ -99,11 +101,11 @@ const PasswordValidation = ({ getPassword, showError }: PasswordValidationProps
                 }}
             />
             <ul className={classes.checklist} ref={checklistRef}>
-                <li className={`${classes.checklistItem}`}>Min. 8 characters</li>
-                <li className={`${classes.checklistItem}`}>number</li>
-                <li className={`${classes.checklistItem}`}>lowercase letter</li>
-                <li className={`${classes.checklistItem}`}>uppercase letter</li>
-                <li className={`${classes.checklistItem}`}>special character</li>
+                <li className={`${classes.checklistItem}`}>{t('minCharacters')}</li>
+                <li className={`${classes.checklistItem}`}>{t('number')}</li>
+                <li className={`${classes.checklistItem}`}>{t('lowercaseLetter')}</li>
+                <li className={`${classes.checklistItem}`}>{t('uppercaseLetter')}</li>
+                <li className={`${classes.checklistItem}`}>{t('specialCharacter')}</li>
             </ul>
         </div>
     );

@@ -26,8 +26,8 @@ internal class PatternService : IPatternService
         var toolsEntity = _mapper.Map<List<Tool>>(pattern.Tools);
         var otherSuppliesEntity = _mapper.Map<List<OtherSupply>>(pattern.OtherSupplies);
         var countersEntity = _mapper.Map<List<CountersGroup>>(pattern.Counters);
-        var filesEntity = _mapper.Map<List<MyFile>>(pattern.Photos);
-        var photosEntity = _mapper.Map<List<Photo>>(pattern.Files);
+        var filesEntity = _mapper.Map<List<MyFile>>(pattern.Files);
+        var photosEntity = _mapper.Map<List<Photo>>(pattern.Photos);
 
         var id = _patternRepo.AddPattern(patternEnity, yarnsEntity, toolsEntity, otherSuppliesEntity, countersEntity, filesEntity, photosEntity);
 

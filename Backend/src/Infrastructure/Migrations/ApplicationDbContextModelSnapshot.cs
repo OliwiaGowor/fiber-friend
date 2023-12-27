@@ -51,9 +51,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CommunityPatternId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -68,8 +65,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CommunityPatternId");
 
                     b.HasIndex("PatternId");
 
@@ -119,9 +114,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CommunityPatternId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -137,14 +129,12 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityPatternId");
-
                     b.HasIndex("PatternId");
 
                     b.ToTable("OtherSupplies");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PatternBase", b =>
+            modelBuilder.Entity("Domain.Entities.Pattern", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,9 +147,17 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAuthorial")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPlanned")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsShared")
                         .HasColumnType("bit");
@@ -172,25 +170,23 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patterns", (string)null);
+                    b.HasIndex("AuthorId");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("PatternBase");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("Patterns");
                 });
 
             modelBuilder.Entity("Domain.Entities.Photo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CommunityPatternId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
@@ -207,17 +203,20 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityPatternId");
-
                     b.HasIndex("PatternId");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ResourceId");
 
                     b.ToTable("Photos");
                 });
@@ -231,9 +230,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ConnectedCommPatternId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ConnectedPatternId")
                         .HasColumnType("uniqueidentifier");
@@ -265,8 +261,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConnectedCommPatternId");
 
                     b.HasIndex("ConnectedPatternId");
 
@@ -390,9 +384,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CommunityPatternId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Gauge")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -420,50 +411,11 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityPatternId");
-
                     b.HasIndex("PatternId");
 
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Yarns");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CommunityPattern", b =>
-                {
-                    b.HasBaseType("Domain.Entities.PatternBase");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Patterns");
-
-                    b.HasDiscriminator().HasValue("CommunityPattern");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Pattern", b =>
-                {
-                    b.HasBaseType("Domain.Entities.PatternBase");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsAuthorial")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPlanned")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Patterns");
-
-                    b.HasDiscriminator().HasValue("Pattern");
                 });
 
             modelBuilder.Entity("Domain.Entities.Counter", b =>
@@ -479,10 +431,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.CountersGroup", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", null)
-                        .WithMany("Counters")
-                        .HasForeignKey("CommunityPatternId");
-
                     b.HasOne("Domain.Entities.Pattern", "Pattern")
                         .WithMany("Counters")
                         .HasForeignKey("PatternId")
@@ -523,10 +471,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.OtherSupply", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", null)
-                        .WithMany("OtherSupplies")
-                        .HasForeignKey("CommunityPatternId");
-
                     b.HasOne("Domain.Entities.Pattern", "Pattern")
                         .WithMany("OtherSupplies")
                         .HasForeignKey("PatternId")
@@ -536,12 +480,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("Pattern");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Pattern", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "Author")
+                        .WithMany("Patterns")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("Domain.Entities.Photo", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", null)
-                        .WithMany("Photos")
-                        .HasForeignKey("CommunityPatternId");
-
                     b.HasOne("Domain.Entities.Pattern", "Pattern")
                         .WithMany("Photos")
                         .HasForeignKey("PatternId");
@@ -550,17 +501,19 @@ namespace Infrastructure.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("ProjectId");
 
+                    b.HasOne("Domain.Entities.Resource", "Resource")
+                        .WithMany()
+                        .HasForeignKey("ResourceId");
+
                     b.Navigation("Pattern");
 
                     b.Navigation("Project");
+
+                    b.Navigation("Resource");
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", "ConnectedCommPattern")
-                        .WithMany()
-                        .HasForeignKey("ConnectedCommPatternId");
-
                     b.HasOne("Domain.Entities.Pattern", "ConnectedPattern")
                         .WithMany()
                         .HasForeignKey("ConnectedPatternId")
@@ -571,8 +524,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("ConnectedCommPattern");
 
                     b.Navigation("ConnectedPattern");
 
@@ -592,7 +543,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Tool", b =>
                 {
-                    b.HasOne("Domain.Entities.PatternBase", "Pattern")
+                    b.HasOne("Domain.Entities.Pattern", "Pattern")
                         .WithMany("Tools")
                         .HasForeignKey("PatternId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -603,7 +554,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.UserSavedCommunityPattern", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", "CommunityPattern")
+                    b.HasOne("Domain.Entities.Pattern", "CommunityPattern")
                         .WithMany("SavedByUsers")
                         .HasForeignKey("CommunityPatternId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -622,10 +573,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Yarn", b =>
                 {
-                    b.HasOne("Domain.Entities.CommunityPattern", null)
-                        .WithMany("Yarns")
-                        .HasForeignKey("CommunityPatternId");
-
                     b.HasOne("Domain.Entities.Pattern", "Pattern")
                         .WithMany("Yarns")
                         .HasForeignKey("PatternId")
@@ -641,36 +588,26 @@ namespace Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Domain.Entities.CommunityPattern", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Pattern", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "Author")
-                        .WithMany("Patterns")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
             modelBuilder.Entity("Domain.Entities.CountersGroup", b =>
                 {
                     b.Navigation("Counters");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PatternBase", b =>
+            modelBuilder.Entity("Domain.Entities.Pattern", b =>
                 {
+                    b.Navigation("Counters");
+
+                    b.Navigation("Files");
+
+                    b.Navigation("OtherSupplies");
+
+                    b.Navigation("Photos");
+
+                    b.Navigation("SavedByUsers");
+
                     b.Navigation("Tools");
+
+                    b.Navigation("Yarns");
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
@@ -695,32 +632,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Resources");
 
                     b.Navigation("SavedCommPatterns");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CommunityPattern", b =>
-                {
-                    b.Navigation("Counters");
-
-                    b.Navigation("OtherSupplies");
-
-                    b.Navigation("Photos");
-
-                    b.Navigation("SavedByUsers");
-
-                    b.Navigation("Yarns");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Pattern", b =>
-                {
-                    b.Navigation("Counters");
-
-                    b.Navigation("Files");
-
-                    b.Navigation("OtherSupplies");
-
-                    b.Navigation("Photos");
-
-                    b.Navigation("Yarns");
                 });
 #pragma warning restore 612, 618
         }

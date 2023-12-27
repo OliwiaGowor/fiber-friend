@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { Await } from "react-router";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const data = {
+const tmpData = {
     totalProjects: 40,
     finishedProjects: 30,
     skeinsUsed: 100,
@@ -40,7 +40,7 @@ interface ProjectsStatisticsDto {
 }
 
 const ProjectsStatistics = () => {
-    const [data, setData] = useState<ProjectsStatisticsDto | null>(null);
+    const [data, setData] = useState<any | null>(tmpData);
     
     const fetchStatistics = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {

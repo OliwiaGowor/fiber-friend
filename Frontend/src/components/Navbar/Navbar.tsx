@@ -14,8 +14,10 @@ import logoPicture from '../../photos/yarn-ball.png';
 import classes from './Navbar.module.scss';
 import { getAuthToken } from "../../utils/auth";
 import { CommunityPatternsIcon } from "../../svg/NavigationIcons";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar() {
+    const { t } = useTranslation("Navbar");
     const isLoggedIn = getAuthToken() !== null;
     const navigate = useNavigate();
     const [openSidebar, setOpenSidebar] = useState(false);
@@ -56,7 +58,7 @@ export default function Navbar() {
                 <li className={classes.navElement}>
                     <button className={classes.communityPatternsBtn} onClick={() => navigate("/fiber-friend/community-patterns")}>
                         <CommunityPatternsIcon className={classes.communityPatternsIcon} />
-                        <span className={classes.btnText}>Community patterns</span>
+                        <span className={classes.btnText}>{t('communityPatterns')}</span>
                     </button>
                 </li>
                 {isLoggedIn && <>
@@ -131,4 +133,13 @@ export default function Navbar() {
             </div>
         </nav>
     );
+}
+
+export const navbarTranslations = {
+    en: {
+        communityPatterns: 'Community patterns',
+    },
+    pl: {
+        communityPatterns: 'Udostępnione wzory'
+    },
 }

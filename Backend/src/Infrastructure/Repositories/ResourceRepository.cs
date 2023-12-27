@@ -1,6 +1,8 @@
 using Common.Enums;
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 //TODO: implement
@@ -35,6 +37,22 @@ public class ResourceRepository : IResourceRepository
     {
         var resources = _dbContext.Resources.Where(i => i.UserId == userId);
         return resources;
+    }
+
+    public IQueryable<Resource> GetResourcesForUser(FilterModel filters, Guid userId, int page, int pageSize)
+    {
+        var query = _dbContext.Resources.AsQueryable();
+
+        if (filters.resourceType is not null)
+        {
+            query = query.Where(p => p.Type == filters.resourceType);
+        }
+
+        var patterns = query.Where(p => p.UserId == userId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+
+        return patterns;
     }
 
     public IQueryable<Resource> GetAllYarnsForUser(Guid userId)

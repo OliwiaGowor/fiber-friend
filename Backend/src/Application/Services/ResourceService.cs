@@ -1,7 +1,9 @@
-﻿using Application.DTO.Resource;
+﻿using Application.DTO.CountersGroup;
+using Application.DTO.Resource;
 using Application.Interfaces.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 
@@ -49,13 +51,13 @@ internal class ResourceService : IResourceService
         return resources;
     }
 
-    public List<ResourceDto> GetYarnsListForUser(Guid userId)
+    public List<ResourceDto> GetResourcesForUser(FilterModel? filters, Guid userId, int page, int pageSize)
     {
-        var yarns = _resourceRepo.GetAllYarnsForUser(userId)
+        var resources = _resourceRepo.GetResourcesForUser(filters, userId, page, pageSize)
             .ProjectTo<ResourceDto>(_mapper.ConfigurationProvider)
             .ToList();
 
-        return yarns;
+        return resources;
     }
 
     public object UpdateResource(NewResourceDto newResource)

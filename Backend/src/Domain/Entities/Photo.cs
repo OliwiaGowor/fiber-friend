@@ -10,4 +10,6 @@ public class Photo
     public Pattern? Pattern { get; set; }
     public Guid? ProjectId { get; set; }
     public Project? Project { get; set; }
+    public Guid? ResourceId { get; set; }
+    public Resource? Resource { get; set; }
 }

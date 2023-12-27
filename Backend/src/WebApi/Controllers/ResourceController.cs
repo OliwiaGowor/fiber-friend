@@ -1,6 +1,8 @@
-﻿using Application.DTO.Resource;
+﻿using Application.DTO.Pattern;
+using Application.DTO.Resource;
 using Application.Interfaces.Services;
 using AutoMapper;
+using Common.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +10,7 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 public class ResourceController : ControllerBase
 {
     private readonly IResourceService _resourceService;
@@ -28,13 +30,20 @@ public class ResourceController : ControllerBase
         return Ok(list);
     }
 
-    [HttpGet("GetAllYarnsForUser/{userId:Guid}")]
+    [HttpGet("GetResourcesForUser/{userId:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<ResourceDto>> GetAllYarnsForUser(Guid userId)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<ResourceDto> GetResourcesForUser([FromQuery] FilterModel? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        var list = _resourceService.GetYarnsListForUser(userId);
-        return Ok(list);
+        if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
+        var service = _resourceService.GetResourcesForUser(filters, userId, page, pageSize);
+
+        if (service is null) return NotFound();
+
+        return Ok(service);
     }
+
 
     [HttpGet("{id:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,7 +59,7 @@ public class ResourceController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult Create([FromBody] NewResourceDto newResource)
@@ -60,7 +69,7 @@ public class ResourceController : ControllerBase
         var resourceId = _resourceService.AddResource(newResource);
         newResource.Id = resourceId;
 
-        return CreatedAtRoute("GetResource", new { id = resourceId }, newResource);
+        return Ok(resourceId);
     }
 
     [HttpDelete("{id:Guid}")]

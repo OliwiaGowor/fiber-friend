@@ -3,3 +3,9 @@ export enum NeedleworkType{
     crochet,
     other,
 }
+
+export enum ResourceType{
+    tool,
+    yarn,
+    other,
+}

@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import FormControl from '@mui/material/FormControl';
 import _ from 'lodash';
 import CategoriesMenu from '../CategoriesMenu/CategoriesMenu';
+import { useTranslation } from 'react-i18next';
 
 interface FiltersBarProps {
     filters: object[];
@@ -14,6 +15,7 @@ interface FiltersBarProps {
 }
 
 const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
+    const { t } = useTranslation("FiltersBar");
     const [chosenFilters, setChosenFilters] = useState({});
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -48,7 +50,7 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
 
     return (
         <div className={classes.filtersBar}>
-            <h1 className={classes.header}>Filter by:</h1>
+            <h1 className={classes.header}>{t('header')}</h1>
             <div className={classes.filters}>
                 {filters.map((filter: any) => (
                     <div className={classes.filter} key={filter.name}>
@@ -64,7 +66,7 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
                                 value={getFilterValue(filter.name)}
                                 aria-labelledby={`${filter.name}-label`}
                             >
-                                <MenuItem value="">All</MenuItem>
+                                <MenuItem value="">{t('all')}</MenuItem>
                                 {filter.options.map((option: any) => (
                                     <MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>
                                 ))}
@@ -79,3 +81,14 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
 };
 
 export default FiltersBar;
+
+export const filtersBarTranslations = {
+    en: {
+        header: 'Filter by:',
+        all: 'All',
+    },
+    pl: {
+        header: 'Filtruj po:',
+        all: 'Wszystkie',
+    },
+}

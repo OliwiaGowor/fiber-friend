@@ -32,7 +32,7 @@ export default function CounterDetails() {
     const handleDelete = async () => {
         try {
             await handleRequest(
-                `${process.env.REACT_APP_API_URL}CounterGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                `${process.env.REACT_APP_API_URL}CountersGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
                 'DELETE',
                 'Could not delete counter. Please try again later.',
                 tokenLoader()
@@ -110,7 +110,7 @@ export default function CounterDetails() {
 }
 
 async function loadCounterDetails(id: string) {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}CounterGroup/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}CountersGroup/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: "Bearer " + tokenLoader(),

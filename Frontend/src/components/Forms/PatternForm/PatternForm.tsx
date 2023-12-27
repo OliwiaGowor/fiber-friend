@@ -28,7 +28,7 @@ interface PatternFormProps {
 }
 
 export default function PatternForm({ pattern, method }: PatternFormProps) {
-    const { t } = useTranslation("pattern");
+    const { t } = useTranslation("PatternForm");
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [type, setType] = useState<NeedleworkType>(pattern?.type ?? NeedleworkType.crochet);
@@ -43,8 +43,8 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     const [proceedSubmit, setProceedSubmit] = useState<boolean>(true);
     const [isAuthorial, setIsAuthorial] = useState<boolean>(pattern?.isAuthorial ?? false);
     const [requiredError, setRequiredError] = useState<any>(false);
-    const [selectedImages, setSelectedImages] = useState<any | null>(pattern?.photos ?? "");
-    const [selectedFiles, setSelectedFiles] = useState<any | null>(pattern?.files ?? "");
+    const [selectedImages, setSelectedImages] = useState<any | null>(pattern?.photos ?? []);
+    const [selectedFiles, setSelectedFiles] = useState<any | null>(pattern?.files ?? []);
     const [notes, setNotes] = useState<any>(pattern?.notes ?? null);
     const [dateError, setDateError] = useState<any>(null);
     const [startDate, setStartDate] = useState<any>(pattern?.startDate ?? null);
@@ -60,7 +60,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (proceedSubmit) {
+        //if (proceedSubmit) {
             const patternData: Pattern = {
                 id: pattern?.id ?? undefined,
                 name: name,
@@ -97,17 +97,17 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                 dispatch(setError(error));
                 return;
             }
-        } else {
-            return;
-        }
+        //} else {
+       //     return;
+       // }
     };
 
     //Form validation
     const validateForm = () => {
-        if (yarnsInfo.length <= 0) {
+        /*if (yarnsInfo.length <= 0) {
             setShowYarnsError(true);
             setProceedSubmit(false);
-        }
+        }*/
         if (!name) {
             setShowNameError(true);
             setProceedSubmit(false);

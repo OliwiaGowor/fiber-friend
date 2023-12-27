@@ -1,76 +1,88 @@
 @use "../../root.scss";
 
 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   font-size: 16px;
 
-      .sectionContainer {
-        padding: 32px;
-        margin: 32px 0;
-        border-radius: 10px;
-        background-color: var(--background-accents);
+  .calcContainer {
+    width: 50vw;
 
-        .formInput {
-          @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+    .sectionContainer {
+      padding: 32px;
+      margin: 32px 0;
+      border-radius: 10px;
+      background-color: var(--background-accents);
+
+      .formInput {
+        @include root.input($margin-lr: 0, $margin-tb: 20px, $width: 100%);
+      }
+
+      .datePickers {
+        display: block;
+
+        .dateInput {
+          @include root.input($margin-lr: 0, $margin-tb: 10px, $width: 100%);
+
+          margin-top: 20px;
         }
+      }
 
-        .datePickers {
-          display: block;
+      .typeToggleContainer {
+        margin: 20px 0;
+        width: 100%;
 
-          .dateInput {
-            @include root.input($margin-lr: 0, $margin-tb: 10px, $width: 100%);
-
-            margin-top: 20px;
-          }
-        }
-
-        .typeToggleContainer {
-          margin: 20px 0;
+        .typeToggle {
           width: 100%;
-
-          .typeToggle {
-            width: 100%;
-          }
         }
+      }
 
-        .toggleButton {
-          width: 100%;
-          color: var(--text-color-dark);
-          font-size: 12px;
+      .toggleButton {
+        width: 100%;
+        color: var(--text-color-dark);
+        font-size: 12px;
 
-          &:hover {
-            background-color: var(--accent-color-btn);
-            transition: 0.5s;
-          }
+        &:hover {
+          background-color: var(--accent-color-btn);
+          transition: 0.5s;
         }
+      }
 
-        .categoriesContainer {
-          width: 100%;
-          margin-top: 40px;
-          margin-bottom: 20px;
-        }
+      .categoriesContainer {
+        width: 100%;
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
 
-        .additionalText {
-          color: rgb(87, 87, 87);
-          font-size: 16px;
-        }
+      .additionalText {
+        color: rgb(87, 87, 87);
+        font-size: 16px;
+      }
 
-        .notesField {
-          width: 100%;
-          margin-top: 40px;
-          margin-bottom: 40px;
-        }
+      .notesField {
+        width: 100%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
 
-        .error {
-          color: #d32f2f;
-        }
+      .error {
+        color: #d32f2f;
+      }
 
-        .patternSelect {
-          @include root.input($margin-lr: 0, $margin-tb: 20px, $width: calc(40% - 20px));
-        }
-      
-    .submitBtn {
-      @include root.button($margin-tb: 0, $margin-lr: 0);
+      .patternSelect {
+        @include root.input(
+          $margin-lr: 0,
+          $margin-tb: 20px,
+          $width: calc(40% - 20px)
+        );
+      }
+
+      .submitBtn {
+        @include root.button($margin-tb: 0, $margin-lr: 0);
+      }
     }
   }
 }
@@ -98,7 +110,7 @@
             margin: 20px 0;
             width: calc(40% - 20px);
           }
-  
+
           .toggleButton {
             font-size: 14px;
           }

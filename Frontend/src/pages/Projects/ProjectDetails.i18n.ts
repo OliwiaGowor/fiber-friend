@@ -30,7 +30,7 @@ export const projectDetailsTranslations = {
         category: 'Kategoria: ',
         startDate: 'Data rozpoczęcia: ',
         endDate: 'Data zakończenia: ',
-        yarnsSectionHeader: 'Przędze',
+        yarnsSectionHeader: 'Włóczki',
         photosSectionHeader: 'Zdjęcia',
         patternsAndNotesSectionHeader: 'Wzory i notatki',
         patterns: 'Wzory',

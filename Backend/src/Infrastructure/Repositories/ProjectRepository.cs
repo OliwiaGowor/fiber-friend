@@ -78,9 +78,9 @@ public class ProjectRepository : IProjectRepository
 
         if (filters != null)
         {
-            if (filters.Type is not null)
+            if (filters.needleworkType is not null)
             {
-                query = query.Where(p => p.Type == filters.Type);
+                query = query.Where(p => p.Type == filters.needleworkType);
             }
 
             if (filters.category is not null)

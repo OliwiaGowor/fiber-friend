@@ -92,9 +92,9 @@ public class PatternRepository : IPatternRepository
     {
         var query = _dbContext.Patterns.AsQueryable();
 
-        if (filters.Type is not null)
+        if (filters.needleworkType is not null)
         {
-            query = query.Where(p => p.Type == filters.Type);
+            query = query.Where(p => p.Type == filters.needleworkType);
         }
 
         if (filters.category is not null)

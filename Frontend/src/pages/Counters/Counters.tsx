@@ -1,6 +1,4 @@
-import CircularProgress from "@mui/material/CircularProgress";
-import { Suspense } from "react";
-import { useRouteLoaderData, Await, json, defer, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Tiles from "../../components/Tiles/Tiles";
 import classes from './Counters.module.scss'
 import { tokenLoader } from "../../utils/auth";

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { defer, json } from "react-router-dom";
 import classes from './StatisticsPage.module.scss'
 import dayjs, { Dayjs } from 'dayjs';
@@ -20,31 +20,62 @@ const statisticsTypes = [
 
 export default function StatisticsPage() {
     const { t } = useTranslation("StatisticsPage");
+    const dispatch = useAppDispatch();
     const today = new Date();
     const [type, setType] = useState(statisticsTypes[0]);
     const [timePeriod, setTimePeriod] = useState("monthly");
+    const [timePeriodStart, setTimePeriodStart] = useState(dayjs(today).startOf('month').toISOString().slice(10));
 
-    const handleDateChange = async (date: Dayjs | string) => {
-        //TODO: format to month and/or year
-        let url = '';
-
-        const response = await fetch(url, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: "Bearer" + getAuthToken(),
-            },
-            body: JSON.stringify(date),
-        });
-
-        if (response.status === 422) {
-            return response;
+    const getTimePeriodEnd = (date: Date | string) => {
+        if (timePeriod === "monthly") {
+            return dayjs(date).endOf('month').toISOString().slice(10);
         }
-
-        if (!response.ok) {
-            throw json({ message: 'Could not save project.' }, { status: 500 });
+        else if (timePeriod === "yearly") {
+            return dayjs(date).endOf('year').toISOString().slice(10);
         }
-        const data = await response.json();
+        else if (timePeriod === "all") {
+            return new Date("30.12.9999").toString().slice(10);
+        }
+    };
+
+    const getTimePeriodStart = (date: Date | string) => {
+        if (timePeriod === "monthly") {
+            return dayjs(date).startOf('month').toISOString().slice(10);
+        }
+        else if (timePeriod === "yearly") {
+            return dayjs(date).startOf('year').toISOString().slice(10);
+        }
+        else if (timePeriod === "all") {
+            return new Date("01.01.0001").toISOString().slice(10);
+        }
+        else {
+            return dayjs(date).toISOString().slice(10);
+        }
+    };
+
+
+    const handleFetchData = async () => {
+        try {
+            const data = await handleRequest(
+                `ProjectStatistics/${localStorage.getItem("userId")}/${timePeriodStart}/${getTimePeriodEnd(timePeriodStart)}`, //TODO:Add url
+                "GET",
+                "Could not fetch statistics. Please try again later.",
+                getAuthToken()
+            );
+            return data;
+        } catch (error) {
+            dispatch(setError(error));
+            return;
+        }
+    }
+
+    /*useEffect(() => {
+        handleFetchData();
+    }, []);*/
+    
+    const handleDateChange = async (date: Date | string) => {
+        setTimePeriodStart(getTimePeriodStart(date));
+        handleFetchData();
     };
 
     const handleRenderStatistics = () => {
@@ -103,7 +134,7 @@ export default function StatisticsPage() {
                         {timePeriod === "monthly" &&
                             <DateCalendar
                                 className={classes.calendar}
-                                defaultValue={dayjs(today)}
+                                //defaultValue={dayjs(today)}
                                 views={['month', 'year']}
                                 openTo="month"
                                 onMonthChange={handleDateChange}
@@ -111,7 +142,7 @@ export default function StatisticsPage() {
                         {timePeriod === "yearly" &&
                             <DateCalendar
                                 className={classes.calendar}
-                                defaultValue={dayjs(today)}
+                                //defaultValue={dayjs(today)}
                                 views={['year']}
                                 openTo="year"
                                 onYearChange={handleDateChange}
@@ -129,29 +160,4 @@ export default function StatisticsPage() {
             </div>
         </div>
     );
-}
-/////TODO ??????????????????????????????????????????????????
-async function loadStatistics(dispatch: ReturnType<typeof useAppDispatch>) {
-    try {
-        const data = await handleRequest(
-            ``, //TODO:Add url
-            "GET",
-            "Could not fetch statistics. Please try again later.",
-            getAuthToken()
-        );
-        return data;
-    } catch (error) {
-        dispatch(setError(error));
-        return;
-    }
-}
-
-export async function loader(dispatch: ReturnType<typeof useAppDispatch>) {
-    const statistics = await Promise.all([
-        loadStatistics(dispatch)
-    ]);
-
-    return defer({
-        statistics,
-    });
 }

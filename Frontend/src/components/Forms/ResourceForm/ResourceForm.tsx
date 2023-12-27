@@ -12,6 +12,7 @@ import { tokenLoader } from "../../../utils/auth";
 import { useAppDispatch } from '../../../utils/hooks';
 import { handleRequest } from "../../../utils/handleRequestHelper";
 import { setError } from "../../../reducers/errorSlice";
+import { ResourceType } from "../../../DTOs/Enums";
 
 interface ResourceFormProps {
     resource?: any;
@@ -21,7 +22,7 @@ interface ResourceFormProps {
 const ResourceForm = ({ resource, method }: ResourceFormProps) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const [type, setType] = React.useState(resource?.type ?? 'yarn');
+    const [type, setType] = React.useState(resource?.type ?? ResourceType.yarn);
     const [name, setName] = React.useState(resource?.name ?? '');
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
     const [showQuantityError, setShowQuantityError] = React.useState<boolean>(false);
@@ -46,7 +47,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         let resourceData;
-        if (type === "yarn") {
+        if (type === ResourceType.yarn) {
             resourceData = {
                 name: name,
                 type: type,
@@ -56,8 +57,9 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                 skeinWeight: skeinWeight,
                 skeinLength: skeinLength,
                 notes: notes,
+                userId: localStorage.getItem('userId'),
             };
-        } else if (type === 'tool') {
+        } else if (type === ResourceType.tool) {
             resourceData = {
                 name: name,
                 type: type,
@@ -65,6 +67,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                 toolSize: toolSize,
                 toolType: toolType,
                 notes: notes,
+                userId: localStorage.getItem('userId'),
             };
         } else {
             resourceData = {
@@ -72,6 +75,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                 type: type,
                 quantity: quantity,
                 notes: notes,
+                userId: localStorage.getItem('userId'),
             };
         }
 
@@ -108,7 +112,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
     };
 
     const renderFormElements = () => {
-        if (type === 'yarn') {
+        if (type === ResourceType.yarn) {
             return (
                 <>
                     <div className={classes.additionalInfo}>
@@ -170,7 +174,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                     </div>
                 </>
             );
-        } else if (type === 'tool') {
+        } else if (type === ResourceType.tool) {
             return (
                 <>
                     <div className={classes.additionalInfo}>
@@ -234,7 +238,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                                 className={classes.typeToggle}
                                 value={type}
                             >
-                                <ToggleButton value="yarn" className={classes.toggleButton} aria-label="yarn" disableRipple
+                                <ToggleButton value={ResourceType.yarn} className={classes.toggleButton} aria-label="yarn" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -243,7 +247,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                                     }}>
                                     Yarn
                                 </ToggleButton>
-                                <ToggleButton value="tool" className={classes.toggleButton} aria-label="tool" disableRipple
+                                <ToggleButton value={ResourceType.tool} className={classes.toggleButton} aria-label="tool" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {
@@ -252,7 +256,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                                     }}>
                                     Tool
                                 </ToggleButton>
-                                <ToggleButton value="other" className={classes.toggleButton} aria-label="other" disableRipple
+                                <ToggleButton value={ResourceType.other} className={classes.toggleButton} aria-label="other" disableRipple
                                     sx={{
                                         backgroundColor: "var(--background-color)",
                                         '&.Mui-selected, &.Mui-selected:hover': {

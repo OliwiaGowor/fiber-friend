@@ -89,9 +89,8 @@ export default function PhotosDisplay(props: PhotosDisplayProps) {
                         photo !== null && <SwiperSlide key={index} className={classes.photoSlide}>
                             <img
                                 className={classes.photo}
-                                src={`${photo?.src}`}
-                                srcSet={`${photo?.src}`}
                                 alt={`Image ${index + 1}`}
+                                src={`data:${photo.type};base64,${photo.content}`}
                                 loading="eager"
                                 width={displayWidth()}
                                 height={displayHeight()}

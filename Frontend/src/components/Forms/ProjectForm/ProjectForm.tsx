@@ -136,12 +136,10 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
         });
 
         if (proceedSubmit) {
-            const projectData: Project = {
-                id: project?.id ?? undefined,
+            const projectData: any = {
                 name: name,
                 type: type,
                 category: category ?? "Other",
-                yarns: {...yarns, projectId: project.id ?? null},
                 startDate: startDate,
                 endDate: endDate,
                 photos: formPhotos,
@@ -151,6 +149,13 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                 finished: endDate !== null ? true : false,
                 userId: localStorage.getItem('userId') ?? "",
             };
+
+            if (project) {
+                projectData.id = project?.id;
+                projectData.yarns = yarns.map((yarn: any) => {return {...yarn, projectId: project?.id }});
+            } else {
+                projectData.yarns = [...yarns];
+            }
 
             let url = method === "POST" ?
                 `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
@@ -308,7 +313,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                         <p className={classes.additionalText}>Add yarns to see more options</p>
                         <BasicTabsForm
                             showError={showYarnsError}
-                            getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }} 
+                            getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }}
                             defaultValue={yarns}
                             type="yarn"
                         />

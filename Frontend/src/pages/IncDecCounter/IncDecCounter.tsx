@@ -87,7 +87,7 @@ export default function IncDecCounter() {
         } else {
             return (
                 <div className={classes.resultContainer}>
-                    <div>Increase by</div>
+                    <div>Increase by:</div>
                     <div></div>
                 </div>
             )
@@ -96,85 +96,87 @@ export default function IncDecCounter() {
 
     return (
         <div className={classes.container}>
-            <h1>Stitch counter</h1>
-            <div className={classes.typeToggleContainer}>
-                <ToggleButtonGroup
-                    value={type}
-                    exclusive
-                    onChange={(event, newType) => { setType(newType) }}
-                    aria-label="text alignment"
-                    id="types"
-                    className={classes.typeToggle}
-                >
-                    <ToggleButton value={"decrease"} className={classes.toggleButton} aria-label="decrease" disableRipple
-                        sx={{
-                            backgroundColor: "var(--background-color)",
-                            '&.Mui-selected, &.Mui-selected:hover': {
-                                backgroundColor: "var(--main-color-medium)",
-                            }
-                        }}>
-                        Decrease
-                    </ToggleButton>
-                    <ToggleButton value={"increase"} className={classes.toggleButton} aria-label="increase" disableRipple
-                        sx={{
-                            backgroundColor: "var(--background-color)",
-                            '&.Mui-selected, &.Mui-selected:hover': {
-                                backgroundColor: "var(--main-color-medium)",
-                            }
-                        }}>
-                        Increase
-                    </ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-            <div className={classes.sectionContainer}>
-                <div>Current number of stitches</div>
-                <TextField
-                    id="name"
-                    inputProps={{
-                        'aria-label': 'name',
-                    }}
-                    label="Number of stitches"
-                    className={classes.formInput}
-                    type='number'
-                    name='name'
-                    onChange={(e) => { setCurrStitches(Number(e.target.value)) }}
-                    value={currStitches}
-                />
-                <div>Desired number of stitches</div>
-                <TextField
-                    id="name"
-                    inputProps={{
-                        'aria-label': 'name',
-                    }}
-                    label="Number of stitches"
-                    className={classes.formInput}
-                    type='number'
-                    name='name'
-                    onChange={(e) => { setDesStitches(Number(e.target.value)) }}
-                    value={desStitches}
-                />
-                <div>Number of rows with {type === "decrease" ? "decreases" : "increases"}</div>
-                <TextField
-                    id="name"
-                    inputProps={{
-                        'aria-label': 'name',
-                    }}
-                    label="Number of rows"
-                    className={classes.formInput}
-                    type='number'
-                    name='name'
-                    onChange={(e) => { setNumOfRows(Number(e.target.value)) }}
-                    value={numOfRows}
-                />
-                <Button
-                    className={classes.submitBtn}
-                    onClick={() => { calcDecrease() }}
+            <div className={classes.calcContainer}>
+                <h1>Stitch counter</h1>
+                <div className={classes.typeToggleContainer}>
+                    <ToggleButtonGroup
+                        value={type}
+                        exclusive
+                        onChange={(event, newType) => { setType(newType) }}
+                        aria-label="text alignment"
+                        id="types"
+                        className={classes.typeToggle}
+                    >
+                        <ToggleButton value={"decrease"} className={classes.toggleButton} aria-label="decrease" disableRipple
+                            sx={{
+                                backgroundColor: "var(--background-color)",
+                                '&.Mui-selected, &.Mui-selected:hover': {
+                                    backgroundColor: "var(--main-color-medium)",
+                                }
+                            }}>
+                            Decrease
+                        </ToggleButton>
+                        <ToggleButton value={"increase"} className={classes.toggleButton} aria-label="increase" disableRipple
+                            sx={{
+                                backgroundColor: "var(--background-color)",
+                                '&.Mui-selected, &.Mui-selected:hover': {
+                                    backgroundColor: "var(--main-color-medium)",
+                                }
+                            }}>
+                            Increase
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+                <div className={classes.sectionContainer}>
+                    <div>Current number of stitches</div>
+                    <TextField
+                        id="name"
+                        inputProps={{
+                            'aria-label': 'name',
+                        }}
+                        label="Number of stitches"
+                        className={classes.formInput}
+                        type='number'
+                        name='name'
+                        onChange={(e) => { setCurrStitches(Number(e.target.value)) }}
+                        value={currStitches}
+                    />
+                    <div>Desired number of stitches</div>
+                    <TextField
+                        id="name"
+                        inputProps={{
+                            'aria-label': 'name',
+                        }}
+                        label="Number of stitches"
+                        className={classes.formInput}
+                        type='number'
+                        name='name'
+                        onChange={(e) => { setDesStitches(Number(e.target.value)) }}
+                        value={desStitches}
+                    />
+                    <div>Number of rows with {type === "decrease" ? "decreases" : "increases"}</div>
+                    <TextField
+                        id="name"
+                        inputProps={{
+                            'aria-label': 'name',
+                        }}
+                        label="Number of rows"
+                        className={classes.formInput}
+                        type='number'
+                        name='name'
+                        onChange={(e) => { setNumOfRows(Number(e.target.value)) }}
+                        value={numOfRows}
+                    />
+                    <Button
+                        className={classes.submitBtn}
+                        onClick={() => { calcDecrease() }}
 
-                >
-                    Calculate!
-                </Button>
-                <div className={classes.resultContainer}>
-
+                    >
+                        Calculate!
+                    </Button>
+                    <div className={classes.resultContainer}>
+                        { }
+                    </div>
                 </div>
             </div>
         </div>

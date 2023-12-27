@@ -18,7 +18,7 @@ namespace Application.DTO.Photo
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.Content, opt => opt.MapFrom(s => s.Content))
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))
-                .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.PatternId ?? s.ProjectId));
+                .ForMember(d => d.ParentId, opt => opt.MapFrom(s => s.PatternId ?? s.ProjectId ?? s.ResourceId));
         }
     }
 }

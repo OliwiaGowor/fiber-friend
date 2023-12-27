@@ -5,13 +5,13 @@ import { Await } from "react-router";
 import { PieChart } from '@mui/x-charts/PieChart';
 
 const tmpData = {
-    totalProjects: 40,
-    finishedProjects: 30,
+    totalPatterns: 40,
+    finishedPatterns: 30,
     skeinsUsed: 100,
     mostUsedTool: "3mm",
     mostUsedStitch: "single crochet",
     mostCommonCategory: "top",
-    typeOfProjects: [
+    typeOfPatterns: [
         {
             id: 0,
             value: 50,
@@ -39,7 +39,7 @@ interface PatternsStatisticsDto {
 }
 
 const PatternsStatistics = () => {
-    const [data, setData] = useState<PatternsStatisticsDto | null>(null);
+    const [data, setData] = useState<any | null>(tmpData);
 
     const fetchStatistics = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
@@ -53,9 +53,9 @@ const PatternsStatistics = () => {
         setData(data);
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         fetchStatistics();
-    }, []);
+    }, []);*/
 
     return (
         <div className={classes.container}>

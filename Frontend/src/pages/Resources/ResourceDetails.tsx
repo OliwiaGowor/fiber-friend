@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import PhotosDisplay from "../../components/PhotosDisplay/PhotosDisplay";
 import TextDisplay from "../../components/TextEditor/TextDisplay";
 import classes from './ResourceDetails.module.scss';
-import { getAuthToken } from '../../utils/auth';
+import { getAuthToken, tokenLoader } from '../../utils/auth';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from '../../utils/handleRequestHelper';
@@ -176,7 +176,7 @@ async function loadResourceDetails(id: string) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            Authoriaztion: "Bearer " + getAuthToken(),
+            Authoriaztion: "Bearer " + tokenLoader(),
         },
     });
 
