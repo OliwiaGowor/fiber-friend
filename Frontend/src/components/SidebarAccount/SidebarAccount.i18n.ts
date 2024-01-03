@@ -10,6 +10,7 @@ export const sidebarAccountTranslations = {
         settings: "Settings",
         logOut: "Log out",
         email: "Email",
+        stitchCounter: "Stitch Counter",
     },
     pl: {
         fiberFriend: "Fiber Friend",
@@ -22,5 +23,6 @@ export const sidebarAccountTranslations = {
         settings: "Ustawienia",
         logOut: "Wyloguj się",
         email: "Email",
+        stitchCounter: "Licznik oczek",
     }
 }

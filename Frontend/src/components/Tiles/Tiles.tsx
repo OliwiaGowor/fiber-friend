@@ -32,7 +32,6 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   const footer = document.getElementsByTagName('footer')[0];
   const pageSize = 2;
 
-  //FIXME: infinite scroll is infiniting
   const filtersToString = () => {
     let filtersString = '';
 
@@ -146,7 +145,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
       );
     }
   };
-//FIXME: ujednolicic do author
+
   return (
     <div className={classes.container}>
       {filters && <FiltersBar filters={filters} applyFilters={setChosenFilters} />}

@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from "react";
-import { Await, defer, json, Link, redirect, useLocation, useRouteLoaderData } from "react-router-dom";
+import { Await, Link } from "react-router-dom";
 import MiniaturesList from "../../components/MiniaturesList/MiniaturesList";
 import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';

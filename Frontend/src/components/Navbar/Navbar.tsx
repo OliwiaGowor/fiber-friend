@@ -31,7 +31,7 @@ export default function Navbar() {
     };
 
     const handleClickAdd = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget); //TODO: add closing on clicking again
+        setAnchorEl(event.currentTarget); 
     };
 
     const handleCloseAdd = () => {

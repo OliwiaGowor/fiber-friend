@@ -22,7 +22,6 @@ import { useAppDispatch } from '../../../utils/hooks';
 import { handleRequest } from "../../../utils/handleRequestHelper";
 import { setError } from "../../../reducers/errorSlice";
 import { NeedleworkType } from "../../../DTOs/Enums";
-import { Project } from "../../../DTOs/Project";
 import { MyFile } from "../../../DTOs/MyFile";
 
 interface ProjectFormProps {
@@ -55,21 +54,14 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
     const fetchAvailablePatterns = React.useCallback(async () => {
         try {
             const data = await handleRequest(
-                `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
-                'GET',
+                process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
+                    `${process.env.REACT_APP_API_URL}Pattern/GetAllPatternsForUser/${localStorage.getItem("userId")}`,
+                "GET",
                 "Could not fetch available patterns. Please try again later.",
                 token
             );
 
-            const loadedPatterns = [];
-
-            for (const key in data) {
-                loadedPatterns.push({
-                    id: key,
-                    name: data[key].name,
-                });
-            }
-            setPatterns(loadedPatterns);
+            setPatterns(data);
 
         } catch (error) {
             dispatch(setError(error));
@@ -78,7 +70,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
     React.useEffect(() => {
         fetchAvailablePatterns();
-    }, [fetchAvailablePatterns]);
+    }, []);
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {

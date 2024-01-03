@@ -14,6 +14,7 @@ import logoPicture from '../../photos/yarn-ball-pink.png';
 import { EmailIcon, FacebookIcon } from '../../svg/MediaIcons';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useTranslation } from 'react-i18next';
+import AlignVerticalCenterIcon from '@mui/icons-material/AlignVerticalCenter';
 
 function SidebarAccount({ open, getOpen }: any) {
     const { t } = useTranslation("SidebarAccount");
@@ -79,6 +80,10 @@ function SidebarAccount({ open, getOpen }: any) {
                     <li className={classes.element} onClick={() => handleClick('statistics')}>
                         <InsightsIcon />
                         <div className={classes.text}>{t("statistics")}</div>
+                    </li>
+                    <li className={classes.element} onClick={() => handleClick('/fiber-friend/stitch-counter')}>
+                        <AlignVerticalCenterIcon />
+                        <div className={classes.text}>{t("stitchCounter")}</div>
                     </li>
                     <span className={classes.divider} />
                     <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/settings')}>

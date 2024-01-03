@@ -172,7 +172,6 @@ export const PatternPdf = () => {
         return supplies;
     };
 
-    //FIXME: fix url
     const Photo = () => <Image src={`data:${photos[0]?.type};base64,${photos[0]?.content}`} style={styles.photo} />;
 
     return (
@@ -198,7 +197,7 @@ export const PatternPdf = () => {
                                     <Text >{`${category}`}</Text>
                                 </Text>
                                 <Text id="attributeName">Created By:
-                                    <Text >{`${author}`}</Text>
+                                    <Text >{`${author.username}`}</Text>
                                 </Text>
                             </View>
                         </View>

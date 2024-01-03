@@ -10,7 +10,7 @@ import Modal from '@mui/material/Modal';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import classes from './PhotosDisplay.module.scss';
 import FullScreenDisplay from '../FullScreenDisplay/FullScreenDisplay';
-//TODO: fix handling base64
+
 interface PhotosDisplayProps {
     data: any;
     miniatureSize?: string;

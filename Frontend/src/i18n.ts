@@ -25,6 +25,7 @@ import { sidebarAccountTranslations } from './components/SidebarAccount/SidebarA
 import { passwordValidationTranslations } from './components/PasswordVaildation/PasswordValidation.i18n';
 import { navbarTranslations } from './components/Navbar/Navbar';
 import { filtersBarTranslations } from './components/FiltersBar/FiltersBar';
+import { communityPatternsTranslations } from './pages/CommunityPatterns/CommunityPatterns.i18n';
 
 const resources = {
   en: {
@@ -51,6 +52,7 @@ const resources = {
     PasswordValidation: passwordValidationTranslations.en,
     Navbar: navbarTranslations.en,
     FiltersBar: filtersBarTranslations.en,
+    CommunityPatterns: communityPatternsTranslations.en,
   },
   pl: {
     HomePage: homePageTranslations.pl,
@@ -76,6 +78,7 @@ const resources = {
     PasswordValidation: passwordValidationTranslations.pl,
     Navbar: navbarTranslations.pl,
     FiltersBar: filtersBarTranslations.pl,
+    CommunityPatterns: communityPatternsTranslations.pl,
   },
 };
 

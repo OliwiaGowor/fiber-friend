@@ -7,8 +7,6 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from "@mui/material/Collapse";
-//TODO: smaller miniatures, for mobile add scroll - only one row
-//TODO: add info that the first photo would be main one
 
 interface FileInputProps {
   onlyImg: boolean;

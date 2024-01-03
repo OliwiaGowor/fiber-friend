@@ -21,9 +21,9 @@ export const categories = [
             { category: 'Accesories',
                 children: [
                     {category: 'Headwear'},
-                    {category: 'Socks & slippers'},
-                    {category: 'Mittens & gloves'},
-                    {category: 'Scarves & shawls'},
+                    {category: 'SocksSlippers'},
+                    {category: 'MittensGloves'},
+                    {category: 'ScarvesShawls'},
                     {category: 'Jewelry'},
                 ] },
                 { category: 'Dresses'},
@@ -45,7 +45,7 @@ export const categories = [
         children: [
             { category: 'Blankets' },
             { category: 'Figurines' },
-            { category: 'Wall decorations' },
+            { category: 'WallDecorations' },
             { category: 'Pillows' },
             { category: 'Other' },
         ]

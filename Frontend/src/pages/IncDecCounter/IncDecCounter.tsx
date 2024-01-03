@@ -12,6 +12,7 @@ export default function IncDecCounter() {
     const [currStitches, setCurrStitches] = useState<number>(0);
     const [desStitches, setDesStitches] = useState<number>(0);
     const [numOfRows, setNumOfRows] = useState<number>(0);
+    const [showResults, setShowResults] = useState<boolean>(false);
 
     const calcDecrease = () => {
         let result: { stitchPerRow: number[], rows: { everyStitch: number, rest: number }[] } = { stitchPerRow: [], rows: [] };
@@ -71,24 +72,33 @@ export default function IncDecCounter() {
 
     const handleResultRender = () => {
         if (type === "decrease") {
+            const result = calcDecrease();
             return (
-                <div className={classes.resultContainer}>
-                    <div>Decrease by:</div>
-                    {
-                        calcDecrease().stitchPerRow.map((stitch, index) => {
-                            return (
-                                <div key={index}>{stitch}</div>
-                            )
-                        })
-                    }
-                    <div></div>
+                <div className={classes.sectionContainer}>
+                    <h2>Result</h2>
+                    {result.rows.map((row, index) => {
+                        return <div>
+                            <p className={classes.rowNumber}>Row {index + 1}</p>
+                            <p key={index}>Decrease {result.stitchPerRow[index]} stitches</p>
+                            <p>Decrease every {row.everyStitch} stitches</p>
+                            <p>You will be left with {row.rest} stitches at the end</p>
+                        </div>
+                    })}
                 </div>
             )
         } else {
+            const result = calcIncrease();
             return (
-                <div className={classes.resultContainer}>
-                    <div>Increase by:</div>
-                    <div></div>
+                <div className={classes.sectionContainer}>
+                    <h2>Result</h2>
+                    {result.rows.map((row, index) => {
+                        return <div>
+                            <p className={classes.rowNumber}>Row {index + 1}</p>
+                            <p key={index}>Increase {result.stitchPerRow[index]} stitches</p>
+                            <p>Increase every {row.everyStitch} stitches</p>
+                            <p>You will be left with {row.rest} stitches at the end</p>
+                        </div>
+                    })}
                 </div>
             )
         }
@@ -169,15 +179,15 @@ export default function IncDecCounter() {
                     />
                     <Button
                         className={classes.submitBtn}
-                        onClick={() => { calcDecrease() }}
-
+                        onClick={() => { setShowResults(true) }}
                     >
                         Calculate!
                     </Button>
-                    <div className={classes.resultContainer}>
-                        { }
-                    </div>
+
                 </div>
+            </div>
+            <div className={classes.resultContainer}>
+                {showResults ? handleResultRender() : null}
             </div>
         </div>
     );

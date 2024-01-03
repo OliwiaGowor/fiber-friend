@@ -23,7 +23,6 @@ import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
 import { useTranslation } from "react-i18next";
 
-//TODO: for generating pdfs ask if attach added pattern files to it
 export default function PatternDetails() {
     const { t } = useTranslation("PatternDetails");
     const token = tokenLoader();
@@ -59,7 +58,6 @@ export default function PatternDetails() {
     };
 
     const handleShare = async () => {
-        //TODO: add popup with informatoon about sharing
         const shareData = {
             id: pattern.id,
             name: pattern.name,

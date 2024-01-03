@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { defer, json, useNavigate, useRouteLoaderData } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import classes from './ChangePasswordPage.module.scss'
 import { tokenLoader } from "../../utils/auth";
 import { Button, TextField } from "@mui/material";
@@ -7,7 +7,7 @@ import PasswordValidation from "../../components/PasswordVaildation/PasswordVail
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
-//TODO: write post funtcion to change password 
+
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

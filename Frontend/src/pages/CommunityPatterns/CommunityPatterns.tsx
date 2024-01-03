@@ -35,17 +35,15 @@ const CommunityPatterns = () => {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>PATTERNS</h1>
+            <h1 className={classes.header}>{t("communityPatterns")}</h1>
             <Tiles
-                link='new-pattern'
-                addText='New pattern'
                 fetchData={fetchCommunityPatterns}
                 addTile={false}
                 filters={patternsFilters}
             />
             <Fab
                 className={classes.upFab}
-                aria-label="add"
+                aria-label="to top"
                 onClick={handleGoToTop}
             >
                 <NavigationIcon />

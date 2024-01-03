@@ -57,7 +57,7 @@ export default function StatisticsPage() {
     const handleFetchData = async () => {
         try {
             const data = await handleRequest(
-                `ProjectStatistics/${localStorage.getItem("userId")}/${timePeriodStart}/${getTimePeriodEnd(timePeriodStart)}`, //TODO:Add url
+                `ProjectStatistics/${localStorage.getItem("userId")}/${timePeriodStart}/${getTimePeriodEnd(timePeriodStart)}`,
                 "GET",
                 "Could not fetch statistics. Please try again later.",
                 getAuthToken()

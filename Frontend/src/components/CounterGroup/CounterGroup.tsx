@@ -17,9 +17,6 @@ import { setError } from '../../reducers/errorSlice';
 import { handleRequest } from '../../utils/handleRequestHelper';
 import { useTranslation } from 'react-i18next';
 
-//TODO: smaller tiles on mobile and horizontal scroll
-//FIXME: style buttons
-
 interface CounterGroupProps {
     defaultValue?: object;
     parentId: string;

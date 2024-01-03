@@ -31,7 +31,8 @@ export default function CommunityPatternDetails() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const isMobile = useMediaQuery('(max-width: 760px)');
-
+console.log(pattern.name);
+console.log(searchParams)
     const fetchPattern = async (id: string) => {
         try {
             const patternData = await handleRequest(
@@ -40,6 +41,7 @@ export default function CommunityPatternDetails() {
                 'Could not fetch pattern. Please try again later.',
                 token
             );
+            console.log(patternData )
             setPattern(patternData);
         } catch (error) {
             dispatch(setError(error));
@@ -51,8 +53,7 @@ export default function CommunityPatternDetails() {
         if (patternId) {
             fetchPattern(patternId);
         }
-    }
-        , []);
+    }, [patternId]);
 
     React.useEffect(() => {
         if (!token) {
@@ -66,13 +67,6 @@ export default function CommunityPatternDetails() {
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const pagination = {
-        clickable: true,
-        renderBullet: function (index: number, className: string) {
-            return '<span class="' + className + '">' + "</span>";
-        },
     };
 
     const handleDelete = async () => {
@@ -185,8 +179,6 @@ export default function CommunityPatternDetails() {
                                 <h2 className={classes.sectionHeader}>Files and notes</h2>
                                 <h3 className={classes.attributeName}>Files</h3>
                                 <FilesDisplay files={pattern.files} />
-                                <h3 className={classes.attributeName}>Counters</h3>
-                                <div className={classes.counters}><CounterGroup parentId={pattern.id ?? ''} /></div>
                                 <h3 className={classes.attributeName}>Notes</h3>
                                 <div className={classes.notes}><TextDisplay defaultValue={pattern.notes} /></div>
                             </div>

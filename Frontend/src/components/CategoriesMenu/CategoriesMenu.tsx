@@ -79,7 +79,6 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
         );
     };
 
-    //generates a back button to return to the previous category in the history stack. It is only displayed when there is a history stack.
     const generateBackButton = () => {
         if (currentCategory != categories) {
             return (
@@ -96,7 +95,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
                             ));
                     }}>
                         <KeyboardArrowLeftIcon sx={{ fontSize: '16px' }} />
-                        <div className={classes.btnText}>Back</div>
+                        <div className={classes.btnText}>{t('back')}</div>
                     </button>
                 </MenuItem>
             );
