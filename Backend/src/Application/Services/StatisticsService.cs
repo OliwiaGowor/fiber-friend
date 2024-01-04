@@ -24,26 +24,32 @@ internal class StatisticsService : IStatisticsService
 
         var statistics = new ProjectsStatisticsDto();
 
-        statistics.ActiveProjects = projects.Count(p => p.Finished == false);
+        statistics.ActiveProjects = projects.Count();
         statistics.FinishedProjects = projects.Count(p => p.Finished == true);
 
-        statistics.SkeinsUsed = projects.Sum(p => p.Yarns.Sum(y => y.Quantity));
+        statistics.SkeinsUsed = projects.SelectMany(p => p.Yarns)
+                                   .Sum(y => y.Quantity);
 
         var mostFreqToolSize = projects.SelectMany(p => p.Yarns.Select(y => y.ToolSize))
+                                   .AsQueryable()
                                    .GroupBy(toolSize => toolSize)
-                                   .OrderByDescending(g => g.Count())
-                                   .FirstOrDefault()?.Key;
+                                   .Select(group => new { ToolSize = group.Key, Count = group.Count() })
+                                   .OrderByDescending(g => g.Count)
+                                   .FirstOrDefault()?.ToolSize;
         statistics.MostFreqToolSize = mostFreqToolSize ?? "N/A";
 
         var mostFreqStitch = projects.SelectMany(p => p.Yarns.Select(y => y.Stitch))
+                                     .AsQueryable()
                                      .GroupBy(stitch => stitch)
-                                     .OrderByDescending(g => g.Count())
-                                     .FirstOrDefault()?.Key;
+                                     .Select(group => new { Stitch = group.Key, Count = group.Count() })
+                                     .OrderByDescending(g => g.Count)
+                                     .FirstOrDefault()?.Stitch;
         statistics.MostFreqStitch = mostFreqStitch ?? "N/A";
 
         var mostFreqCategory = projects.GroupBy(p => p.Category)
-                                       .OrderByDescending(g => g.Count())
-                                       .FirstOrDefault()?.Key;
+                                       .Select(group => new { Category = group.Key, Count = group.Count() })
+                                       .OrderByDescending(g => g.Count)
+                                       .FirstOrDefault()?.Category;
         statistics.MostFreqCategory = mostFreqCategory ?? "N/A";
 
         statistics.CrochetProjects = projects.Count(p => p.Type == NeedleworkType.Crochet).ToString();
@@ -59,24 +65,29 @@ internal class StatisticsService : IStatisticsService
 
         var statistics = new PatternsStatisticsDto();
 
-        statistics.AddedPatterns = patterns.Count(p => p.IsFinished == false);
+        statistics.AddedPatterns = patterns.Count();
         statistics.AuthorialPatterns = patterns.Count(p => p.IsFinished == true);
 
         var mostFreqToolSize = patterns.SelectMany(p => p.Yarns.Select(y => y.ToolSize))
+                                   .AsQueryable()
                                    .GroupBy(toolSize => toolSize)
-                                   .OrderByDescending(g => g.Count())
-                                   .FirstOrDefault()?.Key;
+                                   .Select(group => new { ToolSize = group.Key, Count = group.Count() })
+                                   .OrderByDescending(g => g.Count)
+                                   .FirstOrDefault()?.ToolSize;
         statistics.MostFreqToolSize = mostFreqToolSize ?? "N/A";
 
         var mostFreqStitch = patterns.SelectMany(p => p.Yarns.Select(y => y.Stitch))
+                                     .AsQueryable()
                                      .GroupBy(stitch => stitch)
-                                     .OrderByDescending(g => g.Count())
-                                     .FirstOrDefault()?.Key;
+                                     .Select(group => new { Stitch = group.Key, Count = group.Count() })
+                                     .OrderByDescending(g => g.Count)
+                                     .FirstOrDefault()?.Stitch;
         statistics.MostFreqStitch = mostFreqStitch ?? "N/A";
 
         var mostFreqCategory = patterns.GroupBy(p => p.Category)
-                                       .OrderByDescending(g => g.Count())
-                                       .FirstOrDefault()?.Key;
+                                       .Select(group => new { Category = group.Key, Count = group.Count() })
+                                       .OrderByDescending(g => g.Count)
+                                       .FirstOrDefault()?.Category;
         statistics.MostFreqCategory = mostFreqCategory ?? "N/A";
 
         statistics.CrochetPatterns = patterns.Count(p => p.Type == NeedleworkType.Crochet).ToString();

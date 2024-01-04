@@ -8,7 +8,7 @@ namespace Application.DTO.Pattern
 {
     public class CommunityPatternDto : PatternBaseDto, IMapFrom<Domain.Entities.Pattern>
     {
-        public List<UserSavedCommunityPatternDto> SavedByUsers { get; set; }
+        //public List<UserSavedCommunityPatternDto> SavedByUsers { get; set; }
 
         public static void Mapping(Profile profile)
         {
@@ -23,8 +23,8 @@ namespace Application.DTO.Pattern
                 .ForMember(d => d.Tools, opt => opt.MapFrom(s => s.Tools))
                 .ForMember(d => d.OtherSupplies, opt => opt.MapFrom(s => s.OtherSupplies))
                 .ForMember(d => d.Author, opt => opt.MapFrom(s => s.Author))
-                .ForMember(d => d.IsShared, opt => opt.MapFrom(s => s.IsShared))
-                .ForMember(d => d.SavedByUsers, opt => opt.MapFrom(s => s.SavedByUsers));
+                .ForMember(d => d.IsShared, opt => opt.MapFrom(s => s.IsShared));
+            //.ForMember(d => d.SavedByUsers, opt => opt.MapFrom(s => s.SavedByUsers));
         }
     }
 }

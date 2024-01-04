@@ -7,15 +7,17 @@
     grid-template-columns: repeat(auto-fit, 200px);
     gap: 20px;
     width: 100%;
+    overflow: visible;
 
     .addedPhoto {
-      position: relative;
       width: 200px;
       height: 250px;
 
       .photo {
+        position: relative;
         overflow: hidden;
         border-radius: 5px;
+        pointer-events: none;
       }
 
       .photoNoPreview {
@@ -41,3 +43,24 @@
     }
   }
 }
+
+.closeIcon {
+  position: absolute;
+  top: 1130px;
+  right: 40px;
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffffcc;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+  }
+}
+

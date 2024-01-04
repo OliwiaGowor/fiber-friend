@@ -21,6 +21,7 @@ import { handleRequest } from "../../utils/handleRequestHelper";
 import { tokenLoader } from "../../utils/auth";
 import { setError } from "../../reducers/errorSlice";
 import { useTranslation } from "react-i18next";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export default function ProjectDetails() {
     const { t } = useTranslation("ProjectDetails");
@@ -29,7 +30,6 @@ export default function ProjectDetails() {
     const { project } = useRouteLoaderData('project-details') as { project: any };
     const isMobile = useMediaQuery('(max-width: 760px)');
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [selectedPattern, setSelectedPattern] = React.useState<any | null>(null);
     const [anchorElPopover, setAnchorElPopover] = React.useState<HTMLElement | null>(null);
     const open = Boolean(anchorEl);
     const openPopover = Boolean(anchorElPopover);
@@ -187,18 +187,18 @@ export default function ProjectDetails() {
                                 <div className={classes.sectionContainer}>
                                     <h2 className={classes.sectionHeader}>{t('patternsAndNotes')}</h2>
                                     <h3 className={classes.attributeName}>{t('patterns')}</h3>
-                                    {selectedPattern &&
-                                        <div>
-                                            <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern}>
-                                                <Button variant="contained">
-                                                    {selectedPattern.name}
-                                                </Button>
+                                    {project.connectedPattern &&
+                                        <div className={classes.connectedPattern}>
+                                            <div className={classes.connectedPattern__header}>Połączony wzór: </div>
+                                            <Link to={'/fiber-friend/account/patterns/' + project.connectedPattern?.id}>
+                                                {project.connectedPattern?.name}
+                                                <OpenInNewIcon />
                                             </Link>
                                         </div>}
-                                    <FilesDisplay files={project.patterns} />
+                                    <FilesDisplay files={project.files} />
                                     <h3 className={classes.attributeName}>{t('counters')}</h3>
                                     <div className={classes.counters}>
-                                        {<CounterGroup defaultValue={project.counters} parentId={project.id} />}
+                                        {<CounterGroup defaultValue={project.counters ? project?.counters[0]?.counters : undefined} parentId={project.id} />}
                                     </div>
                                     <h3 className={classes.attributeName}>{t('notes')}</h3>
                                     <div className={classes.notes}>

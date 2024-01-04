@@ -7,6 +7,7 @@ public interface IPatternService
 {
     Guid AddPattern(NewPatternDto pattern);
     List<PatternDto> GetPatternsListForUser(Guid userId);
+    List<CommunityPatternDto> GetCommunityPatterns(FilterModel filters, int page, int pageSize);
     object GetPatternById(Guid patternId);
     public List<PatternDto> GetPatternsForUser(FilterModel? filters, Guid userId, int page, int pageSize);
     List<PatternDto> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId);

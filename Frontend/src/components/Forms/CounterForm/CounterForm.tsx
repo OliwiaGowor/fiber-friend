@@ -30,13 +30,22 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
     const [showCounterGroupError, setShowCounterGroupError] = useState<boolean>(false);
     const [counterGroupName, setCounterGroupName] = useState<string | null>(counterGroup?.name ?? "");
     const [submitActive, setSubmitActive] = useState<boolean>(false);
-    const [projectsAndPatterns, setProjectsAndPatterns] = useState<any>([]);
-    const [chosenParent, setChosenParent] = useState<any>(counterGroup?.parentId ?? undefined);
-    const autocompleteOptions = useMemo(() => {
-        return (projectsAndPatterns?.map((option: any) => {
-            return ({ label: `${option.name} (${option.type})`, id: `${option.id}` })
+    const [projects, setProjects] = useState<any>([]);
+    const [patterns, setPatterns] = useState<any>([]);
+    const [chosenPattern, setChosenPattern] = useState<any>(counterGroup?.patternId ?? undefined);
+    const [chosenProject, setChosenProject] = useState<any>(counterGroup?.projectId ?? undefined);
+    const [chosenParent, setChosenParent] = useState<any>(counterGroup?.patternId ?? counterGroup?.projectId ?? undefined);
+    const autocompleteOptionsPatterns = useMemo(() => {
+        return (patterns?.map((option: any) => {
+            return ({ label: `${option.name}`, id: `${option.id}` })
         }))
-    }, [projectsAndPatterns]);
+    }, [patterns]);
+
+    const autocompleteOptionsProjects = useMemo(() => {
+        return (projects?.map((option: any) => {
+            return ({ label: `${option.name}`, id: `${option.id}` })
+        }))
+    }, [projects]);
 
     useEffect(() => {
         if (counters.length > 0) {
@@ -52,50 +61,32 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
     }, []);
 
     const fetchData = useCallback(async () => {
-        let projects = [];
+        let projectsData: any;
+        let patternsData: any;
 
-        const responseProjects = await fetch(`${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                //Authorization: "Bearer " + token,
-            },
-        });
-        if (!responseProjects.ok) {
-            dispatch(setError({
-                code: responseProjects.status,
-                message: responseProjects.statusText,
-                customMessage: "Could not fetch available projects. Please try again later."
-            }));
-            return;
-
-        } else {
-            projects = await responseProjects.json();
-            projects = Object.values(projects).map((project: any) => {
-                return { ...project, type: 'project' };
-            });
+        try {
+            projectsData = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
+                'GET',
+                "Could not load projects. Please try again later.",
+                tokenLoader()
+            );
+        } catch (error) {
+            dispatch(setError(error));
         }
+        setProjects(projectsData);
 
-        const responsePatterns = await fetch(`${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                //Authorization: "Bearer " + token,
-            },
-        });
-        if (!responsePatterns.ok) {
-            dispatch(setError({
-                code: responseProjects.status,
-                message: responseProjects.statusText,
-                customMessage: "Could not fetch available patterns. Please try again later."
-            }));
-            return;
-
+        try {
+            patternsData = await handleRequest(
+                `${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
+                'GET',
+                "Could not load patterns. Please try again later.",
+                tokenLoader()
+            );
+        } catch (error) {
+            dispatch(setError(error));
         }
-        let patterns = await responsePatterns.json();
-        patterns = Object.values(patterns).map((pattern: any) => {
-            return { ...pattern, type: 'pattern' };
-        });
-
-        setProjectsAndPatterns([...Array.from(patterns), ...projects]);
+        setPatterns(patternsData);
     }, []);
 
     const addCounter = (counter: any) => {
@@ -124,8 +115,8 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                 name: counterGroupName,
                 counters: counters,
                 userId: localStorage.getItem("userId"),
-                patternId: chosenParent?.id ?? null,
-                projectId: chosenParent?.id ?? null,
+                patternId: chosenPattern?.id ?? null,
+                projectId: chosenProject?.id ?? null,
             };
 
             let url = method === "POST" ?
@@ -171,15 +162,28 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                             helperText={showCounterGroupError ? 'Enter counter group name!' : ''}
                             onChange={(e) => { setShowCounterGroupError(false); setCounterGroupName(e.target.value); }}
                         />
-                        <Autocomplete
-                            freeSolo
-                            size="medium"
-                            className={classes.formInput}
-                            options={autocompleteOptions ?? undefined}
-                            renderInput={(params) => <TextField {...params} variant='outlined' label="Select project" InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
-                            onChange={(event: React.SyntheticEvent, newValue: string | null) => setChosenParent(newValue)}
-                            value={chosenParent}
-                        />
+                        <div className={classes.projectsPatternsSection}>
+                            <Autocomplete
+                                freeSolo
+                                size="medium"
+                                className={classes.formInput}
+                                options={autocompleteOptionsPatterns ?? undefined}
+                                renderInput={(params) => <TextField {...params} variant='outlined' label="Select pattern" InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
+                                onChange={(event: React.SyntheticEvent, newValue: string | null) => { setChosenPattern(newValue) }}
+                                value={chosenPattern}
+                                disabled={chosenProject !== undefined}
+                            />
+                            <Autocomplete
+                                freeSolo
+                                size="medium"
+                                className={classes.formInput}
+                                options={autocompleteOptionsProjects ?? undefined}
+                                renderInput={(params) => <TextField {...params} variant='outlined' label="Select project" InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
+                                onChange={(event: React.SyntheticEvent, newValue: string | null) => { setChosenProject(newValue) }}
+                                value={chosenProject}
+                                disabled={chosenPattern !== undefined}
+                            />
+                        </div>
                         <FormHelperText>You can connect the counters to your project or pattern!</FormHelperText>
                     </div>
                     <BigCounter getCounter={setTmpCounter} />

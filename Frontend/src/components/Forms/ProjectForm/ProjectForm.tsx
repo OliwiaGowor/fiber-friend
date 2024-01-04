@@ -84,29 +84,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
 
     let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
 
-    /* 
-     const handlePostFiles = async (files: any[]) => {
-         const formData = files;
-         console.log(JSON.stringify(formData))
-         try {
-             const response = await fetch(`https://script.google.com/macros/s/AKfycby4W88pstrQMukeGvI1bdotbo7Ez7I9Jjx6OPME1vxD9liCaPWnau5Ef_meNBhJI92g1A/exec`, {
-                 method: "POST",
-                 body: JSON.stringify(formData),
-             });
- 
-             if (response.ok) {
-                 const result = await response.text();
-                 console.log('Upload successful:', result);
-             } else {
-                 // Handle error response
-                 console.error('Upload failed. Status:', response.status);
-             }
-         } catch (error) {
-             console.error('Error during upload:', error);
-         }
-     }
-     */
-
+console.log(selectedPattern)
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -137,7 +115,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                 photos: formPhotos,
                 files: formFiles,
                 notes: notes,
-                connectedPattern: selectedPattern ?? null,
+                connectedPatternId: selectedPattern ?? null,
                 finished: endDate !== null ? true : false,
                 userId: localStorage.getItem('userId') ?? "",
             };
@@ -161,7 +139,7 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
                     token,
                     projectData
                 );
-                return navigate('/fiber-friend/account/projects');
+                return navigate(method === "POST" ? '/fiber-friend/account/projects' : `/fiber-friend/account/projects/${project.id}`);
 
             } catch (error) {
                 dispatch(setError(error));

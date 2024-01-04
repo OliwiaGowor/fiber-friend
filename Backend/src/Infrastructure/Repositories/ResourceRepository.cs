@@ -3,6 +3,7 @@ using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace Infrastructure.Repositories;
 //TODO: implement
@@ -43,9 +44,12 @@ public class ResourceRepository : IResourceRepository
     {
         var query = _dbContext.Resources.AsQueryable();
 
-        if (filters.resourceType is not null)
+        if (filters != null)
         {
-            query = query.Where(p => p.Type == filters.resourceType);
+            if (filters.resourceType is not null)
+            {
+                query = query.Where(p => p.Type == filters.resourceType);
+            }
         }
 
         var patterns = query.Where(p => p.UserId == userId)
@@ -69,14 +73,17 @@ public class ResourceRepository : IResourceRepository
 
     public void UpdateResource(Resource resource)
     {
-        _dbContext.Attach(resource);
-        _dbContext.Entry(resource).Property("ResourceType").IsModified = true;
-        _dbContext.Entry(resource).Property("StartDate").IsModified = true;
-        _dbContext.Entry(resource).Property("EndDate").IsModified = true;
-        _dbContext.Entry(resource).Property("Finished").IsModified = true;
-        _dbContext.Entry(resource).Property("Category").IsModified = true;
-        _dbContext.Entry(resource).Property("Notes").IsModified = true;
+        var dbResource = _dbContext.Resources.FirstOrDefault(y => y.Id == resource.Id);
 
-        _dbContext.SaveChanges();
+        if (dbResource != null)
+        {
+            _dbContext.Entry(dbResource).CurrentValues.SetValues(resource);
+
+            _dbContext.SaveChanges();
+        }
+        else
+        {
+            throw new Exception("Resource not found");
+        }
     }
 }

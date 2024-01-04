@@ -56,6 +56,15 @@ internal class PatternService : IPatternService
         return patterns;
     }
 
+    public List<CommunityPatternDto> GetCommunityPatterns(FilterModel filters, int page, int pageSize)
+    {
+        var patterns = _patternRepo.GetCommunityPatterns(filters, page, pageSize)
+            .ProjectTo<CommunityPatternDto>(_mapper.ConfigurationProvider)
+            .ToList();
+
+        return patterns;
+    }
+
     public List<PatternDto> GetPatternsForUser(FilterModel? filters, Guid userId, int page, int pageSize)
     {
         var patterns = _patternRepo.GetPatternsForUser(filters, userId, page, pageSize)

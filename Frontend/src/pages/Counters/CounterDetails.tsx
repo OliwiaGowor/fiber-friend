@@ -13,6 +13,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export default function CounterDetails() {
     const dispatch = useAppDispatch();
@@ -89,6 +90,21 @@ export default function CounterDetails() {
                                 </Menu>
                             </div>
                             <div className={classes.sectionContainer}>
+                                <h2 className={classes.sectionHeader}>Connected {counterGroup.patternId ? "pattern" : "project"}</h2>
+                                <a
+                                    className={classes.link}
+                                    href={
+                                        counterGroup.patternId ?
+                                            `/fiber-friend/account/patterns/${counterGroup.patternId}`
+                                            :
+                                            `/fiber-friend/account/projects/${counterGroup.projectId}`
+
+                                    }>
+                                    {counterGroup.patternName ?? counterGroup.projectName}
+                                    <OpenInNewIcon/>
+                                </a>
+                            </div>
+                            <div className={classes.sectionContainer}>
                                 <h2 className={classes.sectionHeader}>Counters</h2>
                                 <div className={classes.counters}>
                                     {counterGroup.counters.map((counter: any, index: number) => (
@@ -118,10 +134,6 @@ async function loadCounterDetails(id: string) {
     });
 
     if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch Counter.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch Counter.' }), {
-        //   status: 500,
-        // });
         throw json(
             { message: 'Could not fetch counter.' },
             {

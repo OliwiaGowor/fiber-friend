@@ -52,6 +52,28 @@
       .notes {
         border: 1px dashed grey;
       }
+
+      .connectedPattern {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        margin: 15px 0;
+
+        &:hover a {
+          color: var(--main-color-dark);
+          fill: var(--main-color-dark);
+        }
+
+        &__header {
+          margin-right: 10px;
+          font-weight: bold;
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+        }
+      }
     }
 
     .topContainer {

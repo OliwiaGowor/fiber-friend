@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from '../../utils/handleRequestHelper';
 import { setError } from '../../reducers/errorSlice';
+import { ResourceType } from '../../DTOs/Enums';
 
 export default function ResourceDetails() {
     const token = getAuthToken();
@@ -23,19 +24,13 @@ export default function ResourceDetails() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const isMobile = useMediaQuery('(max-width: 760px)');
+    const resourceType = resource.type;
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
-    };
-
-    const pagination = {
-        clickable: true,
-        renderBullet: function (index: number, className: string) {
-            return '<span class="' + className + '">' + "</span>";
-        },
     };
 
     const handleDelete = async () => {
@@ -46,7 +41,7 @@ export default function ResourceDetails() {
                 'Could not delete resource. Please try again later.',
                 token
             );
-            return navigate('/fiber-friend/account/projects');
+            return navigate('/fiber-friend/account/resources');
         } catch (error) {
             dispatch(setError(error));
             return;
@@ -54,29 +49,29 @@ export default function ResourceDetails() {
     };
 
     const renderInfoElements = () => {
-        if (resource.type === 'yarn') {
+        if (resource.type === ResourceType.yarn) {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
                     {resource.category ?? <br></br>}
 
                     <div className={classes.attributeName}>Gauge: </div>
-                    {resource.startDate ?? <br></br>}
+                    {resource.gauge ?? <br></br>}
 
                     <div className={classes.attributeName}>Skein weight: </div>
-                    {resource.endDate ?? <br></br>}
+                    {resource.skeinWeight ?? <br></br>}
 
                     <div className={classes.attributeName}>Meters in skein: </div>
-                    {resource.endDate ?? <br></br>}
+                    {resource.skeinLenght ?? <br></br>}
                 </>
             );
-        } else if (resource.type === 'tool') {
+        } else if (resource.type === ResourceType.tool) {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {resource.category ?? <br></br>}
+                    {resource.toolSize ?? <br></br>}
                     <div className={classes.attributeName}>Tool type: </div>
-                    {resource.startDate ?? <br></br>}
+                    {resource.toolType ?? <br></br>}
 
                 </>
             );
@@ -84,10 +79,10 @@ export default function ResourceDetails() {
             return (
                 <>
                     <div className={classes.attributeName}>Tool size: </div>
-                    {resource.category ?? <br></br>}
+                    {resource.toolSize ?? <br></br>}
 
                     <div className={classes.attributeName}>Tool type: </div>
-                    {resource.startDate ?? <br></br>}
+                    {resource.toolType ?? <br></br>}
                 </>
             );
         }
@@ -143,10 +138,10 @@ export default function ResourceDetails() {
                                         <h2 className={classes.sectionHeader}>Details</h2>
                                         <div className={classes.resourceInfoContainer}>
                                             <div className={classes.attributeName}>Type: </div>
-                                            {resource.type ? resource.type : <br></br>}
+                                            {resource.type.toString() ?? <br></br>}
                                             {renderInfoElements()}
                                             <div className={classes.attributeName}>Quantity: </div>
-                                            {resource.quantity ? resource.quantity : <br></br>}
+                                            {resource.quantity ?? <br></br>}
                                         </div>
                                     </div>
                                 </div>
@@ -181,12 +176,8 @@ async function loadResourceDetails(id: string) {
     });
 
     if (!response.ok) {
-        // return { isError: true, message: 'Could not fetch project.' };
-        // throw new Response(JSON.stringify({ message: 'Could not fetch project.' }), {
-        //   status: 500,
-        // });
         throw json(
-            { message: 'Could not fetch project.' },
+            { message: 'Could not fetch resource.' },
             {
                 status: 500,
             }

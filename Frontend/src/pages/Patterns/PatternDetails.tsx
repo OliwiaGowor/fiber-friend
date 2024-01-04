@@ -203,9 +203,9 @@ export default function PatternDetails() {
                                             {pattern.isAuthorial &&
                                                 <>
                                                     <div className={classes.attributeName}>{t('startDate')} </div>
-                                                    {pattern.startDate ?? <br></br>}
+                                                    {pattern.startDate.slice(0, 10) ?? <br></br>}
                                                     <div className={classes.attributeName}>{t('endDate')} </div>
-                                                    {pattern.endDate ?? <br></br>}
+                                                    {pattern.endDate?.slice(0, 10) ?? <br></br>}
                                                 </>
                                             }
                                         </div>
@@ -238,7 +238,7 @@ export default function PatternDetails() {
                                     <FilesDisplay files={pattern.files} />
                                     <h3 className={classes.attributeName}>{t('counters')}</h3>
                                     <div className={classes.counters}>
-                                        <CounterGroup parentId={pattern.id ?? ''} />
+                                        <CounterGroup defaultValue={ pattern.counters ? pattern?.counters[0]?.counters : undefined} parentId={pattern.id ?? ''} />
                                     </div>
                                     <h3 className={classes.attributeName}>{t('notes')}</h3>
                                     <div className={classes.notes}>

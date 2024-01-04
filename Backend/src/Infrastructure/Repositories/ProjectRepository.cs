@@ -8,7 +8,7 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using System.Diagnostics.Metrics;
 
 namespace Infrastructure.Repositories;
-//TODO: implement 
+
 public class ProjectRepository : IProjectRepository
 {
     private readonly ApplicationDbContext _dbContext;
@@ -68,6 +68,9 @@ public class ProjectRepository : IProjectRepository
         var project = _dbContext.Projects.Include(p => p.Yarns)
             .Include(p => p.Photos)
             .Include(p => p.Files)
+            .Include(p => p.Counters)
+            .Include(p => p.ConnectedPattern)
+                .ThenInclude(cg => cg.Counters)
             .FirstOrDefault(i => i.Id == projectId);
         return project;
     }
@@ -106,7 +109,7 @@ public class ProjectRepository : IProjectRepository
 
     public IQueryable<Project> GetProjectsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
-        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.StartDate >= timePeriodStart && y.EndDate <= timePeriodEnd);
+        var projects = _dbContext.Projects.Where(y => y.UserId == userId && y.StartDate >= timePeriodStart && y.StartDate <= timePeriodEnd);
         return projects;
     }
 

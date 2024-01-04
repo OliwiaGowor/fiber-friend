@@ -18,7 +18,6 @@ public static class DependencyInjection
         services.AddAuth(configuration);
         services.AddScoped<ICountersGroupRepository, CountersGroupRepository>();
         services.AddScoped<IPatternRepository, PatternRepository>();
-        services.AddScoped<ICommunityPatternRepository, CommunityPatternRepository>();
         services.AddScoped<IResourceRepository, ResourceRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
         services.AddScoped<IUserRepository, UserRepository>();

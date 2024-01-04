@@ -1,6 +1,6 @@
 import { CircularProgress, useMediaQuery } from "@mui/material";
 import { Suspense } from "react";
-import { Await, json, defer, useRouteLoaderData, useNavigate, useSearchParams } from "react-router-dom";
+import { Await, json, defer, useRouteLoaderData, useNavigate, useSearchParams, useParams } from "react-router-dom";
 import classes from './CommunityPatternDetails.module.scss';
 import TabsPanelDisplay from "../../components/TabsPanelDisplay/TabsPanelDisplay";
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,15 +24,13 @@ export default function CommunityPatternDetails() {
     const dispatch = useAppDispatch();
     const token = tokenLoader();
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const patternId = searchParams.get('communityPatternId') ?? '';
+    const {communityPatternId} = useParams();
     //const { pattern } = useRouteLoaderData('community-pattern-details') as { pattern: Pattern };
     const [pattern, setPattern] = React.useState<Pattern>({} as Pattern);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const isMobile = useMediaQuery('(max-width: 760px)');
-console.log(pattern.name);
-console.log(searchParams)
+
     const fetchPattern = async (id: string) => {
         try {
             const patternData = await handleRequest(
@@ -41,7 +39,6 @@ console.log(searchParams)
                 'Could not fetch pattern. Please try again later.',
                 token
             );
-            console.log(patternData )
             setPattern(patternData);
         } catch (error) {
             dispatch(setError(error));
@@ -50,10 +47,10 @@ console.log(searchParams)
     };
 
     React.useEffect(() => {
-        if (patternId) {
-            fetchPattern(patternId);
+        if (communityPatternId) {
+            fetchPattern(communityPatternId);
         }
-    }, [patternId]);
+    }, [communityPatternId]);
 
     React.useEffect(() => {
         if (!token) {

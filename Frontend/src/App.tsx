@@ -40,6 +40,7 @@ import CommunityPatternDetails, { loader as communityPatternDetailsLoader } from
 import CommunityPatternsRoot from "./pages/CommunityPatterns/CommunityPatternsRoot";
 import { action as logoutAction } from "./utils/logout";
 import IncDecCounter from "./pages/IncDecCounter/IncDecCounter";
+import EditResource from "./pages/Resources/EditResource";
 
 const router = createBrowserRouter([
   {
@@ -51,10 +52,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-      },
-      {
-        path: "stitch-counter",
-        element: <IncDecCounter />,
       },
       {
         path: "login",
@@ -196,7 +193,7 @@ const router = createBrowserRouter([
                   },
                   {
                     path: "edit",
-                    element: <EditProject />,
+                    element: <EditResource />,
                   },
 
                 ],
@@ -230,7 +227,10 @@ const router = createBrowserRouter([
             //loader: statisticsLoader,
             element: <StatisticsPage />,
           },
-         
+          {
+            path: "stitch-counter",
+            element: <IncDecCounter />,
+          },
         ]
       },
       {

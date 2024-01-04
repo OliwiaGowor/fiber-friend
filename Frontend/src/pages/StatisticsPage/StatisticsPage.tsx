@@ -20,73 +20,58 @@ const statisticsTypes = [
 
 export default function StatisticsPage() {
     const { t } = useTranslation("StatisticsPage");
-    const dispatch = useAppDispatch();
     const today = new Date();
     const [type, setType] = useState(statisticsTypes[0]);
     const [timePeriod, setTimePeriod] = useState("monthly");
-    const [timePeriodStart, setTimePeriodStart] = useState(dayjs(today).startOf('month').toISOString().slice(10));
 
-    const getTimePeriodEnd = (date: Date | string) => {
+    const getTimePeriodEnd = (date: Date | string): string => {
         if (timePeriod === "monthly") {
-            return dayjs(date).endOf('month').toISOString().slice(10);
+            console.log((dayjs(date).endOf('month').toISOString().slice(0, 10)));
+            return dayjs(date).endOf('month').toISOString().slice(0, 10);
         }
         else if (timePeriod === "yearly") {
-            return dayjs(date).endOf('year').toISOString().slice(10);
+            return dayjs(date).endOf('year').toISOString().slice(0, 10);
         }
         else if (timePeriod === "all") {
-            return new Date("30.12.9999").toString().slice(10);
-        }
-    };
-
-    const getTimePeriodStart = (date: Date | string) => {
-        if (timePeriod === "monthly") {
-            return dayjs(date).startOf('month').toISOString().slice(10);
-        }
-        else if (timePeriod === "yearly") {
-            return dayjs(date).startOf('year').toISOString().slice(10);
-        }
-        else if (timePeriod === "all") {
-            return new Date("01.01.0001").toISOString().slice(10);
+            return "9999-12-30";
         }
         else {
-            return dayjs(date).toISOString().slice(10);
+            return dayjs(date).toISOString().slice(0, 10);
         }
     };
 
-
-    const handleFetchData = async () => {
-        try {
-            const data = await handleRequest(
-                `ProjectStatistics/${localStorage.getItem("userId")}/${timePeriodStart}/${getTimePeriodEnd(timePeriodStart)}`,
-                "GET",
-                "Could not fetch statistics. Please try again later.",
-                getAuthToken()
-            );
-            return data;
-        } catch (error) {
-            dispatch(setError(error));
-            return;
+    const getTimePeriodStart = (date: Date | string): string => {
+        if (timePeriod === "monthly") {
+            return dayjs(date).startOf('month').toISOString().slice(0, 10);
         }
-    }
+        else if (timePeriod === "yearly") {
+            return dayjs(date).startOf('year').toISOString().slice(0, 10);
+        }
+        else if (timePeriod === "all") {
+            return "0001-01-1";
+        }
+        else {
+            return dayjs(date).toISOString().slice(0, 10);
+        }
+    };
 
-    /*useEffect(() => {
-        handleFetchData();
-    }, []);*/
-    
-    const handleDateChange = async (date: Date | string) => {
+    const [timePeriodStart, setTimePeriodStart] = useState(getTimePeriodStart(today));
+    const [timePeriodEnd, setTimePeriodEnd] = useState(getTimePeriodEnd(today));
+
+    const handleDateChange = (date: Date | string) => {
         setTimePeriodStart(getTimePeriodStart(date));
-        handleFetchData();
+        setTimePeriodEnd(getTimePeriodEnd(date));
     };
 
     const handleRenderStatistics = () => {
         switch (type) {
             case "patterns":
                 return (
-                    <PatternsStatistics />
+                    <PatternsStatistics timePeriodStart={timePeriodStart} timePeriodEnd={timePeriodEnd} />
                 );
             case "projects":
                 return (
-                    <ProjectsStatistics />
+                    <ProjectsStatistics timePeriodStart={timePeriodStart} timePeriodEnd={timePeriodEnd} />
                 );
         }
     };

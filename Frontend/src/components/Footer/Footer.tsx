@@ -27,9 +27,9 @@ const Footer = () => {
                     <div className={classes.section}>
                         <h2 className={classes.sectionHeader}>{t('usefulLinks')}</h2>
                         <ul>
-                            <li>{t('about')}</li>
+                            {/*<li>{t('about')}</li>*/}
                             <li>
-                                <Link to={"account"}>
+                                <Link to={"/fiber-friend/account"}>
                                     {t('yourAccount')}
                                 </Link>
                             </li>
@@ -43,12 +43,12 @@ const Footer = () => {
                             fiber-friend@gmail.com
                         </li>*/}
                             <li>
-                                <Link to={"/contact"}>
+                                <Link to={"/fiber-friend/report-problem"}>
                                     {t('contactUs')}
                                 </Link>
                             </li>
                             <li>
-                                <Link to={"/report-problem"}>
+                                <Link to={"/fiber-friend/report-problem"}>
                                     {t('reportProblem')}
                                 </Link>
                             </li>

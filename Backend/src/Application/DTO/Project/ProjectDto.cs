@@ -22,7 +22,6 @@ public class ProjectDto : IMapFrom<Domain.Entities.Project>
     public string Notes { get; set; }
     public List<PhotoDto>? Photos { get; set; }
     public List<MyFileDto>? Files { get; set; }
-    public CommunityPatternDto? ConnectedCommPattern { get; set; }
     public PatternDto? ConnectedPattern { get; set; }
     public List<YarnDto>? Yarns { get; set; }
     public UserDto User { get; set; }

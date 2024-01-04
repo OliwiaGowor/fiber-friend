@@ -17,6 +17,8 @@ public class CountersGroupRepository : ICountersGroupRepository
     public CountersGroup GetCountersGroupById(Guid countersGroupId)
     {
         var countersGroup = _dbContext.CountersGroups.Include(c => c.Counters)
+            .Include(c => c.Project)
+            .Include(c => c.Pattern)
             .FirstOrDefault(i => i.Id == countersGroupId);
         return countersGroup;
     }

@@ -5,6 +5,7 @@ using AutoMapper;
 using Common.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers;
 
@@ -34,10 +35,27 @@ public class ResourceController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<ResourceDto> GetResourcesForUser([FromQuery] FilterModel? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public ActionResult<ResourceDto> GetResourcesForUser([FromQuery] string? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
-        var service = _resourceService.GetResourcesForUser(filters, userId, page, pageSize);
+
+        FilterModel filterModel = null;
+
+        if (!string.IsNullOrEmpty(filters))
+        {
+            try
+            {
+                // Deserialize the JSON string into FilterModel
+                filterModel = JsonConvert.DeserializeObject<FilterModel>(filters);
+            }
+            catch (JsonException)
+            {
+                // Handle JSON deserialization error
+                return BadRequest("Invalid JSON format for filters.");
+            }
+        }
+
+        var service = _resourceService.GetResourcesForUser(filterModel, userId, page, pageSize);
 
         if (service is null) return NotFound();
 
@@ -83,7 +101,7 @@ public class ResourceController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut]
+    [HttpPut("{id:Guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult Update([FromBody] NewResourceDto newResource)

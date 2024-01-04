@@ -1,3 +1,4 @@
+import { NeedleworkType, ResourceType } from "../DTOs/Enums"
 import { categories } from "./Categories"
 
 export const projectsFilters = [
@@ -15,19 +16,19 @@ export const projectsFilters = [
         ]
     },
     {
-        name: "Type",
+        name: "needleworkType",
         options: [
             {
                 name: "Knitting",
-                value: "knitting"
+                value: NeedleworkType.knitting
             },
             {
                 name: "Crochet",
-                value: "crochet"
+                value: NeedleworkType.crochet
             },
             {
                 name: "Other",
-                value: "other"
+                value: NeedleworkType.other
             },
         ]
     },
@@ -52,19 +53,19 @@ export const patternsFilters = [
         ]
     },
     {
-        name: "Type",
+        name: "needleworkType",
         options: [
             {
                 name: "Knitting",
-                value: "knitting"
+                value: NeedleworkType.knitting
             },
             {
                 name: "Crochet",
-                value: "crochet"
+                value: NeedleworkType.crochet
             },
             {
                 name: "Other",
-                value: "other"
+                value: NeedleworkType.other
             },
         ]
     },
@@ -76,19 +77,19 @@ export const patternsFilters = [
 
 export const resourcesFilters = [
     {
-        name: "Type",
+        name: "resourceType",
         options: [
             {
                 name: "Yarns",
-                value: "yarns"
+                value: ResourceType.yarn
             },
             {
                 name: "Tools",
-                value: "tools"
+                value: ResourceType.tool
             },
             {
                 name: "Others",
-                value: "others"
+                value: ResourceType.other
             },
         ]
     }

@@ -97,9 +97,6 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                 dispatch(setError(error));
                 return;
             }
-        //} else {
-       //     return;
-       // }
     };
 
     //Form validation

@@ -48,12 +48,32 @@
       }
     }
   }
+  
+  .link {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+
+  &:hover {
+    color: var(--main-color-dark);
+  }
+
+  svg {
+    margin-left: 5px;
+
+    &:hover {
+      fill: var(--main-color-dark);
+    }
+  }
+}
 }
 
 .backButton {
   position: absolute;
   top: 24px;
 }
+
+
 
 @media screen and (min-width: 800px) {
   .container {

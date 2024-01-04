@@ -4,6 +4,10 @@ using AutoMapper;
 using Common.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using static NuGet.Packaging.PackagingConstants;
+using System.Drawing.Printing;
 
 namespace WebApi.Controllers;
 
@@ -46,14 +50,55 @@ public class PatternController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public ActionResult<PatternDto> GetPatternsForUser([FromQuery] FilterModel? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public ActionResult<PatternDto> GetPatternsForUser([FromQuery] string? filters, Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         if (userId.Equals("") || page < 0 || pageSize < 0) return BadRequest();
-        var service = _patternService.GetPatternsForUser(filters, userId, page, pageSize);
+
+        FilterModel filterModel = null;
+
+        if (!string.IsNullOrEmpty(filters))
+        {
+            try
+            {
+                // Deserialize the JSON string into FilterModel
+                filterModel = JsonConvert.DeserializeObject<FilterModel>(filters);
+            }
+            catch (JsonException)
+            {
+                // Handle JSON deserialization error
+                return BadRequest("Invalid JSON format for filters.");
+            }
+        }
+
+        var service = _patternService.GetPatternsForUser(filterModel, userId, page, pageSize);
 
         if (service is null) return NotFound();
 
         return Ok(service);
+    }
+
+    [HttpGet("GetCommunityPatterns")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<IEnumerable<CommunityPatternDto>> GetCommunityPatterns([FromQuery] string? filters, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        FilterModel filterModel = null;
+
+        if (!string.IsNullOrEmpty(filters))
+        {
+            try
+            {
+                // Deserialize the JSON string into FilterModel
+                filterModel = JsonConvert.DeserializeObject<FilterModel>(filters);
+            }
+            catch (JsonException)
+            {
+                // Handle JSON deserialization error
+                return BadRequest("Invalid JSON format for filters.");
+            }
+        }
+
+        var list = _patternService.GetCommunityPatterns(filterModel, page, pageSize);
+        return Ok(list);
     }
 
     [HttpPost]

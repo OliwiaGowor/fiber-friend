@@ -79,7 +79,7 @@ internal class ProjectService : IProjectService
         return projects;
     }
 
-    public object UpdateProject(NewProjectDto newProject)
+    public ProjectDto UpdateProject(NewProjectDto newProject)
     {
         var projectEntitiy = _mapper.Map<Project>(newProject);
         var yarnsEntity = _mapper.Map<List<Yarn>>(newProject.Yarns);
@@ -89,6 +89,8 @@ internal class ProjectService : IProjectService
 
         var project = _projectRepo.UpdateProject(projectEntitiy, yarnsEntity, countersEntity, filesEntitiy, photosEntitiy);
 
-        return project;
+        var dto = _mapper.Map<ProjectDto>(project);
+
+        return dto;
     }
 }

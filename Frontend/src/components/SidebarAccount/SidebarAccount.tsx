@@ -81,7 +81,7 @@ function SidebarAccount({ open, getOpen }: any) {
                         <InsightsIcon />
                         <div className={classes.text}>{t("statistics")}</div>
                     </li>
-                    <li className={classes.element} onClick={() => handleClick('/fiber-friend/stitch-counter')}>
+                    <li className={classes.element} onClick={() => handleClick('/fiber-friend/account/stitch-counter')}>
                         <AlignVerticalCenterIcon />
                         <div className={classes.text}>{t("stitchCounter")}</div>
                     </li>

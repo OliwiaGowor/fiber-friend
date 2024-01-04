@@ -16,8 +16,7 @@ const CommunityPatterns = () => {
     const fetchCommunityPatterns = async (filters: string, page: number, pageSize: number) => {
         try {
             const data = await handleRequest(
-                process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}CommunityPattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
-                    `${process.env.REACT_APP_API_URL}CommunityPattern?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
+                `${process.env.REACT_APP_API_URL}Pattern/GetCommunityPatterns?${filters ? "filters=" + filters + "&" : ""}page=${page}&pageSize=${pageSize}`,
                 "GET",
                 t("couldNotFetchPatterns"),
                 tokenLoader(),

@@ -42,16 +42,16 @@ const FullScreenDisplay = ({ file }: FullScreenDisplayProps) => {
       window.removeEventListener('resize', updateSize);
     };
   }, [file]);
-
+console.log(file)
   const displayDifferentFiles = () => {
-    if ( file.type == 'pdf') {
+    if ( file.type == 'application/pdf') {
       return (
         <object
           className={classes.file}
           data={`data:${file.type};base64,${file.content}`}
           width={displaySize.width}
-          height={displaySize.height}
-          style={{ width: displaySize.width, height: displaySize.height, objectFit: 'contain' }}
+          //height={displaySize.height}
+          style={{ width: displaySize.width, height:'100%', objectFit: 'contain', position: 'absolute', bottom: '0' }}
         >
         </object>
       );

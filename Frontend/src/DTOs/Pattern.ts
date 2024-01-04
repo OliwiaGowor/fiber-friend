@@ -24,8 +24,8 @@ interface PatternBase {
 
 export interface Pattern extends PatternBase {
     isAuthorial: boolean;
-    startDate: Date;
-    endDate?: Date;
+    startDate: string;
+    endDate?: string;
     finished: boolean;
 }
 

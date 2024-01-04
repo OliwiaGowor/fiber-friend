@@ -111,7 +111,7 @@ public class ProjectController : ControllerBase
     {
         if (!this.ModelState.IsValid) return BadRequest();
 
-        var project = _projectService.UpdateProject(newProject);
-        return Ok(project);
+        var projectId = _projectService.UpdateProject(newProject);
+        return Ok(projectId);
     }
 }

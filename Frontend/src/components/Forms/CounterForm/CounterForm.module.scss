@@ -21,6 +21,16 @@
     padding: 20px 0;
   }
 
+  .projectsPatternsSection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 80%;
+
+    .formInput {
+      @include root.input($margin-lr: 0, $margin-tb: 30px, $width: 100%);
+    }
+  }
+
   .btnContainer {
     display: flex;
     align-items: center;

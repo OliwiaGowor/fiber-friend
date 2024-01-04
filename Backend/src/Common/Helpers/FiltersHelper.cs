@@ -7,7 +7,6 @@ public class FilterModel
     public string? category { get; set; } = null;
     public bool? isFinished { get; set; } = null;
     public bool? isAuthorial { get; set; } = null;
-
     public ResourceType? resourceType { get; set; }
 
     public FilterModel() { }

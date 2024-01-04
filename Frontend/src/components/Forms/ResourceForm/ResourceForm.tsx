@@ -79,6 +79,10 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
             };
         }
 
+        if(method === "PUT") {
+            resourceData = { ...resourceData, id: resource.id };
+        }
+
         let url = method === "POST" ?
             `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
             `${process.env.REACT_APP_API_URL}Resource/${resource.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
@@ -314,7 +318,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                     type="submit"
                     onClick={validateForm}
                 >
-                    {`${method === "POST" ? "Add new project" : "Edit project"}`}
+                    {`${method === "POST" ? "Add new resource" : "Edit resource"}`}
                 </Button>
             </form>
         </div>

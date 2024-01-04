@@ -32,7 +32,7 @@ export const handleRequest = async (
             if (response.status === 204) {
                 return;
             }
-            
+
             const resData = await response.json();
             return resData;
         }

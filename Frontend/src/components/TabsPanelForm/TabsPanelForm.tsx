@@ -15,6 +15,7 @@ import { OtherSupply, Tool } from '../../DTOs/Pattern';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from '../../utils/handleRequestHelper';
 import { setError } from '../../reducers/errorSlice';
+import { ResourceType } from '../../DTOs/Enums';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -68,25 +69,24 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
   const noteRef = React.useRef<HTMLInputElement | null>(null);
   const [supplies, setSupplies] = React.useState<Supply[]>(defaultValue ?? []);
   const [supplyName, setSupplyName] = React.useState<string | null>('');
-  const [fetchedSupplies, setFetchedYarns] = React.useState<any>([]);
+  const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
+  const autocompleteOptions = React.useMemo(() => {
+    return (fetchedYarns?.map((option: any) => {
+        return ({ label: `${option.name}`, id: `${option.id}` })
+    }))
+}, [fetchedYarns]);
 
-  const fetchAvailableSupplies = useCallback(async () => {
+  const fetchAvailableYarns = useCallback(async () => {
     try {
       const data = await handleRequest(
-        `${process.env.REACT_APP_API_URL}Resource${process.env.REACT_APP_ENV === "dev" ? `/GetAll${type.charAt(0).toUpperCase() + type.slice(1)}ForUser` : ".json"}`,
+        `${process.env.REACT_APP_API_URL}Resource/GetResourcesForUser/${localStorage.getItem("userId")}`,
         "GET",
         "Could not available supplies. Please try again later.",
         tokenLoader(),
       );
 
-      const loadedSupplies = [];
+      const loadedSupplies = data?.find((resource: any) => resource.type === ResourceType.yarn)?.resources ?? [];
 
-      for (const key in data) {
-        loadedSupplies.push({
-          id: key,
-          name: data[key].name,
-        });
-      }
       setFetchedYarns(loadedSupplies);
 
     } catch (error) {
@@ -96,7 +96,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
   }, []);
 
   useEffect(() => {
-    fetchAvailableSupplies();
+    fetchAvailableYarns();
   }, []);
 
   const handleData = (resourceName: string) => {
@@ -335,13 +335,13 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
   return (
     <div className={classes.container}>
       <div className={classes.addYarns}>
-        {fetchedSupplies.length > 0 &&
+        {fetchedYarns.length > 0 &&
           <Autocomplete
             id="yarn-input"
             freeSolo
             size="medium"
             className={classes.formInput}
-            options={fetchedSupplies?.map((option: any) => option.name)}
+            options={autocompleteOptions ?? undefined}
             renderInput={(params) =>
               <TextField {...params}
                 variant='outlined'
@@ -352,7 +352,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
             value={supplyName}
             autoSelect
           />}
-        {fetchedSupplies.length === 0 &&
+        {fetchedYarns.length === 0 &&
           <TextField
             id="yarn-input"
             inputProps={{

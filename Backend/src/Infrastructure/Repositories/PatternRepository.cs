@@ -1,3 +1,4 @@
+using Common.Enums;
 using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
@@ -83,6 +84,8 @@ public class PatternRepository : IPatternRepository
             .Include(p => p.OtherSupplies)
             .Include(p => p.Photos)
             .Include(p => p.Files)
+            .Include(p => p.Counters)
+                .ThenInclude(cg => cg.Counters)
             .Include(p => p.Author)
             .FirstOrDefault(i => i.Id == patternId);
         return pattern;
@@ -92,19 +95,22 @@ public class PatternRepository : IPatternRepository
     {
         var query = _dbContext.Patterns.AsQueryable();
 
-        if (filters.needleworkType is not null)
+        if (filters is not null)
         {
-            query = query.Where(p => p.Type == filters.needleworkType);
-        }
+            if (filters.needleworkType is not null)
+            {
+                query = query.Where(p => p.Type == filters.needleworkType);
+            }
 
-        if (filters.category is not null)
-        {
-            query = query.Where(p => p.Category == filters.category);
-        }
+            if (filters.category is not null)
+            {
+                query = query.Where(p => p.Category == filters.category);
+            }
 
-        if (filters.isAuthorial is not null)
-        {
-            query = query.Where(p => p.IsAuthorial == filters.isAuthorial);
+            if (filters.isAuthorial is not null)
+            {
+                query = query.Where(p => p.IsAuthorial == filters.isAuthorial);
+            }
         }
 
         var patterns = query.Include(p => p.Yarns)
@@ -119,13 +125,39 @@ public class PatternRepository : IPatternRepository
 
         return patterns;
     }
+
+    public IQueryable<Pattern> GetCommunityPatterns(FilterModel filters, int page, int pageSize)
+    {
+        var query = _dbContext.Patterns.AsQueryable();
+
+        if (filters.needleworkType is not null)
+        {
+            query = query.Where(p => p.Type == filters.needleworkType);
+        }
+
+        if (filters.category is not null)
+        {
+            query = query.Where(p => p.Category == filters.category);
+        }
+
+        var communityPatterns = query.Include(p => p.Yarns)
+            .Include(p => p.Tools)
+            .Include(p => p.OtherSupplies)
+            .Include(p => p.Photos)
+            .Where(p => p.IsShared == true)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+
+        return communityPatterns;
+    }
     public IQueryable<Pattern> GetPatternsByTimePeriodForUser(DateTime timePeriodStart, DateTime timePeriodEnd, Guid userId)
     {
+
         var patterns = _dbContext.Patterns.Where(
             y => y.AuthorId == userId &&
             y.IsAuthorial == true &&
             y.StartDate >= timePeriodStart &&
-            y.EndDate <= timePeriodEnd
+            y.StartDate <= timePeriodEnd
             );
         return patterns;
     }

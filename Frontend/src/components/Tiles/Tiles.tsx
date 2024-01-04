@@ -30,7 +30,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
   const [chosenFilters, setChosenFilters] = useState({});
   const tileRef = React.useRef<HTMLLIElement | null>(null);
   const footer = document.getElementsByTagName('footer')[0];
-  const pageSize = 2;
+  const pageSize = 5;
 
   const filtersToString = () => {
     let filtersString = '';
@@ -40,6 +40,7 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
         filtersString += (index === 0 ? "" : ",") + '"' + String(key) + '"' + ":" + '"' + String(chosenFilters[key as keyof typeof chosenFilters]) + '"';
       })
     }
+
     filtersString = "{" + filtersString + "}";
     return filtersString;
   };
@@ -48,16 +49,19 @@ function Tiles({ fetchData, link, addText, addTile, filters }: TilesProps) {
     if (!wasLastList || changedFilters) {
       setLoading(true);
       let data = await fetchData(filtersToString(), page, pageSize);
-      
-      if (changedFilters) {
-        setElements([...data ?? []]);
 
+      if (changedFilters) {
         if (!data || !data.length) {
+          setElements([]);
           setWasLastList(true);
           setLoading(false);
           return;
         }
+
+        setElements([...data ?? []]);
+        setCurrPage(currPage + 1);
         setLoading(false);
+        return;
       }
 
       if (data) {

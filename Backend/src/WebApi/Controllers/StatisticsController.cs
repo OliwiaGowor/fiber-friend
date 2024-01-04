@@ -30,7 +30,7 @@ public class StatisticsController : ControllerBase
         return Ok(service);
     }
 
-    [HttpGet("/PatternsStatistics/{userId:Guid}/{timePeriodStart:DateTime}/{timePeriodEnd:DateTime}")]
+    [HttpGet("PatternsStatistics/{userId:Guid}/{timePeriodStart:DateTime}/{timePeriodEnd:DateTime}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

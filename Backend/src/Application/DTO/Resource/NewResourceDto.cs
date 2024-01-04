@@ -11,7 +11,11 @@ public class NewResourceDto : IMapFrom<Domain.Entities.Resource>
     public ResourceType Type { get; set; }
     public int Quantity { get; set; }
     public string? Gauge { get; set; }
-    public string ToolSize { get; set; }
+    public string? SkeinWeight { get; set; }
+    public string? SkeinLenght { get; set; }
+    public string? ToolSize { get; set; }
+    public string? ToolType { get; set; }
+    public string? Notes { get; set; }
     public Guid UserId { get; set; }
 
     public static void Mapping(Profile profile)
@@ -28,6 +32,6 @@ public class NewResourceValidation : AbstractValidator<ResourceDto>
         RuleFor(x => x.Type).NotEmpty();
         RuleFor(x => x.Quantity).NotEmpty().GreaterThanOrEqualTo(0);
         RuleFor(x => x.Gauge).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.ToolSize).NotEmpty().MaximumLength(20);
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }
