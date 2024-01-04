@@ -22,6 +22,7 @@ import { tokenLoader } from "../../utils/auth";
 import { setError } from "../../reducers/errorSlice";
 import { useTranslation } from "react-i18next";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { NeedleworkType } from "../../DTOs/Enums";
 
 export default function ProjectDetails() {
     const { t } = useTranslation("ProjectDetails");
@@ -162,13 +163,13 @@ export default function ProjectDetails() {
                                         <h2 className={classes.sectionHeader}>{t('detailsSectionHeader')}</h2>
                                         <div className={classes.projectInfoContainer}>
                                             <div className={classes.attributeName}>{t('type')} </div>
-                                            {project.type ?? <br></br>}
+                                            {t(NeedleworkType[project.type]) ?? <br></br>}
                                             <div className={classes.attributeName}>{t('category')} </div>
                                             {project.category ?? <br></br>}
                                             <div className={classes.attributeName}>{t('startDate')} </div>
                                             {project.startDate?.slice(0, 10) ?? <br></br>}
                                             <div className={classes.attributeName}>{t('endDate')} </div>
-                                            {project.endDate?.slice(0, 10) ?? <br></br>}
+                                            {project.endDate && project.endDate !== "0001-01-01T00:00:00" ? project.endDate?.slice(0, 10) : <br></br>}
                                         </div>
                                     </div>
                                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
@@ -198,7 +199,12 @@ export default function ProjectDetails() {
                                     <FilesDisplay files={project.files} />
                                     <h3 className={classes.attributeName}>{t('counters')}</h3>
                                     <div className={classes.counters}>
-                                        {<CounterGroup defaultValue={project.counters ? project?.counters[0]?.counters : undefined} parentId={project.id} />}
+                                        {<CounterGroup 
+                                        defaultValue={project.counters ? project?.counters[0]?.counters : undefined} 
+                                        projectId={project.id} 
+                                        parentName={project.name}
+                                        counterGroupId={project.counters ? project?.counters[0]?.id : undefined}
+                                        />}
                                     </div>
                                     <h3 className={classes.attributeName}>{t('notes')}</h3>
                                     <div className={classes.notes}>

@@ -1,6 +1,8 @@
 using Common.Helpers;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
+using Humanizer.Localisation;
+using Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -70,16 +72,27 @@ public class CountersGroupRepository : ICountersGroupRepository
         }
     }
 
-    public void UpdateCountersGroup(CountersGroup countersGroup)
+    public void UpdateCountersGroup(CountersGroup countersGroup, List<Counter> counters)
     {
-        _dbContext.Attach(countersGroup);
-        _dbContext.Entry(countersGroup).Property("CountersGroupType").IsModified = true;
-        _dbContext.Entry(countersGroup).Property("StartDate").IsModified = true;
-        _dbContext.Entry(countersGroup).Property("EndDate").IsModified = true;
-        _dbContext.Entry(countersGroup).Property("Finished").IsModified = true;
-        _dbContext.Entry(countersGroup).Property("Category").IsModified = true;
-        _dbContext.Entry(countersGroup).Property("Notes").IsModified = true;
+        var dbCountersGroup = _dbContext.CountersGroups.Include(c => c.Counters)
+            .FirstOrDefault(y => y.Id == countersGroup.Id);
 
-        _dbContext.SaveChanges();
+        if (dbCountersGroup != null)
+        {
+            _dbContext.Entry(dbCountersGroup).CurrentValues.SetValues(countersGroup);
+
+            foreach (var counter in counters)
+            {
+                counter.CountersGroupId = countersGroup.Id;
+            }
+
+            RepositoryHelper.UpdateCollection(_dbContext.Counters, dbCountersGroup.Counters, counters, counter => counter.Id);
+
+            _dbContext.SaveChanges();
+        }
+        else
+        {
+            throw new Exception("CountersGroup not found");
+        }
     }
 }

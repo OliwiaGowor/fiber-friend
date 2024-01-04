@@ -15,7 +15,7 @@ namespace Domain.Entities
         public string Name { get; set; } = "";
         public NeedleworkType Type { get; set; }
         public string Category { get; set; } = "";
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
         public List<PhotoDto>? Photos { get; set; }
         public List<YarnDto> Yarns { get; set; }
         public List<ToolDto> Tools { get; set; }

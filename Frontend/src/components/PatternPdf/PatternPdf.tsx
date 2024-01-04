@@ -6,7 +6,8 @@ import { OtherSupply, Pattern, Tool } from '../../DTOs/Pattern';
 export const PatternPdf = () => {
     const fetchedData = JSON.parse(sessionStorage.getItem("patternData") ?? "");
     const { name, type, category, author, notes, photos, yarns, tools, otherSupplies } = fetchedData; // destructure data
-    const notesArr = (new Function("return " + notes + ";")());
+    
+    const notesArr = (new Function("return " + notes + ";")()) ?? [];
 
     const renderNode = (node: any, index: number, listType: string = '') => {
         if (listType && node.text) {
@@ -121,7 +122,7 @@ export const PatternPdf = () => {
         const supplies = [];
 
         if (pattern.yarns) {
-            supplies.push(yarns.map((yarn: Yarn) => (
+            supplies.push(yarns?.map((yarn: Yarn) => (
                 <View>
                     <Text id="sectionHeader" style={styles.smallheader}>Yarns</Text>
                     <Text style={styles.bold}>{`\u2022 ${yarn.name}`}</Text>
@@ -140,7 +141,7 @@ export const PatternPdf = () => {
         }
 
         if (pattern.tools) {
-            supplies.push(tools.map((tool: Tool) => (
+            supplies.push(tools?.map((tool: Tool) => (
                 <View>
                     <Text id="sectionHeader" style={styles.smallheader}>Yarns</Text>
                     <Text style={styles.bold}>{`\u2022 ${tool.name}`}</Text>
@@ -155,7 +156,7 @@ export const PatternPdf = () => {
         }
 
         if (pattern.otherSupplies) {
-            supplies.push(otherSupplies.map((otherSupply: OtherSupply) => (
+            supplies.push(otherSupplies?.map((otherSupply: OtherSupply) => (
                 <View>
                     <Text id="sectionHeader" style={styles.smallheader}>Yarns</Text>
                     <Text style={styles.bold}>{`\u2022 ${otherSupply.name}`}</Text>

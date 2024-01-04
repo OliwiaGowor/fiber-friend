@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import classes from './ChangePasswordPage.module.scss'
+import { useTranslation } from 'react-i18next';
+import classes from './ChangePasswordPage.module.scss';
 import { tokenLoader } from "../../utils/auth";
 import { Button, TextField } from "@mui/material";
 import PasswordValidation from "../../components/PasswordVaildation/PasswordVaildation";
@@ -9,6 +10,7 @@ import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
 
 const ChangePasswordPage = () => {
+  const { t } = useTranslation('ChangePasswordPage');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [currPassword, setCurrPassword] = useState("");
@@ -24,7 +26,7 @@ const ChangePasswordPage = () => {
       const data = await handleRequest(
         `${process.env.REACT_APP_API_URL}Auth/CheckPassword/${localStorage.getItem("userId")}`,
         "POST",
-        "Could not fetch user. Please try again later.",
+        t('checkPasswordErrorMessage'),
         tokenLoader(),
         currPassword
       );
@@ -42,50 +44,48 @@ const ChangePasswordPage = () => {
           await handleRequest(
             `${process.env.REACT_APP_API_URL}Auth/ChangeUserPassword/${localStorage.getItem("userId")}`,
             "PATCH",
-            "Could not change password. Please try again later.",
+            t('errorMessage'),
             tokenLoader(),
             newPassword
           );
 
-         dispatch(setError("Password changed successfully!"));
+          dispatch(setError(t('successMessage')));
           navigate("/fiber-friend/account");
         } catch (error) {
           dispatch(setError(error));
-          return;
         }
       }
     }
-  }
+  };
 
   return (
     <div className={classes.container}>
-      <h1 className={classes.header}>Change password</h1>
+      <h1 className={classes.header}>{t('header')}</h1>
       <div className={classes.sectionContainer}>
         <TextField
           className={classes.formInput}
           type="password"
-          label="Your current password"
+          label={t('currentPasswordLabel')}
           value={currPassword}
           onChange={(e) => setCurrPassword(e.target.value)}
         />
-        <PasswordValidation getPassword={setNewPassword}
-          showError={false} />
+        <PasswordValidation getPassword={setNewPassword} showError={false} />
         <TextField
           className={classes.formInput}
           type="password"
-          label="Repeat new password"
+          label={t('repeatPasswordLabel')}
           value={repPassword}
           onChange={(e) => setRepPassword(e.target.value)}
         />
         <Button 
-        className={classes.submitBtn}
-        onClick={handlePasswordChange}
+          className={classes.submitBtn}
+          onClick={handlePasswordChange}
         >
-          Change password
-          </Button>
+          {t('changePasswordBtn')} 
+        </Button>
       </div>
     </div>
   );
-}
+};
 
 export default ChangePasswordPage;

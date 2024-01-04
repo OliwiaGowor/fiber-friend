@@ -11,5 +11,5 @@ public interface ICountersGroupRepository
     public IQueryable<CountersGroup> GetCountersGroupsForUser(FilterModel filters, Guid userId, int page, int pageSize);
     CountersGroup GetCountersGroupById(Guid countersGroupId);
     IQueryable<CountersGroup> GetCountersGroupsByProjectId(Guid countersGroupd);
-    void UpdateCountersGroup(CountersGroup countersGroup);
+    void UpdateCountersGroup(CountersGroup countersGroup, List<Counter> counters);
 }

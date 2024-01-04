@@ -1,0 +1,28 @@
+export const projectStatisticsTranslations = {
+    en: {
+        couldNotFetchStatistics: 'Could not fetch statistics',
+        numberOfAddedProjects: 'Number of added projects',
+        numberOfFinishedProjects: 'Number of finished projects',
+        skeinsUsed: 'Skeins used',
+        mostFrequentlyUsedToolSize: 'Most frequently used hook/needle size',
+        mostlyUsedStitch: 'Mostly used stitch',
+        mostCommonCategory: 'Most common category',
+        typeOfProjects: 'Type of projects',
+        crochet: 'crochet',
+        knit: 'knit',
+        other: 'other',
+    },
+    pl: {
+        couldNotFetchStatistics: 'Nie udało się pobrać statystyk',
+        numberOfAddedProjects: 'Liczba dodanych projektów',
+        numberOfFinishedProjects: 'Liczba zakończonych projektów',
+        skeinsUsed: 'Ilość użytych motków',
+        mostFrequentlyUsedToolSize: 'Najczęściej używany rozmiar szydełka/igły',
+        mostlyUsedStitch: 'Najczęściej używany ścieg',
+        mostCommonCategory: 'Najczęstsza kategoria',
+        typeOfProjects: 'Rodzaj projektów',
+        crochet: 'szydełko',
+        knit: 'druty',
+        other: 'inne',
+    },
+};

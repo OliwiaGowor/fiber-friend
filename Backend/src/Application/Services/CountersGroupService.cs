@@ -69,8 +69,9 @@ public class CountersGroupService : ICountersGroupService
     public object UpdateCountersGroup(NewCountersGroupDto newCountersGroup)
     {
         var countersGroup = _mapper.Map<CountersGroup>(newCountersGroup);
+        var counters = _mapper.Map<List<Counter>>(newCountersGroup.Counters);
 
-        _countersGroupRepo.UpdateCountersGroup(countersGroup);
+        _countersGroupRepo.UpdateCountersGroup(countersGroup, counters);
 
         return countersGroup;
     }

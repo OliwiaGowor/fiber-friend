@@ -1,13 +1,15 @@
-import classes from "./IncDecCounter.module.scss";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { tokenLoader } from "../../utils/auth";
-import ToggleButton from "@mui/material/ToggleButton";
-import { useState } from "react";
-import TextField from "@mui/material/TextField";
+// IncDecCounter.tsx
+
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@mui/base";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
+import TextField from "@mui/material/TextField";
+import classes from "./IncDecCounter.module.scss";
 
 export default function IncDecCounter() {
-    const token = tokenLoader();
+    const { t } = useTranslation("IncDecCounter");
     const [type, setType] = useState<string>("decrease");
     const [currStitches, setCurrStitches] = useState<number>(0);
     const [desStitches, setDesStitches] = useState<number>(0);
@@ -75,115 +77,128 @@ export default function IncDecCounter() {
             const result = calcDecrease();
             return (
                 <div className={classes.sectionContainer}>
-                    <h2>Result</h2>
+                    <h2>{t('result')}</h2>
                     {result.rows.map((row, index) => {
-                        return <div>
-                            <p className={classes.rowNumber}>Row {index + 1}</p>
-                            <p key={index}>Decrease {result.stitchPerRow[index]} stitches</p>
-                            <p>Decrease every {row.everyStitch} stitches</p>
-                            <p>You will be left with {row.rest} stitches at the end</p>
-                        </div>
+                        return (
+                            <div key={index}>
+                                <p className={classes.rowNumber}>{t('row')} {index + 1}</p>
+                                <p>{t('decrease')} {result.stitchPerRow[index]} {t('stitches')}</p>
+                                <p>{t('decreaseEvery')} {row.everyStitch} {t('stitches')}</p>
+                                <p>{t('leftWith')} {row.rest} {t('stitchesAtEnd')}</p>
+                            </div>
+                        );
                     })}
                 </div>
-            )
+            );
         } else {
             const result = calcIncrease();
             return (
                 <div className={classes.sectionContainer}>
-                    <h2>Result</h2>
+                    <h2>{t('result')}</h2>
                     {result.rows.map((row, index) => {
-                        return <div>
-                            <p className={classes.rowNumber}>Row {index + 1}</p>
-                            <p key={index}>Increase {result.stitchPerRow[index]} stitches</p>
-                            <p>Increase every {row.everyStitch} stitches</p>
-                            <p>You will be left with {row.rest} stitches at the end</p>
-                        </div>
+                        return (
+                            <div key={index}>
+                                <p className={classes.rowNumber}>{t('row')} {index + 1}</p>
+                                <p>{t('increase')} {result.stitchPerRow[index]} {t('stitches')}</p>
+                                <p>{t('increaseEvery')} {row.everyStitch} {t('stitches')}</p>
+                                <p>{t('leftWith')} {row.rest} {t('stitchesAtEnd')}</p>
+                            </div>
+                        );
                     })}
                 </div>
-            )
+            );
         }
-    }
+    };
 
     return (
         <div className={classes.container}>
             <div className={classes.calcContainer}>
-                <h1>Stitch counter</h1>
+                <h1>{t('stitchCounter')}</h1>
                 <div className={classes.typeToggleContainer}>
                     <ToggleButtonGroup
                         value={type}
                         exclusive
-                        onChange={(event, newType) => { setType(newType) }}
+                        onChange={(event, newType) => setType(newType)}
                         aria-label="text alignment"
                         id="types"
                         className={classes.typeToggle}
                     >
-                        <ToggleButton value={"decrease"} className={classes.toggleButton} aria-label="decrease" disableRipple
+                        <ToggleButton
+                            value={"decrease"}
+                            className={classes.toggleButton}
+                            aria-label="decrease"
+                            disableRipple
                             sx={{
                                 backgroundColor: "var(--background-color)",
                                 '&.Mui-selected, &.Mui-selected:hover': {
                                     backgroundColor: "var(--main-color-medium)",
-                                }
-                            }}>
-                            Decrease
+                                },
+                            }}
+                        >
+                            {t('decrease')}
                         </ToggleButton>
-                        <ToggleButton value={"increase"} className={classes.toggleButton} aria-label="increase" disableRipple
+                        <ToggleButton
+                            value={"increase"}
+                            className={classes.toggleButton}
+                            aria-label="increase"
+                            disableRipple
                             sx={{
                                 backgroundColor: "var(--background-color)",
                                 '&.Mui-selected, &.Mui-selected:hover': {
                                     backgroundColor: "var(--main-color-medium)",
-                                }
-                            }}>
-                            Increase
+                                },
+                            }}
+                        >
+                            {t('increase')}
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </div>
                 <div className={classes.sectionContainer}>
-                    <div>Current number of stitches</div>
+                    <div>{t('currentNumberOfStitches')}</div>
                     <TextField
-                        id="name"
+                        id="currStitches"
                         inputProps={{
-                            'aria-label': 'name',
+                            'aria-label': 'currStitches',
                         }}
-                        label="Number of stitches"
+                        label={t('numberOfStitches')}
                         className={classes.formInput}
                         type='number'
-                        name='name'
-                        onChange={(e) => { setCurrStitches(Number(e.target.value)) }}
+                        name='currStitches'
+                        onChange={(e) => setCurrStitches(Number(e.target.value))}
                         value={currStitches}
                     />
-                    <div>Desired number of stitches</div>
+                    <div>{t('desiredNumberOfStitches')}</div>
                     <TextField
-                        id="name"
+                        id="desStitches"
                         inputProps={{
-                            'aria-label': 'name',
+                            'aria-label': 'desStitches',
                         }}
-                        label="Number of stitches"
+                        label={t('numberOfStitches')}
                         className={classes.formInput}
                         type='number'
-                        name='name'
-                        onChange={(e) => { setDesStitches(Number(e.target.value)) }}
+                        name='desStitches'
+                        onChange={(e) => setDesStitches(Number(e.target.value))}
                         value={desStitches}
                     />
-                    <div>Number of rows with {type === "decrease" ? "decreases" : "increases"}</div>
+                    <div>{t(`numberOfRowsWith${type === "decrease" ? 'Decreases' : 'Increases'}`)}</div>
                     <TextField
-                        id="name"
+                        id="numOfRows"
                         inputProps={{
-                            'aria-label': 'name',
+                            'aria-label': 'numOfRows',
                         }}
-                        label="Number of rows"
+                        label={t('numberOfRows')}
                         className={classes.formInput}
                         type='number'
-                        name='name'
-                        onChange={(e) => { setNumOfRows(Number(e.target.value)) }}
+                        name='numOfRows'
+                        onChange={(e) => setNumOfRows(Number(e.target.value))}
                         value={numOfRows}
                     />
                     <Button
                         className={classes.submitBtn}
-                        onClick={() => { setShowResults(true) }}
+                        onClick={() => setShowResults(true)}
                     >
-                        Calculate!
+                        {t('calculate')}
                     </Button>
-
                 </div>
             </div>
             <div className={classes.resultContainer}>

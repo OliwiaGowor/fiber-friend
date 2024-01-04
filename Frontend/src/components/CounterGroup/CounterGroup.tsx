@@ -16,13 +16,18 @@ import { useAppDispatch } from '../../utils/hooks';
 import { setError } from '../../reducers/errorSlice';
 import { handleRequest } from '../../utils/handleRequestHelper';
 import { useTranslation } from 'react-i18next';
+import { string } from 'slate';
+import { CountersGroup } from '../../DTOs/Counter';
 
 interface CounterGroupProps {
     defaultValue?: object;
-    parentId: string;
+    projectId?: string;
+    patternId?: string;
+    counterGroupId: string | undefined;
+    parentName: string;
 }
 
-const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
+const CounterGroup = ({ defaultValue, projectId, patternId, counterGroupId, parentName }: CounterGroupProps) => {
     const { t } = useTranslation("CounterGroup");
     const dispatch = useAppDispatch();
     const [tmpCounter, setTmpCounter] = React.useState();
@@ -53,14 +58,31 @@ const CounterGroup = ({ defaultValue, parentId }: CounterGroupProps) => {
     };
 
     const handleSaveChanges = async () => {
-        const method = defaultValue ? 'PATCH' : 'POST';
+        let counterGroupData: CountersGroup = {
+            name: parentName,
+            counters: counters,
+            userId: localStorage.getItem("userId") ?? "",
+        }
+
+        if (defaultValue) {
+            counterGroupData = { ...counterGroupData, id: counterGroupId };
+        }
+
+        if (projectId) {
+            counterGroupData = { ...counterGroupData, projectId: projectId };
+        } else if (patternId) {
+            counterGroupData = { ...counterGroupData, patternId: patternId };
+        }
+
+        const method = defaultValue ? 'PUT' : 'POST';
         try {
             await handleRequest(
-                `${process.env.REACT_APP_API_URL}Project/${parentId}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
+                `${process.env.REACT_APP_API_URL}CountersGroup/${counterGroupId}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
                 method,
-                "Could not fetch patterns. Please try again later.",
+                "Could not save counters. Please try again later.",
                 tokenLoader(),
-                counters);
+                counterGroupData
+            );
             setEditingCounters(false);
 
         } catch (error) {

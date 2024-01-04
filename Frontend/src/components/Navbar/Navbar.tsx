@@ -1,16 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import SidebarAccount from "../SidebarAccount/SidebarAccount";
 import { useMediaQuery } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import logoPicture from '../../photos/yarn-ball.png';
-
 import classes from './Navbar.module.scss';
 import { getAuthToken } from "../../utils/auth";
 import { CommunityPatternsIcon } from "../../svg/NavigationIcons";
@@ -87,28 +84,28 @@ export default function Navbar() {
                                 navigate("account/projects/new-project");
                             }}
                             >
-                                Add project
+                                {t('addProject')}
                             </MenuItem>
                             <MenuItem onClick={() => {
                                 handleCloseAdd();
                                 navigate("account/patterns/new-pattern");
                             }}
                             >
-                                Add pattern
+                                {t('addPattern')}
                             </MenuItem>
                             <MenuItem onClick={() => {
                                 handleCloseAdd();
                                 navigate("account/resources/new-resource");
                             }}
                             >
-                                Add resource
+                                {t('addResource')}
                             </MenuItem>
                             <MenuItem onClick={() => {
                                 handleCloseAdd();
                                 navigate("account/counters/new-counter");
                             }}
                             >
-                                Add counter
+                                {t('addCounter')}
                             </MenuItem>
                         </Menu>
                     </li>
@@ -138,8 +135,16 @@ export default function Navbar() {
 export const navbarTranslations = {
     en: {
         communityPatterns: 'Community patterns',
+        addProject: 'Add project',
+        addPattern: 'Add pattern',
+        addResource: 'Add resource',
+        addCounter: 'Add counter',
     },
     pl: {
-        communityPatterns: 'Udostępnione wzory'
+        communityPatterns: 'Udostępnione wzory',
+        addProject: 'Dodaj projekt',
+        addPattern: 'Dodaj wzór',
+        addResource: 'Dodaj zasób',
+        addCounter: 'Dodaj licznik',
     },
-}
+};

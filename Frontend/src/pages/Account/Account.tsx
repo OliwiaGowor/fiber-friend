@@ -1,5 +1,6 @@
-import { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Await, Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 import MiniaturesList from "../../components/MiniaturesList/MiniaturesList";
 import classes from './Account.module.scss'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -14,45 +15,46 @@ import { Pattern } from "../../DTOs/Pattern";
 import { useAppDispatch } from "../../utils/hooks";
 import { setError } from "../../reducers/errorSlice";
 
-const tiles = [
-  {
-    title: "Counters",
-    icon: <CalculateIcon
-      className={classes.icon}
-      sx={{ fontSize: 75 }}
-    />,
-    link: 'counters',
-  },
-  {
-    title: "Resources",
-    icon: <ShoppingBasketIcon
-      className={classes.icon}
-      sx={{ fontSize: 75 }}
-    />,
-    link: 'resources',
-  },
-  {
-    title: "Statistics",
-    icon: <InsightsIcon
-      className={classes.icon}
-      sx={{ fontSize: 75 }}
-    />,
-    link: 'statistics',
-  },
-];
-
 export default function Account() {
+  const { t } = useTranslation("Account");
   const dispatch = useAppDispatch();
   const [projects, setProjects] = useState<Project[]>([]);
   const [patterns, setPatterns] = useState<Pattern[]>([]);
 
+  const tiles = [
+    {
+      title: t('counters'),
+      icon: <CalculateIcon
+        className={classes.icon}
+        sx={{ fontSize: 75 }}
+      />,
+      link: 'counters',
+    },
+    {
+      title: t('resources'),
+      icon: <ShoppingBasketIcon
+        className={classes.icon}
+        sx={{ fontSize: 75 }}
+      />,
+      link: 'resources',
+    },
+    {
+      title: t('statistics'),
+      icon: <InsightsIcon
+        className={classes.icon}
+        sx={{ fontSize: 75 }}
+      />,
+      link: 'statistics',
+    },
+  ];
+  
   const handleLoadData = async () => {
     try {
       const patternData = await handleRequest(
         process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
           `${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
         'GET',
-        "Could not load patterns. Please try again later.",
+        t('loadingErrorMessage'), 
         tokenLoader()
       );
 
@@ -66,7 +68,7 @@ export default function Account() {
         process.env.REACT_APP_API_URL === "prod" ? `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
           `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
         'GET',
-        "Could not load projects. Please try again later.",
+        t('loadingErrorMessage'),
         tokenLoader()
       );
 
@@ -85,7 +87,7 @@ export default function Account() {
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
         <h1 className={classes.header}>
           <Link to={"projects"}>
-            PROJECTS<ArrowForwardIosIcon className={classes.arrow} />
+            {t('projects')}<ArrowForwardIosIcon className={classes.arrow} />
           </Link>
         </h1>
         <Await resolve={projects}>
@@ -93,7 +95,8 @@ export default function Account() {
             <MiniaturesList
               data={loadedProjects}
               link={'projects/new-project'}
-              elementsType={"projects"}
+              elementsType={'projects'}
+              addText={t('addProject')}
             />
           }
         </Await>
@@ -101,7 +104,7 @@ export default function Account() {
       <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
         <h1 className={classes.header}>
           <Link to={"patterns"}>
-            PATTERNS<ArrowForwardIosIcon className={classes.arrow} />
+            {t('patterns')}<ArrowForwardIosIcon className={classes.arrow} />
           </Link>
         </h1>
         <Await resolve={patterns}>
@@ -109,13 +112,14 @@ export default function Account() {
             <MiniaturesList
               data={loadedPatterns}
               link={'patterns/new-pattern'}
-              elementsType={"patterns"}
+              elementsType={'patterns'}
+              addText={t('addPattern')}
             />
           }
         </Await>
       </Suspense>
       <div className={classes.container} >
-        <h1 className={classes.header}>OTHERS</h1>
+        <h1 className={classes.header}>{t('others')}</h1>
         <div className={classes.tiles} >
           {tiles.map((tile: any) =>
             <Link to={tile.link} key={tile.title}>

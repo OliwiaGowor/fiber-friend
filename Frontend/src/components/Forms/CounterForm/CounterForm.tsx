@@ -1,4 +1,3 @@
-
 import classes from './CounterForm.module.scss';
 import { json, useNavigate } from "react-router-dom";
 import CounterMiniature from '../../CounterMiniature/CounterMiniature';
@@ -13,6 +12,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch } from '../../../utils/hooks';
 import { setError } from '../../../reducers/errorSlice';
 import { handleRequest } from '../../../utils/handleRequestHelper';
+import { useTranslation } from 'react-i18next';
 
 interface CounterFormProps {
     counterGroup?: any;
@@ -20,6 +20,7 @@ interface CounterFormProps {
 }
 
 export default function CounterForm({ counterGroup, method }: CounterFormProps) {
+    const { t } = useTranslation("CounterForm");
     const dispatch = useAppDispatch();
     const token = tokenLoader();
     const navigate = useNavigate();
@@ -68,7 +69,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
             projectsData = await handleRequest(
                 `${process.env.REACT_APP_API_URL}Project/GetProjectsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
                 'GET',
-                "Could not load projects. Please try again later.",
+                t("couldNotLoadProjects"),
                 tokenLoader()
             );
         } catch (error) {
@@ -80,7 +81,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
             patternsData = await handleRequest(
                 `${process.env.REACT_APP_API_URL}Pattern/GetPatternsForUser/${localStorage.getItem("userId")}?page=1&pageSize=10`,
                 'GET',
-                "Could not load patterns. Please try again later.",
+                t("couldNotLoadPatterns"),
                 tokenLoader()
             );
         } catch (error) {
@@ -103,7 +104,11 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
         for (let i = 0; i < tmpArray.length; i++) {
             tmpArray[i].id = i;
         }
-        setCounters(tmpArray);
+        setCounters(tmpArray.map((counter: any) => {
+            return {
+                name: counter.name,
+                value: counter.value,
+            }}));
     };
 
     //Handle form submit - request
@@ -112,12 +117,14 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
 
         if (counterGroupName) {
             const counterData = {
+                id: counterGroup?.id ?? null,
                 name: counterGroupName,
                 counters: counters,
                 userId: localStorage.getItem("userId"),
                 patternId: chosenPattern?.id ?? null,
                 projectId: chosenProject?.id ?? null,
             };
+
 
             let url = method === "POST" ?
                 `${process.env.REACT_APP_API_URL}CountersGroup${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
@@ -127,7 +134,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                 await handleRequest(
                     url,
                     method,
-                    "Could not save counters. Please try again later.",
+                    t("couldNotSaveCounters"),
                     tokenLoader(),
                     counterData);
                 return navigate('/fiber-friend/account/counters');
@@ -146,20 +153,20 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
         <div className={classes.container}>
             <form onSubmit={handleSubmit}>
                 <div className={classes.counterContainer}>
-                    <h1>Counter</h1>
+                    <h1>{t('counter')}</h1>
                     <div className={classes.sectionContainer} >
-                        <h2 className={classes.sectionHeader}>Details</h2>
+                        <h2 className={classes.sectionHeader}>{t('details')}</h2>
                         <TextField
                             id="counterGroupName"
                             inputProps={{
                                 'aria-label': 'counterGroupName',
                             }}
-                            label="Counter group name"
+                            label={t('counterGroupName')}
                             className={classes.formInput}
                             name='counterGroupName'
                             value={counterGroupName}
                             error={showCounterGroupError}
-                            helperText={showCounterGroupError ? 'Enter counter group name!' : ''}
+                            helperText={showCounterGroupError ? t('enterCounterGroupName') : ''}
                             onChange={(e) => { setShowCounterGroupError(false); setCounterGroupName(e.target.value); }}
                         />
                         <div className={classes.projectsPatternsSection}>
@@ -168,7 +175,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                                 size="medium"
                                 className={classes.formInput}
                                 options={autocompleteOptionsPatterns ?? undefined}
-                                renderInput={(params) => <TextField {...params} variant='outlined' label="Select pattern" InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
+                                renderInput={(params) => <TextField {...params} variant='outlined' label={t("selectPattern")} InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
                                 onChange={(event: React.SyntheticEvent, newValue: string | null) => { setChosenPattern(newValue) }}
                                 value={chosenPattern}
                                 disabled={chosenProject !== undefined}
@@ -178,13 +185,13 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                                 size="medium"
                                 className={classes.formInput}
                                 options={autocompleteOptionsProjects ?? undefined}
-                                renderInput={(params) => <TextField {...params} variant='outlined' label="Select project" InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
+                                renderInput={(params) => <TextField {...params} variant='outlined' label={t("selectProject")} InputLabelProps={{ children: '' } as Partial<InputLabelProps>} />}
                                 onChange={(event: React.SyntheticEvent, newValue: string | null) => { setChosenProject(newValue) }}
                                 value={chosenProject}
                                 disabled={chosenPattern !== undefined}
                             />
                         </div>
-                        <FormHelperText>You can connect the counters to your project or pattern!</FormHelperText>
+                        <FormHelperText>{t("connectCountersToProjectOrPattern")}</FormHelperText>
                     </div>
                     <BigCounter getCounter={setTmpCounter} />
                 </div>
@@ -194,7 +201,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                         variant='contained'
                         onClick={() => addCounter(tmpCounter)}
                     >
-                        Add counter
+                        {t("addCounter")}
                     </Button>
                 </div>
                 <div className={classes.createdCounters}>
@@ -216,7 +223,7 @@ export default function CounterForm({ counterGroup, method }: CounterFormProps) 
                         type='submit'
                         disabled={!submitActive}
                     >
-                        {`${method === 'POST' ? 'Create' : 'Edit'} counter group`}
+                        {`${t(method === 'POST' ? 'create' : 'edit')} ${t('counterGroup')}`}
                     </Button>
                 </div>
             </form>

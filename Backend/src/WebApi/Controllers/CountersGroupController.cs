@@ -82,7 +82,7 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("{id:Guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Update([FromBody] NewCountersGroupDto newCountersGroup)

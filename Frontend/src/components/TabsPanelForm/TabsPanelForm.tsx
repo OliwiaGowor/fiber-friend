@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -7,15 +7,15 @@ import FormHelperText from '@mui/material/FormHelperText';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import { Autocomplete, InputLabelProps, TextField, useMediaQuery } from '@mui/material';
-import { useCallback, useEffect } from 'react';
-import { tokenLoader } from '../../utils/auth';
-import classes from './TabsPanelForm.module.scss';
+import { useTranslation } from 'react-i18next'; // Import the useTranslation hook
 import { Yarn } from '../../DTOs/Yarn';
 import { OtherSupply, Tool } from '../../DTOs/Pattern';
 import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from '../../utils/handleRequestHelper';
 import { setError } from '../../reducers/errorSlice';
 import { ResourceType } from '../../DTOs/Enums';
+import { tokenLoader } from '../../utils/auth';
+import classes from './TabsPanelForm.module.scss';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -59,29 +59,30 @@ interface BasicTabsFormProps {
 }
 
 export default function BasicTabsForm({ getInfo, showError, defaultValue, type }: BasicTabsFormProps) {
+  const { t } = useTranslation("TabsPanelForm"); // Use the useTranslation hook
   const isMobile = useMediaQuery('(max-width: 800px)');
   const dispatch = useAppDispatch();
-  const [value, setValue] = React.useState(0);
-  const toolSizeRef = React.useRef<HTMLInputElement | null>(null);
-  const gaugeRef = React.useRef<HTMLInputElement | null>(null);
-  const stitchRef = React.useRef<HTMLInputElement | null>(null);
-  const quantityRef = React.useRef<HTMLInputElement | null>(null);
-  const noteRef = React.useRef<HTMLInputElement | null>(null);
-  const [supplies, setSupplies] = React.useState<Supply[]>(defaultValue ?? []);
-  const [supplyName, setSupplyName] = React.useState<string | null>('');
-  const [fetchedYarns, setFetchedYarns] = React.useState<any>([]);
-  const autocompleteOptions = React.useMemo(() => {
+  const [value, setValue] = useState(0);
+  const toolSizeRef = useRef<HTMLInputElement | null>(null);
+  const gaugeRef = useRef<HTMLInputElement | null>(null);
+  const stitchRef = useRef<HTMLInputElement | null>(null);
+  const quantityRef = useRef<HTMLInputElement | null>(null);
+  const noteRef = useRef<HTMLInputElement | null>(null);
+  const [supplies, setSupplies] = useState<Supply[]>(defaultValue ?? []);
+  const [supplyName, setSupplyName] = useState<string | null>('');
+  const [fetchedYarns, setFetchedYarns] = useState<any>([]);
+  const autocompleteOptions = useMemo(() => {
     return (fetchedYarns?.map((option: any) => {
-        return ({ label: `${option.name}`, id: `${option.id}` })
+      return ({ label: `${option.name}`, id: `${option.id}` })
     }))
-}, [fetchedYarns]);
+  }, [fetchedYarns]);
 
   const fetchAvailableYarns = useCallback(async () => {
     try {
       const data = await handleRequest(
         `${process.env.REACT_APP_API_URL}Resource/GetResourcesForUser/${localStorage.getItem("userId")}`,
         "GET",
-        "Could not available supplies. Please try again later.",
+        t("couldNotFetchSupplies"),
         tokenLoader(),
       );
 
@@ -93,11 +94,11 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
       dispatch(setError(error));
       return;
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchAvailableYarns();
-  }, []);
+  }, [fetchAvailableYarns]);
 
   const handleData = (resourceName: string) => {
     const tmpResourceInfo: Supply[] = supplies?.map((resource: Supply) => {
@@ -178,7 +179,13 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
     for (let i = 0; i < tmpArray.length; i++) {
       tmpArray[i].id = String(i);
     }
-    setSupplies(tmpArray);
+    setSupplies(tmpArray.map((supply) => {
+      return ({
+        name: supply.name,
+        quantity: supply.quantity,
+        note: '',
+      })
+    }));
   };
 
   const handleRenderFields = (supply: Supply, index: number) => {
@@ -194,7 +201,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               inputProps={{
                 'aria-labelledby': `tool-label-${index}`,
               }}
-              label="Tool size"
+              label={t("toolSize")}
               className={classes.formInput}
               name='tool'
               inputRef={toolSizeRef}
@@ -209,7 +216,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               inputProps={{
                 'aria-labelledby': `gauge-label-${index}`,
               }}
-              label="Gauge"
+              label={t("gauge")}
               className={classes.formInput}
               name='gauge'
               onChange={() => { handleData(yarnSupply.name) }}
@@ -218,7 +225,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               required
             />
             {!isMobile && <br></br>}
-            <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
+            <FormHelperText>{t("gaugeHelperText")}</FormHelperText>
             <TextField
               id={`stitch-${index}`}
               aria-describedby="stitch-helper-text"
@@ -226,7 +233,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               inputProps={{
                 'aria-labelledby': `stitch-label-${index}`,
               }}
-              label="Stitch"
+              label={t("stitch")}
               className={classes.formInput}
               name='stitch'
               onChange={() => { handleData(yarnSupply.name) }}
@@ -239,11 +246,11 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               id={`amount-${index}`}
               type='number'
               aria-describedby="amount-helper-text"
-              aria-label="Amount of skeins"
+              aria-label={t("amountOfSkeins")}
               inputProps={{
                 'aria-labelledby': `amount-of-skeins-label-${index}`,
               }}
-              label="Amount of skeins"
+              label={t("amountOfSkeins")}
               name='amount'
               onChange={() => { handleData(yarnSupply.name) }}
               inputRef={quantityRef}
@@ -264,7 +271,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               inputProps={{
                 'aria-labelledby': `tool-label-${index}`,
               }}
-              label="Tool size"
+              label={t("toolSize")}
               className={classes.formInput}
               name='tool'
               inputRef={toolSizeRef}
@@ -277,11 +284,11 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               id={`amount-${index}`}
               type='number'
               aria-describedby="amount-helper-text"
-              aria-label="Amount of skeins"
+              aria-label={t("quantity")}
               inputProps={{
                 'aria-labelledby': `amount-of-skeins-label-${index}`,
               }}
-              label="Quantity"
+              label={t("quantity")}
               name='amount'
               onChange={() => { handleData(toolSupply.name) }}
               inputRef={quantityRef}
@@ -300,11 +307,11 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
               id={`other-supply-quantity-${index}`}
               type='number'
               aria-describedby="other-supply-quantity-helper-text"
-              aria-label="Other supply quantity"
+              aria-label={t("quantity")}
               inputProps={{
                 'aria-labelledby': `other-supply-quantity-label-${index}`,
               }}
-              label="Quantity"
+              label={t("quantity")}
               name='other-supply-quantity'
               onChange={() => { handleData(otherSupply.name) }}
               inputRef={quantityRef}
@@ -313,11 +320,11 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
             />
             <TextField
               id={`tool-${index}`}
-              aria-label="Tool size"
+              aria-label={t("notes")}
               inputProps={{
                 'aria-labelledby': `other-supply-quantity-label-${index}`,
               }}
-              label="Notes"
+              label={t("notes")}
               className={classes.formInput}
               name='tool'
               inputRef={noteRef}
@@ -345,7 +352,7 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
             renderInput={(params) =>
               <TextField {...params}
                 variant='outlined'
-                label={`Add new ${type}`}
+                label={t(`addNew${type}`)}
                 InputLabelProps={{ children: '' } as Partial<InputLabelProps>}
               />}
             onChange={(event: React.SyntheticEvent, newValue: string | null) => { setSupplyName(newValue) }}
@@ -358,20 +365,20 @@ export default function BasicTabsForm({ getInfo, showError, defaultValue, type }
             inputProps={{
               'aria-label': 'yarn',
             }}
-            label="Add new yarn"
+            label={t(`addNew${type.replace(" ", "")}`)}
             size="medium"
             className={classes.formInput}
             name='name'
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setSupplyName(event.target.value) }}
             value={supplyName}
             error={showError}
-            helperText={showError ? 'You must add at least one yarn!' : ''}
+            helperText={showError ? t(`youMustAddAtLeastOne${type}`) : ''}
           />}
         <Button
           className={classes.addButton}
           onClick={handleAddTab}
           variant="contained">
-          Add
+          {t("add")}
         </Button>
       </div>
       <Box sx={{ width: '100%' }}>

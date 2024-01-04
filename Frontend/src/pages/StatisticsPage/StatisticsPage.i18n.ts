@@ -7,6 +7,8 @@ export const statisticsPageTranslations = {
       monthly: 'Monthly',
       yearly: 'Yearly',
       all: 'All',
+      patterns: 'Patterns',
+      projects: 'Projects',
     },
     pl: {
       statistics: 'STATYSTYKI',
@@ -15,5 +17,7 @@ export const statisticsPageTranslations = {
       monthly: 'Miesięczne',
       yearly: 'Roczne',
       all: 'Wszystko',
+      patterns: 'Wzory',
+      projects: 'Projekty',
     },
   };

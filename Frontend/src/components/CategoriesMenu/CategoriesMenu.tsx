@@ -13,10 +13,11 @@ interface CategoriesMenuProps {
     choseCategory: (category: string) => void;
     showError: boolean;
     defaultValue?: string;
+    forFilters?: boolean;
 }
 
-export default function CategoriesMenu({choseCategory, showError, defaultValue}: CategoriesMenuProps) {
-    const {t} = useTranslation("CategoriesMenu");
+export default function CategoriesMenu({ choseCategory, showError, defaultValue, forFilters }: CategoriesMenuProps) {
+    const { t } = useTranslation("CategoriesMenu");
     const [currentCategory, setCurrentCategory] = React.useState(categories); //represents the currently displayed category in the menu
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null); //represents the anchor element where the menu will be positioned
     const [categHistory, setCategHistory] = React.useState<any>([]); //represents the category history - the stack of previous categories selected
@@ -84,10 +85,10 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
             return (
                 <MenuItem className={classes.category}>
                     <button className={`${classes.btnCategory} ${classes.btnBack}`} onClick={() => {
-                        if (categHistory.length <= 1) { 
-                            setCurrentCategory(categories); 
+                        if (categHistory.length <= 1) {
+                            setCurrentCategory(categories);
                         } else {
-                            setCurrentCategory(categHistory[categHistory.length - 2].children); 
+                            setCurrentCategory(categHistory[categHistory.length - 2].children);
                         }
                         setCategHistory(
                             categHistory.filter((c: { category: string; }) =>
@@ -117,7 +118,7 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
                 className={classes.categoriesMenuBtn}
                 style={{
                     padding: "12px 16.5px",
-                    backgroundColor: 'var(--background-color)', 
+                    backgroundColor: 'var(--background-color)',
                     color: 'var(--text-color-dark)',
                 }}
                 color={showError ? 'error' : 'primary'}
@@ -135,6 +136,12 @@ export default function CategoriesMenu({choseCategory, showError, defaultValue}:
                 className={classes.categoriesMenu}
             >
                 {generateBackButton()}
+                {forFilters && <MenuItem className={classes.category}>
+                    <button className={classes.btnCategory} onClick={() => handleChoseCategory({ category: '' })}>
+                        {t('all')}
+                    </button>
+                </MenuItem>
+                }
                 {currentCategory.map((category: any, index: number) => (
                     < MenuItem disableRipple className={classes.category} key={index} >
                         {checkChildren(category)}

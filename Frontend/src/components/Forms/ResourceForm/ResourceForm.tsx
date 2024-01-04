@@ -12,6 +12,8 @@ import { tokenLoader } from "../../../utils/auth";
 import { useAppDispatch } from '../../../utils/hooks';
 import { handleRequest } from "../../../utils/handleRequestHelper";
 import { setError } from "../../../reducers/errorSlice";
+import { useTranslation } from 'react-i18next';  // Import useTranslation
+
 import { ResourceType } from "../../../DTOs/Enums";
 
 interface ResourceFormProps {
@@ -22,6 +24,7 @@ interface ResourceFormProps {
 const ResourceForm = ({ resource, method }: ResourceFormProps) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation("ResourceForm");
     const [type, setType] = React.useState(resource?.type ?? ResourceType.yarn);
     const [name, setName] = React.useState(resource?.name ?? '');
     const [showNameError, setShowNameError] = React.useState<boolean>(false);
@@ -55,7 +58,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                 toolSize: toolSize,
                 gauge: gauge,
                 skeinWeight: skeinWeight,
-                skeinLength: skeinLength,
+                skeinLenght: skeinLength,
                 notes: notes,
                 userId: localStorage.getItem('userId'),
             };
@@ -91,7 +94,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
             await handleRequest(
                 url,
                 method,
-                "Could not save resource. Please try again later.",
+                t('couldNotSaveResource'),  // Use translated string
                 tokenLoader(),
                 resourceData,
             );
@@ -125,7 +128,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'tool',
                             }}
-                            label="Tool size"
+                            label={t('toolSize')}  // Use translated string
                             className={classes.formInput}
                             name='tool'
                             required
@@ -138,7 +141,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'gauge',
                             }}
-                            label="Gauge"
+                            label={t('gauge')}  // Use translated string
                             className={classes.formInput}
                             name='gauge'
                             required
@@ -147,7 +150,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                         />
                     </div>
 
-                    <FormHelperText>Gauge 10cm by 10cm</FormHelperText>
+                    <FormHelperText>{t('gaugeInfo')}</FormHelperText>
 
                     <div className={classes.additionalInfo}>
                         <TextField
@@ -155,7 +158,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'weight',
                             }}
-                            label="Skein weight"
+                            label={t('skeinWeight')}  // Use translated string
                             className={classes.formInput}
                             name='weight'
                             required
@@ -168,7 +171,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'meters',
                             }}
-                            label="Meters/yards in skein"
+                            label={t('skeinLength')}  // Use translated string
                             className={classes.formInput}
                             name='meters'
                             required
@@ -187,7 +190,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'size',
                             }}
-                            label="Size"
+                            label={t('size')}  // Use translated string
                             className={classes.formInput}
                             name='size'
                             required
@@ -200,7 +203,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'tool-type',
                             }}
-                            label="Tool type"
+                            label={t('toolType')}  // Use translated string
                             className={classes.formInput}
                             name='toolType'
                             required
@@ -215,21 +218,21 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>{`${method === "POST" ? "Create" : "Edit"} resource`}</h1>
+            <h1 className={classes.header}>{`${method === "POST" ? t('createResource') : t('editResource')}`}</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Details</h2>
+                        <h2 className={classes.sectionHeader}>{t('details')}</h2>
                         <TextField
                             id="name"
                             inputProps={{
                                 'aria-label': 'name',
                             }}
-                            label="Resource name"
+                            label={t('resourceName')}  // Use translated string
                             className={classes.formInput}
                             name='name'
                             error={showNameError}
-                            helperText={showNameError ? 'Enter resource name!' : ''}
+                            helperText={showNameError ? t('enterResourceName') : ''}
                             onChange={(e) => { setShowNameError(false); setName(e.target.value) }}
                             value={name}
                         />
@@ -249,7 +252,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Yarn
+                                    {t('yarn')}
                                 </ToggleButton>
                                 <ToggleButton value={ResourceType.tool} className={classes.toggleButton} aria-label="tool" disableRipple
                                     sx={{
@@ -258,7 +261,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Tool
+                                    {t('tool')}
                                 </ToggleButton>
                                 <ToggleButton value={ResourceType.other} className={classes.toggleButton} aria-label="other" disableRipple
                                     sx={{
@@ -267,7 +270,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Other
+                                    {t('other')}
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </div>
@@ -277,24 +280,24 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                             inputProps={{
                                 'aria-label': 'quantity',
                             }}
-                            label="Quantity *"
+                            label={t('quantity')}  // Use translated string
                             className={classes.formInput}
                             name='quantity'
                             type="number"
                             error={showQuantityError}
-                            helperText={showNameError ? 'Enter resource quantity!' : ''}
+                            helperText={showNameError ? t('enterResourceQuantity') : ''}
                             onChange={(e) => { setShowQuantityError(false); setQuantity(e.target.value) }}
                             value={quantity}
                         />
                     </div>
 
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Photos</h2>
-                        <p className={classes.additionalText}>Add a photo!</p>
+                        <h2 className={classes.sectionHeader}>{t('photos')}</h2>
+                        <p className={classes.additionalText}>{t('addPhoto')}</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={true}
-                                addHeader={'Add photo'}
+                                addHeader={t('addPhoto')}
                                 maxFiles={1}
                                 selectedFiles={(images: any) => { setImages(images) }}
                                 defaultValue={images}
@@ -303,7 +306,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                     </div>
 
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Notes</h2>
+                        <h2 className={classes.sectionHeader}>{t('notes')}</h2>
                         <div className={classes.notesField}>
                             <TextEditor
                                 getValue={(notes: any) => { setNotes(notes) }}
@@ -318,7 +321,7 @@ const ResourceForm = ({ resource, method }: ResourceFormProps) => {
                     type="submit"
                     onClick={validateForm}
                 >
-                    {`${method === "POST" ? "Add new resource" : "Edit resource"}`}
+                    {`${method === "POST" ? t('addNewResource') : t('editResource')}`}
                 </Button>
             </form>
         </div>

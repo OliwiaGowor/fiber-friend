@@ -6,10 +6,11 @@ export interface Counter {
 }
 
 export interface CountersGroup {
-    id: string;
+    id?: string;
     name: string;
     counters: Counter[];
     patternId?: string;
     projectId?: string;
+    userId?: string;
 
 }

@@ -4,6 +4,7 @@ import { categories } from "./Categories"
 export const projectsFilters = [
     {
         name: "Status",
+        query: "status",
         options: [
             {
                 name: "Active",
@@ -16,7 +17,8 @@ export const projectsFilters = [
         ]
     },
     {
-        name: "needleworkType",
+        name: "Type",
+        query: "needleworkType",
         options: [
             {
                 name: "Knitting",
@@ -41,6 +43,7 @@ export const projectsFilters = [
 export const patternsFilters = [
     {
         name: "Status",
+        query: "status",
         options: [
             {
                 name: "Active",
@@ -53,7 +56,8 @@ export const patternsFilters = [
         ]
     },
     {
-        name: "needleworkType",
+        name: "Type",
+        query: "needleworkType",
         options: [
             {
                 name: "Knitting",
@@ -71,13 +75,15 @@ export const patternsFilters = [
     },
     {
         name: "Category",
+        query: "category",
         options: categories
     },
 ]
 
 export const resourcesFilters = [
     {
-        name: "resourceType",
+        name: "Type",
+        query: "resourceType",
         options: [
             {
                 name: "Yarns",

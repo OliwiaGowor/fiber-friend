@@ -55,7 +55,7 @@ export default function Patterns() {
                 </div>
             }
             <div className={classes.container}>
-                <h1 className={classes.header}>{t('patterns')}</h1>
+                <h1 className={classes.header}>{t('header')}</h1>
                 <Tiles
                     link='new-pattern'
                     addText={t('newPattern')}

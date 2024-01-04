@@ -8,7 +8,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import React, { useEffect } from "react";
 
-export default function MiniaturesList({ data, link, elementsType }: any) {
+export default function MiniaturesList({ data, link, elementsType, addText }: any) {
   const loadedElements = [];
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ export default function MiniaturesList({ data, link, elementsType }: any) {
             onClick={() => navigate(`/fiber-friend/account/${link}`)}
           >
             <AddCircleIcon className={classes.addIcon} sx={{ fontSize: 100 }} />
-            <h2 className={classes.info}>New project</h2>
+            <h2 className={classes.info}>{addText}</h2>
           </div>
         </SwiperSlide>
         {loadedElements.map((element: any, index: number) => (

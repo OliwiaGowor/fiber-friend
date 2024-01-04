@@ -52,6 +52,18 @@ public class ProjectRepository : IProjectRepository
         var project = _dbContext.Projects.Find(projectId);
         if (project is not null)
         {
+            var photos = _dbContext.Photos.Where(p => p.ProjectId == projectId);
+            foreach (var photo in photos)
+            {
+                _dbContext.Photos.Remove(photo);
+            }
+
+            var files = _dbContext.Files.Where(p => p.ProjectId == projectId);
+            foreach (var file in files)
+            {
+                _dbContext.Files.Remove(file);
+            }
+
             _dbContext.Projects.Remove(project);
             _dbContext.SaveChanges();
         }

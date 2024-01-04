@@ -26,6 +26,21 @@ import { passwordValidationTranslations } from './components/PasswordVaildation/
 import { navbarTranslations } from './components/Navbar/Navbar';
 import { filtersBarTranslations } from './components/FiltersBar/FiltersBar';
 import { communityPatternsTranslations } from './pages/CommunityPatterns/CommunityPatterns.i18n';
+import { accountTranslations } from './pages/Account/Account.i18n';
+import { changePasswordTranslations } from './pages/AccountSettings/ChangePasswordPage.i18n';
+import { deleteAccountPageTranslations } from './pages/AccountSettings/DeleteAccountPage.i18n';
+import { communityPatternDetailsTranslations } from './pages/CommunityPatterns/CommunityPatternDetails.i18n';
+import { counterDetailsTranslations } from './pages/Counters/CounterDetails.i18n';
+import { incDecCounterTranslations } from './pages/IncDecCounter/IncDecCounter.i18n';
+import { reportProblemTranslations } from './pages/ReportProblemPage/ReportProblemPage.i18n';
+import { resourceDetailsTranslations } from './pages/Resources/ResourceDetails.i18n';
+import { projectFormTranslations } from './components/Forms/ProjectForm/ProjectForm.i18n';
+import { counterFormTranslations } from './components/Forms/CounterForm/CounterForm.i18n';
+import { patternsStatisticsTranslations } from './components/PatternsStatistics/PatternStatistics.i18n';
+import { tabsPanelFormTranslations } from './components/TabsPanelForm/TabsPanelForm.i18n';
+import { projectStatisticsTranslations } from './components/ProjectsStatistics/ProjectStatistics.i18n';
+import { resourceFormTranslations } from './components/Forms/ResourceForm/ResourceForm.i18n';
+import { tabsPanelDisplayTranslations } from './components/TabsPanelDisplay/TabsPanelDisplay.i18n';
 
 const resources = {
   en: {
@@ -53,6 +68,21 @@ const resources = {
     Navbar: navbarTranslations.en,
     FiltersBar: filtersBarTranslations.en,
     CommunityPatterns: communityPatternsTranslations.en,
+    Account: accountTranslations.en,
+    ChangePasswordPage: changePasswordTranslations.en,
+    DeleteAccountPage: deleteAccountPageTranslations.en,
+    CommunityPatternDetails: communityPatternDetailsTranslations.en,
+    CounterDetails: counterDetailsTranslations.en,
+    IncDecCounter: incDecCounterTranslations.en,
+    ReportProblemPage: reportProblemTranslations.en,
+    ResourceDetails: resourceDetailsTranslations.en,
+    ProjectForm: projectFormTranslations.en,
+    CounterForm: counterFormTranslations.en,
+    PatternsStatistics: patternsStatisticsTranslations.en,
+    TabsPanelForm: tabsPanelFormTranslations.en,
+    ProjectStatistics: projectStatisticsTranslations.en,
+    ResourceForm: resourceFormTranslations.en,
+    TabsPanelDisplay: tabsPanelDisplayTranslations.en,
   },
   pl: {
     HomePage: homePageTranslations.pl,
@@ -79,6 +109,21 @@ const resources = {
     Navbar: navbarTranslations.pl,
     FiltersBar: filtersBarTranslations.pl,
     CommunityPatterns: communityPatternsTranslations.pl,
+    Account: accountTranslations.pl,
+    ChangePasswordPage: changePasswordTranslations.pl,
+    DeleteAccountPage: deleteAccountPageTranslations.pl,
+    CommunityPatternDetails: communityPatternDetailsTranslations.pl,
+    CounterDetails: counterDetailsTranslations.pl,
+    IncDecCounter: incDecCounterTranslations.pl,
+    ReportProblemPage: reportProblemTranslations.pl,
+    ResourceDetails: resourceDetailsTranslations.pl,
+    ProjectForm: projectFormTranslations.pl,
+    CounterForm: counterFormTranslations.pl,
+    PatternsStatistics: patternsStatisticsTranslations.pl,
+    TabsPanelForm: tabsPanelFormTranslations.pl,
+    ProjectStatistics: projectStatisticsTranslations.pl,
+    ResourceForm: resourceFormTranslations.pl,
+    TabsPanelDisplay: tabsPanelDisplayTranslations.pl,
   },
 };
 

@@ -1,0 +1,38 @@
+export const resourceDetailsTranslations = {
+    en: {
+      deleteResourceError: 'Could not delete resource. Please try again later.',
+      edit: 'Edit',
+      deleteCounter: 'Delete counter',
+      toolSize: 'Tool size:',
+      gauge: 'Gauge:',
+      skeinWeight: 'Skein weight:',
+      metersInSkein: 'Meters in skein:',
+      toolType: 'Tool type:',
+      type: 'Type:',
+      quantity: 'Quantity:',
+      notes: 'Notes',
+      details: 'Details',
+      photos: 'Photos',
+      connectedPatternProject: 'Connected {{type}}',
+      fetchResourceError: 'Could not fetch resource.',
+    },
+    pl: {
+      deleteResourceError: 'Nie udało się usunąć zasobu. Spróbuj ponownie później.',
+      edit: 'Edytuj',
+      deleteCounter: 'Usuń licznik',
+      toolSize: 'Rozmiar narzędzia:',
+      gauge: 'Miara:',
+      skeinWeight: 'Waga motka:',
+      metersInSkein: 'Metry w motku:',
+      toolType: 'Typ narzędzia:',
+      type: 'Typ:',
+      quantity: 'Ilość:',
+      notes: 'Notatki',
+      details: 'Szczegóły',
+      photos: 'Zdjęcia',
+      connectedPatternProject: 'Połączony {{type}}',
+      fetchResourceError: 'Nie udało się pobrać zasobu.',
+    },
+    // Add translations for other languages as needed
+  };
+  

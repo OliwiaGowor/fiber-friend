@@ -97,7 +97,7 @@ export default function StatisticsPage() {
                         className={classes.typeSelect}
                     >
                         {statisticsTypes.map((type) => (
-                            <MenuItem value={type}>{type}</MenuItem>
+                            <MenuItem value={type}>{t(type)}</MenuItem>
                         ))}
                     </Select>
                     <h2>{t('chooseTimePeriod')}</h2>

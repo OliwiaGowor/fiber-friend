@@ -1,8 +1,6 @@
+// ProjectForm.tsx
 import { json, useNavigate } from "react-router-dom";
 import classes from './ProjectForm.module.scss';
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import TextField from "@mui/material/TextField";
@@ -23,6 +21,7 @@ import { handleRequest } from "../../../utils/handleRequestHelper";
 import { setError } from "../../../reducers/errorSlice";
 import { NeedleworkType } from "../../../DTOs/Enums";
 import { MyFile } from "../../../DTOs/MyFile";
+import { useTranslation } from "react-i18next";
 
 interface ProjectFormProps {
     project?: any;
@@ -30,6 +29,7 @@ interface ProjectFormProps {
 }
 
 export default function ProjectForm({ project, method }: ProjectFormProps) {
+    const { t } = useTranslation("ProjectForm");
     const dispatch = useAppDispatch();
     const token = getAuthToken();
     const navigate = useNavigate();
@@ -82,9 +82,8 @@ export default function ProjectForm({ project, method }: ProjectFormProps) {
         setSelectedPattern(event.target.value as string);
     };
 
-    let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
+    let dateErrorMessage = requiredError ? t('enterStartDate') : undefined;
 
-console.log(selectedPattern)
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -111,10 +110,9 @@ console.log(selectedPattern)
                 type: type,
                 category: category ?? "Other",
                 startDate: startDate,
-                endDate: endDate,
                 photos: formPhotos,
                 files: formFiles,
-                notes: notes,
+                notes: notes ?? "",
                 connectedPatternId: selectedPattern ?? null,
                 finished: endDate !== null ? true : false,
                 userId: localStorage.getItem('userId') ?? "",
@@ -127,6 +125,10 @@ console.log(selectedPattern)
                 projectData.yarns = [...yarns];
             }
 
+            if(endDate !== null) {
+                projectData.endDate = endDate;
+            }
+
             let url = method === "POST" ?
                 `${process.env.REACT_APP_API_URL}Project${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
                 `${process.env.REACT_APP_API_URL}Project/${project.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
@@ -135,7 +137,7 @@ console.log(selectedPattern)
                 await handleRequest(
                     url,
                     method,
-                    "Could not save project. Please try again later.",
+                    t('couldNotSaveProject'),
                     token,
                     projectData
                 );
@@ -166,26 +168,26 @@ console.log(selectedPattern)
             setProceedSubmit(false);
         }
 
-        setProceedSubmit(true); //TODO: change to return
+        setProceedSubmit(true); // TODO: change to return
     };
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>{`${method === "POST" ? "Create" : "Edit"} project`}</h1>
+            <h1 className={classes.header}>{`${method === "POST" ? t('createProject') : t('editProject')}`}</h1>
             <form onSubmit={handleSubmit} className={classes.form} >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Details</h2>
+                        <h2 className={classes.sectionHeader}>{t('details')}</h2>
                         <TextField
                             id="name"
                             inputProps={{
                                 'aria-label': 'name',
                             }}
-                            label="Project name"
+                            label={t('projectName')}
                             className={classes.formInput}
                             name='name'
                             error={showNameError}
-                            helperText={showNameError ? 'Enter project name!' : ''}
+                            helperText={showNameError ? t('enterProjectName') : ''}
                             onChange={(e) => { setShowNameError(false); setName(e.target.value) }}
                             value={name}
                         />
@@ -205,7 +207,7 @@ console.log(selectedPattern)
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Crochet
+                                    {t('crochet')}
                                 </ToggleButton>
                                 <ToggleButton value={NeedleworkType.knitting} className={classes.toggleButton} aria-label="knitting" disableRipple
                                     sx={{
@@ -214,7 +216,7 @@ console.log(selectedPattern)
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Knitting
+                                    {t('knitting')}
                                 </ToggleButton>
                                 <ToggleButton value={NeedleworkType.other} className={classes.toggleButton} aria-label="other" disableRipple
                                     sx={{
@@ -223,7 +225,7 @@ console.log(selectedPattern)
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Other
+                                    {t('other')}
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </div>
@@ -237,7 +239,7 @@ console.log(selectedPattern)
                         <div className={classes.datePickers}>
                             <DatePicker
                                 className={classes.dateInput}
-                                label="Start date *"
+                                label={`${t('startDate')} *`}
                                 onChange={(newValue: any) => { setStartDate(newValue) }}
                                 format="DD-MM-YYYY"
                                 onError={(newError) => {
@@ -253,24 +255,24 @@ console.log(selectedPattern)
                             />
                             <DatePicker
                                 className={classes.dateInput}
-                                label="End date"
+                                label={t('endDate')}
                                 format="DD-MM-YYYY"
                                 minDate={startDate ?? undefined}
                                 onChange={(newValue: any) => { setEndDate(newValue) }}
                                 value={dayjs(endDate)}
                             />
                             <br></br>
-                            <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
+                            <p className={classes.additionalText}>{t('addEndDate')}</p>
                         </div>
                     </div>
 
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Photos</h2>
-                        <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
+                        <h2 className={classes.sectionHeader}>{t('photos')}</h2>
+                        <p className={classes.additionalText}>{t('addUpTo10Photos')}</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={true}
-                                addHeader={'Add photo'}
+                                addHeader={t('addPhoto')}
                                 maxFiles={10}
                                 defaultValue={photos}
                                 selectedFiles={(images: any) => { setPhotos(images) }}
@@ -279,8 +281,8 @@ console.log(selectedPattern)
                     </div>
 
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                        <h2 className={classes.sectionHeader}>Yarns and tools</h2>
-                        <p className={classes.additionalText}>Add yarns to see more options</p>
+                        <h2 className={classes.sectionHeader}>{t('yarnsAndTools')}</h2>
+                        <p className={classes.additionalText}>{t('addYarnsToSeeMoreOptions')}</p>
                         <BasicTabsForm
                             showError={showYarnsError}
                             getInfo={(yarnsInfo: any) => { setYarns(yarnsInfo) }}
@@ -290,27 +292,27 @@ console.log(selectedPattern)
                     </div>
 
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Patterns and notes</h2>
-                        <p className={classes.additionalText}>Choose pattern from your library.</p>
-                        <InputLabel id="pattern-select">Pattern</InputLabel>
+                        <h2 className={classes.sectionHeader}>{t('patternsAndNotes')}</h2>
+                        <p className={classes.additionalText}>{t('choosePatternFromLibrary')}</p>
+                        <InputLabel id="pattern-select">{t('pattern')}</InputLabel>
                         <Select
                             labelId="pattern-select"
                             id="pattern-select"
                             value={selectedPattern}
-                            label="Pattern"
+                            label={t('pattern')}
                             onChange={handleChange}
                             className={classes.patternSelect}
                         >
-                            <MenuItem value=''>SELECT PATTERN</MenuItem>
+                            <MenuItem value=''>{t('selectPattern')}</MenuItem>
                             {patterns && patterns.map((pattern: any) => (
-                                <MenuItem value={pattern.id}>{pattern.name}</MenuItem>
+                                <MenuItem key={pattern.id} value={pattern.id}>{pattern.name}</MenuItem>
                             ))}
                         </Select>
-                        <p className={classes.additionalText}>Add up to 5 files with patterns!</p>
+                        <p className={classes.additionalText}>{t('addUpTo5FilesWithPatterns')}</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={false}
-                                addHeader={'Add patterns'}
+                                addHeader={t('addPatterns')}
                                 maxFiles={5}
                                 defaultValue={patterns}
                                 selectedFiles={(patterns: any) => { setFiles(patterns) }}
@@ -327,7 +329,7 @@ console.log(selectedPattern)
                     type="submit"
                     onClick={validateForm}
                 >
-                    {`${method === "POST" ? "Add new project" : "Edit project"}`}
+                    {`${method === "POST" ? t('addNewProject') : t('editProject')}`}
                 </Button>
             </form>
         </div>

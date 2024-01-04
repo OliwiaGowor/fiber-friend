@@ -7,6 +7,7 @@ import classes from './TabsPanelDisplay.module.scss';
 import FormHelperText from '@mui/material/FormHelperText';
 import { Yarn } from '../../DTOs/Yarn';
 import { OtherSupply, Tool } from '../../DTOs/Pattern';
+import { useTranslation } from 'react-i18next';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,6 +50,7 @@ interface BasicTabsDisplayProps {
 }
 
 export default function BasicTabsDisplay({ supplies, type }: BasicTabsDisplayProps) {
+  const { t } = useTranslation("TabsPanelDisplay");
   const [value, setValue] = React.useState(0);
 
   const handleChangeTabs = (event: React.SyntheticEvent, newValue: number) => {
@@ -61,21 +63,21 @@ export default function BasicTabsDisplay({ supplies, type }: BasicTabsDisplayPro
         const yarnSupply = supply as Yarn;
         return (
           <div className={classes.infoContainer}>
-            <div className={classes.attributeName}>Tool size: </div>
+            <div className={classes.attributeName}>{t('toolSize')}: </div>
             {yarnSupply.toolSize ?? <br />}
 
-            <div className={classes.attributeName}>Stitch: </div>
+            <div className={classes.attributeName}>{t('stitch')}: </div>
             {yarnSupply.stitch ?? <br />}
 
             <div className={classes.attributeName}>
-              Gauge
+              {t('gauge')}
               <FormHelperText style={{ display: "inline" }}>
                 (10cm x 10cm)
               </FormHelperText>:
             </div>
             {yarnSupply.gauge ?? <br />}
 
-            <div className={classes.attributeName}>Amount: </div>
+            <div className={classes.attributeName}>{t('amount')}: </div>
             {yarnSupply.quantity ?? <br />}
           </div>
         )
@@ -84,10 +86,10 @@ export default function BasicTabsDisplay({ supplies, type }: BasicTabsDisplayPro
         const toolSupply = supply as Tool;
         return (
           <div className={classes.infoContainer}>
-            <div className={classes.attributeName}>Tool size: </div>
+            <div className={classes.attributeName}>{t('toolSize')}: </div>
             {toolSupply.size ?? <br />}
 
-            <div className={classes.attributeName}>Quantity: </div>
+            <div className={classes.attributeName}>{t('quantity')}: </div>
             {toolSupply.quantity ?? <br />}
           </div>
         )
@@ -96,10 +98,10 @@ export default function BasicTabsDisplay({ supplies, type }: BasicTabsDisplayPro
         const otherSupply = supply as OtherSupply;
         return (
           <div className={classes.infoContainer}>
-            <div className={classes.attributeName}>Quantity: </div>
+            <div className={classes.attributeName}>{t('quantity')}: </div>
             {otherSupply.quantity ?? <br />}
 
-            <div className={classes.attributeName}>Notes: </div>
+            <div className={classes.attributeName}>{t('notes')}: </div>
             {otherSupply.note ?? <br />}
           </div>
         )

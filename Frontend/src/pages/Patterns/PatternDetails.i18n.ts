@@ -20,6 +20,10 @@ export const patternDetailsTranslations = {
       files: 'Files',
       counters: 'Counters',
       notes: 'Notes',
+      cancel: 'Cancel',
+      crochet: 'Crochet',
+      knitting: 'Knitting',
+      other: 'Other',
     },
     pl: {
       shareDialogTitle: 'Udostępnij wzór',
@@ -42,5 +46,9 @@ export const patternDetailsTranslations = {
       files: 'Pliki',
       counters: 'Liczniki',
       notes: 'Notatki',
+      cancel: 'Anuluj',
+      crochet: 'Szydełkowanie',
+      knitting: 'Dzierganie',
+      other: 'Inne',
     },
   };

@@ -7,6 +7,7 @@ import { handleRequest } from "../../utils/handleRequestHelper";
 import { tokenLoader } from "../../utils/auth";
 import { useAppDispatch } from "../../utils/hooks";
 import { setError } from "../../reducers/errorSlice";
+import { useTranslation } from "react-i18next";
 
 const tmpData = {
     totalPatterns: 40,
@@ -35,6 +36,7 @@ interface PatternsStatisticsDto {
 }
 
 const PatternsStatistics = ({ timePeriodStart, timePeriodEnd }: PatternsStatisticsDto) => {
+    const { t } = useTranslation("PatternsStatistics");
     const dispatch = useAppDispatch();
     const [data, setData] = useState<any | null>(tmpData);
 
@@ -43,7 +45,7 @@ const PatternsStatistics = ({ timePeriodStart, timePeriodEnd }: PatternsStatisti
             const response = await handleRequest(
                 `${process.env.REACT_APP_API_URL}Statistics/PatternsStatistics/${localStorage.getItem("userId")}/${timePeriodStart}/${timePeriodEnd}`,
                 'GET',
-                "Could not fetch statistics",
+                t("couldNotFetchStatistics"),
                 tokenLoader(),
             );
             setData(response);
@@ -59,32 +61,32 @@ const PatternsStatistics = ({ timePeriodStart, timePeriodEnd }: PatternsStatisti
 
     return (
         <div className={classes.container}>
-            <div className={classes.info}>The statistics are for your authorial patterns.</div>
+            <div className={classes.info}>{t("statisticsForAuthorialPatterns")}</div>
             <div className={classes.tiles}>
                 <Suspense fallback={<p style={{ textAlign: 'center' }}><CircularProgress /></p>}>
                     <Await resolve={null}>
                         <div className={classes.dataTile}>
-                            <p className={classes.dataTileHeader}>Number of added patterns</p>
+                            <p className={classes.dataTileHeader}>{t("addedPatterns")}</p>
                             <p className={classes.dataTileData}>{data?.addedPatterns}</p>
                         </div>
                         <div className={classes.dataTile}>
-                            <p className={classes.dataTileHeader}>Number of finished patterns</p>
+                            <p className={classes.dataTileHeader}>{t("finishedPatterns")}</p>
                             <p className={classes.dataTileData}>{data?.authorialPatterns}</p>
                         </div>
                         <div className={classes.dataTile}>
-                            <p className={classes.dataTileHeader}>Most frequently used hook/needle size</p>
+                            <p className={classes.dataTileHeader}>{t("mostFreqToolSize")}</p>
                             <p className={classes.dataTileData}>{data?.mostFreqToolSize}</p>
                         </div>
                         <div className={classes.dataTile}>
-                            <p className={classes.dataTileHeader}>Mostly used stitch</p>
+                            <p className={classes.dataTileHeader}>{t("mostFreqStitch")}</p>
                             <p className={classes.dataTileData}>{data?.mostFreqStitch}</p>
                         </div>
                         <div className={classes.dataTile}>
-                            <p className={classes.dataTileHeader}>Most common category</p>
+                            <p className={classes.dataTileHeader}>{t("mostFreqCategory")}</p>
                             <p className={classes.dataTileData}>{data?.mostFreqCategory}</p>
                         </div>
                         <div className={`${classes.dataTile} ${classes.chart}`}>
-                            <p className={classes.dataTileHeader}>Type of patterns</p>
+                            <p className={classes.dataTileHeader}>{t("typeOfPatterns")}</p>
                             <PieChart
                                 series={[
                                     {
@@ -92,17 +94,17 @@ const PatternsStatistics = ({ timePeriodStart, timePeriodEnd }: PatternsStatisti
                                             {
                                                 id: 0,
                                                 value: data.crochetPatterns,
-                                                label: "crochet",
+                                                label: t("crochet"),
                                             },
                                             {
                                                 id: 1,
                                                 value: data.knitingPatterns,
-                                                label: "knit",
+                                                label: t("knit"),
                                             },
                                             {
                                                 id: 2,
                                                 value: data.otherPatterns,
-                                                label: "other",
+                                                label: t("other"),
                                             },
                                         ] ?? [],
                                     },

@@ -18,7 +18,7 @@ namespace Application.DTO.Pattern
         public NeedleworkType Type { get; set; }
         public bool IsAuthorial { get; set; }
         public string Category { get; set; } = "";
-        public string Notes { get; set; } = "";
+        public string? Notes { get; set; } = "";
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool? Finished { get; set; }

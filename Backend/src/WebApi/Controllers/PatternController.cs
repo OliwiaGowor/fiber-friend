@@ -77,6 +77,7 @@ public class PatternController : ControllerBase
         return Ok(service);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetCommunityPatterns")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<IEnumerable<CommunityPatternDto>> GetCommunityPatterns([FromQuery] string? filters, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)

@@ -55,23 +55,27 @@ const FiltersBar = ({ filters, applyFilters }: FiltersBarProps) => {
                 {filters.map((filter: any) => (
                     <div className={classes.filter} key={filter.name}>
                         {filter.name === "Category" ?
-                        <CategoriesMenu choseCategory={(value: string) => handleChangeFilter(value, "Category")} showError={false} />
-                        :
-                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                            <InputLabel id="select-label">{filter.name}</InputLabel>
-                            <Select
-                                labelId="select-label"
-                                className={classes.formInput}
-                                onChange={(e) => handleChangeFilter(e.target.value, filter.name)}
-                                value={getFilterValue(filter.name)}
-                                aria-labelledby={`${filter.name}-label`}
-                            >
-                                <MenuItem value="">{t('all')}</MenuItem>
-                                {filter.options.map((option: any) => (
-                                    <MenuItem key={option.value} value={option.value}>{option.name}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                            <CategoriesMenu
+                                choseCategory={(value: string) => handleChangeFilter(value, "Category")}
+                                showError={false}
+                                forFilters={true}
+                            />
+                            :
+                            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                <InputLabel id="select-label">{t(String(filter.name).toLocaleLowerCase())}</InputLabel>
+                                <Select
+                                    labelId="select-label"
+                                    className={classes.formInput}
+                                    onChange={(e) => handleChangeFilter(e.target.value, filter.query)}
+                                    value={getFilterValue(filter.query)}
+                                    aria-labelledby={`${filter.name}-label`}
+                                >
+                                    <MenuItem value="">{t('all')}</MenuItem>
+                                    {filter.options.map((option: any) => (
+                                        <MenuItem key={option.value} value={option.value}>{t(String(option.name).toLocaleLowerCase())}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         }
                     </div>
                 ))}
@@ -86,9 +90,27 @@ export const filtersBarTranslations = {
     en: {
         header: 'Filter by:',
         all: 'All',
+        knitting: 'Knitting',
+        crochet: 'Crochet',
+        other: 'Other',
+        active: 'Active',
+        completed: 'Completed',
+        type: 'Type',
+        yarns: 'Yarns',
+        tools: 'Tools',
+        others: 'Others',
     },
     pl: {
         header: 'Filtruj po:',
         all: 'Wszystkie',
+        knitting: 'Dzierganie',
+        crochet: 'Szydełkowanie',
+        other: 'Inne',
+        active: 'Aktywne',
+        completed: 'Zakończone',
+        type: 'Typ',
+        yarns: 'Przędze',
+        tools: 'Narzędzia',
+        others: 'Inne',
     },
 }

@@ -14,9 +14,11 @@ import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { useTranslation } from "react-i18next";
 
 export default function CounterDetails() {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation("CounterDetails");
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width: 760px)');
     const { counterGroup } = useRouteLoaderData('counter-details') as { counterGroup: any };
@@ -26,6 +28,7 @@ export default function CounterDetails() {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -35,7 +38,7 @@ export default function CounterDetails() {
             await handleRequest(
                 `${process.env.REACT_APP_API_URL}CountersGroup/${counterGroup.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`,
                 'DELETE',
-                'Could not delete counter. Please try again later.',
+                t('deleteCounterError'),
                 tokenLoader()
             );
             return navigate('/fiber-friend/account/counters');
@@ -82,30 +85,31 @@ export default function CounterDetails() {
                                     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                                 >
                                     <MenuItem onClick={() => { handleClose(); return navigate('/fiber-friend/account/counters/' + counterGroup.id + '/edit'); }}>
-                                        Edit
+                                        {t('edit')}
                                     </MenuItem>
                                     <MenuItem onClick={() => { handleDelete(); handleClose(); }}>
-                                        Delete counter
+                                        {t('deleteCounter')}
                                     </MenuItem>
                                 </Menu>
                             </div>
-                            <div className={classes.sectionContainer}>
-                                <h2 className={classes.sectionHeader}>Connected {counterGroup.patternId ? "pattern" : "project"}</h2>
-                                <a
-                                    className={classes.link}
-                                    href={
-                                        counterGroup.patternId ?
-                                            `/fiber-friend/account/patterns/${counterGroup.patternId}`
-                                            :
-                                            `/fiber-friend/account/projects/${counterGroup.projectId}`
+                            {(counterGroup.patternId || counterGroup.projectId) &&
+                                <div className={classes.sectionContainer}>
+                                    <h2 className={classes.sectionHeader}>{t('connectedPatternProject', { type: counterGroup.patternId ? t('pattern') : t('project') })}</h2>
+                                    <a
+                                        className={classes.link}
+                                        href={
+                                            counterGroup.patternId ?
+                                                `/fiber-friend/account/patterns/${counterGroup.patternId}`
+                                                :
+                                                `/fiber-friend/account/projects/${counterGroup.projectId}`
 
-                                    }>
-                                    {counterGroup.patternName ?? counterGroup.projectName}
-                                    <OpenInNewIcon/>
-                                </a>
-                            </div>
+                                        }>
+                                        {counterGroup.patternName ?? counterGroup.projectName}
+                                        <OpenInNewIcon />
+                                    </a>
+                                </div>}
                             <div className={classes.sectionContainer}>
-                                <h2 className={classes.sectionHeader}>Counters</h2>
+                                <h2 className={classes.sectionHeader}>{t('countersSection')}</h2>
                                 <div className={classes.counters}>
                                     {counterGroup.counters.map((counter: any, index: number) => (
                                         <CounterMiniature
@@ -135,7 +139,7 @@ async function loadCounterDetails(id: string) {
 
     if (!response.ok) {
         throw json(
-            { message: 'Could not fetch counter.' },
+            { message: "Could not fetch counters." },
             {
                 status: 500,
             }

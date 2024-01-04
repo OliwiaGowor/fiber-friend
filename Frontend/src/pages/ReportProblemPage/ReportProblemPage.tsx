@@ -2,9 +2,11 @@ import React from "react";
 import { Form } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useTranslation } from "react-i18next";
 import classes from "./ReportProblemPage.module.scss";
 
 const ReportProblemPage = () => {
+    const { t } = useTranslation("ReportProblemPage");
     const nameRef = React.useRef<HTMLInputElement | null>(null);
     const emailRef = React.useRef<HTMLInputElement | null>(null);
     const topicRef = React.useRef<HTMLInputElement | null>(null);
@@ -13,8 +15,8 @@ const ReportProblemPage = () => {
     return (
         <div className={classes.container}>
             <Form className={classes.contactForm} >
-                <h1 className={classes.header}>Report a problem!</h1>
-                <p className={classes.additionalText}>If you've experienced any issues we encourage you to contact us and describe it.</p>
+                <h1 className={classes.header}>{t('reportProblem')}</h1>
+                <p className={classes.additionalText}>{t('reportProblemText')}</p>
                 <div className={classes.inputs}>
                     <div className={classes.topElements}>
                         <TextField
@@ -22,30 +24,24 @@ const ReportProblemPage = () => {
                             inputProps={{
                                 'aria-label': 'name',
                             }}
-                            label="Your name"
+                            label={t('yourName')}
                             className={classes.formInput}
                             name='name'
                             inputRef={nameRef}
                             autoComplete="off"
                             required
-                        //error={showUsernameError}
-                        //helperText={'Enter username!' : ''}
-                        //onChange={() => { setShowUsernameError(false) }}
                         />
                         <TextField
                             id="email"
                             inputProps={{
                                 'aria-label': 'email',
                             }}
-                            label="Your email"
+                            label={t('yourEmail')}
                             className={classes.formInput}
                             name='email'
                             inputRef={emailRef}
                             required
                             autoComplete="email"
-                        //error={showUsernameError}
-                        //helperText={'Enter username!' : ''}
-                        //onChange={() => { setShowUsernameError(false) }}
                         />
                     </div>
                     <TextField
@@ -53,22 +49,19 @@ const ReportProblemPage = () => {
                         inputProps={{
                             'aria-label': 'topic',
                         }}
-                        label="Topic"
+                        label={t('topic')}
                         className={classes.formInput}
                         name='topic'
                         inputRef={topicRef}
                         autoComplete="off"
                         required
-                    //error={showUsernameError}
-                    //helperText={'Enter username!' : ''}
-                    //onChange={() => { setShowUsernameError(false) }}
                     />
                     <TextField
                         id="message"
                         inputProps={{
                             'aria-label': 'message',
                         }}
-                        label="Your message"
+                        label={t('yourMessage')}
                         className={classes.formInput}
                         name='message'
                         inputRef={messageRef}
@@ -83,7 +76,7 @@ const ReportProblemPage = () => {
                     className={classes.button}
                     type="submit"
                 >
-                    Send!
+                    {t('send')}
                 </Button>
             </Form>
         </div>

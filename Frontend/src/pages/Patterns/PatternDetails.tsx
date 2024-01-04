@@ -22,6 +22,7 @@ import { useAppDispatch } from '../../utils/hooks';
 import { handleRequest } from "../../utils/handleRequestHelper";
 import { setError } from "../../reducers/errorSlice";
 import { useTranslation } from "react-i18next";
+import { NeedleworkType } from "../../DTOs/Enums";
 
 export default function PatternDetails() {
     const { t } = useTranslation("PatternDetails");
@@ -131,7 +132,7 @@ export default function PatternDetails() {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose}>{t('cancel')}</Button>
                         <Button onClick={handleClose} autoFocus>
                             {t('sharePattern')}
                         </Button>
@@ -192,12 +193,12 @@ export default function PatternDetails() {
                             <div className={classes.dividedContainer}>
                                 <div className={classes.leftElements}>
                                     <div className={`${classes.sectionContainer} ${classes.topContainer}`}>
-                                        <h2 className={classes.sectionHeader}>Details</h2>
+                                        <h2 className={classes.sectionHeader}>{t('details')}</h2>
                                         <div className={classes.projectInfoContainer}>
                                             <div className={classes.attributeName}>{t('author')} </div>
                                             {pattern?.author?.username ?? <br></br>}
                                             <div className={classes.attributeName}>{t('type')} </div>
-                                            {pattern.type ?? <br></br>}
+                                            {t(NeedleworkType[pattern.type]) ?? <br></br>}
                                             <div className={classes.attributeName}>{t('category')} </div>
                                             {pattern.category ?? <br></br>}
                                             {pattern.isAuthorial &&
@@ -205,7 +206,7 @@ export default function PatternDetails() {
                                                     <div className={classes.attributeName}>{t('startDate')} </div>
                                                     {pattern.startDate.slice(0, 10) ?? <br></br>}
                                                     <div className={classes.attributeName}>{t('endDate')} </div>
-                                                    {pattern.endDate?.slice(0, 10) ?? <br></br>}
+                                                    {pattern.endDate && pattern.endDate !== "0001-01-01T00:00:00" ? pattern.endDate?.slice(0, 10) : <br></br>}
                                                 </>
                                             }
                                         </div>
@@ -238,7 +239,12 @@ export default function PatternDetails() {
                                     <FilesDisplay files={pattern.files} />
                                     <h3 className={classes.attributeName}>{t('counters')}</h3>
                                     <div className={classes.counters}>
-                                        <CounterGroup defaultValue={ pattern.counters ? pattern?.counters[0]?.counters : undefined} parentId={pattern.id ?? ''} />
+                                        <CounterGroup 
+                                        defaultValue={ pattern.counters ? pattern?.counters[0]?.counters : undefined} 
+                                        patternId={pattern.id ?? ''} 
+                                        parentName={pattern.name ?? ''}
+                                        counterGroupId={pattern.counters ? pattern.counters[0]?.id : ""}
+                                        />
                                     </div>
                                     <h3 className={classes.attributeName}>{t('notes')}</h3>
                                     <div className={classes.notes}>
@@ -253,6 +259,7 @@ export default function PatternDetails() {
         </>
     );
 }
+
 async function loadPatternDetails(id: string) {
     const response = await fetch(`${process.env.REACT_APP_API_URL}Pattern/${id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`, {
         headers: {

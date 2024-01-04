@@ -19,8 +19,8 @@ import dayjs from "dayjs";
 import { useAppDispatch } from "../../../utils/hooks";
 import { setError } from "../../../reducers/errorSlice";
 import { handleRequest } from "../../../utils/handleRequestHelper";
-import { Notes } from "../../../DTOs/Notes";
 import { useTranslation } from "react-i18next";
+import { end } from "slate";
 
 interface PatternFormProps {
     pattern?: Pattern;
@@ -28,7 +28,7 @@ interface PatternFormProps {
 }
 
 export default function PatternForm({ pattern, method }: PatternFormProps) {
-    const { t } = useTranslation("PatternForm");
+    const { t } = useTranslation('PatternForm');
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [type, setType] = useState<NeedleworkType>(pattern?.type ?? NeedleworkType.crochet);
@@ -49,7 +49,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     const [dateError, setDateError] = useState<any>(null);
     const [startDate, setStartDate] = useState<any>(pattern?.startDate ?? null);
     const [endDate, setEndDate] = useState<any>(pattern?.endDate ?? null);
-    let dateErrorMessage = requiredError ? 'Enter start date!' : undefined;
+    let dateErrorMessage = requiredError ? t('startDate') : undefined;
 
     const handleType = (event: React.MouseEvent<HTMLElement>, newType: NeedleworkType,) => {
         if (newType !== null) {
@@ -60,51 +60,56 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
     //Handle form submit - request
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //if (proceedSubmit) {
-            const patternData: Pattern = {
-                id: pattern?.id ?? undefined,
+        try {
+            const patternData: any = {
                 name: name,
                 type: type,
                 category: category,
                 isAuthorial: isAuthorial,
-                yarns: yarnsInfo,
-                tools: toolsInfo,
-                otherSupplies: otherSuppliesInfo ?? null,
                 photos: selectedImages,
                 files: selectedFiles,
-                notes: notes,
+                notes: notes ?? '',
                 authorId: localStorage.getItem('userId') ?? "",
                 finished: endDate !== null ? true : false,
                 startDate: startDate,
                 isShared: pattern?.isShared ?? false,
             };
 
+            if (pattern) {
+                patternData.id = pattern?.id;
+                patternData.yarns = yarnsInfo?.map((yarn: any) => {return {...yarn, patternId: pattern?.id }});
+                patternData.tools = toolsInfo?.map((tool: any) => {return {...tool, patternId: pattern?.id }});
+                patternData.otherSupplies = otherSuppliesInfo?.map((otherSupply: any) => {return {...otherSupply, patternId: pattern?.id }}) ?? null;
+            } else {
+                patternData.yarns = [...yarnsInfo];
+                patternData.tools = [...toolsInfo];
+                patternData.otherSupplies = [...otherSuppliesInfo] ?? null;
+            }
+
+            if(endDate !== null) {
+                patternData.endDate = endDate;
+            }
+
             let url = (method === "POST") ?
                 `${process.env.REACT_APP_API_URL}Pattern${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}` :
                 `${process.env.REACT_APP_API_URL}Pattern/${pattern?.id}${process.env.REACT_APP_ENV === "dev" ? "" : ".json"}`;
 
-            try {
-                await handleRequest(
-                    url,
-                    method,
-                    "Could not post pattern. Please try again later.",
-                    tokenLoader(),
-                    patternData
-                );
-                return navigate('/fiber-friend/account/patterns');
+            await handleRequest(
+                url,
+                method,
+                t("couldNotPostPattern"),
+                tokenLoader(),
+                patternData
+            );
 
-            } catch (error) {
-                dispatch(setError(error));
-                return;
-            }
+            return navigate('/fiber-friend/account/patterns');
+        } catch (error) {
+            dispatch(setError(error));
+        }
     };
 
     //Form validation
     const validateForm = () => {
-        /*if (yarnsInfo.length <= 0) {
-            setShowYarnsError(true);
-            setProceedSubmit(false);
-        }*/
         if (!name) {
             setShowNameError(true);
             setProceedSubmit(false);
@@ -117,7 +122,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
 
     return (
         <div className={classes.container}>
-            <h1 className={classes.header}>{t(method === "POST" ? "createPattern" : "editPattern")}</h1>
+            <h1 className={classes.header}>{t(method === 'POST' ? 'createPattern' : 'editPattern')}</h1>
             <form
                 onSubmit={handleSubmit}
                 className={classes.form}
@@ -125,20 +130,20 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
             >
                 <div className={classes.formContent}>
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Details</h2>
+                        <h2 className={classes.sectionHeader}>{t('details')}</h2>
                         <TextField
                             id="name"
                             inputProps={{
-                                'aria-label': 'Pattern name',
+                                'aria-label': t('patternName'),
                                 'aria-required': true,
                                 'aria-invalid': showNameError,
                             }}
-                            label="Pattern name"
+                            label={t('patternName')}
                             className={classes.formInput}
                             name='name'
                             value={name}
                             error={showNameError}
-                            helperText={showNameError ? 'Enter pattern name!' : ''}
+                            helperText={showNameError ? t('enterPatternName') : ''}
                             onChange={(e) => { setShowNameError(false); setName(e.target.value); }}
                         />
                         <div className={classes.typeToggleContainer}>
@@ -157,7 +162,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Crochet
+                                    {t('crochet')}
                                 </ToggleButton>
                                 <ToggleButton value={NeedleworkType.knitting} className={classes.toggleButton} aria-label="knitting" disableRipple
                                     sx={{
@@ -166,7 +171,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Knitting
+                                    {t('knitting')}
                                 </ToggleButton>
                                 <ToggleButton value={NeedleworkType.other} className={classes.toggleButton} aria-label="other" disableRipple
                                     sx={{
@@ -175,7 +180,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                             backgroundColor: "var(--main-color-medium)",
                                         }
                                     }}>
-                                    Other
+                                    {t('other')}
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </div>
@@ -191,13 +196,14 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                         onChange={() => { setIsAuthorial(!isAuthorial) }}
                                     />
                                 }
-                                label="This is my pattern!" />
+                                label={t('thisIsMyPattern')}
+                            />
                         </div>
                         {isAuthorial &&
                             <div className={classes.datePickers}>
                                 <DatePicker
                                     className={classes.dateInput}
-                                    label="Start date *"
+                                    label={t('startDate')}
                                     onChange={(newValue: any) => { setStartDate(newValue) }}
                                     format="DD-MM-YYYY"
                                     onError={(newError) => {
@@ -213,24 +219,23 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                                 />
                                 <DatePicker
                                     className={classes.dateInput}
-                                    label="End date"
+                                    label={t('endDate')}
                                     format="DD-MM-YYYY"
-                                    //minDate={startDate ?? undefined}
                                     onChange={(newValue: any) => { setEndDate(newValue) }}
                                     value={dayjs(endDate)}
                                 />
                                 <br></br>
-                                <p className={classes.additionalText}>Add an end date to mark project as finished!</p>
+                                <p className={classes.additionalText}>{t('addEndDate')}</p>
                             </div>
                         }
                     </div>
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Photos</h2>
-                        <p className={classes.additionalText}>Add up to 10 photos of your work!</p>
+                        <h2 className={classes.sectionHeader}>{t('photos')}</h2>
+                        <p className={classes.additionalText}>{t('addUpTo10Photos')}</p>
                         <div className={classes.photoInput}>
                             <FileInput
                                 onlyImg={true}
-                                addHeader={'Add photo'}
+                                addHeader={t('addPhoto')}
                                 maxFiles={10}
                                 defaultValue={selectedImages}
                                 selectedFiles={(images: any) => { setSelectedImages(images) }}
@@ -238,22 +243,22 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                         </div>
                     </div>
                     <div className={`${classes.sectionContainer} ${classes.formInput}`}>
-                        <h2 className={classes.sectionHeader}>Yarns and tools</h2>
-                        <p className={classes.additionalText}>Add yarns to see more options</p>
+                        <h2 className={classes.sectionHeader}>{t('yarnsAndTools')}</h2>
+                        <p className={classes.additionalText}>{t('addYarnsToSeeMoreOptions')}</p>
                         <BasicTabsForm
                             showError={showYarnsError}
                             getInfo={(yarnsInfo: any) => { setYarnsInfo(yarnsInfo) }}
                             type="yarn"
                             defaultValue={yarnsInfo}
                         />
-                        <p className={classes.additionalText}>Add tools to see more options</p>
+                        <p className={classes.additionalText}>{t('addToolsToSeeMoreOptions')}</p>
                         <BasicTabsForm
                             showError={showYarnsError}
                             getInfo={(toolsInfo: any) => { setToolsInfo(toolsInfo) }}
                             type="tool"
                             defaultValue={toolsInfo}
                         />
-                        <p className={classes.additionalText}>Add other supplies to see more options</p>
+                        <p className={classes.additionalText}>{t('addOtherSuppliesToSeeMoreOptions')}</p>
                         <BasicTabsForm
                             showError={showYarnsError}
                             getInfo={(otherSuppliesInfo: any) => { setOtherSuppliesInfo(otherSuppliesInfo) }}
@@ -262,12 +267,12 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                         />
                     </div>
                     <div className={classes.sectionContainer}>
-                        <h2 className={classes.sectionHeader}>Files and notes</h2>
-                        <p className={classes.additionalText}>Add up to 5 files with patterns.</p>
+                        <h2 className={classes.sectionHeader}>{t('filesAndNotes')}</h2>
+                        <p className={classes.additionalText}>{t('addUpTo5FilesWithPatterns')}</p>
                         <div className={classes.fileInput}>
                             <FileInput
                                 onlyImg={false}
-                                addHeader={'Add patterns'}
+                                addHeader={t('addPatterns')}
                                 maxFiles={5}
                                 defaultValue={selectedFiles}
                                 selectedFiles={(patterns: any) => { setSelectedFiles(patterns) }}
@@ -285,7 +290,7 @@ export default function PatternForm({ pattern, method }: PatternFormProps) {
                     onClick={validateForm}
                     aria-label="Submit button"
                 >
-                    {`${method === "POST" ? "Create" : "Edit"} pattern`}
+                    {`${t(method === "POST" ? "createPattern" : "editPattern")}`}
                 </Button>
             </form>
         </div>

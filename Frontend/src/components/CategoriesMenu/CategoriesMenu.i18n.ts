@@ -32,6 +32,7 @@ export const categoriesMenuTranslations = {
     figurines: 'Figurines',
     wallDecorations: 'Wall Decorations',
     pillows: 'Pillows',
+    all: 'All',
   },
   pl: {
     chooseCategory: 'Wybierz kategorię',
@@ -66,5 +67,6 @@ export const categoriesMenuTranslations = {
     wallDecorations: 'Dekoracje ścienne',
     pillows: 'Poduszki',
     other: 'Inne',
+    all: 'Wszystkie',
   },
 };
